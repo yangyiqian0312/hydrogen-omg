@@ -58,8 +58,16 @@ function loadDeferredData({context}) {
       return null;
     });
 
+  const allProducts = context.storefront
+    .query(ALL_PRODUCTS_QUERY)
+    .catch((error) => {
+      // Log query errors, but don't throw them so the page can still render
+      console.error(error);
+      return null;
+    });
+
   return {
-    recommendedProducts,
+    allProducts,
   };
 }
 
@@ -544,6 +552,41 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
       }
     }
   }
+`;
+
+const ALL_PRODUCTS_QUERY = `
+query AllProduct {
+  products(first: 250, after: null) {
+    edges {
+      node {
+        id
+        title
+        handle
+        description
+        priceRange {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+        images(first: 1) {
+          edges {
+            node {
+              id
+              url
+              altText
+            }
+          }
+        }
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+    }
+  }
+}
+
 `;
 
 /** @typedef {import('@shopify/remix-oxygen').LoaderFunctionArgs} LoaderFunctionArgs */
