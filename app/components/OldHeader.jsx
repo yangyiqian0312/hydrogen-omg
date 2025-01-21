@@ -1,8 +1,111 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, Search, Menu, X } from 'lucide-react';
+import {useState, Suspense} from 'react';
+import {Await, NavLink, useAsyncValue} from '@remix-run/react';
+import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
+import {useAside} from '~/components/Aside';
+import {Link, useNavigate} from 'react-router-dom';
+import {ShoppingCart, User, Search, Menu, X} from 'lucide-react';
 
-export default function OldHeader() {
+/**
+ * @param {Pick<HeaderProps, 'isLoggedIn' | 'cart'>}
+ */
+function HeaderCtas({isLoggedIn, cart}) {
+  return (
+    <nav className="header-ctas" role="navigation">
+      <HeaderMenuMobileToggle />
+      {/* <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
+        <Suspense fallback="Sign in">
+          <Await resolve={isLoggedIn} errorElement="Sign in">
+            {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
+          </Await>
+        </Suspense>
+      </NavLink> */}
+      <SearchToggle />
+      <CartToggle cart={cart} />
+    </nav>
+  );
+}
+
+function HeaderMenuMobileToggle() {
+  const {open} = useAside();
+  return (
+    <button
+      className="header-menu-mobile-toggle reset"
+      onClick={() => open('mobile')}
+    >
+      <h3>☰</h3>
+    </button>
+  );
+}
+
+function SearchToggle() {
+  const {open} = useAside();
+  return (
+    <button className="reset" onClick={() => open('search')}>
+      Search
+    </button>
+  );
+}
+
+/**
+ * @param {{count: number | null}}
+ * 渲染购物车链接和商品数量，处理用户点击行为。
+ */
+function CartBadge({count}) {
+  const {open} = useAside();
+  const {publish, shop, cart, prevCart} = useAnalytics();
+
+  // TODO: Cart item quantity needs fix
+  return (
+    <a
+      href="/cart"
+      onClick={(e) => {
+        e.preventDefault();
+        open('cart');
+        publish('cart_viewed', {
+          cart,
+          prevCart,
+          shop,
+          url: window.location.href || '',
+        });
+      }}
+      className="flex items-center space-x-2 text-gray-800 hover:text-gray-600"
+    >
+      <ShoppingCart className="h-6 w-6" />
+      <span>{count === null ? '\u00A0' : count}</span>
+    </a>
+  );
+}
+
+/**
+ * @param {Pick<HeaderProps, 'cart'>}
+ * 管理购物车的异步状态并渲染正确的子组件。
+ */
+function CartToggle({cart}) {
+  return (
+    <Suspense fallback={<CartBadge count={null} />}>
+      <Await resolve={cart}>
+        <CartBanner />
+      </Await>
+    </Suspense>
+  );
+}
+
+/**
+ * @param {Pick<HeaderProps, 'cart'>}
+ * 处理购物车数据优化并传递给 CartBadge。
+ */
+function CartBanner() {
+  const originalCart = useAsyncValue();
+  const cart = useOptimisticCart(originalCart);
+  return <CartBadge count={cart?.totalQuantity ?? 0} />;
+}
+
+export default function OldHeader({
+  header,
+  isLoggedIn,
+  cart,
+  publicStoreDomain,
+}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -68,13 +171,15 @@ export default function OldHeader() {
               {/* <button className="text-gray-800 hover:text-gray-600">
                 <Search className="h-6 w-6" />
               </button> */}
-              <button 
+              {/* <button
                 onClick={handleCartClick}
                 className="text-gray-800 hover:text-gray-600 relative"
               >
                 <ShoppingCart className="h-6 w-6" />
-              </button>
-              <button 
+              </button> */}
+              <SearchToggle />
+              <CartToggle cart={cart} />
+              <button
                 onClick={handleProfileClick}
                 className="text-gray-800 hover:text-gray-600"
               >
@@ -122,7 +227,19 @@ export default function OldHeader() {
           )}
         </div>
       </nav>
-
     </>
   );
 }
+
+/** @typedef {'desktop' | 'mobile'} Viewport */
+/**
+ * @typedef {Object} HeaderProps
+ * @property {HeaderQuery} header
+ * @property {Promise<CartApiQueryFragment|null>} cart
+ * @property {Promise<boolean>} isLoggedIn
+ * @property {string} publicStoreDomain
+ */
+
+/** @typedef {import('@shopify/hydrogen').CartViewPayload} CartViewPayload */
+/** @typedef {import('storefrontapi.generated').HeaderQuery} HeaderQuery */
+/** @typedef {import('storefrontapi.generated').CartApiQueryFragment} CartApiQueryFragment */

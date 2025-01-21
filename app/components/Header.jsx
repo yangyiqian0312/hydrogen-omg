@@ -125,6 +125,7 @@ function SearchToggle() {
 
 /**
  * @param {{count: number | null}}
+ * 渲染购物车链接和商品数量，处理用户点击行为。
  */
 function CartBadge({count}) {
   const {open} = useAside();
@@ -151,6 +152,7 @@ function CartBadge({count}) {
 
 /**
  * @param {Pick<HeaderProps, 'cart'>}
+ * 管理购物车的异步状态并渲染正确的子组件。
  */
 function CartToggle({cart}) {
   return (
@@ -162,6 +164,10 @@ function CartToggle({cart}) {
   );
 }
 
+/**
+ * @param {Pick<HeaderProps, 'cart'>}
+ * 处理购物车数据优化并传递给 CartBadge。
+ */
 function CartBanner() {
   const originalCart = useAsyncValue();
   const cart = useOptimisticCart(originalCart);

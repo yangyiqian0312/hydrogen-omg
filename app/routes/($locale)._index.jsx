@@ -207,7 +207,7 @@ export default function Homepage() {
 
   const promotingProducts = data.promotingProducts;
 
-  console.log(promotingProducts);
+  //console.log(promotingProducts);
   return (
     <div className="home">
       {/* <FeaturedCollection collection={data.featuredCollection} />
