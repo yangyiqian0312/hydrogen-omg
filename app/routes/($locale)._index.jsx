@@ -142,13 +142,12 @@ export default function Homepage() {
 
   const scroll = (direction) => {
     if (carouselRef.current) {
-      const scrollAmount = window.innerWidth >= 1024 ? 400 : 320; // Larger scroll on desktop
-      const scrollPosition = direction === 'left' 
-        ? carouselRef.current.scrollLeft - scrollAmount
-        : carouselRef.current.scrollLeft + scrollAmount;
+      const scrollAmount = direction === 'left' ? 
+        (window.innerWidth >= 1536 ? -800 : -320) : 
+        (window.innerWidth >= 1536 ? 800 : 320);
       
-      carouselRef.current.scrollTo({
-        left: scrollPosition,
+      carouselRef.current.scrollBy({
+        left: scrollAmount,
         behavior: 'smooth'
       });
     }
@@ -210,72 +209,82 @@ export default function Homepage() {
 
       {/* //promotingProducts.products.edges.map(({ node }) => ( */}
       <OldHeader />
-      <div
-        ref={carouselRef}
-        className="flex overflow-x-auto snap-x snap-mandatory gap-4 hide-scrollbar scrollbar-hide"
-        style={{
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
-          WebkitOverflowScrolling: 'touch',
-        }}
-      >
-        {promotingProducts.products.edges.map(({ node }) => (
-          <div
-            key={node.id}
-            className="flex-none w-80 bg-white rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300"
-          >
-            <div className="relative aspect-square">
-              {node.images.edges[0] ? (
-                <img
-                  src={node.images.edges[0].node.url} // Access the first image URL
-                  alt={node.title}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <img
-                  src="/api/placeholder/400/400" // Placeholder image if no product image is available
-                  alt="Placeholder"
-                  className="w-full h-full object-cover"
-                />
+      <div className="relative max-w-screen-2xl mx-auto px-4 2xl:px-8 py-4 2xl:py-6">
+        <div
+          ref={carouselRef}
+          className="flex overflow-x-auto snap-x snap-mandatory gap-4 2xl:gap-6 hide-scrollbar scrollbar-hide pb-4"
+          style={{
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            WebkitOverflowScrolling: 'touch'
+          }}
+        >
+          {promotingProducts.products.edges.map(({ node }) => (
+            <div
+              key={node.id}
+              className="flex-none w-80 2xl:w-[800px] bg-white rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 relative"
+            >
+              {node.tag && (
+                <div className="absolute top-4 left-4 bg-white px-3 py-1 rounded-full text-xs font-bold z-10">
+                  {node.tag}
+                </div>
               )}
-            </div>
-            {/* Product Info */}
-            <div className="p-4 space-y-2">
-              <p className="text-sm text-gray-600 font-medium">
-                {node.vendor || 'Featured Brand'}
-              </p>
-              <h3 className="text-sm font-bold text-gray-900 line-clamp-2 min-h-[40px]">
-                {node.title}
-              </h3>
+              <div className="relative aspect-square 2xl:aspect-[2/1]">
+                {node.images?.edges[0] ? (
+                  <img
+                    src={node.images.edges[0].node.url}
+                    alt={node.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src="/api/placeholder/400/400"
+                    alt={node.title}
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
 
-              {/* Shop Now Link */}
-              <div className="pt-2">
-                <button className="inline-flex items-center text-sm font-bold text-black hover:text-gray-700 transition-colors group">
-                  SHOP NOW
-                  <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">
-                    ›
-                  </span>
-                </button>
+              {/* Product Info */}
+              <div className="p-4 2xl:p-6 space-y-2 2xl:space-y-3">
+                <p className="text-sm text-gray-600 font-medium 2xl:hidden">
+                  {node.vendor || 'Featured Brand'}
+                </p>
+                <h3 className="text-sm 2xl:text-xl font-bold text-gray-900 line-clamp-2 min-h-[40px] 2xl:min-h-0">
+                  {node.title}
+                </h3>
+                {node.description && (
+                  <p className="hidden 2xl:block text-sm text-gray-600">
+                    {node.description}
+                  </p>
+                )}
+                <div className="pt-2">
+                  <button className="inline-flex items-center text-sm font-bold text-black hover:text-gray-700 transition-colors group">
+                    SHOP NOW
+                    <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">
+                      ›
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      {/* Carousel Navigation Buttons */}
-      <button
-        onClick={() => scroll('left')}
-        className="absolute left-0 top-[30%] -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-all duration-200"
-      >
-        <ChevronLeft className="h-6 w-6" />
-      </button>
-      <button
-        onClick={() => scroll('right')}
-        className="absolute right-0 top-[30%] -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-all duration-200"
-      >
-        <ChevronRight className="h-6 w-6" />
-      </button>
-     
+        {/* Carousel Navigation Buttons */}
+        <button
+          onClick={() => scroll('left')}
+          className="absolute left-0 2xl:left-4 top-[30%] 2xl:top-1/2 -translate-y-1/2 bg-white/80 p-2 2xl:p-3 rounded-full shadow-lg hover:bg-white transition-all duration-200"
+        >
+          <ChevronLeft className="h-6 w-6" />
+        </button>
+        <button
+          onClick={() => scroll('right')}
+          className="absolute right-0 2xl:right-4 top-[30%] 2xl:top-1/2 -translate-y-1/2 bg-white/80 p-2 2xl:p-3 rounded-full shadow-lg hover:bg-white transition-all duration-200"
+        >
+          <ChevronRight className="h-6 w-6" />
+        </button>
+      </div>
 
       {/* Main Content Grid */}
       <div className="px-4 pb-8">
