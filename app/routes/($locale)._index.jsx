@@ -1,17 +1,17 @@
-import {defer} from '@shopify/remix-oxygen';
-import {Await, useLoaderData, Link} from '@remix-run/react';
-import {Suspense} from 'react';
-import {Image, Money} from '@shopify/hydrogen';
-import {useNavigate} from 'react-router-dom';
-import {useRef, useState, useEffect} from 'react';
-import {products} from '~/data/products';
-import {Heart, ChevronLeft, ChevronRight, Clock} from 'lucide-react';
+import { defer } from '@shopify/remix-oxygen';
+import { Await, useLoaderData, Link } from '@remix-run/react';
+import { Suspense } from 'react';
+import { Image, Money } from '@shopify/hydrogen';
+import { useNavigate } from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
+import { products } from '~/data/products';
+import { Heart, ChevronLeft, ChevronRight, Clock } from 'lucide-react';
 import OldHeader from '~/components/OldHeader';
 /**
  * @type {MetaFunction}
  */
 export const meta = () => {
-  return [{title: 'OMG BEAUTY'}];
+  return [{ title: 'OMG BEAUTY' }];
 };
 
 /**
@@ -24,7 +24,7 @@ export async function loader(args) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return defer({...deferredData, ...criticalData});
+  return defer({ ...deferredData, ...criticalData });
 }
 
 /**
@@ -32,8 +32,8 @@ export async function loader(args) {
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  * @param {LoaderFunctionArgs}
  */
-async function loadCriticalData({context}) {
-  const [{collections}] = await Promise.all([
+async function loadCriticalData({ context }) {
+  const [{ collections }] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
     // Add other queries here, so that they are loaded in parallel
     context.storefront.query(PROMOTING_PRODUCTS_QUERY),
@@ -51,7 +51,7 @@ async function loadCriticalData({context}) {
  * Make sure to not throw any errors here, as it will cause the page to 500.
  * @param {LoaderFunctionArgs}
  */
-async function loadDeferredData({context}) {
+async function loadDeferredData({ context }) {
   // const allProducts = await context.storefront
   //   .query(ALL_PRODUCTS_QUERY)
   //   .catch((error) => {
@@ -101,7 +101,7 @@ export default function Homepage() {
 
         if (totalSeconds <= 0) {
           clearInterval(timer);
-          return {hours: 0, minutes: 0, seconds: 0};
+          return { hours: 0, minutes: 0, seconds: 0 };
         }
 
         return {
@@ -141,20 +141,15 @@ export default function Homepage() {
   const carouselRef = useRef(null);
 
   const scroll = (direction) => {
-    if (!carouselRef.current) return;
-
-    const scrollAmount = 320; // Width of one card
-    const currentScroll = carouselRef.current.scrollLeft;
-
-    if (direction === 'left') {
+    if (carouselRef.current) {
+      const scrollAmount = window.innerWidth >= 1024 ? 400 : 320; // Larger scroll on desktop
+      const scrollPosition = direction === 'left' 
+        ? carouselRef.current.scrollLeft - scrollAmount
+        : carouselRef.current.scrollLeft + scrollAmount;
+      
       carouselRef.current.scrollTo({
-        left: currentScroll - scrollAmount,
-        behavior: 'smooth',
-      });
-    } else {
-      carouselRef.current.scrollTo({
-        left: currentScroll + scrollAmount,
-        behavior: 'smooth',
+        left: scrollPosition,
+        behavior: 'smooth'
       });
     }
   };
@@ -213,6 +208,7 @@ export default function Homepage() {
       {/* <FeaturedCollection collection={data.featuredCollection} />
       <RecommendedProducts products={data.recommendedProducts} /> */}
 
+      {/* //promotingProducts.products.edges.map(({ node }) => ( */}
       <OldHeader />
       <div
         ref={carouselRef}
@@ -223,24 +219,7 @@ export default function Homepage() {
           WebkitOverflowScrolling: 'touch',
         }}
       >
-        {/* <div>
-          <h1>Promoting Products</h1>
-          {promotingProducts.products.edges.map(({node}) => (
-            <div key={node.id} style={{marginBottom: '20px'}}>
-              <h2>{node.title}</h2>
-              {node.images.edges[0] ? (
-                <img
-                  src={node.images.edges[0].node.url} // Access the first image URL
-                  alt={node.title}
-                  style={{width: '150px', height: 'auto'}}
-                />
-              ) : (
-                <p>No image available</p>
-              )}
-            </div>
-          ))}
-        </div> */}
-        {promotingProducts.products.edges.map(({node}) => (
+        {promotingProducts.products.edges.map(({ node }) => (
           <div
             key={node.id}
             className="flex-none w-80 bg-white rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300"
@@ -260,33 +239,43 @@ export default function Homepage() {
                 />
               )}
             </div>
-            <div className="p-6">
-              <div className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-2">
-                {node.vendor || 'Unknown Brand'} {/* Replace `product.brand` */}
-              </div>
-              <h3 className="text-xl font-semibold mb-2">{node.title}</h3>
-              <p className="text-pink-600 font-bold mb-4">
-                ${node.variants.edges[0]?.node.price.amount || 'N/A'}{' '}
-                {node.variants.edges[0]?.node.price.currencyCode || ''}
+            {/* Product Info */}
+            <div className="p-4 space-y-2">
+              <p className="text-sm text-gray-600 font-medium">
+                {node.vendor || 'Featured Brand'}
               </p>
-              {/* Optional button or additional actions */}
+              <h3 className="text-sm font-bold text-gray-900 line-clamp-2 min-h-[40px]">
+                {node.title}
+              </h3>
+
+              {/* Shop Now Link */}
+              <div className="pt-2">
+                <button className="inline-flex items-center text-sm font-bold text-black hover:text-gray-700 transition-colors group">
+                  SHOP NOW
+                  <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">
+                    ›
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
         ))}
       </div>
+
       {/* Carousel Navigation Buttons */}
       <button
         onClick={() => scroll('left')}
-        className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white"
+        className="absolute left-0 top-[30%] -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-all duration-200"
       >
         <ChevronLeft className="h-6 w-6" />
       </button>
       <button
         onClick={() => scroll('right')}
-        className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white"
+        className="absolute right-0 top-[30%] -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-all duration-200"
       >
         <ChevronRight className="h-6 w-6" />
       </button>
+     
 
       {/* Main Content Grid */}
       <div className="px-4 pb-8">
@@ -572,11 +561,11 @@ export default function Homepage() {
             <div className="overflow-hidden px-4">
               <div
                 className="flex transition-transform duration-500 ease-in-out"
-                // style={{
-                //   transform: `translateX(-${
-                //     currentIndex * (100 / (window.innerWidth >= 768 ? 3 : 1))
-                //   }%)`,
-                // }}
+              // style={{
+              //   transform: `translateX(-${
+              //     currentIndex * (100 / (window.innerWidth >= 768 ? 3 : 1))
+              //   }%)`,
+              // }}
               >
                 {testimonials.map((testimonial) => (
                   <div
@@ -608,11 +597,10 @@ export default function Homepage() {
                 <button
                   key={index}
                   onClick={() => setCurrentIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    index === currentIndex
-                      ? 'bg-pink-500'
-                      : 'bg-gray-200 opacity-50'
-                  }`}
+                  className={`w-2 h-2 rounded-full transition-colors ${index === currentIndex
+                    ? 'bg-pink-500'
+                    : 'bg-gray-200 opacity-50'
+                    }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
               ))}
@@ -629,7 +617,7 @@ export default function Homepage() {
  *   collection: FeaturedCollectionFragment;
  * }}
  */
-function FeaturedCollection({collection}) {
+function FeaturedCollection({ collection }) {
   if (!collection) return null;
   const image = collection?.image;
   return (
@@ -652,7 +640,7 @@ function FeaturedCollection({collection}) {
  *   products: Promise<RecommendedProductsQuery | null>;
  * }}
  */
-function RecommendedProducts({products}) {
+function RecommendedProducts({ products }) {
   return (
     <div className="recommended-products">
       <h2>Recommended Products</h2>
@@ -662,22 +650,22 @@ function RecommendedProducts({products}) {
             <div className="recommended-products-grid">
               {response
                 ? response.products.nodes.map((product) => (
-                    <Link
-                      key={product.id}
-                      className="recommended-product"
-                      to={`/products/${product.handle}`}
-                    >
-                      <Image
-                        data={product.images.nodes[0]}
-                        aspectRatio="1/1"
-                        sizes="(min-width: 45em) 20vw, 50vw"
-                      />
-                      <h4>{product.title}</h4>
-                      <small>
-                        <Money data={product.priceRange.minVariantPrice} />
-                      </small>
-                    </Link>
-                  ))
+                  <Link
+                    key={product.id}
+                    className="recommended-product"
+                    to={`/products/${product.handle}`}
+                  >
+                    <Image
+                      data={product.images.nodes[0]}
+                      aspectRatio="1/1"
+                      sizes="(min-width: 45em) 20vw, 50vw"
+                    />
+                    <h4>{product.title}</h4>
+                    <small>
+                      <Money data={product.priceRange.minVariantPrice} />
+                    </small>
+                  </Link>
+                ))
                 : null}
             </div>
           )}
