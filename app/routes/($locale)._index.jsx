@@ -19,7 +19,7 @@ export const meta = () => {
  */
 export async function loader(args) {
   // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
+  const deferredData = await loadDeferredData(args);
 
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
@@ -36,7 +36,9 @@ async function loadCriticalData({context}) {
   const [{collections}] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
     // Add other queries here, so that they are loaded in parallel
+    context.storefront.query(PROMOTING_PRODUCTS_QUERY),
   ]);
+  console.table('collections:', collections.nodes);
 
   return {
     featuredCollection: collections.nodes[0],
@@ -49,26 +51,33 @@ async function loadCriticalData({context}) {
  * Make sure to not throw any errors here, as it will cause the page to 500.
  * @param {LoaderFunctionArgs}
  */
-function loadDeferredData({context}) {
-  const recommendedProducts = context.storefront
-    .query(RECOMMENDED_PRODUCTS_QUERY)
-    .catch((error) => {
-      // Log query errors, but don't throw them so the page can still render
-      console.error(error);
-      return null;
-    });
+async function loadDeferredData({context}) {
+  // const allProducts = await context.storefront
+  //   .query(ALL_PRODUCTS_QUERY)
+  //   .catch((error) => {
+  //     // Log query errors, but don't throw them so the page can still render
+  //     console.error(error);
+  //     return null;
+  //   });
+  try {
+    const promotingProducts = await context.storefront.query(
+      PROMOTING_PRODUCTS_QUERY,
+    );
+    // Log the resolved data for debugging
+    console.log('Resolved Data in Loader:', promotingProducts);
+    return {
+      promotingProducts: promotingProducts || null,
+    };
+  } catch (error) {
+    // Log query errors, but don't throw them so the page can still render
+    console.error(error);
+    return null;
+  }
 
-  const allProducts = context.storefront
-    .query(ALL_PRODUCTS_QUERY)
-    .catch((error) => {
-      // Log query errors, but don't throw them so the page can still render
-      console.error(error);
-      return null;
-    });
-
-  return {
-    allProducts,
-  };
+  // return {
+  //   allProducts,
+  //   promotingProducts,
+  // };
 }
 
 export default function Homepage() {
@@ -195,10 +204,15 @@ export default function Homepage() {
 
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
+
+  const promotingProducts = data.promotingProducts;
+
+  console.log(promotingProducts);
   return (
     <div className="home">
       {/* <FeaturedCollection collection={data.featuredCollection} />
       <RecommendedProducts products={data.recommendedProducts} /> */}
+
       <OldHeader />
       <div
         ref={carouselRef}
@@ -209,31 +223,53 @@ export default function Homepage() {
           WebkitOverflowScrolling: 'touch',
         }}
       >
-        {featuredProducts.map((product) => (
+        {/* <div>
+          <h1>Promoting Products</h1>
+          {promotingProducts.products.edges.map(({node}) => (
+            <div key={node.id} style={{marginBottom: '20px'}}>
+              <h2>{node.title}</h2>
+              {node.images.edges[0] ? (
+                <img
+                  src={node.images.edges[0].node.url} // Access the first image URL
+                  alt={node.title}
+                  style={{width: '150px', height: 'auto'}}
+                />
+              ) : (
+                <p>No image available</p>
+              )}
+            </div>
+          ))}
+        </div> */}
+        {promotingProducts.products.edges.map(({node}) => (
           <div
-            key={product.product_id}
+            key={node.id}
             className="flex-none w-80 bg-white rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300"
           >
             <div className="relative aspect-square">
-              <img
-                src={product.main_product_image || '/api/placeholder/400/400'}
-                alt={product.product_name}
-                className="w-full h-full object-cover"
-              />
+              {node.images.edges[0] ? (
+                <img
+                  src={node.images.edges[0].node.url} // Access the first image URL
+                  alt={node.title}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <img
+                  src="/api/placeholder/400/400" // Placeholder image if no product image is available
+                  alt="Placeholder"
+                  className="w-full h-full object-cover"
+                />
+              )}
             </div>
             <div className="p-6">
               <div className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-2">
-                {product.brand}
+                {node.vendor || 'Unknown Brand'} {/* Replace `product.brand` */}
               </div>
-              <h3 className="text-xl font-semibold mb-2">
-                {product.product_name}
-              </h3>
+              <h3 className="text-xl font-semibold mb-2">{node.title}</h3>
               <p className="text-pink-600 font-bold mb-4">
-                ${product.sale_price}
+                ${node.variants.edges[0]?.node.price.amount || 'N/A'}{' '}
+                {node.variants.edges[0]?.node.price.currencyCode || ''}
               </p>
-              {/* <button className="text-sm font-semibold hover:underline">
-                  SHOP NOW →
-                </button> */}
+              {/* Optional button or additional actions */}
             </div>
           </div>
         ))}
@@ -432,6 +468,158 @@ export default function Homepage() {
           </div>
         </div>
       </div>
+
+      {/* Top Picks Section */}
+      <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 mx-2 sm:mx-4 mb-8">
+        <div className="flex items-center gap-2 mb-4 sm:mb-6">
+          <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+          <h2 className="font-semibold text-base sm:text-lg">
+            Shop By Category
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          {/* Women's Category */}
+          <div
+            className="relative rounded-lg overflow-hidden group cursor-pointer"
+            onClick={() => navigate('/women')}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=500&auto=format"
+              alt="Women's Fragrances"
+              className="w-full h-48 sm:h-64 object-cover transform transition-transform duration-300 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent p-4 flex flex-col justify-end">
+              <div className="transform transition-transform duration-300 group-hover:translate-y-0 translate-y-2">
+                <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
+                  Women's Fragrances
+                </h3>
+                <p className="text-white/90 text-xs sm:text-sm mb-3">
+                  Discover elegant and refined scents
+                </p>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/women');
+                  }}
+                  className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
+                >
+                  Explore Collection
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Men's Category */}
+          <div
+            className="relative rounded-lg overflow-hidden group cursor-pointer"
+            onClick={() => navigate('/men')}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1600612253971-422e7f7faeb6?w=500&auto=format"
+              alt="Men's Fragrances"
+              className="w-full h-48 sm:h-64 object-cover transform transition-transform duration-300 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent p-4 flex flex-col justify-end">
+              <div className="transform transition-transform duration-300 group-hover:translate-y-0 translate-y-2">
+                <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
+                  Men's Fragrances
+                </h3>
+                <p className="text-white/90 text-xs sm:text-sm mb-3">
+                  Bold and sophisticated scents
+                </p>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/men');
+                  }}
+                  className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
+                >
+                  Explore Collection
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Customer Reviews */}
+      <div className="bg-pink-50 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h3 className="text-2xl font-semibold text-center mb-8">
+            What Our Customer Says
+          </h3>
+
+          <div className="relative">
+            {/* Navigation Buttons */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-full px-4 flex items-center justify-center"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft className="w-8 h-8 text-gray-400 hover:text-gray-600" />
+            </button>
+
+            <button
+              onClick={nextSlide}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-full px-4 flex items-center justify-center"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="w-8 h-8 text-gray-400 hover:text-gray-600" />
+            </button>
+
+            {/* Reviews Container */}
+            <div className="overflow-hidden px-4">
+              <div
+                className="flex transition-transform duration-500 ease-in-out"
+                // style={{
+                //   transform: `translateX(-${
+                //     currentIndex * (100 / (window.innerWidth >= 768 ? 3 : 1))
+                //   }%)`,
+                // }}
+              >
+                {testimonials.map((testimonial) => (
+                  <div
+                    key={testimonial.id}
+                    className="w-full md:w-1/3 flex-shrink-0 px-3"
+                  >
+                    <div className="bg-white rounded-xl p-6">
+                      <h4 className="text-xl font-semibold mb-2">
+                        {testimonial.title}
+                      </h4>
+                      <p className="text-gray-600 mb-4">"{testimonial.text}"</p>
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={testimonial.image}
+                          alt=""
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                        <span className="font-medium">{testimonial.name}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Dots Indicator */}
+            <div className="flex justify-center mt-6 gap-2">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    index === currentIndex
+                      ? 'bg-pink-500'
+                      : 'bg-gray-200 opacity-50'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -549,6 +737,41 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
     products(first: 4, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...RecommendedProduct
+      }
+    }
+  }
+`;
+
+const PROMOTING_PRODUCTS_QUERY = `#graphql
+  query PromotingProducts {
+    products(first: 10, query: "tag:Promoting") {
+      edges {
+        node {
+          id
+          title
+          tags
+          vendor
+          descriptionHtml
+          images(first: 1) {
+            edges {
+              node {
+                url
+              }
+            }
+          }
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                title
+                price {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
