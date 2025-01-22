@@ -40,9 +40,9 @@ function HeaderMenuMobileToggle() {
 function SearchToggle() {
   const {open} = useAside();
   return (
-    <button className="reset" onClick={() => open('search')}>
+    <Search className="reset" onClick={() => open('search')}>
       Search
-    </button>
+    </Search>
   );
 }
 
@@ -120,12 +120,12 @@ export default function OldHeader({
   return (
     <>
       {/* Announcement Bar */}
-      <div className="bg-pink-100 text-center py-2 px-4 text-sm">
-        <p className="text-gray-800">Use code SCENTLOVE for $100+ orders</p>
+      <div className="bg-gradient-to-r from-pink-100 to-blue-300 text-center py-4 text-base">
+        <p className="text-gray-800">Use code OMGBEAUTY for $100+ orders</p>
       </div>
 
       {/* Navigation */}
-      <nav className="border-b bg-white">
+      <nav className="bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             {/* Mobile Menu Button */}
@@ -149,10 +149,10 @@ export default function OldHeader({
 
             {/* Desktop Navigation Tabs */}
             <div className="hidden md:flex flex-1 justify-center space-x-8 px-8">
-              <Link to="/men" className="text-gray-800 hover:text-gray-600">
+              <Link to="/products/men" className="text-gray-800 hover:text-gray-600">
                 Men
               </Link>
-              <Link to="/women" className="text-gray-800 hover:text-gray-600">
+              <Link to="/products/women" className="text-gray-800 hover:text-gray-600">
                 Women
               </Link>
               {/* <Link to="/mini" className="text-gray-800 hover:text-gray-600">

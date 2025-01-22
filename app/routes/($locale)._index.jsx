@@ -212,8 +212,6 @@ export default function Homepage() {
     <div className="home">
       {/* <FeaturedCollection collection={data.featuredCollection} />
       <RecommendedProducts products={data.recommendedProducts} /> */}
-
-      <OldHeader />
       <div
         ref={carouselRef}
         className="flex overflow-x-auto snap-x snap-mandatory gap-4 hide-scrollbar scrollbar-hide"
@@ -513,7 +511,7 @@ export default function Homepage() {
           {/* Men's Category */}
           <div
             className="relative rounded-lg overflow-hidden group cursor-pointer"
-            onClick={() => navigate('/men')}
+            onClick={() => navigate('/products/men')}
           >
             <img
               src="https://images.unsplash.com/photo-1600612253971-422e7f7faeb6?w=500&auto=format"
