@@ -8,9 +8,11 @@ import {
   getAdjacentAndFirstAvailableVariants,
   useSelectedOptionInUrlParam,
 } from '@shopify/hydrogen';
+import React, {useState, useEffect} from 'react';
 import {ProductPrice} from '~/components/ProductPrice';
 import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
+import {Heart, Truck, Store} from 'lucide-react';
 
 /**
  * @type {MetaFunction<typeof loader>}
@@ -58,6 +60,8 @@ async function loadCriticalData({context, params, request}) {
     // Add other queries here, so that they are loaded in parallel
   ]);
 
+  console.log(product);
+
   if (!product?.id) {
     throw new Response(null, {status: 404});
   }
@@ -81,9 +85,12 @@ function loadDeferredData({context, params}) {
 }
 
 export default function Product() {
+  const [selectedImage, setSelectedImage] = useState(0);
+
   /** @type {LoaderReturnData} */
   const {product} = useLoaderData();
 
+  console.log(product);
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
@@ -102,7 +109,7 @@ export default function Product() {
 
   const {title, descriptionHtml} = product;
 
-  console.log(selectedVariant);
+  //console.log(productOptions);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -112,7 +119,7 @@ export default function Product() {
           <div className="flex gap-4">
             {/* Thumbnails */}
             <div className="hidden sm:flex flex-col gap-3 w-20">
-              {productImages.map((img, index) => (
+              {product.images.edges.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
@@ -123,8 +130,8 @@ export default function Product() {
                   }`}
                 >
                   <img
-                    src={img || '/api/placeholder/400/400'}
-                    alt={`${product.product_name} view ${index + 1}`}
+                    src={image.node.url || '/api/placeholder/400/400'}
+                    alt={`Product view ${index + 1}`}
                     className="w-full aspect-square object-cover"
                   />
                 </button>
@@ -132,7 +139,7 @@ export default function Product() {
             </div>
 
             {/* Main Image */}
-            <div className="flex-1">
+            {/* <div className="flex-1">
               <div className="relative aspect-square rounded-xl overflow-hidden">
                 <img
                   src={
@@ -142,7 +149,7 @@ export default function Product() {
                   className="w-full h-full object-cover"
                 />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -163,9 +170,9 @@ export default function Product() {
             <span className="text-lg text-gray-500 line-through">
               ${product.retail_price}
             </span>
-            <span className="text-sm font-medium text-red-600">
+            {/* <span className="text-sm font-medium text-red-600">
               {calculateDiscount()}% OFF
-            </span>
+            </span> */}
           </div>
 
           {/* Stock Status */}
@@ -201,7 +208,7 @@ export default function Product() {
             </div>
           </div>
 
-          {/* Add to Cart Section */}
+          {/* Add to Cart Section
           <div className="space-y-4">
             <div className="flex gap-3">
               <select
@@ -225,7 +232,7 @@ export default function Product() {
                 <Heart className="w-6 h-6" />
               </button>
             </div>
-          </div>
+          </div> */}
 
           {/* Product Details */}
           <div className="space-y-4 pt-6">
@@ -323,6 +330,14 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
 
 const PRODUCT_FRAGMENT = `#graphql
   fragment Product on Product {
+    images(first: 100) {
+      edges {
+        node {
+          url
+          altText
+        }
+      }
+    }
     id
     title
     vendor
