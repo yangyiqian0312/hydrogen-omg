@@ -102,45 +102,193 @@ export default function Product() {
 
   const {title, descriptionHtml} = product;
 
+  console.log(selectedVariant);
+
   return (
-    <div className="product">
-      <ProductImage image={selectedVariant?.image} />
-      <div className="product-main">
-        <h1>{title}</h1>
-        <ProductPrice
-          price={selectedVariant?.price}
-          compareAtPrice={selectedVariant?.compareAtPrice}
-        />
-        <br />
-        <ProductForm
-          productOptions={productOptions}
-          selectedVariant={selectedVariant}
-        />
-        <br />
-        <br />
-        <p>
-          <strong>Description</strong>
-        </p>
-        <br />
-        <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-        <br />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Product Images Section */}
+        <div className="lg:w-2/3">
+          <div className="flex gap-4">
+            {/* Thumbnails */}
+            <div className="hidden sm:flex flex-col gap-3 w-20">
+              {productImages.map((img, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedImage(index)}
+                  className={`rounded-lg overflow-hidden border-2 ${
+                    selectedImage === index
+                      ? 'border-black'
+                      : 'border-transparent'
+                  }`}
+                >
+                  <img
+                    src={img || '/api/placeholder/400/400'}
+                    alt={`${product.product_name} view ${index + 1}`}
+                    className="w-full aspect-square object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+
+            {/* Main Image */}
+            <div className="flex-1">
+              <div className="relative aspect-square rounded-xl overflow-hidden">
+                <img
+                  src={
+                    productImages[selectedImage] || '/api/placeholder/400/400'
+                  }
+                  alt={product.product_name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Product Info Section */}
+        <div className="lg:w-1/3 space-y-6">
+          {/* Brand and Name */}
+          <div>
+            <h2 className="text-sm text-gray-500">{product.brand}</h2>
+            <h1 className="text-2xl font-medium mt-1">
+              {product.product_name}
+            </h1>
+            <p className="text-sm text-gray-600 mt-1">{product.category}</p>
+          </div>
+
+          {/* Price */}
+          <div className="flex items-center gap-3">
+            <span className="text-2xl font-medium">${product.sale_price}</span>
+            <span className="text-lg text-gray-500 line-through">
+              ${product.retail_price}
+            </span>
+            <span className="text-sm font-medium text-red-600">
+              {calculateDiscount()}% OFF
+            </span>
+          </div>
+
+          {/* Stock Status */}
+          <div className="text-sm">
+            {product.stock_total > 0 ? (
+              <span className="text-green-600">
+                In Stock ({product.stock_total} available)
+              </span>
+            ) : (
+              <span className="text-red-600">Out of Stock</span>
+            )}
+          </div>
+
+          {/* Delivery Options */}
+          <div className="border rounded-lg p-4 space-y-4 bg-white">
+            <div className="flex items-center gap-3">
+              <Truck className="w-5 h-5" />
+              <div>
+                <p className="text-sm font-medium">Free Standard Delivery</p>
+                <p className="text-xs text-gray-500">
+                  Arrives within 3-5 business days
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Store className="w-5 h-5" />
+              <div>
+                <p className="text-sm font-medium">Store Pickup</p>
+                <p className="text-xs text-gray-500">
+                  Usually ready in 2 hours
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Add to Cart Section */}
+          <div className="space-y-4">
+            <div className="flex gap-3">
+              <select
+                value={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+                className="w-20 rounded-lg border border-gray-200 px-3 py-2"
+              >
+                {[...Array(Math.min(10, product.stock_total))].map((_, i) => (
+                  <option key={i + 1} value={i + 1}>
+                    {i + 1}
+                  </option>
+                ))}
+              </select>
+              <button
+                className="flex-1 bg-black text-white rounded-lg font-medium hover:bg-gray-800 py-2"
+                disabled={product.stock_total === 0}
+              >
+                Add to Cart
+              </button>
+              <button className="p-3 border border-gray-200 rounded-lg hover:border-gray-300">
+                <Heart className="w-6 h-6" />
+              </button>
+            </div>
+          </div>
+
+          {/* Product Details */}
+          <div className="space-y-4 pt-6">
+            <h3 className="font-medium">Product Details</h3>
+            <div className="space-y-2 text-sm text-gray-600">
+              <p>
+                <span className="font-medium">SKU:</span> {product.seller_sku}
+              </p>
+              <p>
+                <span className="font-medium">Warehouse:</span>{' '}
+                {product.warehouse}
+              </p>
+              <div className="mt-2">
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: product.product_description,
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Analytics.ProductView
-        data={{
-          products: [
-            {
-              id: product.id,
-              title: product.title,
-              price: selectedVariant?.price.amount || '0',
-              vendor: product.vendor,
-              variantId: selectedVariant?.id || '',
-              variantTitle: selectedVariant?.title || '',
-              quantity: 1,
-            },
-          ],
-        }}
-      />
     </div>
+
+    // <div className="product">
+    //   <ProductImage image={selectedVariant?.image} />
+    //   <div className="product-main">
+    //     <h1>{title}</h1>
+    //     <ProductPrice
+    //       price={selectedVariant?.price}
+    //       compareAtPrice={selectedVariant?.compareAtPrice}
+    //     />
+    //     <br />
+    //     <ProductForm
+    //       productOptions={productOptions}
+    //       selectedVariant={selectedVariant}
+    //     />
+    //     <br />
+    //     <br />
+    //     <p>
+    //       <strong>Description</strong>
+    //     </p>
+    //     <br />
+    //     <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
+    //     <br />
+    //   </div>
+    //   <Analytics.ProductView
+    //     data={{
+    //       products: [
+    //         {
+    //           id: product.id,
+    //           title: product.title,
+    //           price: selectedVariant?.price.amount || '0',
+    //           vendor: product.vendor,
+    //           variantId: selectedVariant?.id || '',
+    //           variantTitle: selectedVariant?.title || '',
+    //           quantity: 1,
+    //         },
+    //       ],
+    //     }}
+    //   />
+    // </div>
   );
 }
 
@@ -152,14 +300,6 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
       currencyCode
     }
     id
-    image {
-      __typename
-      id
-      url
-      altText
-      width
-      height
-    }
     price {
       amount
       currencyCode
