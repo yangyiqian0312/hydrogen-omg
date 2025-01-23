@@ -5,7 +5,7 @@ import {Image, Money} from '@shopify/hydrogen';
 import {useNavigate} from 'react-router-dom';
 import {useRef, useState, useEffect} from 'react';
 import {products} from '~/data/products';
-import {Heart, ChevronLeft, ChevronRight, Clock} from 'lucide-react';
+import {Heart, ChevronLeft, ChevronRight, Clock, Gift} from 'lucide-react';
 import OldHeader from '~/components/OldHeader';
 /**
  * @type {MetaFunction}
@@ -278,204 +278,300 @@ export default function Homepage() {
         <ChevronRight className="h-6 w-6" />
       </button>
 
-      {/* Main Content Grid */}
-      <div className="px-4 pb-8 sm:text-center">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Special Offers section */}
-
-          {/* // todo */}
-          <div
-            ref={carouselRef}
-            className="flex overflow-x-auto snap-x snap-mandatory gap-2 hide-scrollbar scrollbar-hide"
-            style={{
-              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
-              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
-              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
-            }}
-          ></div>
-
-          <div
-            ref={carouselRef}
-            className="flex overflow-x-auto snap-x snap-mandatory gap-2 hide-scrollbar scrollbar-hide"
-            style={{
-              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
-              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
-              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
-            }}
-          ></div>
-          <div className="lg:col-span-3">
-            <div className="bg-white rounded-lg shadow-sm h-full">
-              {' '}
-              {/* Added h-full */}
-              <div className="flex items-center mt-4 mb-2">
-                <span className="text-lg font-semibold align-middle">
-                  Special Offers
-                </span>
+      {/* Main Content Grid for phone screens */}
+      <div className="block sm:hidden">
+        <div className="flex items-center mt-4 mb-2 space-x-2">
+          <Gift className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span className="text-lg font-semibold align-middle">
+            Special Offers
+          </span>
+        </div>
+        <div
+          ref={carouselRef}
+          className="flex overflow-x-auto snap-x snap-mandatory gap-2 hide-scrollbar scrollbar-hide"
+          style={{
+            scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
+            msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
+            WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
+          }}
+        >
+          {/* TikTok Live Deal 卡片 */}
+          <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 m-2 bg-white hover:shadow-md transition-shadow duration-300">
+            <div className="rounded-xl p-6 text-center">
+              <h3 className="text-lg font-medium">
+                Exclusive <br />
+                Deals On <br />
+                TikTok LIVE
+              </h3>
+              <div className="relative w-32 h-32 mx-auto mb-4">
+                <div className="absolute inset-0 rounded-full "></div>
+                <div className="relative w-full h-full rounded-full overflow-hidden">
+                  <img
+                    src="./assets/logo.jpeg"
+                    alt="OMG Beauty Shop"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
-              <div className="space-y-6">
-                {/* TikTok Live Deal */}
-                <div className="bg-gradient-to-br from-pink-50 to-white rounded-xl p-6 text-center">
-                  <h3 className="text-lg font-medium mb-4">
-                    Exclusive Deal On TikTok LIVE
-                  </h3>
-                  <div className="relative w-32 h-32 mx-auto mb-4">
-                    {' '}
-                    {/* Increased size for logo */}
-                    <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
-                    <div className="relative w-full h-full rounded-full overflow-hidden">
-                      <img
-                        src="/logo.jpeg" // Path to your logo in public folder
-                        alt="OMG Beauty Shop"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+
+              {/* TODO: CHANGE TT LIVE REDIRECT */}
+              <button
+                onClick={() =>
+                  window.open(
+                    'https://www.tiktok.com/@omgbeautyshop/live...',
+                    '_blank',
+                    'noopener,noreferrer',
+                  )
+                }
+                className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-3xl text-sm font-medium w-full transition-colors duration-200"
+              >
+                Go To TikTok
+              </button>
+            </div>
+          </div>
+
+          {/* New Arrivals 卡片 */}
+          <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 m-2 bg-[#F7CAC9] hover:shadow-md transition-shadow duration-300">
+            <div className="rounded-xl p-6">
+              <h3 className="font-medium text-lg">New Arrivals</h3>
+              <div className="flex flex-col gap-4">
+                <div className="relative w-full h-48 rounded-lg overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&auto=format"
+                    alt="New arrival product"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
+                    20% OFF
                   </div>
-                  <a
-                    href="https://www.tiktok.com/@omgbeautyshop/live?enter_from_merge=general_search&enter_method=others_photo&search_id=20250116183935112EAE20D9596102F13D&search_keyword=omgbeautyshop&search_result_id=7166140096579650606&search_type=general"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg text-sm font-medium w-full transition-colors duration-200 inline-block"
-                  >
-                    Go To TikTok
-                  </a>
+                </div>
+                <button className="bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-3xl text-sm font-medium w-full transition-colors duration-200">
+                  Shop Now
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Sale Products 卡片 */}
+          <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 m-2 bg-white hover:shadow-md transition-shadow duration-300">
+            <div className="rounded-xl p-6 text-center">
+              <h3 className="text-lg font-medium">
+                Sale
+              </h3>
+              <div className="relative w-32 h-32 mx-auto mb-4">
+                <div className="absolute inset-0 rounded-full "></div>
+                <div className="relative w-full h-full rounded-full overflow-hidden">
+                  <img
+                    src="./assets/logo.jpeg"
+                    alt="OMG Beauty Shop"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* TODO: CHANGE TT LIVE REDIRECT */}
+              <button
+                onClick={() =>
+                  window.open(
+                    'https://www.tiktok.com/@omgbeautyshop/live...',
+                    '_blank',
+                    'noopener,noreferrer',
+                  )
+                }
+                className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-3xl text-sm font-medium w-full transition-colors duration-200"
+              >
+                Go To TikTok
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content Grid for larger screens */}
+      <div className="hidden sm:block mx-60">
+        <div className="px-4 pb-8 sm:text-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Special Offers section */}
+            <div className="lg:col-span-3">
+              <div className="bg-white rounded-lg shadow-sm h-full">
+                <div className="flex items-center mt-4 mb-2 space-x-2">
+                  <Gift className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span className="text-lg font-semibold align-middle">
+                    Special Offers
+                  </span>
                 </div>
 
-                {/* New Arrivals */}
-                <div className="bg-gradient-to-br from-pink-50 to-white rounded-xl p-6">
-                  <h3 className="font-medium text-lg mb-2">New Arrivals</h3>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Introducing our latest collection
-                  </p>
-                  <div className="flex flex-col gap-4">
-                    <div className="relative w-full h-48 rounded-lg overflow-hidden">
-                      <img
-                        src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&auto=format"
-                        alt="New arrival product"
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
-                        20% OFF
+                <div className="space-y-6">
+                  {/* TikTok Live Deal */}
+                  <div className="bg-gradient-to-br from-pink-50 to-white rounded-xl p-6 text-center">
+                    <h3 className="text-lg font-medium mb-4">
+                      Exclusive Deal On TikTok LIVE
+                    </h3>
+                    <div className="relative w-32 h-32 mx-auto mb-4">
+                      {' '}
+                      {/* Increased size for logo */}
+                      <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
+                      <div className="relative w-full h-full rounded-full overflow-hidden">
+                        <img
+                          src="/logo.jpeg" // Path to your logo in public folder
+                          alt="OMG Beauty Shop"
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                     </div>
-                    <button className="bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg text-sm font-medium w-full transition-colors duration-200">
-                      Shop Now
-                    </button>
+                    <a
+                      href="https://www.tiktok.com/@omgbeautyshop/live?enter_from_merge=general_search&enter_method=others_photo&search_id=20250116183935112EAE20D9596102F13D&search_keyword=omgbeautyshop&search_result_id=7166140096579650606&search_type=general"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg text-sm font-medium w-full transition-colors duration-200 inline-block"
+                    >
+                      Go To TikTok
+                    </a>
                   </div>
-                </div>
 
-                {/* Flash Sale */}
-                <div className="bg-gradient-to-br from-red-600 to-red-700 text-white rounded-xl p-6">
-                  <div className="text-center">
-                    <h3 className="font-medium text-xl mb-2">FLASH SALE</h3>
-                    <p className="text-sm text-white/90 mb-4">
-                      Limited time offer
+                  {/* New Arrivals */}
+                  <div className="bg-gradient-to-br from-pink-50 to-white rounded-xl p-6">
+                    <h3 className="font-medium text-lg mb-2">New Arrivals</h3>
+                    <p className="text-sm text-gray-600 mb-4">
+                      Introducing our latest collection
                     </p>
-                    <div className="flex justify-center gap-2">
-                      {/* Hours */}
-                      <div className="flex gap-2">
-                        {String(timeLeft.hours)
-                          .padStart(2, '0')
-                          .split('')
-                          .map((digit, idx) => (
-                            <div
-                              key={`hours-${idx}`}
-                              className="bg-white text-red-600 w-10 h-12 rounded-lg flex items-center justify-center text-xl font-bold"
-                            >
-                              {digit}
-                            </div>
-                          ))}
-                        <div className="flex items-center text-2xl px-1">:</div>
+                    <div className="flex flex-col gap-4">
+                      <div className="relative w-full h-48 rounded-lg overflow-hidden">
+                        <img
+                          src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&auto=format"
+                          alt="New arrival product"
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
+                          20% OFF
+                        </div>
                       </div>
+                      <button className="bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg text-sm font-medium w-full transition-colors duration-200">
+                        Shop Now
+                      </button>
+                    </div>
+                  </div>
 
-                      {/* Minutes */}
-                      <div className="flex gap-2">
-                        {String(timeLeft.minutes)
-                          .padStart(2, '0')
-                          .split('')
-                          .map((digit, idx) => (
-                            <div
-                              key={`minutes-${idx}`}
-                              className="bg-white text-red-600 w-10 h-12 rounded-lg flex items-center justify-center text-xl font-bold"
-                            >
-                              {digit}
-                            </div>
-                          ))}
-                        <div className="flex items-center text-2xl px-1">:</div>
-                      </div>
+                  {/* Flash Sale */}
+                  <div className="bg-gradient-to-br from-red-600 to-red-700 text-white rounded-xl p-6">
+                    <div className="text-center">
+                      <h3 className="font-medium text-xl mb-2">FLASH SALE</h3>
+                      <p className="text-sm text-white/90 mb-4">
+                        Limited time offer
+                      </p>
+                      <div className="flex justify-center gap-2">
+                        {/* Hours */}
+                        <div className="flex gap-2">
+                          {String(timeLeft.hours)
+                            .padStart(2, '0')
+                            .split('')
+                            .map((digit, idx) => (
+                              <div
+                                key={`hours-${idx}`}
+                                className="bg-white text-red-600 w-10 h-12 rounded-lg flex items-center justify-center text-xl font-bold"
+                              >
+                                {digit}
+                              </div>
+                            ))}
+                          <div className="flex items-center text-2xl px-1">
+                            :
+                          </div>
+                        </div>
 
-                      {/* Seconds */}
-                      <div className="flex gap-2">
-                        {String(timeLeft.seconds)
-                          .padStart(2, '0')
-                          .split('')
-                          .map((digit, idx) => (
-                            <div
-                              key={`seconds-${idx}`}
-                              className="bg-white text-red-600 w-10 h-12 rounded-lg flex items-center justify-center text-xl font-bold"
-                            >
-                              {digit}
-                            </div>
-                          ))}
+                        {/* Minutes */}
+                        <div className="flex gap-2">
+                          {String(timeLeft.minutes)
+                            .padStart(2, '0')
+                            .split('')
+                            .map((digit, idx) => (
+                              <div
+                                key={`minutes-${idx}`}
+                                className="bg-white text-red-600 w-10 h-12 rounded-lg flex items-center justify-center text-xl font-bold"
+                              >
+                                {digit}
+                              </div>
+                            ))}
+                          <div className="flex items-center text-2xl px-1">
+                            :
+                          </div>
+                        </div>
+
+                        {/* Seconds */}
+                        <div className="flex gap-2">
+                          {String(timeLeft.seconds)
+                            .padStart(2, '0')
+                            .split('')
+                            .map((digit, idx) => (
+                              <div
+                                key={`seconds-${idx}`}
+                                className="bg-white text-red-600 w-10 h-12 rounded-lg flex items-center justify-center text-xl font-bold"
+                              >
+                                {digit}
+                              </div>
+                            ))}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Main Content Area */}
-          <div className="lg:col-span-9">
-            {/* Trending Now Section */}
-            <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5" />
-                  <h2 className="font-semibold">Trending Now</h2>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                {trendingProducts.map((product) => (
-                  <div
-                    key={product.product_id}
-                    className="bg-white rounded-lg overflow-hidden group shadow-sm hover:shadow-md transition-all duration-300"
-                  >
-                    <div className="relative aspect-square">
-                      <img
-                        src={
-                          product.main_product_image ||
-                          '/api/placeholder/400/400'
-                        }
-                        alt={product.product_name}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute top-2 right-2 flex gap-2">
-                        <button className="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50">
-                          <Heart className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <div className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1">
-                        {product.brand}
-                      </div>
-                      <h3 className="font-medium mb-2 line-clamp-2">
-                        {product.product_name}
-                      </h3>
-                      <div className="flex items-center gap-2">
-                        <span className="text-pink-600 font-bold">
-                          ${product.sale_price}
-                        </span>
-                        {product.retail_price > product.sale_price && (
-                          <span className="text-sm text-gray-400 line-through">
-                            ${product.retail_price}
-                          </span>
-                        )}
-                      </div>
-                    </div>
+            {/* Main Content Area */}
+            <div className="lg:col-span-9">
+              {/* Trending Now Section */}
+              <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center mt-4 mb-2 space-x-2">
+                    <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="text-lg font-semibold align-middle">
+                      Trending Now
+                    </span>
                   </div>
-                ))}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                  {trendingProducts.map((product) => (
+                    <div
+                      key={product.product_id}
+                      className="bg-white rounded-lg overflow-hidden group shadow-sm hover:shadow-md transition-all duration-300"
+                    >
+                      <div className="relative aspect-square">
+                        <img
+                          src={
+                            product.main_product_image ||
+                            '/api/placeholder/400/400'
+                          }
+                          alt={product.product_name}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-2 right-2 flex gap-2">
+                          <button className="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50">
+                            <Heart className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <div className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1">
+                          {product.brand}
+                        </div>
+                        <h3 className="font-medium mb-2 line-clamp-2">
+                          {product.product_name}
+                        </h3>
+                        <div className="flex items-center gap-2">
+                          <span className="text-pink-600 font-bold">
+                            ${product.sale_price}
+                          </span>
+                          {product.retail_price > product.sale_price && (
+                            <span className="text-sm text-gray-400 line-through">
+                              ${product.retail_price}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -484,11 +580,11 @@ export default function Homepage() {
 
       {/* Top Picks Section */}
       <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 mx-2 sm:mx-4 mb-8">
-        <div className="flex items-center gap-2 mb-4 sm:mb-6">
+        <div className="flex items-center mt-4 mb-2 space-x-2">
           <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
-          <h2 className="font-semibold text-base sm:text-lg">
+          <span className="text-lg font-semibold align-middle">
             Shop By Category
-          </h2>
+          </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
