@@ -206,72 +206,64 @@ export default function Homepage() {
   const data = useLoaderData();
 
   const promotingProducts = data.promotingProducts;
+  const bgColors = [
+    'bg-[#C4C3E7]',
+    'bg-[#FFB6C1]',
+    'bg-[#FADADD]',
+    'bg-[#F7CAC9]',
+    'bg-[#EACACD]',
+  ]; // 展示图背景颜色
 
   //console.log(promotingProducts);
   return (
     <div className="home">
-      {/* <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} /> */}
       <div
         ref={carouselRef}
-        className="flex overflow-x-auto snap-x snap-mandatory gap-4 hide-scrollbar scrollbar-hide"
+        className="flex overflow-x-auto snap-x snap-mandatory gap-2 hide-scrollbar scrollbar-hide"
         style={{
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
-          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
+          msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
+          WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
         }}
       >
-        {/* <div>
-          <h1>Promoting Products</h1>
-          {promotingProducts.products.edges.map(({node}) => (
-            <div key={node.id} style={{marginBottom: '20px'}}>
-              <h2>{node.title}</h2>
-              {node.images.edges[0] ? (
-                <img
-                  src={node.images.edges[0].node.url} // Access the first image URL
-                  alt={node.title}
-                  style={{width: '150px', height: 'auto'}}
-                />
-              ) : (
-                <p>No image available</p>
-              )}
-            </div>
-          ))}
-        </div> */}
-        {promotingProducts.products.edges.map(({node}) => (
+        {promotingProducts.products.edges.map(({node}, index) => (
           <div
             key={node.id}
-            className="flex-none w-80 bg-white rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300"
+            className={`flex-none w-80 sm:w-60 md:w-72 lg:w-80 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${
+              bgColors[index % bgColors.length]
+            }`}
           >
+            {/* 图片容器，保持方形比例 */}
             <div className="relative aspect-square">
               {node.images.edges[0] ? (
                 <img
-                  src={node.images.edges[0].node.url} // Access the first image URL
+                  src={node.images.edges[0].node.url} // 商品图片 URL
                   alt={node.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover" // 确保图片填充整个容器
                 />
               ) : (
                 <img
-                  src="/api/placeholder/400/400" // Placeholder image if no product image is available
+                  src="/api/placeholder/400/400" // 占位图片
                   alt="Placeholder"
                   className="w-full h-full object-cover"
                 />
               )}
             </div>
             <div className="p-6">
-              <div className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-2">
+              <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
                 {node.vendor || 'Unknown Brand'} {/* Replace `product.brand` */}
               </div>
-              <h3 className="text-xl font-semibold mb-2">{node.title}</h3>
               <p className="text-pink-600 font-bold mb-4">
                 ${node.variants.edges[0]?.node.price.amount || 'N/A'}{' '}
                 {node.variants.edges[0]?.node.price.currencyCode || ''}
               </p>
               {/* Optional button or additional actions */}
+              <span className="font-bold">SHOP NOW ▸</span>
             </div>
           </div>
         ))}
       </div>
+
       {/* Carousel Navigation Buttons */}
       <button
         onClick={() => scroll('left')}
@@ -287,15 +279,15 @@ export default function Homepage() {
       </button>
 
       {/* Main Content Grid */}
-      <div className="px-4 pb-8">
+      <div className="px-4 pb-8 sm:text-center">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* ... Special Offers section ... */}
+          {/* Special Offers section */}
           <div className="lg:col-span-3">
             <div className="bg-white rounded-lg shadow-sm h-full">
               {' '}
               {/* Added h-full */}
               <div className="p-6 border-b border-gray-100">
-                <h2 className="text-lg font-semibold">Special Offers</h2>
+                <h2 className="text-lg xs:text-red-500 font-semibold">Special Offers</h2>
               </div>
               <div className="p-6 space-y-6">
                 {/* TikTok Live Deal */}

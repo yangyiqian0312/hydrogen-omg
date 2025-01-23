@@ -120,7 +120,7 @@ export default function OldHeader({
   return (
     <>
       {/* Announcement Bar */}
-      <div className="bg-gradient-to-r from-pink-100 to-blue-300 text-center py-4 text-base">
+      <div className="bg-gradient-to-r from-pink-200 to-blue-50 text-center py-4 text-base">
         <p className="text-gray-800">Use code OMGBEAUTY for $100+ orders</p>
       </div>
 

@@ -112,7 +112,7 @@ export default function Product() {
   //console.log(productOptions);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col">
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Product Images Section */}
         <div className="lg:w-2/3">
@@ -139,51 +139,50 @@ export default function Product() {
             </div>
 
             {/* Main Image */}
-            {/* <div className="flex-1">
+            <div className="flex-1">
               <div className="relative aspect-square rounded-xl overflow-hidden">
                 <img
                   src={
-                    productImages[selectedImage] || '/api/placeholder/400/400'
+                    product.images.edges[selectedImage].node.url ||
+                    '/api/placeholder/400/400'
                   }
                   alt={product.product_name}
                   className="w-full h-full object-cover"
                 />
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
 
         {/* Product Info Section */}
-        <div className="lg:w-1/3 space-y-6">
-          {/* Brand and Name */}
+        <div className="lg:w-1/3 space-y-4">
+          {/* Vendor and Name */}
           <div>
-            <h2 className="text-sm text-gray-500">{product.brand}</h2>
-            <h1 className="text-2xl font-medium mt-1">
-              {product.product_name}
-            </h1>
+            <h2 className="text-sm text-gray-500">{product.vendor}</h2>
+            <h1 className="text-2xl font-medium mt-1">{product.title}</h1>
             <p className="text-sm text-gray-600 mt-1">{product.category}</p>
-          </div>
-
-          {/* Price */}
-          <div className="flex items-center gap-3">
-            <span className="text-2xl font-medium">${product.sale_price}</span>
-            <span className="text-lg text-gray-500 line-through">
-              ${product.retail_price}
-            </span>
-            {/* <span className="text-sm font-medium text-red-600">
-              {calculateDiscount()}% OFF
-            </span> */}
           </div>
 
           {/* Stock Status */}
           <div className="text-sm">
-            {product.stock_total > 0 ? (
-              <span className="text-green-600">
-                In Stock ({product.stock_total} available)
-              </span>
+            {product.selectedOrFirstAvailableVariant.availableForSale ? (
+              <span className="text-green-600">In Stock</span>
             ) : (
               <span className="text-red-600">Out of Stock</span>
             )}
+          </div>
+
+          {/* Price */}
+          <div className="flex items-center gap-3">
+            <span className="text-2xl font-medium">
+              ${product.selectedOrFirstAvailableVariant.price.amount}
+            </span>
+            <span className="text-lg text-gray-500 line-through">
+              ${product.selectedOrFirstAvailableVariant.compareAtPrice.amount}
+            </span>
+            {/* <span className="text-sm font-medium text-red-600">
+              {calculateDiscount()}% OFF
+            </span> */}
           </div>
 
           {/* Delivery Options */}
@@ -208,51 +207,52 @@ export default function Product() {
             </div>
           </div>
 
-          {/* Add to Cart Section
+          {/* Add to Cart Section */}
           <div className="space-y-4">
             <div className="flex gap-3">
               <select
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
+                // value={quantity}
+                // onChange={(e) => setQuantity(Number(e.target.value))}
                 className="w-20 rounded-lg border border-gray-200 px-3 py-2"
               >
-                {[...Array(Math.min(10, product.stock_total))].map((_, i) => (
+                {/* {[...Array(Math.min(10, product.stock_total))].map((_, i) => (
                   <option key={i + 1} value={i + 1}>
                     {i + 1}
                   </option>
-                ))}
+                ))} */}
               </select>
               <button
                 className="flex-1 bg-black text-white rounded-lg font-medium hover:bg-gray-800 py-2"
                 disabled={product.stock_total === 0}
               >
-                Add to Cart
+                <ProductForm
+                  productOptions={productOptions}
+                  selectedVariant={selectedVariant}
+                />
               </button>
+
               <button className="p-3 border border-gray-200 rounded-lg hover:border-gray-300">
                 <Heart className="w-6 h-6" />
               </button>
             </div>
-          </div> */}
+          </div>
+        </div>
+      </div>
 
-          {/* Product Details */}
-          <div className="space-y-4 pt-6">
-            <h3 className="font-medium">Product Details</h3>
-            <div className="space-y-2 text-sm text-gray-600">
-              <p>
-                <span className="font-medium">SKU:</span> {product.seller_sku}
-              </p>
-              <p>
-                <span className="font-medium">Warehouse:</span>{' '}
-                {product.warehouse}
-              </p>
-              <div className="mt-2">
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: product.product_description,
-                  }}
-                />
-              </div>
-            </div>
+      {/* Product Details */}
+      <div className="space-y-4 pt-6">
+        <h3 className="font-medium">Product Details</h3>
+        <div className="space-y-2 text-sm text-gray-600">
+          <p>
+            <span className="font-medium">SKU:</span>{' '}
+            {product.selectedOrFirstAvailableVariant.sku}
+          </p>
+          <div className="mt-2">
+            <div
+              dangerouslySetInnerHTML={{
+                __html: product.descriptionHtml,
+              }}
+            />
           </div>
         </div>
       </div>
