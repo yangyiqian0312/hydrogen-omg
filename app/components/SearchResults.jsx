@@ -148,7 +148,9 @@ function SearchResultsProducts({term, products}) {
 }
 
 function SearchResultsEmpty() {
-  return <p>No results, try a different search.</p>;
+  return   <p className="text-lg text-gray-600 py-12 font-medium">
+  No results, try a different search.
+</p>
 }
 
 /** @typedef {RegularSearchReturn['result']['items']} SearchItems */

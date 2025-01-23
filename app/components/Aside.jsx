@@ -42,11 +42,11 @@ export function Aside({children, heading, type}) {
       className={`overlay ${expanded ? 'expanded' : ''}`}
       role="dialog"
     >
-      <button className="close-outside" onClick={close} />
+      <button className="text-3xl" onClick={close} />
       <aside>
         <header className="flex justify-between items-center">
           <h3 className="text-center text-2xl font-serif text-gray-800 w-full">{heading}</h3>
-          <button className="close reset" onClick={close} aria-label="Close">
+          <button className="text-3xl" onClick={close} aria-label="Close">
             &times;
           </button>
         </header>

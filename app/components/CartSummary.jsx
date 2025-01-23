@@ -12,10 +12,10 @@ export function CartSummary({cart, layout}) {
   return (
     <div
       aria-labelledby="cart-summary"
-      className={`${className} bg-pink-200 p-6 rounded-lg border-none`}
+      className={`${className} bg-pink-200 p-2 rounded-lg border-none`}
     >
       <dl className="cart-total space-y-3">
-        <dt className="text-lg font-medium text-gray-700">Total</dt>
+        <dt className="text-lg font-medium text-gray-500">Total</dt>
         <dd className="text-xl font-semibold text-gray-900">
           {cart.cost?.subtotalAmount?.amount ? (
             <Money data={cart.cost?.subtotalAmount} />
@@ -43,7 +43,7 @@ function CartCheckoutActions({checkoutUrl}) {
       <a
         href={checkoutUrl}
         target="_self"
-        className="inline-block bg-pink-200 text-white py-3 px-6 rounded-lg font-bold text-center hover:bg-blue-700 transition duration-300"
+        className="inline-block bg-pink-200 text-white py-2 px-6 rounded-lg font-bold text-center transition duration-300"
       >
         Continue to Checkout &rarr;
       </a>
