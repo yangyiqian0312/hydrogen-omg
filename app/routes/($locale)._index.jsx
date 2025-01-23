@@ -214,7 +214,7 @@ export default function Homepage() {
     'bg-[#FADADD]',
   ]; // 展示图背景颜色
 
-  //console.log(promotingProducts);
+  console.log(promotingProducts);
   return (
     <div className="home">
       <div
@@ -249,6 +249,7 @@ export default function Homepage() {
                 />
               )}
             </div>
+
             <div className="p-6">
               <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
                 {node.vendor || 'Unknown Brand'} {/* Replace `product.brand` */}
@@ -258,7 +259,14 @@ export default function Homepage() {
                 {node.variants.edges[0]?.node.price.currencyCode || ''}
               </p>
               {/* Optional button or additional actions */}
-              <span className="font-bold">SHOP NOW ▸</span>
+              {/* SHOP NOW 按钮 */}
+              <Link
+                key={node.id}
+                to={`/products/${node.handle}`}
+                className="font-bold text-blue-600 hover:underline"
+              >
+                SHOP NOW ▸
+              </Link>
             </div>
           </div>
         ))}
@@ -858,6 +866,7 @@ const PROMOTING_PRODUCTS_QUERY = `#graphql
         node {
           id
           title
+          handle
           tags
           vendor
           descriptionHtml

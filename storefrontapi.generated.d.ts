@@ -368,7 +368,7 @@ export type PromotingProductsQuery = {
     edges: Array<{
       node: Pick<
         StorefrontAPI.Product,
-        'id' | 'title' | 'tags' | 'vendor' | 'descriptionHtml'
+        'id' | 'title' | 'tags' | 'vendor' | 'descriptionHtml' | 'handle'
       > & {
         images: {edges: Array<{node: Pick<StorefrontAPI.Image, 'url'>}>};
         variants: {
@@ -1190,7 +1190,7 @@ interface GeneratedQueryTypes {
     return: RecommendedProductsQuery;
     variables: RecommendedProductsQueryVariables;
   };
-  '#graphql\n  query PromotingProducts {\n    products(first: 10, query: "tag:Promoting") {\n      edges {\n        node {\n          id\n          title\n          tags\n          vendor\n          descriptionHtml\n          images(first: 1) {\n            edges {\n              node {\n                url\n              }\n            }\n          }\n          variants(first: 10) {\n            edges {\n              node {\n                id\n                title\n                price {\n                  amount\n                  currencyCode\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query PromotingProducts {\n    products(first: 10, query: "tag:Promoting") {\n      edges {\n        node {\n          id\n          title\n     handle\n     tags\n          vendor\n          descriptionHtml\n          images(first: 1) {\n            edges {\n              node {\n                url\n              }\n            }\n          }\n          variants(first: 10) {\n            edges {\n              node {\n                id\n                title\n                price {\n                  amount\n                  currencyCode\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
     return: PromotingProductsQuery;
     variables: PromotingProductsQueryVariables;
   };
