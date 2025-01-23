@@ -368,7 +368,7 @@ export type PromotingProductsQuery = {
     edges: Array<{
       node: Pick<
         StorefrontAPI.Product,
-        'id' | 'title' | 'tags' | 'vendor' | 'descriptionHtml' | 'handle'
+        'id' | 'title' | 'handle' | 'tags' | 'vendor' | 'descriptionHtml'
       > & {
         images: {edges: Array<{node: Pick<StorefrontAPI.Image, 'url'>}>};
         variants: {
@@ -382,6 +382,31 @@ export type PromotingProductsQuery = {
     }>;
   };
 };
+
+export type TrendingProductsQueryVariables = StorefrontAPI.Exact<{
+  [key: string]: never;
+}>;
+
+export type TrendingProductsQuery = {
+  products: {
+    edges: Array<{
+      node: Pick<
+        StorefrontAPI.Product,
+        'id' | 'title' | 'handle' | 'tags' | 'vendor' | 'descriptionHtml'
+      > & {
+        images: {edges: Array<{node: Pick<StorefrontAPI.Image, 'url'>}>};
+        variants: {
+          edges: Array<{
+            node: Pick<StorefrontAPI.ProductVariant, 'id' | 'title'> & {
+              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+            };
+          }>;
+        };
+      };
+    }>;
+  };
+};
+
 
 export type ArticleQueryVariables = StorefrontAPI.Exact<{
   articleHandle: StorefrontAPI.Scalars['String']['input'];
@@ -1190,9 +1215,13 @@ interface GeneratedQueryTypes {
     return: RecommendedProductsQuery;
     variables: RecommendedProductsQueryVariables;
   };
-  '#graphql\n  query PromotingProducts {\n    products(first: 10, query: "tag:Promoting") {\n      edges {\n        node {\n          id\n          title\n     handle\n     tags\n          vendor\n          descriptionHtml\n          images(first: 1) {\n            edges {\n              node {\n                url\n              }\n            }\n          }\n          variants(first: 10) {\n            edges {\n              node {\n                id\n                title\n                price {\n                  amount\n                  currencyCode\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query PromotingProducts {\n    products(first: 10, query: "tag:Promoting") {\n      edges {\n        node {\n          id\n          title\n          handle\n          tags\n          vendor\n          descriptionHtml\n          images(first: 1) {\n            edges {\n              node {\n                url\n              }\n            }\n          }\n          variants(first: 10) {\n            edges {\n              node {\n                id\n                title\n                price {\n                  amount\n                  currencyCode\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
     return: PromotingProductsQuery;
     variables: PromotingProductsQueryVariables;
+  };
+  '#graphql\n  query TrendingProducts {\n    products(first: 10, query: "tag:Trending") {\n      edges {\n        node {\n          id\n          title\n          handle\n          tags\n          vendor\n          descriptionHtml\n          images(first: 1) {\n            edges {\n              node {\n                url\n              }\n            }\n          }\n          variants(first: 10) {\n            edges {\n              node {\n                id\n                title\n                price {\n                  amount\n                  currencyCode\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+    return: TrendingProductsQuery;
+    variables: TrendingProductsQueryVariables;
   };
   '#graphql\n  query Article(\n    $articleHandle: String!\n    $blogHandle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    blog(handle: $blogHandle) {\n      articleByHandle(handle: $articleHandle) {\n        title\n        contentHtml\n        publishedAt\n        author: authorV2 {\n          name\n        }\n        image {\n          id\n          altText\n          url\n          width\n          height\n        }\n        seo {\n          description\n          title\n        }\n      }\n    }\n  }\n': {
     return: ArticleQuery;

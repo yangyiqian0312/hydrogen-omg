@@ -37,6 +37,7 @@ async function loadCriticalData({context}) {
     context.storefront.query(FEATURED_COLLECTION_QUERY),
     // Add other queries here, so that they are loaded in parallel
     context.storefront.query(PROMOTING_PRODUCTS_QUERY),
+    context.storefront.query(TRENDING_PRODUCTS_QUERY),
   ]);
   console.table('collections:', collections.nodes);
 
@@ -63,10 +64,15 @@ async function loadDeferredData({context}) {
     const promotingProducts = await context.storefront.query(
       PROMOTING_PRODUCTS_QUERY,
     );
+    const trendingProducts = await context.storefront.query(
+      TRENDING_PRODUCTS_QUERY,
+    );
     // Log the resolved data for debugging
     console.log('Resolved Data in Loader:', promotingProducts);
+    console.log('Resolved Data in Loader:', trendingProducts);
     return {
       promotingProducts: promotingProducts || null,
+      trendingProducts: trendingProducts || null,
     };
   } catch (error) {
     // Log query errors, but don't throw them so the page can still render
@@ -84,7 +90,7 @@ export default function Homepage() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [trendingProducts, setTrendingProducts] = useState([]);
+
 
   const [timeLeft, setTimeLeft] = useState({
     hours: 12,
@@ -123,7 +129,7 @@ export default function Homepage() {
 
     // Get the first 6 products for trending
     const trending = products.slice(0, 6);
-    setTrendingProducts(trending);
+    // setTrendingProducts(trending);
   }, []); // Empty dependency array ensures this runs only once
 
   const nextSlide = () => {
@@ -206,6 +212,8 @@ export default function Homepage() {
   const data = useLoaderData();
 
   const promotingProducts = data.promotingProducts;
+  const trendingProducts = data.trendingProducts;
+
   const bgColors = [
     'bg-[#C4C3E7]',
     'bg-[#FFB6C1]',
@@ -214,7 +222,7 @@ export default function Homepage() {
     'bg-[#FADADD]',
   ]; // 展示图背景颜色
 
-  console.log(promotingProducts);
+  console.log(trendingProducts);
   return (
     <div className="home">
       <div
@@ -539,43 +547,44 @@ export default function Homepage() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                  {trendingProducts.map((product) => (
+                  {trendingProducts.products.edges.map(({node}, index) => (
                     <div
-                      key={product.product_id}
-                      className="bg-white rounded-lg overflow-hidden group shadow-sm hover:shadow-md transition-all duration-300"
+                      key={node.id}
+                      className={`flex-none w-80 sm:w-60 md:w-72 lg:w-80 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${
+                        bgColors[index % bgColors.length]
+                      }`}
                     >
+                      {/* 图片容器，保持方形比例 */}
                       <div className="relative aspect-square">
-                        <img
-                          src={
-                            product.main_product_image ||
-                            '/api/placeholder/400/400'
-                          }
-                          alt={product.product_name}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute top-2 right-2 flex gap-2">
-                          <button className="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50">
-                            <Heart className="w-4 h-4" />
-                          </button>
-                        </div>
+                        {node.images.edges[0] ? (
+                          <img
+                            src={node.images.edges[0].node.url} // 商品图片 URL
+                            alt={node.title}
+                            className="w-full h-full object-cover" // 确保图片填充整个容器
+                          />
+                        ) : (
+                          <img
+                            src="/api/placeholder/400/400" // 占位图片
+                            alt="Placeholder"
+                            className="w-full h-full object-cover"
+                          />
+                        )}
                       </div>
-                      <div className="p-4">
-                        <div className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1">
-                          {product.brand}
-                        </div>
-                        <h3 className="font-medium mb-2 line-clamp-2">
-                          {product.product_name}
-                        </h3>
-                        <div className="flex items-center gap-2">
-                          <span className="text-pink-600 font-bold">
-                            ${product.sale_price}
-                          </span>
-                          {product.retail_price > product.sale_price && (
-                            <span className="text-sm text-gray-400 line-through">
-                              ${product.retail_price}
-                            </span>
-                          )}
-                        </div>
+
+                      <div className="p-6">
+                        <p className="text-pink-600 font-bold mb-4">
+                          ${node.variants.edges[0]?.node.price.amount || 'N/A'}{' '}
+                          {node.variants.edges[0]?.node.price.currencyCode || ''}
+                        </p>
+                        {/* Optional button or additional actions */}
+                        {/* SHOP NOW 按钮 */}
+                        <Link
+                          key={node.id}
+                          to={`/products/${node.handle}`}
+                          className="font-bold text-blue-600 hover:underline"
+                        >
+                           {node.vendor || 'Unknown Brand'} {/* Replace `product.brand` */}
+                        </Link>
                       </div>
                     </div>
                   ))}
@@ -894,6 +903,43 @@ const PROMOTING_PRODUCTS_QUERY = `#graphql
     }
   }
 `;
+
+const TRENDING_PRODUCTS_QUERY = `#graphql
+  query TrendingProducts {
+    products(first: 10, query: "tag:Trending") {
+      edges {
+        node {
+          id
+          title
+          handle
+          tags
+          vendor
+          descriptionHtml
+          images(first: 1) {
+            edges {
+              node {
+                url
+              }
+            }
+          }
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                title
+                price {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 
 const ALL_PRODUCTS_QUERY = `
 query AllProduct {
