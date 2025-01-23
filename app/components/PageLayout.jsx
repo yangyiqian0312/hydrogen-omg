@@ -25,7 +25,7 @@ export function PageLayout({
     <Aside.Provider>
       <CartAside cart={cart} />
       <SearchAside />
-      <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} />
+      <MobileMenuAside header={header } publicStoreDomain={publicStoreDomain} />
       {/* TODO: add header here */}
       {/* {header && (
         <Header
@@ -35,7 +35,8 @@ export function PageLayout({
           publicStoreDomain={publicStoreDomain}
         />
       )} */}
-      <OldHeader />
+      <OldHeader header={header}
+          cart={cart}/>
       <main>{children}</main>
       <Footer
         footer={footer}
