@@ -1,6 +1,6 @@
 import {CartForm, Money} from '@shopify/hydrogen';
 import {useRef} from 'react';
-//TODO: Cart aside UI change
+//done TODO: Cart aside UI change
 
 /**
  * @param {CartSummaryProps}
@@ -10,10 +10,13 @@ export function CartSummary({cart, layout}) {
     layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
 
   return (
-    <div aria-labelledby="cart-summary" className={className}>
-      <dl className="cart-total">
-        <dt>Total</dt>
-        <dd>
+    <div
+      aria-labelledby="cart-summary"
+      className={`${className} bg-pink-200 p-6 rounded-lg border-none`}
+    >
+      <dl className="cart-total space-y-3">
+        <dt className="text-lg font-medium text-gray-700">Total</dt>
+        <dd className="text-xl font-semibold text-gray-900">
           {cart.cost?.subtotalAmount?.amount ? (
             <Money data={cart.cost?.subtotalAmount} />
           ) : (
@@ -21,8 +24,10 @@ export function CartSummary({cart, layout}) {
           )}
         </dd>
       </dl>
-      {/* <CartDiscounts discountCodes={cart.discountCodes} /> */}
-      <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
+
+      <div className="mt-4">
+        <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
+      </div>
     </div>
   );
 }
@@ -33,12 +38,15 @@ function CartCheckoutActions({checkoutUrl}) {
   if (!checkoutUrl) return null;
 
   return (
-    // Todo: 这里是checkoutbutton
-    <div>
-      <a href={checkoutUrl} target="_self">
-        <p>Continue to Checkout &rarr;</p>
+    //  done Todo: 这里是checkoutbutton  
+    <div className="mb-10">
+      <a
+        href={checkoutUrl}
+        target="_self"
+        className="inline-block bg-pink-200 text-white py-3 px-6 rounded-lg font-bold text-center hover:bg-blue-700 transition duration-300"
+      >
+        Continue to Checkout &rarr;
       </a>
-      <br />
     </div>
   );
 }

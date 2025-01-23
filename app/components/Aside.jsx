@@ -44,8 +44,8 @@ export function Aside({children, heading, type}) {
     >
       <button className="close-outside" onClick={close} />
       <aside>
-        <header>
-          <h3>{heading}</h3>
+        <header className="flex justify-between items-center">
+          <h3 className="text-center text-2xl font-serif text-gray-800 w-full">{heading}</h3>
           <button className="close reset" onClick={close} aria-label="Close">
             &times;
           </button>
@@ -53,6 +53,7 @@ export function Aside({children, heading, type}) {
         <main>{children}</main>
       </aside>
     </div>
+
   );
 }
 
