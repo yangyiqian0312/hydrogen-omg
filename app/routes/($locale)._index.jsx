@@ -209,9 +209,9 @@ export default function Homepage() {
   const bgColors = [
     'bg-[#C4C3E7]',
     'bg-[#FFB6C1]',
-    'bg-[#FADADD]',
+    'bg-[#FFF4E6]',
     'bg-[#F7CAC9]',
-    'bg-[#EACACD]',
+    'bg-[#FADADD]',
   ]; // 展示图背景颜色
 
   //console.log(promotingProducts);
@@ -282,14 +282,37 @@ export default function Homepage() {
       <div className="px-4 pb-8 sm:text-center">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Special Offers section */}
+
+          {/* // todo */}
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto snap-x snap-mandatory gap-2 hide-scrollbar scrollbar-hide"
+            style={{
+              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
+              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
+              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
+            }}
+          ></div>
+
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto snap-x snap-mandatory gap-2 hide-scrollbar scrollbar-hide"
+            style={{
+              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
+              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
+              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
+            }}
+          ></div>
           <div className="lg:col-span-3">
             <div className="bg-white rounded-lg shadow-sm h-full">
               {' '}
               {/* Added h-full */}
-              <div className="p-6 border-b border-gray-100">
-                <h2 className="text-lg xs:text-red-500 font-semibold">Special Offers</h2>
+              <div className="flex items-center mt-4 mb-2">
+                <span className="text-lg font-semibold align-middle">
+                  Special Offers
+                </span>
               </div>
-              <div className="p-6 space-y-6">
+              <div className="space-y-6">
                 {/* TikTok Live Deal */}
                 <div className="bg-gradient-to-br from-pink-50 to-white rounded-xl p-6 text-center">
                   <h3 className="text-lg font-medium mb-4">
