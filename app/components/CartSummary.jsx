@@ -33,6 +33,7 @@ function CartCheckoutActions({checkoutUrl}) {
   if (!checkoutUrl) return null;
 
   return (
+    // Todo: 这里是checkoutbutton
     <div>
       <a href={checkoutUrl} target="_self">
         <p>Continue to Checkout &rarr;</p>
