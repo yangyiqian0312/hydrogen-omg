@@ -222,11 +222,11 @@ export default function Homepage() {
   ]; // 展示图背景颜色
 
   const videoPaths = [
-    '/public/assets/video/1.mp4',
-    '/public/assets/video/2.mp4',
-    '/public/assets/video/3.mp4',
-    '/public/assets/video/4.mp4',
-    '/public/assets/video/5.mp4',
+    '/assets/video/1.mp4',
+    '/assets/video/2.mp4',
+    '/assets/video/3.mp4',
+    '/assets/video/4.mp4',
+    '/assets/video/5.mp4',
     // 添加更多视频路径
   ];
 
@@ -346,7 +346,7 @@ export default function Homepage() {
                 <div className="relative w-full h-full rounded-full overflow-hidden">
                   <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20 "></div>
                   <img
-                    src="/public/assets/logo/logo.png"
+                    src="/assets/logo/logo.png"
                     alt="OMG Beauty Shop"
                     className="w-full h-full object-cover"
                   />
