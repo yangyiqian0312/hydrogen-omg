@@ -564,41 +564,97 @@ export default function Homepage() {
             }}
           >
             {/* Women 卡片 */}
-            <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300">
-              <div className="relative aspect-square">
-                <img
-                  src={`/assets/presentation/1.png`} // 动态生成图片路径
-                  alt="Women's Fragrances"
-                  className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
+            <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative">
+              {/* 背景图片 */}
               <img
-                src="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=500&auto=format"
+                src="/assets/presentation/3.png"
                 alt="Women's Fragrances"
-                className="w-full h-48 sm:h-64 object-cover transform transition-transform duration-300 group-hover:scale-105"
+                className="w-full h-full object-cover"
               />
-              <div>
-                <div className="transform transition-transform duration-300 group-hover:translate-y-0 translate-y-2">
-                  <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
-                    Women's Fragrances
-                  </h3>
-                  <p className="text-white/90 text-xs sm:text-sm mb-3">
-                    Discover elegant and refined scents
-                  </p>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate('/women');
-                    }}
-                    className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
-                  >
-                    Explore Collection
-                  </button>
-                </div>
+
+              {/* 文字和按钮容器 */}
+              <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
+                <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
+                  Women's Fragrances
+                </h3>
+                <p className="text-white/90 text-xs sm:text-sm mb-3">
+                  Discover elegant and refined scents
+                </p>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/products/women');
+                  }}
+                  className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
+                >
+                  Explore Women
+                </button>
+              </div>
+            </div>
+
+            {/* Men 卡片 */}
+            <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative">
+              {/* 背景图片 */}
+              <img
+                src="/assets/presentation/1.png"
+                alt="Women's Fragrances"
+                className="w-full h-full object-cover"
+              />
+
+              {/* 文字和按钮容器 */}
+              <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
+                <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
+                  Men's Fragrances
+                </h3>
+                <p className="text-white/90 text-xs sm:text-sm mb-3">
+                  Discover elegant and refined scents
+                </p>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/products/women');
+                  }}
+                  className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
+                >
+                  Explore Men
+                </button>
+              </div>
+            </div>
+
+            {/* Sale 卡片 */}
+            <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative">
+              {/* 背景图片 */}
+              <img
+                src="/assets/presentation/6.png"
+                alt="Women's Fragrances"
+                className="w-full h-full object-cover"
+              />
+
+              {/* 文字和按钮容器 */}
+              <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
+                <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
+                  Sale
+                </h3>
+                <p className="text-white/90 text-xs sm:text-sm mb-3">
+                  Discover elegant and refined scents
+                </p>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/products/women');
+                  }}
+                  className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
+                >
+                  Explore Sale
+                </button>
               </div>
             </div>
           </div>
         </div>
+
+        <div class="border-t my-4 mx-2 border-gray-300"></div>
+
+
       </div>
 
       {/* Main Content Grid for larger screens */}
