@@ -221,6 +221,15 @@ export default function Homepage() {
     'bg-[#FADADD]',
   ]; // 展示图背景颜色
 
+  const videoPaths = [
+    '/public/assets/video/1.mp4',
+    '/public/assets/video/2.mp4',
+    '/public/assets/video/3.mp4',
+    '/public/assets/video/4.mp4',
+    '/public/assets/video/5.mp4',
+    // 添加更多视频路径
+  ];
+
   return (
     <div className="home">
       <div
@@ -332,10 +341,12 @@ export default function Homepage() {
                 TikTok LIVE
               </h3>
               <div className="relative w-32 h-32 mx-auto mb-4">
-                <div className="absolute inset-0 rounded-full "></div>
+                {/* <div className="absolute inset-0 rounded-full "></div> */}
+                {/* TODO:这个光圈好小 */}
                 <div className="relative w-full h-full rounded-full overflow-hidden">
+                  <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20 "></div>
                   <img
-                    src="./assets/logo.jpeg"
+                    src="/public/assets/logo/logo.png"
                     alt="OMG Beauty Shop"
                     className="w-full h-full object-cover"
                   />
@@ -657,11 +668,39 @@ export default function Homepage() {
 
         <div class="border-t my-4 mx-2 border-gray-300"></div>
 
-
+        {/* Video Section */}
+        <div>
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto snap-x snap-mandatory gap-2 hide-scrollbar scrollbar-hide"
+            style={{
+              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
+              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
+              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
+            }}
+          >
+            {videoPaths.map((video, index) => (
+              <div
+                key={index}
+                className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
+              >
+                {/* 背景视频 */}
+                <video
+                  src={video}
+                  className="w-full h-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                ></video>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Main Content Grid for larger screens */}
-      <div className="hidden sm:block mx-60">
+      <div className="hidden mx-20 sm:block md:mx-20 lg:mx-40 xl:mx-60 2xl:mx-80">
         <div className="px-4 pb-8 sm:text-center">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Special Offers section */}
