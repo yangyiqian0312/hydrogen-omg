@@ -91,7 +91,6 @@ export default function Homepage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [featuredProducts, setFeaturedProducts] = useState([]);
 
-
   const [timeLeft, setTimeLeft] = useState({
     hours: 12,
     minutes: 57,
@@ -222,7 +221,6 @@ export default function Homepage() {
     'bg-[#FADADD]',
   ]; // 展示图背景颜色
 
-  console.log(trendingProducts);
   return (
     <div className="home">
       <div
@@ -237,12 +235,21 @@ export default function Homepage() {
         {promotingProducts.products.edges.map(({node}, index) => (
           <div
             key={node.id}
-            className={`flex-none w-80 sm:w-60 md:w-72 lg:w-80 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${
+            className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${
               bgColors[index % bgColors.length]
             }`}
           >
-            {/* 图片容器，保持方形比例 */}
+            {/* 图片容器，动态加载图片 */}
             <div className="relative aspect-square">
+              <img
+                src={`/assets/presentation/${index + 1}.png`} // 动态生成图片路径
+                alt={node.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* 图片容器，保持方形比例 */}
+            {/* <div className="relative aspect-square">
               {node.images.edges[0] ? (
                 <img
                   src={node.images.edges[0].node.url} // 商品图片 URL
@@ -256,15 +263,17 @@ export default function Homepage() {
                   className="w-full h-full object-cover"
                 />
               )}
-            </div>
+            </div> */}
 
             <div className="p-6">
               <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
                 {node.vendor || 'Unknown Brand'} {/* Replace `product.brand` */}
               </div>
               <p className="text-pink-600 font-bold mb-4">
-                ${node.variants.edges[0]?.node.price.amount || 'N/A'}{' '}
-                {node.variants.edges[0]?.node.price.currencyCode || ''}
+                $
+                {Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(
+                  2,
+                )}
               </p>
               {/* Optional button or additional actions */}
               {/* SHOP NOW 按钮 */}
@@ -371,9 +380,7 @@ export default function Homepage() {
           {/* Sale Products 卡片 */}
           <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 m-2 bg-white hover:shadow-md transition-shadow duration-300">
             <div className="rounded-xl p-6 text-center">
-              <h3 className="text-lg font-medium">
-                Sale
-              </h3>
+              <h3 className="text-lg font-medium">Sale</h3>
               <div className="relative w-32 h-32 mx-auto mb-4">
                 <div className="absolute inset-0 rounded-full "></div>
                 <div className="relative w-full h-full rounded-full overflow-hidden">
@@ -398,6 +405,197 @@ export default function Homepage() {
               >
                 Go To TikTok
               </button>
+            </div>
+          </div>
+        </div>
+        {/* TODO: ADD SHOW MORE BUTTON */}
+        {/* Trending Now Section */}
+        <div>
+          <div className="flex items-center mt-4 mb-2 space-x-2">
+            <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-lg font-semibold align-middle">
+              Trending Now
+            </span>
+          </div>
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto snap-x snap-mandatory gap-2 p-4 hide-scrollbar scrollbar-hide"
+            style={{
+              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
+              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
+              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
+            }}
+          >
+            {' '}
+            {trendingProducts.products.edges.map(({node}, index) => (
+              <div
+                key={node.id}
+                className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+              >
+                {/* 图片容器，保持方形比例 */}
+                <div className="relative aspect-square">
+                  {node.images.edges[0] ? (
+                    <img
+                      src={node.images.edges[0].node.url} // 商品图片 URL
+                      alt={node.title}
+                      className="w-full h-full object-cover" // 确保图片填充整个容器
+                    />
+                  ) : (
+                    <img
+                      src="/api/placeholder/400/400" // 占位图片
+                      alt="Placeholder"
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+
+                <div className="m-2">
+                  {/* Optional button or additional actions */}
+                  {/* SHOP NOW 按钮 */}
+                  <Link
+                    key={node.id}
+                    to={`/products/${node.handle}`}
+                    className="font-semibold text-blue-600 hover:underline truncate"
+                  >
+                    {node.vendor || 'Unknown Brand'}{' '}
+                    <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
+                      {node.title
+                        ? node.title.replace(
+                            new RegExp(`^${node.vendor}\\s*`),
+                            '',
+                          )
+                        : 'N/A'}
+                    </p>
+                  </Link>
+                  <p className="font-bold mb-4">
+                    $
+                    {Number(
+                      node.variants.edges[0]?.node.price.amount || 0,
+                    ).toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* TODO: ADD SHOW MORE BUTTON */}
+        {/* New Arrivals Section */}
+        <div>
+          <div className="flex items-center mt-4 mb-2 space-x-2">
+            <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-lg font-semibold align-middle">
+              New Arrivals
+            </span>
+          </div>
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto snap-x snap-mandatory gap-2 p-4 hide-scrollbar scrollbar-hide"
+            style={{
+              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
+              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
+              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
+            }}
+          >
+            {' '}
+            {trendingProducts.products.edges.map(({node}, index) => (
+              <div
+                key={node.id}
+                className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+              >
+                {/* 图片容器，保持方形比例 */}
+                <div className="relative aspect-square">
+                  {node.images.edges[0] ? (
+                    <img
+                      src={node.images.edges[0].node.url} // 商品图片 URL
+                      alt={node.title}
+                      className="w-full h-full object-cover" // 确保图片填充整个容器
+                    />
+                  ) : (
+                    <img
+                      src="/api/placeholder/400/400" // 占位图片
+                      alt="Placeholder"
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+
+                <div className="m-2">
+                  {/* Optional button or additional actions */}
+                  {/* SHOP NOW 按钮 */}
+                  <Link
+                    key={node.id}
+                    to={`/products/${node.handle}`}
+                    className="font-semibold text-blue-600 hover:underline truncate"
+                  >
+                    {node.vendor || 'Unknown Brand'}{' '}
+                    <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
+                      {node.title
+                        ? node.title.replace(
+                            new RegExp(`^${node.vendor}\\s*`),
+                            '',
+                          )
+                        : 'N/A'}
+                    </p>
+                  </Link>
+                  <p className="font-bold mb-4">
+                    $
+                    {Number(
+                      node.variants.edges[0]?.node.price.amount || 0,
+                    ).toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="border-t my-4 mx-2 border-gray-300"></div>
+
+        {/* Shop By Category Section */}
+        <div>
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto snap-x snap-mandatory gap-2 hide-scrollbar scrollbar-hide"
+            style={{
+              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
+              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
+              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
+            }}
+          >
+            {/* Women 卡片 */}
+            <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300">
+              <div className="relative aspect-square">
+                <img
+                  src={`/assets/presentation/1.png`} // 动态生成图片路径
+                  alt="Women's Fragrances"
+                  className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+              <img
+                src="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=500&auto=format"
+                alt="Women's Fragrances"
+                className="w-full h-48 sm:h-64 object-cover transform transition-transform duration-300 group-hover:scale-105"
+              />
+              <div>
+                <div className="transform transition-transform duration-300 group-hover:translate-y-0 translate-y-2">
+                  <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
+                    Women's Fragrances
+                  </h3>
+                  <p className="text-white/90 text-xs sm:text-sm mb-3">
+                    Discover elegant and refined scents
+                  </p>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate('/women');
+                    }}
+                    className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
+                  >
+                    Explore Collection
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -571,10 +769,12 @@ export default function Homepage() {
                         )}
                       </div>
 
-                      <div className="p-6">
+                      <div>
                         <p className="text-pink-600 font-bold mb-4">
-                          ${node.variants.edges[0]?.node.price.amount || 'N/A'}{' '}
-                          {node.variants.edges[0]?.node.price.currencyCode || ''}
+                          $
+                          {Number(
+                            node.variants.edges[0]?.node.price.amount || 0,
+                          ).toFixed(2)}
                         </p>
                         {/* Optional button or additional actions */}
                         {/* SHOP NOW 按钮 */}
@@ -583,7 +783,8 @@ export default function Homepage() {
                           to={`/products/${node.handle}`}
                           className="font-bold text-blue-600 hover:underline"
                         >
-                           {node.vendor || 'Unknown Brand'} {/* Replace `product.brand` */}
+                          {node.vendor || 'Unknown Brand'}{' '}
+                          {/* Replace `product.brand` */}
                         </Link>
                       </div>
                     </div>
@@ -595,81 +796,7 @@ export default function Homepage() {
         </div>
       </div>
 
-      {/* Top Picks Section */}
-      <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 mx-2 sm:mx-4 mb-8">
-        <div className="flex items-center mt-4 mb-2 space-x-2">
-          <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
-          <span className="text-lg font-semibold align-middle">
-            Shop By Category
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-          {/* Women's Category */}
-          <div
-            className="relative rounded-lg overflow-hidden group cursor-pointer"
-            onClick={() => navigate('/women')}
-          >
-            <img
-              src="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=500&auto=format"
-              alt="Women's Fragrances"
-              className="w-full h-48 sm:h-64 object-cover transform transition-transform duration-300 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent p-4 flex flex-col justify-end">
-              <div className="transform transition-transform duration-300 group-hover:translate-y-0 translate-y-2">
-                <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
-                  Women's Fragrances
-                </h3>
-                <p className="text-white/90 text-xs sm:text-sm mb-3">
-                  Discover elegant and refined scents
-                </p>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate('/women');
-                  }}
-                  className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
-                >
-                  Explore Collection
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Men's Category */}
-          <div
-            className="relative rounded-lg overflow-hidden group cursor-pointer"
-            onClick={() => navigate('/products/men')}
-          >
-            <img
-              src="https://images.unsplash.com/photo-1600612253971-422e7f7faeb6?w=500&auto=format"
-              alt="Men's Fragrances"
-              className="w-full h-48 sm:h-64 object-cover transform transition-transform duration-300 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent p-4 flex flex-col justify-end">
-              <div className="transform transition-transform duration-300 group-hover:translate-y-0 translate-y-2">
-                <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
-                  Men's Fragrances
-                </h3>
-                <p className="text-white/90 text-xs sm:text-sm mb-3">
-                  Bold and sophisticated scents
-                </p>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate('/men');
-                  }}
-                  className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
-                >
-                  Explore Collection
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Customer Reviews */}
+      {/* Customer Reviews Section*/}
       <div className="bg-pink-50 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h3 className="text-2xl font-semibold text-center mb-8">
@@ -939,7 +1066,6 @@ const TRENDING_PRODUCTS_QUERY = `#graphql
     }
   }
 `;
-
 
 const ALL_PRODUCTS_QUERY = `
 query AllProduct {

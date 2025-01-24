@@ -407,7 +407,6 @@ export type TrendingProductsQuery = {
   };
 };
 
-
 export type ArticleQueryVariables = StorefrontAPI.Exact<{
   articleHandle: StorefrontAPI.Scalars['String']['input'];
   blogHandle: StorefrontAPI.Scalars['String']['input'];

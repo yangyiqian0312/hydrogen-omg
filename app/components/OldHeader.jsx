@@ -193,13 +193,13 @@ export default function OldHeader({
             <div className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 border-t">
                 <Link
-                  to="/men"
+                  to="/products/men"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
                 >
                   Men
                 </Link>
                 <Link
-                  to="/women"
+                  to="products/women"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
                 >
                   Women
