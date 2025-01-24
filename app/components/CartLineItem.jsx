@@ -1,8 +1,8 @@
-import {CartForm, Image} from '@shopify/hydrogen';
-import {useVariantUrl} from '~/lib/variants';
-import {Link} from '@remix-run/react';
-import {ProductPrice} from './ProductPrice';
-import {useAside} from './Aside';
+import { CartForm, Image } from '@shopify/hydrogen';
+import { useVariantUrl } from '~/lib/variants';
+import { Link } from '@remix-run/react';
+import { ProductPrice } from './ProductPrice';
+import { useAside } from './Aside';
 
 //TODO: Cart aside UI change
 
@@ -14,11 +14,11 @@ import {useAside} from './Aside';
  *   line: CartLine;
  * }}
  */
-export function CartLineItem({layout, line}) {
-  const {id, merchandise} = line;
-  const {product, title, image, selectedOptions} = merchandise;
+export function CartLineItem({ layout, line }) {
+  const { id, merchandise } = line;
+  const { product, title, image, selectedOptions } = merchandise;
   const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
-  const {close} = useAside();
+  const { close } = useAside();
 
   return (
     <li key={id} className="cart-line flex items-center space-x-4 p-4 border-b border-gray-200 hover:bg-gray-50 transition-all duration-200 ease-in-out">
@@ -45,8 +45,8 @@ export function CartLineItem({layout, line}) {
           }}
           className="text-lg font-semibold text-gray-800 hover:text-pink-600 transition-colors duration-200 ease-in-out"
         >
-          <p>
-            <strong>{product.title}</strong>
+          <p className=" tracking-wide leading-relaxed">
+            {product.title}
           </p>
         </Link>
         <CartLineQuantity line={line} />
@@ -61,15 +61,15 @@ export function CartLineItem({layout, line}) {
  * hasn't yet responded that it was successfully added to the cart.
  * @param {{line: CartLine}}
  */
-function CartLineQuantity({line}) {
+function CartLineQuantity({ line }) {
   if (!line || typeof line?.quantity === 'undefined') return null;
-  const {id: lineId, quantity, isOptimistic} = line;
+  const { id: lineId, quantity, isOptimistic } = line;
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
   const nextQuantity = Number((quantity + 1).toFixed(0));
 
   return (
     <div className="flex items-center space-x-2">
-      <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
+      <CartLineUpdateButton lines={[{ id: lineId, quantity: prevQuantity }]}>
         <button
           aria-label="Decrease quantity"
           disabled={quantity <= 1 || !!isOptimistic}
@@ -81,9 +81,11 @@ function CartLineQuantity({line}) {
         </button>
       </CartLineUpdateButton>
 
-      <span>{quantity}</span> {/* Quantity text */}
+      <span className="inline-flex items-center justify-center px-2.5 py-0.5 text-sm font-medium bg-gray-100 text-gray-700 rounded-full">
+    {quantity}
+  </span>
 
-      <CartLineUpdateButton lines={[{id: lineId, quantity: nextQuantity}]}>
+      <CartLineUpdateButton lines={[{ id: lineId, quantity: nextQuantity }]}>
         <button
           aria-label="Increase quantity"
           name="increase-quantity"
@@ -96,12 +98,12 @@ function CartLineQuantity({line}) {
       </CartLineUpdateButton>
 
       <ProductPrice price={line?.cost?.totalAmount} />
-      
+
       {/* Remove Item Button */}
-      <CartLineRemoveButton 
-        lineIds={[lineId]} 
-        disabled={!!isOptimistic} 
-        className="text-red-600 hover:text-red-800 transition-all duration-200"
+      <CartLineRemoveButton
+        lineIds={[lineId]}
+        disabled={!!isOptimistic}
+        className="text-pink-600  transition-all duration-200"
       />
     </div>
   );
@@ -116,17 +118,17 @@ function CartLineQuantity({line}) {
  *   disabled: boolean;
  * }}
  */
-function CartLineRemoveButton({lineIds, disabled}) {
+function CartLineRemoveButton({ lineIds, disabled }) {
   return (
     <CartForm
       route="/cart"
       action={CartForm.ACTIONS.LinesRemove}
-      inputs={{lineIds}}
+      inputs={{ lineIds }}
     >
       <button
         disabled={disabled}
         type="submit"
-        className=" bg-pink-200 text-black py-2 px-3 rounded-lg font-bold text-center hover:bg-blue-700 transition duration-300"
+        className=" bg-pink-200 text-black py-1.5 px-2 rounded-lg font-bold text-center transition duration-300"
       >
         Remove
       </button>
@@ -141,12 +143,12 @@ function CartLineRemoveButton({lineIds, disabled}) {
  *   lines: CartLineUpdateInput[];
  * }}
  */
-function CartLineUpdateButton({children, lines}) {
+function CartLineUpdateButton({ children, lines }) {
   return (
     <CartForm
       route="/cart"
       action={CartForm.ACTIONS.LinesUpdate}
-      inputs={{lines}}
+      inputs={{ lines }}
     >
       {children}
     </CartForm>

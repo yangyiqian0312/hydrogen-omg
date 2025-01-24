@@ -280,6 +280,9 @@ export default function Homepage() {
               <Link
                 key={node.id}
                 to={`/products/${node.handle}`}
+                onClick={(e) => {
+                  if (!node?.handle) e.preventDefault();
+                }}
                 className="font-bold text-blue-600 hover:underline"
               >
                 SHOP NOW ▸
