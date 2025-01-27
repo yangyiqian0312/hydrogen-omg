@@ -1,17 +1,17 @@
-import {defer} from '@shopify/remix-oxygen';
-import {Await, useLoaderData, Link} from '@remix-run/react';
-import {Suspense} from 'react';
-import {Image, Money} from '@shopify/hydrogen';
-import {useNavigate} from 'react-router-dom';
-import {useRef, useState, useEffect} from 'react';
-import {products} from '~/data/products';
-import {Heart, ChevronLeft, ChevronRight, Clock, Gift} from 'lucide-react';
+import { defer } from '@shopify/remix-oxygen';
+import { Await, useLoaderData, Link } from '@remix-run/react';
+import { Suspense } from 'react';
+import { Image, Money } from '@shopify/hydrogen';
+import { useNavigate } from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
+import { products } from '~/data/products';
+import { Heart, ChevronLeft, ChevronRight, Clock, Gift } from 'lucide-react';
 import OldHeader from '~/components/OldHeader';
 /**
  * @type {MetaFunction}
  */
 export const meta = () => {
-  return [{title: 'OMG BEAUTY'}];
+  return [{ title: 'OMG BEAUTY' }];
 };
 
 /**
@@ -24,7 +24,7 @@ export async function loader(args) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return defer({...deferredData, ...criticalData});
+  return defer({ ...deferredData, ...criticalData });
 }
 
 /**
@@ -32,8 +32,8 @@ export async function loader(args) {
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  * @param {LoaderFunctionArgs}
  */
-async function loadCriticalData({context}) {
-  const [{collections}] = await Promise.all([
+async function loadCriticalData({ context }) {
+  const [{ collections }] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
     // Add other queries here, so that they are loaded in parallel
     context.storefront.query(PROMOTING_PRODUCTS_QUERY),
@@ -52,7 +52,7 @@ async function loadCriticalData({context}) {
  * Make sure to not throw any errors here, as it will cause the page to 500.
  * @param {LoaderFunctionArgs}
  */
-async function loadDeferredData({context}) {
+async function loadDeferredData({ context }) {
   // const allProducts = await context.storefront
   //   .query(ALL_PRODUCTS_QUERY)
   //   .catch((error) => {
@@ -90,6 +90,8 @@ export default function Homepage() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
 
   const [timeLeft, setTimeLeft] = useState({
     hours: 12,
@@ -106,7 +108,7 @@ export default function Homepage() {
 
         if (totalSeconds <= 0) {
           clearInterval(timer);
-          return {hours: 0, minutes: 0, seconds: 0};
+          return { hours: 0, minutes: 0, seconds: 0 };
         }
 
         return {
@@ -164,54 +166,114 @@ export default function Homepage() {
     }
   };
 
-  const testimonials = [
-    {
-      id: 1,
-      name: 'Sarah Johnson',
-      text: 'I absolutely love the selection of fragrances! The staff was incredibly helpful in finding the perfect scent for me.',
-      title: 'Good service and quality',
-      image:
-        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&auto=format',
-    },
-    {
-      id: 2,
-      name: 'Michael Lee',
-      text: 'The quality of the perfumes is unmatched. I always get compliments whenever I wear them!',
-      title: 'Super fast shipping',
-      image:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format',
-    },
-    {
-      id: 3,
-      name: 'Emily Davis',
-      text: 'I found my signature scent here! The experience was fantastic and I will definitely be back.',
-      title: 'A perfect Christmas gift',
-      image:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format',
-    },
-    {
-      id: 4,
-      name: 'Sarah Johnson',
-      text: 'I absolutely love the selection of fragrances! The staff was incredibly helpful in finding the perfect scent for me.',
-      title: 'Good service and quality',
-      image:
-        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&auto=format',
-    },
-    {
-      id: 5,
-      name: 'Michael Lee',
-      text: 'The quality of the perfumes is unmatched. I always get compliments whenever I wear them!',
-      title: 'Super fast shipping',
-      image:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format',
-    },
-  ];
+  // const testimonials = [
+  //   {
+  //     id: 1,
+  //     name: 'Sarah Johnson',
+  //     text: 'I absolutely love the selection of fragrances! The staff was incredibly helpful in finding the perfect scent for me.',
+  //     title: 'Good service and quality',
+  //     image:
+  //       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&auto=format',
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Michael Lee',
+  //     text: 'The quality of the perfumes is unmatched. I always get compliments whenever I wear them!',
+  //     title: 'Super fast shipping',
+  //     image:
+  //       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format',
+  //   },
+  //   {
+  //     id: 3,
+  //     name: 'Emily Davis',
+  //     text: 'I found my signature scent here! The experience was fantastic and I will definitely be back.',
+  //     title: 'A perfect Christmas gift',
+  //     image:
+  //       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format',
+  //   },
+  //   {
+  //     id: 4,
+  //     name: 'Sarah Johnson',
+  //     text: 'I absolutely love the selection of fragrances! The staff was incredibly helpful in finding the perfect scent for me.',
+  //     title: 'Good service and quality',
+  //     image:
+  //       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&auto=format',
+  //   },
+  //   {
+  //     id: 5,
+  //     name: 'Michael Lee',
+  //     text: 'The quality of the perfumes is unmatched. I always get compliments whenever I wear them!',
+  //     title: 'Super fast shipping',
+  //     image:
+  //       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format',
+  //   },
+  // ];
 
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
 
   const promotingProducts = data.promotingProducts;
   const trendingProducts = data.trendingProducts;
+
+
+  const testimonials = [
+    {
+      id: 1,
+      name: "@ᴊ*****︎",
+      title: "Repeat purchase, Smell good",
+      text: "This Smells Amazing second time ordering this",
+    },
+    {
+      id: 2,
+      name: "@H***l ***",
+      title: "Fast delivery",
+      text: "Well I was impressed how fast it came. This is my first time buying this one I have to say it smelled so good it was light. The size was bigger than I thought. I would recommend if you're looking for something not so strong.",
+    },
+    {
+      id: 3,
+      name: "@l***a",
+      title: "Love scent",
+      text: "In love with the scent! 💞🫶 Worth it.",
+    },
+    {
+      id: 4,
+      name: "@j*****6",
+      title: "Good gift",
+      text: "I actually meant to order the touch cologne for men, but I ordered wrong, but this ladies perfume is nice it's going to make a great gift to someone, that's why I didn't send it back, it will make a nice gift",
+    },
+    {
+      id: 5,
+      name: "@t*******7",
+      title: "Smell good",
+      text: "Smells so good got a lot of compliments",
+    }
+  ];
+
+
+  const handleTouchStart = (e) => {
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
 
   const bgColors = [
     'bg-[#C4C3E7]',
@@ -241,12 +303,11 @@ export default function Homepage() {
           WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
         }}
       >
-        {promotingProducts.products.edges.map(({node}, index) => (
+        {promotingProducts.products.edges.map(({ node }, index) => (
           <div
             key={node.id}
-            className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${
-              bgColors[index % bgColors.length]
-            }`}
+            className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]
+              }`}
           >
             {/* 图片容器，动态加载图片 */}
             <div className="relative aspect-square">
@@ -441,7 +502,7 @@ export default function Homepage() {
             }}
           >
             {' '}
-            {trendingProducts.products.edges.map(({node}, index) => (
+            {trendingProducts.products.edges.map(({ node }, index) => (
               <div
                 key={node.id}
                 className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
@@ -475,9 +536,9 @@ export default function Homepage() {
                     <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
                       {node.title
                         ? node.title.replace(
-                            new RegExp(`^${node.vendor}\\s*`),
-                            '',
-                          )
+                          new RegExp(`^${node.vendor}\\s*`),
+                          '',
+                        )
                         : 'N/A'}
                     </p>
                   </Link>
@@ -512,7 +573,7 @@ export default function Homepage() {
             }}
           >
             {' '}
-            {trendingProducts.products.edges.map(({node}, index) => (
+            {trendingProducts.products.edges.map(({ node }, index) => (
               <div
                 key={node.id}
                 className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
@@ -546,9 +607,9 @@ export default function Homepage() {
                     <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
                       {node.title
                         ? node.title.replace(
-                            new RegExp(`^${node.vendor}\\s*`),
-                            '',
-                          )
+                          new RegExp(`^${node.vendor}\\s*`),
+                          '',
+                        )
                         : 'N/A'}
                     </p>
                   </Link>
@@ -843,12 +904,11 @@ export default function Homepage() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                  {trendingProducts.products.edges.map(({node}, index) => (
+                  {trendingProducts.products.edges.map(({ node }, index) => (
                     <div
                       key={node.id}
-                      className={`flex-none w-80 sm:w-60 md:w-72 lg:w-80 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${
-                        bgColors[index % bgColors.length]
-                      }`}
+                      className={`flex-none w-80 sm:w-60 md:w-72 lg:w-80 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]
+                        }`}
                     >
                       {/* 图片容器，保持方形比例 */}
                       <div className="relative aspect-square">
@@ -894,79 +954,40 @@ export default function Homepage() {
         </div>
       </div>
 
-      {/* Customer Reviews Section*/}
-      <div className="bg-pink-50 py-12">
+      <div class="border-t my-4 mx-2 border-gray-300"></div>
+
+      {/* Customer Reviews */}
+      <div className="bg-pink-50 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h3 className="text-2xl font-semibold text-center mb-8">
             What Our Customer Says
           </h3>
 
-          <div className="relative">
-            {/* Navigation Buttons */}
-            <button
-              onClick={prevSlide}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-full px-4 flex items-center justify-center"
-              aria-label="Previous slide"
-            >
-              <ChevronLeft className="w-8 h-8 text-gray-400 hover:text-gray-600" />
-            </button>
-
-            <button
-              onClick={nextSlide}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-full px-4 flex items-center justify-center"
-              aria-label="Next slide"
-            >
-              <ChevronRight className="w-8 h-8 text-gray-400 hover:text-gray-600" />
-            </button>
-
-            {/* Reviews Container */}
-            <div className="overflow-hidden px-4">
+          <div className="w-full max-w-sm mx-auto px-4 h-50">
+            <div className="relative">
               <div
-                className="flex transition-transform duration-500 ease-in-out"
-                // style={{
-                //   transform: `translateX(-${
-                //     currentIndex * (100 / (window.innerWidth >= 768 ? 3 : 1))
-                //   }%)`,
-                // }}
+                className="overflow-hidden bg-white rounded-lg shadow-lg p-4 h-44 flex flex-col justify-between"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
               >
-                {testimonials.map((testimonial) => (
+                <div className="space-y-4">
+                  <div className="text-gray-600 text-xs">{testimonials[currentIndex].name}</div>
+                  <h3 className="text-sm font-semibold text-gray-900">{testimonials[currentIndex].title}</h3>
+                  <p className="text-xs text-gray-700">{testimonials[currentIndex].text}</p>
+                </div>
+              </div>
+
+
+              <div className="flex justify-center mt-4 space-x-2">
+                {testimonials.map((_, index) => (
                   <div
-                    key={testimonial.id}
-                    className="w-full md:w-1/3 flex-shrink-0 px-3"
-                  >
-                    <div className="bg-white rounded-xl p-6">
-                      <h4 className="text-xl font-semibold mb-2">
-                        {testimonial.title}
-                      </h4>
-                      <p className="text-gray-600 mb-4">"{testimonial.text}"</p>
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={testimonial.image}
-                          alt=""
-                          className="w-10 h-10 rounded-full object-cover"
-                        />
-                        <span className="font-medium">{testimonial.name}</span>
-                      </div>
-                    </div>
-                  </div>
+                    key={index}
+                    className={`h-2 w-2 rounded-full ${index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
+                      }`}
+                  />
                 ))}
               </div>
-            </div>
-
-            {/* Dots Indicator */}
-            <div className="flex justify-center mt-6 gap-2">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    index === currentIndex
-                      ? 'bg-pink-500'
-                      : 'bg-gray-200 opacity-50'
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
             </div>
           </div>
         </div>
@@ -980,7 +1001,7 @@ export default function Homepage() {
  *   collection: FeaturedCollectionFragment;
  * }}
  */
-function FeaturedCollection({collection}) {
+function FeaturedCollection({ collection }) {
   if (!collection) return null;
   const image = collection?.image;
   return (
@@ -1003,7 +1024,7 @@ function FeaturedCollection({collection}) {
  *   products: Promise<RecommendedProductsQuery | null>;
  * }}
  */
-function RecommendedProducts({products}) {
+function RecommendedProducts({ products }) {
   return (
     <div className="recommended-products">
       <h2>Recommended Products</h2>
@@ -1013,22 +1034,22 @@ function RecommendedProducts({products}) {
             <div className="recommended-products-grid">
               {response
                 ? response.products.nodes.map((product) => (
-                    <Link
-                      key={product.id}
-                      className="recommended-product"
-                      to={`/products/${product.handle}`}
-                    >
-                      <Image
-                        data={product.images.nodes[0]}
-                        aspectRatio="1/1"
-                        sizes="(min-width: 45em) 20vw, 50vw"
-                      />
-                      <h4>{product.title}</h4>
-                      <small>
-                        <Money data={product.priceRange.minVariantPrice} />
-                      </small>
-                    </Link>
-                  ))
+                  <Link
+                    key={product.id}
+                    className="recommended-product"
+                    to={`/products/${product.handle}`}
+                  >
+                    <Image
+                      data={product.images.nodes[0]}
+                      aspectRatio="1/1"
+                      sizes="(min-width: 45em) 20vw, 50vw"
+                    />
+                    <h4>{product.title}</h4>
+                    <small>
+                      <Money data={product.priceRange.minVariantPrice} />
+                    </small>
+                  </Link>
+                ))
                 : null}
             </div>
           )}
