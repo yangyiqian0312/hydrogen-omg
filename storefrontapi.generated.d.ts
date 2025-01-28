@@ -949,6 +949,30 @@ export type ProductQuery = {
   >;
 };
 
+export type MenProductsQueryVariables = StorefrontAPI.Exact<{
+  [key: string]: never;
+}>;
+
+export type MenProductsQuery = {
+  products: {
+    edges: Array<{
+      node: Pick<
+        StorefrontAPI.Product,
+        'id' | 'title' | 'handle' | 'tags' | 'vendor' | 'descriptionHtml'
+      > & {
+        images: {edges: Array<{node: Pick<StorefrontAPI.Image, 'url'>}>};
+        variants: {
+          edges: Array<{
+            node: Pick<StorefrontAPI.ProductVariant, 'id' | 'title'> & {
+              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+            };
+          }>;
+        };
+      };
+    }>;
+  };
+};
+
 export type WomenQueryVariables = StorefrontAPI.Exact<{[key: string]: never}>;
 
 export type WomenQuery = {
@@ -1261,6 +1285,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  query Product(\n    $country: CountryCode\n    $handle: String!\n    $language: LanguageCode\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...Product\n    }\n  }\n  #graphql\n  fragment Product on Product {\n    images(first: 100) {\n      edges {\n        node {\n          url\n          altText\n        }\n      }\n    }\n    id\n    title\n    vendor\n    handle\n    descriptionHtml\n    description\n    encodedVariantExistence\n    encodedVariantAvailability\n    options {\n      name\n      optionValues {\n        name\n        firstSelectableVariant {\n          ...ProductVariant\n        }\n        swatch {\n          color\n          image {\n            previewImage {\n              url\n            }\n          }\n        }\n      }\n    }\n    selectedOrFirstAvailableVariant(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {\n      ...ProductVariant\n    }\n    adjacentVariants (selectedOptions: $selectedOptions) {\n      ...ProductVariant\n    }\n    seo {\n      description\n      title\n    }\n  }\n  #graphql\n  fragment ProductVariant on ProductVariant {\n    availableForSale\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    id\n    price {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n    selectedOptions {\n      name\n      value\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n  }\n\n\n': {
     return: ProductQuery;
     variables: ProductQueryVariables;
+  };
+  '#graphql\n  query MenProducts {\n    products(first: 10, query: "tag:men") {\n      edges {\n        node {\n          id\n          title\n          handle\n          tags\n          vendor\n          descriptionHtml\n          images(first: 1) {\n            edges {\n              node {\n                url\n              }\n            }\n          }\n          variants(first: 10) {\n            edges {\n              node {\n                id\n                title\n                price {\n                  amount\n                  currencyCode\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+    return: MenProductsQuery;
+    variables: MenProductsQueryVariables;
   };
   '#graphql\n  query Women {\n  products(first: 100, query: "tag:Women") {\n    edges {\n      node {\n        id\n        title\n        tags\n        vendor\n        descriptionHtml\n        images(first: 10) {\n          edges {\n            node {\n              url\n            }\n          }\n        }\n        variants(first: 10) {\n          edges {\n            node {\n              id\n              title\n              price {\n                  amount\n                  currencyCode\n                }\n              availableForSale\n            }\n          }\n        }\n      }\n    }\n  }\n}\n': {
     return: WomenQuery;

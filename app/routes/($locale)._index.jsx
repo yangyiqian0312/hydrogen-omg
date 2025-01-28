@@ -453,7 +453,7 @@ export default function Homepage() {
           </div>
 
           {/* Sale Products 卡片 */}
-          <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 m-2 bg-white hover:shadow-md transition-shadow duration-300">
+          {/* <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 m-2 bg-white hover:shadow-md transition-shadow duration-300">
             <div className="rounded-xl p-6 text-center">
               <h3 className="text-lg font-medium">Sale</h3>
               <div className="relative w-32 h-32 mx-auto mb-4">
@@ -467,7 +467,7 @@ export default function Homepage() {
                 </div>
               </div>
 
-              {/* TODO: CHANGE TT LIVE REDIRECT */}
+              TODO: CHANGE TT LIVE REDIRECT
               <button
                 onClick={() =>
                   window.open(
@@ -481,7 +481,7 @@ export default function Homepage() {
                 Go To TikTok
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
         {/* TODO: ADD SHOW MORE BUTTON */}
         {/* Trending Now Section */}
@@ -697,16 +697,16 @@ export default function Homepage() {
             </div>
 
             {/* Sale 卡片 */}
-            <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative">
+            {/* <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"> */}
               {/* 背景图片 */}
-              <img
+              {/* <img
                 src="/assets/presentation/6.png"
                 alt="Women's Fragrances"
                 className="w-full h-full object-cover"
-              />
+              /> */}
 
               {/* 文字和按钮容器 */}
-              <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
+              {/* <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
                 <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
                   Sale
                 </h3>
@@ -722,8 +722,8 @@ export default function Homepage() {
                 >
                   Explore Sale
                 </button>
-              </div>
-            </div>
+              </div> */}
+            {/* </div> */}
           </div>
         </div>
 

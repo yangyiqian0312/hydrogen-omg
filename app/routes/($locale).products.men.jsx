@@ -1,101 +1,443 @@
+import { defer } from '@shopify/remix-oxygen';
 import React from 'react';
-import {Heart} from 'lucide-react';
-import {Link} from 'react-router-dom';
-import {products} from '~/data/products';
+import { Heart, Filter, ChevronDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
+import { products } from '~/data/products';
+import { useLoaderData } from '@remix-run/react';
+import { AddToCartButton } from '~/components/AddToCartButton';
 
-const Men = () => {
-  const menProducts = products.filter((product) => product.category === 'Men');
+
+/**
+ * @param {{
+*   productOptions: MappedProductOptions[];
+*   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
+* }}
+*/
+
+export async function loader(args) {
+  // Start fetching non-critical data without blocking time to first byte
+  const deferredData = await loadDeferredData(args);
+
+  // Await the critical data required to render initial state of the page
+  const criticalData = await loadCriticalData(args);
+
+  return defer({ ...deferredData, ...criticalData });
+}
+
+/**
+ * Load data necessary for rendering content above the fold. This is the critical data
+ * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
+ * @param {LoaderFunctionArgs}
+ */
+async function loadCriticalData({ context }) {
+  const [{ collections }] = await Promise.all([
+    context.storefront.query(FEATURED_COLLECTION_QUERY),
+    // Add other queries here, so that they are loaded in parallel
+    context.storefront.query(PROMOTING_PRODUCTS_QUERY),
+    context.storefront.query(TRENDING_PRODUCTS_QUERY),
+    context.storefront.query(MEN_PRODUCTS_QUERY),
+    // context.storefront.query(VENDOR_PRODUCTS_QUERY),
+  ]);
+  console.table('collections:', collections.nodes);
+
+  return {
+    featuredCollection: collections.nodes[0],
+  };
+}
+
+/**
+ * Load data for rendering content below the fold. This data is deferred and will be
+ * fetched after the initial page load. If it's unavailable, the page should still 200.
+ * Make sure to not throw any errors here, as it will cause the page to 500.
+ * @param {LoaderFunctionArgs}
+ */
+async function loadDeferredData({ context }) {
+  // const allProducts = await context.storefront
+  //   .query(ALL_PRODUCTS_QUERY)
+  //   .catch((error) => {
+  //     // Log query errors, but don't throw them so the page can still render
+  //     console.error(error);
+  //     return null;
+  //   });
+  try {
+    const promotingProducts = await context.storefront.query(
+      PROMOTING_PRODUCTS_QUERY,
+    );
+    const trendingProducts = await context.storefront.query(
+      TRENDING_PRODUCTS_QUERY,
+    );
+    const menProducts = await context.storefront.query(
+      MEN_PRODUCTS_QUERY,
+    );
+    // const vendorProducts = await context.storefront.query(
+    //   VENDOR_PRODUCTS_QUERY,
+    // );
+    // Log the resolved data for debugging
+    console.log('Resolved Data in Loader:', promotingProducts);
+    console.log('Resolved Data in Loader:', trendingProducts);
+    return {
+      promotingProducts: promotingProducts || null,
+      trendingProducts: trendingProducts || null,
+      menProducts: menProducts || null,
+      // vendorProducts: vendorProducts || null,
+    };
+  } catch (error) {
+    // Log query errors, but don't throw them so the page can still render
+    console.error(error);
+    return null;
+  }
+
+  // return {
+  //   allProducts,
+  //   promotingProducts,
+  // };
+}
+
+
+const Men = (selectedVariant) => {
+  const data = useLoaderData();
+
+  const menProducts = data.menProducts;
+
+  const carouselRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (!carouselRef.current) return;
+
+    const scrollAmount = 320; // Width of one card
+    const currentScroll = carouselRef.current.scrollLeft;
+
+    if (direction === 'left') {
+      carouselRef.current.scrollTo({
+        left: currentScroll - scrollAmount,
+        behavior: 'smooth',
+      });
+    } else {
+      carouselRef.current.scrollTo({
+        left: currentScroll + scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+  const brands = ['Versace', 'Burberry', 'Gucci ', 'Valentino ', 'YSL', 'Viktor&Rolf'];
+  const [selectedBrand, setSelectedBrand] = useState(null);
+
+  const filteredProducts = selectedBrand
+    ? menProducts.products.edges.filter(
+      ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
+    )
+    : menProducts.products.edges;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Men's Fragrances
-          </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Explore our refined collection of distinguished fragrances for men,
-            featuring sophisticated scents from prestigious brands.
-          </p>
-        </div>
+    <div>
+      <div className="flex items-center">
+        <div className="relative flex gap-2 items-center p-2">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex items-center gap-2 px-6 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200"
+          >
+            <Filter size={18} className="text-gray-600" />
+            <span className="font-medium">
+              {selectedBrand || 'Shop by brand'}
+            </span>
+            <ChevronDown
+              size={16}
+              className={`text-gray-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''
+                }`}
+            />
+          </button>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {menProducts.length === 0 ? (
-            <div className="col-span-full text-center py-12">
-              <p className="text-gray-500 text-lg">No fragrances found</p>
-              <p className="text-gray-400 mt-2">
-                Please check back later for new arrivals
-              </p>
-            </div>
-          ) : (
-            menProducts.map((product) => (
-              <Link
-                key={product.product_id}
-                to={`/product-by-sku/${product.seller_sku}`}
-                className="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden block"
+          {isOpen && (
+            <div className="absolute top-full left-4 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+              <button
+                onClick={() => {
+                  setSelectedBrand(null);
+                  setIsOpen(false);
+                }}
+                className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200"
               >
-                <div className="p-4">
-                  <div className="relative aspect-square mb-4 overflow-hidden rounded-lg">
-                    <img
-                      src={
-                        product.main_product_image || '/api/placeholder/400/400'
-                      }
-                      alt={product.product_name}
-                      className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <button
-                      className="absolute top-3 right-3 p-2.5 rounded-full bg-white/90 shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-blue-50"
-                      aria-label="Add to wishlist"
-                      onClick={(e) => {
-                        e.preventDefault(); // Prevent navigation when clicking the heart
-                        // Add wishlist functionality here
-                      }}
-                    >
-                      <Heart className="w-5 h-5 text-blue-600" />
-                    </button>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="text-sm font-medium text-gray-400 uppercase tracking-wider">
-                      {product.brand}
-                    </div>
-                    <h2 className="font-medium text-gray-900 line-clamp-2 min-h-[48px]">
-                      {product.product_name}
-                    </h2>
-
-                    <div className="flex items-center gap-3">
-                      <span className="text-xl font-bold text-blue-600">
-                        ${product.sale_price}
-                      </span>
-                      {product.retail_price > product.sale_price && (
-                        <span className="text-sm text-gray-400 line-through">
-                          ${product.retail_price}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="flex items-center justify-between pt-2">
-                      {product.stock_total > 0 ? (
-                        <div className="text-sm text-emerald-600 flex items-center gap-1">
-                          <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                          In Stock
-                        </div>
-                      ) : (
-                        <div className="text-sm text-red-600 flex items-center gap-1">
-                          <div className="w-2 h-2 rounded-full bg-red-500"></div>
-                          Out of Stock
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))
+                All Brands
+              </button>
+              {brands.map((brand) => (
+                <button
+                  key={brand}
+                  onClick={() => {
+                    setSelectedBrand(brand);
+                    setIsOpen(false);
+                  }}
+                  className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200"
+                >
+                  {brand}
+                </button>
+              ))}
+            </div>
           )}
         </div>
       </div>
+
+      <div className="grid grid-cols-2 gap-4 p-4">
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map(({ node }) => (
+            <div
+              key={node.id}
+              className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+            >
+              <div className="relative aspect-square">
+                {node.images.edges[0] ? (
+                  <img
+                    src={node.images.edges[0].node.url}
+                    alt={node.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src="/api/placeholder/400/400"
+                    alt="Placeholder"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+
+              <div className="m-2">
+                <Link
+                  to={`/products/${node.handle}`}
+                  className="font-semibold text-blue-600 hover:underline truncate"
+                >
+                  {node.vendor || 'Unknown Brand'}
+                  <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
+                    {node.title
+                      ? node.title.replace(
+                        new RegExp(`^${node.vendor}\\s*`),
+                        ''
+                      )
+                      : 'N/A'}
+                  </p>
+                </Link>
+                <p className="font-bold mb-4">
+                  ${Number(
+                    node.variants.edges[0]?.node.price.amount || 0
+                  ).toFixed(2)}
+                </p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="col-span-2 text-center py-8 text-gray-500">
+            No products found for {selectedBrand}
+          </div>
+        )}
+      </div>
     </div>
+
+
   );
 };
 
 export default Men;
+
+const MEN_PRODUCTS_QUERY = `#graphql
+  query MenProducts {
+    products(first: 10, query: "tag:men") {
+      edges {
+        node {
+          id
+          title
+          handle
+          tags
+          vendor
+          descriptionHtml
+          images(first: 1) {
+            edges {
+              node {
+                url
+              }
+            }
+          }
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                title
+                price {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const FEATURED_COLLECTION_QUERY = `#graphql
+  fragment FeaturedCollection on Collection {
+    id
+    title
+    image {
+      id
+      url
+      altText
+      width
+      height
+    }
+    handle
+  }
+  query FeaturedCollection($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
+      nodes {
+        ...FeaturedCollection
+      }
+    }
+  }
+`;
+
+const RECOMMENDED_PRODUCTS_QUERY = `#graphql
+  fragment RecommendedProduct on Product {
+    id
+    title
+    handle
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    images(first: 1) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
+    }
+  }
+  query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
+      nodes {
+        ...RecommendedProduct
+      }
+    }
+  }
+`;
+
+const PROMOTING_PRODUCTS_QUERY = `#graphql
+  query PromotingProducts {
+    products(first: 10, query: "tag:Promoting") {
+      edges {
+        node {
+          id
+          title
+          handle
+          tags
+          vendor
+          descriptionHtml
+          images(first: 1) {
+            edges {
+              node {
+                url
+              }
+            }
+          }
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                title
+                price {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const TRENDING_PRODUCTS_QUERY = `#graphql
+  query TrendingProducts {
+    products(first: 10, query: "tag:Trending") {
+      edges {
+        node {
+          id
+          title
+          handle
+          tags
+          vendor
+          descriptionHtml
+          images(first: 1) {
+            edges {
+              node {
+                url
+              }
+            }
+          }
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                title
+                price {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+// const VENDOR_PRODUCTS_QUERY = `#graphql
+//   query VendorProducts {
+//     products(first: 10) {
+//       edges {
+//         node {
+//           id
+//           title
+//           handle
+//           tags
+//           vendor
+//           descriptionHtml
+//           images(first: 1) {
+//             edges {
+//               node {
+//                 url
+//               }
+//             }
+//           }
+//           variants(first: 10) {
+//             edges {
+//               node {
+//                 id
+//                 title
+//                 price {
+//                   amount
+//                   currencyCode
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// `;
+
+/** @typedef {import('@shopify/remix-oxygen').LoaderFunctionArgs} LoaderFunctionArgs */
+/** @template T @typedef {import('@remix-run/react').MetaFunction<T>} MetaFunction */
+/** @typedef {import('storefrontapi.generated').FeaturedCollectionFragment} FeaturedCollectionFragment */
+/** @typedef {import('storefrontapi.generated').RecommendedProductsQuery} RecommendedProductsQuery */
+/** @typedef {import('@shopify/remix-oxygen').SerializeFrom<typeof loader>} LoaderReturnData */

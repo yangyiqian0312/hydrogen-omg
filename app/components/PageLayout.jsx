@@ -82,17 +82,26 @@ function SearchAside() {
                 list={queriesDatalistId}
               />
               &nbsp;
-              <button onClick={goToSearch}>Search</button>
+              <button
+                onClick={goToSearch}
+                className="px-4 py-2 bg-pink-300 text-white rounded hover:bg-blue-600"
+              >
+                Search
+              </button>
             </>
           )}
         </SearchFormPredictive>
 
         <SearchResultsPredictive>
           {({ items, total, term, state, closeSearch }) => {
-            const { articles, collections, pages, products, queries } = items;
+            const { products, queries } = items;
 
             if (state === 'loading' && term.current) {
-              return <div>Loading...</div>;
+              return (
+                <div className="flex justify-center items-center p-4 text-gray-600">
+                  Loading...
+                </div>
+              );
             }
 
             if (!total) {
@@ -100,28 +109,9 @@ function SearchAside() {
             }
 
             return (
-              <>
-                <SearchResultsPredictive.Queries
-                  queries={queries}
-                  queriesDatalistId={queriesDatalistId}
-                />
+              <div className="p-4">
                 <SearchResultsPredictive.Products
                   products={products}
-                  closeSearch={closeSearch}
-                  term={term}
-                />
-                <SearchResultsPredictive.Collections
-                  collections={collections}
-                  closeSearch={closeSearch}
-                  term={term}
-                />
-                <SearchResultsPredictive.Pages
-                  pages={pages}
-                  closeSearch={closeSearch}
-                  term={term}
-                />
-                <SearchResultsPredictive.Articles
-                  articles={articles}
                   closeSearch={closeSearch}
                   term={term}
                 />
@@ -129,14 +119,15 @@ function SearchAside() {
                   <Link
                     onClick={closeSearch}
                     to={`${SEARCH_ENDPOINT}?q=${term.current}`}
+                    className="mt-4 block text-blue-600 hover:text-blue-800 transition-colors"
                   >
-                    <p>
-                      View all results for <q>{term.current}</q>
-                      &nbsp; →
+                    <p className="flex items-center gap-2">
+                      View all results for <q className="font-medium">{term.current}</q>
+                      <span className="text-lg">&rarr;</span>
                     </p>
                   </Link>
                 ) : null}
-              </>
+              </div>
             );
           }}
         </SearchResultsPredictive>
