@@ -16,8 +16,17 @@ export function AddToCartButton({
   lines,
   onClick,
 }) {
+
+  // 处理点击事件,阻止冒泡
+  const handleClick = (e, onClick) => {
+    e.stopPropagation(); // 阻止事件冒泡
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
-    <CartForm route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
+    <CartForm route="/cart" inputs={{ lines }} action={CartForm.ACTIONS.LinesAdd}>
       {(fetcher) => (
         <>
           <input
@@ -27,8 +36,12 @@ export function AddToCartButton({
           />
           <button
             type="submit"
-            onClick={onClick}
+            onClick={handleClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
+            className="w-full bg-black text-white px-4 py-3 rounded-lg 
+                     font-medium text-sm hover:bg-gray-800
+                     active:bg-gray-900 transition-colors
+                     disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             {children}
           </button>
