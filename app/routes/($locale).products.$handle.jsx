@@ -262,7 +262,7 @@ export default function Product() {
         </div>
 
         <div className="flex gap-2 pt-2">
-          <button
+          <div
             className="flex-1 bg-black text-white rounded-lg text-sm font-medium py-3"
             disabled={product.stock_total === 0}
           >
@@ -270,7 +270,7 @@ export default function Product() {
               productOptions={productOptions}
               selectedVariant={selectedVariant}
             />
-          </button>
+          </div>
           <button className="p-3 border border-gray-200 rounded-lg">
             <Heart className="w-5 h-5" />
           </button>
