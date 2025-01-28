@@ -19,6 +19,7 @@ export function AddToCartButton({
 
   // 处理点击事件,阻止冒泡
   const handleClick = (e, onClick) => {
+    e.preventDefault();
     e.stopPropagation(); // 阻止事件冒泡
     if (onClick) {
       onClick();
@@ -36,8 +37,12 @@ export function AddToCartButton({
           />
           <button
             type="submit"
-            onClick={onClick}
+            onClick={handleClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
+            className="w-full bg-black text-white px-4 py-3 rounded-lg 
+                     font-medium text-sm hover:bg-gray-800
+                     active:bg-gray-900 transition-colors
+                     disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             {children}
           </button>

@@ -391,10 +391,11 @@ export default function Product() {
                 productOptions={productOptions}
                 selectedVariant={selectedVariant}
               />
-              <button className="p-3 border border-gray-200 rounded-lg hover:border-gray-300">
-                <Heart className="w-6 h-6" />
-              </button>
+
             </div>
+            <button className="p-3 border border-gray-200 rounded-lg hover:border-gray-300">
+              <Heart className="w-6 h-6" />
+            </button>
           </div>
         </div>
       </div>
