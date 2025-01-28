@@ -386,15 +386,11 @@ export default function Product() {
 
           <div className="space-y-4">
             <div className="flex gap-3">
-              <button
-                className="flex-1 bg-black text-white rounded-lg font-medium hover:bg-gray-800 py-2"
-                disabled={product.stock_total === 0}
-              >
-                <ProductForm
-                  productOptions={productOptions}
-                  selectedVariant={selectedVariant}
-                />
-              </button>
+
+              <ProductForm
+                productOptions={productOptions}
+                selectedVariant={selectedVariant}
+              />
               <button className="p-3 border border-gray-200 rounded-lg hover:border-gray-300">
                 <Heart className="w-6 h-6" />
               </button>
