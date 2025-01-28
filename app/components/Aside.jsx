@@ -28,7 +28,7 @@ export function Aside({ children, heading, type }) {
   };
 
 
-
+ // 键盘事件处理逻辑
   useEffect(() => {
     const abortController = new AbortController();
 
@@ -46,11 +46,17 @@ export function Aside({ children, heading, type }) {
     return () => abortController.abort();
   }, [close, expanded]);
 
+
   return (
     <div
       aria-modal
       className={`overlay ${expanded ? 'expanded' : ''}`}
       role="dialog"
+      onPointerDown={(e) => {
+        if (e.target === e.currentTarget) {
+          close(); // 点击外层关闭
+        }
+      }}
     >
       {/* <button className="text-3xl" onClick={close} /> */}
       {/* <aside>
@@ -71,7 +77,7 @@ export function Aside({ children, heading, type }) {
           </h3>
           <button
             className="text-3xl p-2 hover:bg-gray-100 rounded-full transition-colors"
-            onClick={handleClose}  // 使用新的处理函数
+            onPointerDown={handleClose} // 使用 PointerDown 事件
             aria-label="Close"
             type="button"  // 明确指定按钮类型
           >
