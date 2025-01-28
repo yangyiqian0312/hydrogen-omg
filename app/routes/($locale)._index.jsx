@@ -363,7 +363,7 @@ export default function Homepage() {
       </div>
 
       {/* Carousel Navigation Buttons */}
-      <button
+      {/* <button
         onClick={() => scroll('left')}
         className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white"
       >
@@ -374,7 +374,7 @@ export default function Homepage() {
         className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white"
       >
         <ChevronRight className="h-6 w-6" />
-      </button>
+      </button> */}
 
       {/* Main Content Grid for phone screens */}
       <div className="block sm:hidden">
