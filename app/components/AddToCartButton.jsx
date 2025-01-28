@@ -1,4 +1,4 @@
-import {CartForm} from '@shopify/hydrogen';
+import { CartForm } from '@shopify/hydrogen';
 
 /**
  * @param {{
@@ -16,8 +16,17 @@ export function AddToCartButton({
   lines,
   onClick,
 }) {
+
+  // 处理点击事件,阻止冒泡
+  const handleClick = (e, onClick) => {
+    e.stopPropagation(); // 阻止事件冒泡
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
-    <CartForm route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
+    <CartForm route="/cart" inputs={{ lines }} action={CartForm.ACTIONS.LinesAdd}>
       {(fetcher) => (
         <>
           <input
