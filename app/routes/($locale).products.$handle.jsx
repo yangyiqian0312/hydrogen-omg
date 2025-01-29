@@ -277,28 +277,54 @@ export default function Product() {
           <h2 className="text-14px font-medium mt-1">{product.title}</h2>
           <p className="text-10px text-gray-600 mt-1">{product.category}</p>
         </div>
-
+{/* 
         <div className="text-xs">
           {product.selectedOrFirstAvailableVariant.availableForSale ? (
             <span className="text-green-600">In Stock</span>
           ) : (
             <span className="text-red-600">Out of Stock</span>
           )}
+        </div> */}
+
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-xl font-medium">
+                ${product.selectedOrFirstAvailableVariant.price.amount}
+              </span>
+              <span className="text-base text-gray-500 line-through">
+                ${product.selectedOrFirstAvailableVariant.compareAtPrice.amount}
+              </span>
+            </div>
+            <div className="pt-2">
+              <ProductForm
+                productOptions={productOptions}
+                selectedVariant={selectedVariant}
+              />
+            </div>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-xl font-medium">
-            ${product.selectedOrFirstAvailableVariant.price.amount}
-          </span>
-          <span className="text-base text-gray-500 line-through">
-            ${product.selectedOrFirstAvailableVariant.compareAtPrice.amount}
-          </span>
-          <div className="flex gap-2 pt-2">
-            <ProductForm
-              productOptions={productOptions}
-              selectedVariant={selectedVariant}
-            />
+
+        <div className="border rounded-lg p-4 space-y-4 bg-white">
+          <div className="flex items-center gap-3">
+            <Truck className="w-5 h-5" />
+            <div>
+              <p className="text-sm font-medium">Free Standard Delivery</p>
+              <p className="text-xs text-gray-500">
+                Arrives within 3-5 business days
+              </p>
+            </div>
           </div>
+          {/* <div className="flex items-center gap-3">
+              <Store className="w-5 h-5" />
+              <div>
+                <p className="text-sm font-medium">Store Pickup</p>
+                <p className="text-xs text-gray-500">
+                  Usually ready in 2 hours
+                </p>
+              </div>
+            </div> */}
         </div>
 
         {/* <div className="border rounded-lg p-3 space-y-3 bg-white">
