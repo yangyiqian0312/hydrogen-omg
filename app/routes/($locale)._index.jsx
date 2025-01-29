@@ -418,7 +418,7 @@ export default function Homepage() {
               <button
                 onClick={() =>
                   window.open(
-                    'https://www.tiktok.com/@omgbeautyshop/live...',
+                    'https://www.tiktok.com/@omgbeautyshop/live?enter_from_merge=others_homepage&enter_method=others_photo',
                     '_blank',
                     'noopener,noreferrer',
                   )
