@@ -1,4 +1,4 @@
-import {createContext, useContext, useEffect, useState} from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 /**
  * A side bar component with Overlay
@@ -15,9 +15,19 @@ import {createContext, useContext, useEffect, useState} from 'react';
  *   heading: React.ReactNode;
  * }}
  */
-export function Aside({children, heading, type}) {
-  const {type: activeType, close} = useAside();
+export function Aside({ children, heading, type }) {
+  const { type: activeType, close } = useAside();
   const expanded = type === activeType;
+
+
+  // 添加事件处理函数
+  const handleClose = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    close();
+  };
+
+
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -30,7 +40,7 @@ export function Aside({children, heading, type}) {
             close();
           }
         },
-        {signal: abortController.signal},
+        { signal: abortController.signal },
       );
     }
     return () => abortController.abort();
@@ -42,7 +52,7 @@ export function Aside({children, heading, type}) {
       className={`overlay ${expanded ? 'expanded' : ''}`}
       role="dialog"
     >
-      <button className="text-3xl" onClick={close} />
+      {/* <button className="text-3xl" onClick={close} /> */}
       <aside>
         <header className="flex justify-between items-center">
           <h3 className="text-center text-2xl font-serif text-gray-800 w-full">{heading}</h3>
@@ -59,7 +69,7 @@ export function Aside({children, heading, type}) {
 
 const AsideContext = createContext(null);
 
-Aside.Provider = function AsideProvider({children}) {
+Aside.Provider = function AsideProvider({ children }) {
   const [type, setType] = useState('closed');
 
   return (
