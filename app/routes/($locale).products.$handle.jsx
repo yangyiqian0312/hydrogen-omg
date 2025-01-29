@@ -86,66 +86,12 @@ function loadDeferredData({ context, params }) {
 }
 
 export default function Product() {
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
-
-  // Minimum swipe distance in pixels
-  const minSwipeDistance = 50;
-
-  const nextImage = () => {
-    setSelectedImage((prev) =>
-      prev === product.images.edges.length - 1 ? 0 : prev + 1
-    );
-  };
-
-  const prevImage = () => {
-    setSelectedImage((prev) =>
-      prev === 0 ? product.images.edges.length - 1 : prev - 1
-    );
-  };
-
-  const onTouchStart = (e) => {
-    setTouchEnd(null);
-    setTouchStart(e.touches[0].clientX);
-  };
-
-  const onTouchMove = (e) => {
-    setTouchEnd(e.touches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-
-    if (isLeftSwipe) {
-      nextImage();
-    }
-    if (isRightSwipe) {
-      prevImage();
-    }
-  };
 
 
   /** @type {LoaderReturnData} */
   const { product } = useLoaderData();
 
   //console.log(product);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
 
   // Optimistically selects a variant with given available variant information
@@ -168,133 +114,11 @@ export default function Product() {
 
   //console.log(productOptions);
 
-  const MobileLayout = () => (
-    <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col">
-      {/* Mobile Image Section */}
-      <div className="aspect-square w-full overflow-hidden">
-        <div
-          className="h-full"
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
-        >
-          <div
-            className="flex h-full transition-transform duration-300 ease-in-out"
-            style={{
-              transform: `translateX(-${selectedImage * 100}%)`,
-              width: `${product.images.edges.length * 100}%`
-            }}
-          >
-            {product.images.edges.map((image, index) => (
-              <div
-                key={index}
-                className="w-full h-full flex-shrink-0"
-              >
-                <img
-                  src={image.node.url || '/api/placeholder/400/400'}
-                  alt={`${product.product_name}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 导航按钮 */}
-        <button
-          onClick={prevImage}
-          className="absolute left-2 top-1/3 -translate-y-1/2 z-10 bg-white/80 p-1 rounded-full shadow-md"
-          aria-label="Previous image"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-
-        <button
-          onClick={nextImage}
-          className="absolute right-2 top-1/3 -translate-y-1/2 z-10 bg-white/80 p-1 rounded-full shadow-md"
-          aria-label="Next image"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
-      </div>
 
 
-      {/* Mobile Product Info */}
-      <div className="mt-4 space-y-3">
-        <div>
-          <h2 className="text-10px text-gray-500">{product.vendor}</h2>
-          <h2 className="text-14px font-medium mt-1">{product.title}</h2>
-          <p className="text-10px text-gray-600 mt-1">{product.category}</p>
-        </div>
 
-        <div className="text-xs">
-          {product.selectedOrFirstAvailableVariant.availableForSale ? (
-            <span className="text-green-600">In Stock</span>
-          ) : (
-            <span className="text-red-600">Out of Stock</span>
-          )}
-        </div>
+  const [selectedImage, setSelectedImage] = useState(0);
 
-        <div className="flex items-center gap-2">
-          <span className="text-xl font-medium">
-            ${product.selectedOrFirstAvailableVariant.price.amount}
-          </span>
-          <span className="text-base text-gray-500 line-through">
-            ${product.selectedOrFirstAvailableVariant.compareAtPrice.amount}
-          </span>
-        </div>
-
-        <div className="border rounded-lg p-3 space-y-3 bg-white">
-          <div className="flex items-center gap-2">
-            <Truck className="w-4 h-4" />
-            <div>
-              <p className="text-xs font-medium">Free Standard Delivery</p>
-              <p className="text-xs text-gray-500">Arrives within 3-5 business days</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Store className="w-4 h-4" />
-            <div>
-              <p className="text-xs font-medium">Store Pickup</p>
-              <p className="text-xs text-gray-500">Usually ready in 2 hours</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex gap-2 pt-2">
-          <button
-            className="flex-1 bg-black text-white rounded-lg text-sm font-medium py-3"
-            disabled={product.stock_total === 0}
-          >
-            {/* <ProductForm
-              productOptions={productOptions}
-              selectedVariant={selectedVariant}
-            /> */}
-          </button>
-          <button className="p-3 border border-gray-200 rounded-lg">
-            <Heart className="w-5 h-5" />
-          </button>
-        </div>
-      </div>
-
-      <div className="space-y-3 pt-6">
-        <h3 className="text-base font-medium">Product Details</h3>
-        <div className="space-y-2 text-xs text-gray-600">
-          <p>
-            <span className="font-medium">SKU:</span>{' '}
-            {product.selectedOrFirstAvailableVariant.sku}
-          </p>
-          <div className="mt-2">
-            <div
-              dangerouslySetInnerHTML={{
-                __html: product.descriptionHtml,
-              }}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 
   const DesktopLayout = () => (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col">
@@ -386,14 +210,14 @@ export default function Product() {
 
           <div className="space-y-4">
             <div className="flex gap-3">
-{/* 
+              {/* 
               <ProductForm
                 productOptions={productOptions}
                 selectedVariant={selectedVariant}
               /> */}
 
             </div>
-            
+
           </div>
         </div>
       </div>
@@ -418,7 +242,103 @@ export default function Product() {
     </div>
   );
 
-  return isMobile ? <MobileLayout /> : <DesktopLayout />;
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col">
+      {/* Mobile Image Section */}
+      <div className="aspect-square w-full overflow-hidden">
+        <div
+          className="flex h-full transition-transform duration-300 ease-in-out"
+          style={{
+            transform: `translateX(-${selectedImage * 100}%)`,
+            width: `${product.images.edges.length * 100}%`
+          }}
+        >
+          {product.images.edges.map((image, index) => (
+            <div
+              key={index}
+              className="w-full h-full flex-shrink-0"
+            >
+              <img
+                src={image.node.url || '/api/placeholder/400/400'}
+                alt={`${product.product_name}`}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+
+      </div>
+
+
+      {/* Mobile Product Info */}
+      <div className="mt-4 space-y-3">
+        <div>
+          <h2 className="text-10px text-gray-500">{product.vendor}</h2>
+          <h2 className="text-14px font-medium mt-1">{product.title}</h2>
+          <p className="text-10px text-gray-600 mt-1">{product.category}</p>
+        </div>
+
+        <div className="text-xs">
+          {product.selectedOrFirstAvailableVariant.availableForSale ? (
+            <span className="text-green-600">In Stock</span>
+          ) : (
+            <span className="text-red-600">Out of Stock</span>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="text-xl font-medium">
+            ${product.selectedOrFirstAvailableVariant.price.amount}
+          </span>
+          <span className="text-base text-gray-500 line-through">
+            ${product.selectedOrFirstAvailableVariant.compareAtPrice.amount}
+          </span>
+          <div className="flex gap-2 pt-2">
+            <ProductForm
+              productOptions={productOptions}
+              selectedVariant={selectedVariant}
+            />
+          </div>
+        </div>
+
+        {/* <div className="border rounded-lg p-3 space-y-3 bg-white">
+          <div className="flex items-center gap-2">
+            <Truck className="w-4 h-4" />
+            <div>
+              <p className="text-xs font-medium">Free Standard Delivery</p>
+              <p className="text-xs text-gray-500">Arrives within 3-5 business days</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Store className="w-4 h-4" />
+            <div>
+              <p className="text-xs font-medium">Store Pickup</p>
+              <p className="text-xs text-gray-500">Usually ready in 2 hours</p>
+            </div>
+          </div>
+        </div> */}
+
+
+      </div>
+
+      <div className="space-y-3 pt-6">
+        <h3 className="text-base font-medium">Product Details</h3>
+        <div className="space-y-2 text-xs text-gray-600">
+          <p>
+            <span className="font-medium">SKU:</span>{' '}
+            {product.selectedOrFirstAvailableVariant.sku}
+          </p>
+          <div className="mt-2">
+            <div
+              dangerouslySetInnerHTML={{
+                __html: product.descriptionHtml,
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 
   // <div className="product">
   //   <ProductImage image={selectedVariant?.image} />
