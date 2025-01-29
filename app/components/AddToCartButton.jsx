@@ -17,13 +17,7 @@ export function AddToCartButton({
   onClick,
 }) {
 
-  // 处理点击事件,阻止冒泡
-  const handleClick = (e, onClick) => {
-    e.stopPropagation(); // 阻止事件冒泡
-    if (onClick) {
-      onClick();
-    }
-  };
+
 
   return (
     <CartForm route="/cart" inputs={{ lines }} action={CartForm.ACTIONS.LinesAdd}>
@@ -36,7 +30,7 @@ export function AddToCartButton({
           />
           <button
             type="submit"
-            onClick={handleClick}
+            onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
             className="w-full bg-black text-white px-4 py-3 rounded-lg 
                      font-medium text-sm hover:bg-gray-800
