@@ -183,7 +183,7 @@ export default function OldHeader({
                 onClick={handleProfileClick}
                 className="text-gray-800 hover:text-gray-600"
               >
-                <User className="h-6 w-6 md:block" />
+                {/* <User className="h-6 w-6 md:block" /> */}
               </button>
             </div>
           </div>
