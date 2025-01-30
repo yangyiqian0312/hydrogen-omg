@@ -86,12 +86,10 @@ function loadDeferredData({context, params}) {
 }
 
 export default function Product() {
-
   /** @type {LoaderReturnData} */
   const {product} = useLoaderData();
 
   //console.log(product);
-
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -113,11 +111,7 @@ export default function Product() {
 
   //console.log(productOptions);
 
-
-
-
   const [selectedImage, setSelectedImage] = useState(0);
-
 
   const DesktopLayout = () => (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col">
@@ -215,9 +209,7 @@ export default function Product() {
                 productOptions={productOptions}
                 selectedVariant={selectedVariant}
               /> */}
-
             </div>
-
           </div>
         </div>
       </div>
@@ -250,14 +242,11 @@ export default function Product() {
           className="flex h-full transition-transform duration-300 ease-in-out"
           style={{
             transform: `translateX(-${selectedImage * 100}%)`,
-            width: `${product.images.edges.length * 100}%`
+            width: `${product.images.edges.length * 100}%`,
           }}
         >
           {product.images.edges.map((image, index) => (
-            <div
-              key={index}
-              className="w-full h-full flex-shrink-0"
-            >
+            <div key={index} className="w-full h-full flex-shrink-0">
               <img
                 src={image.node.url || '/api/placeholder/400/400'}
                 alt={`${product.product_name}`}
@@ -266,9 +255,7 @@ export default function Product() {
             </div>
           ))}
         </div>
-
       </div>
-
 
       {/* Mobile Product Info */}
       <div className="mt-4 space-y-3">
@@ -277,7 +264,7 @@ export default function Product() {
           <h2 className="text-14px font-medium mt-1">{product.title}</h2>
           <p className="text-10px text-gray-600 mt-1">{product.category}</p>
         </div>
-{/* 
+        {/* 
         <div className="text-xs">
           {product.selectedOrFirstAvailableVariant.availableForSale ? (
             <span className="text-green-600">In Stock</span>
@@ -289,12 +276,10 @@ export default function Product() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-xl font-medium">
-                ${product.selectedOrFirstAvailableVariant.price.amount}
-              </span>
-              <span className="text-base text-gray-500 line-through">
-                ${product.selectedOrFirstAvailableVariant.compareAtPrice.amount}
-              </span>
+              <ProductPrice
+                price={selectedVariant?.price}
+                compareAtPrice={selectedVariant?.compareAtPrice}
+              />
             </div>
             <div className="pt-2">
               <ProductForm
@@ -304,7 +289,6 @@ export default function Product() {
             </div>
           </div>
         </div>
-
 
         <div className="border rounded-lg p-4 space-y-4 bg-white">
           <div className="flex items-center gap-3">
@@ -343,8 +327,6 @@ export default function Product() {
             </div>
           </div>
         </div> */}
-
-
       </div>
 
       <div className="space-y-3 pt-6">
@@ -364,7 +346,7 @@ export default function Product() {
         </div>
       </div>
     </div>
-  )
+  );
 
   // <div className="product">
   //   <ProductImage image={selectedVariant?.image} />
@@ -404,7 +386,6 @@ export default function Product() {
   //     }}
   //   />
   // </div>
-
 }
 
 const PRODUCT_VARIANT_FRAGMENT = `#graphql
