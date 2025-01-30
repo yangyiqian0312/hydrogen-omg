@@ -69,7 +69,7 @@ async function loadDeferredData({ context }) {
     );
     // Log the resolved data for debugging
     console.log('Resolved Data in Loader:', promotingProducts);
-    console.log('Resolved Data in Loader:', trendingProducts);
+    //console.log('Resolved Data in Loader:', trendingProducts);
     return {
       promotingProducts: promotingProducts || null,
       trendingProducts: trendingProducts || null,
@@ -215,6 +215,7 @@ export default function Homepage() {
   const promotingProducts = data.promotingProducts;
   const trendingProducts = data.trendingProducts;
 
+  //console.log(promotingProducts)
 
   const testimonials = [
     {
@@ -248,6 +249,26 @@ export default function Homepage() {
       text: "Smells so good got a lot of compliments",
     }
   ];
+
+
+
+
+
+  const customOrder = [
+    "Viktor & Rolf Flowerbomb 2pc Mini Fragrance Gift Set - 7ml EDP & 50ml Body Lotion - Floral Fragrance with Cattleya, Jasmine, and Rose",
+    "GUCCI 3PC SET: 1 X 100ML Bloom EDP + 1 X 100 ML Bloom Body lotion + 1 X 10 ML Bloom EDP Pen Spray - Floral Scent Fragrance Jasmine",
+    "Viktor & Rolf Flowerbomb 3.4 oz/100 ml Eau De Parfum Spray for Women - Full Size Floral Fragrance with Cattleya, Jasmine, and Rose",
+    "BURBERRY Touch Eau de Parfum Natural Spray For Women (3.4oz)",
+    "Carolina Herrera Good Girl Blush Eau de Parfum for Women - 2.7oz / 80ml EDP Spray",
+    "Viktor&Rolf Spicebomb Eau de Toilette Spray for Men 3.04 Oz / 90 ml - Woody, Spicy, Gourmand Scent"
+  ];
+
+  // 按照 customOrder 排序
+  const sortedProducts = [...promotingProducts.products.edges].sort((a, b) => {
+    const indexA = customOrder.indexOf(a.node.title);
+    const indexB = customOrder.indexOf(b.node.title);
+    return (indexA === -1 ? 9999 : indexA) - (indexB === -1 ? 9999 : indexB);
+  });
 
 
   const handleTouchStart = (e) => {
@@ -292,6 +313,9 @@ export default function Homepage() {
     // 添加更多视频路径
   ];
 
+
+
+
   return (
     <div className="home">
       <div
@@ -303,13 +327,13 @@ export default function Homepage() {
           WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
         }}
       >
-        {promotingProducts.products.edges.map(({ node }, index) => (
+        {/* {promotingProducts.products.edges.map(({ node }, index) => (
           <div
             key={node.id}
             className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]
               }`}
           >
-            {/* 图片容器，动态加载图片 */}
+     
             <div className="relative aspect-square">
               <img
                 src={`/assets/presentation/${index + 1}.png`} // 动态生成图片路径
@@ -318,26 +342,11 @@ export default function Homepage() {
               />
             </div>
 
-            {/* 图片容器，保持方形比例 */}
-            {/* <div className="relative aspect-square">
-              {node.images.edges[0] ? (
-                <img
-                  src={node.images.edges[0].node.url} // 商品图片 URL
-                  alt={node.title}
-                  className="w-full h-full object-cover" // 确保图片填充整个容器
-                />
-              ) : (
-                <img
-                  src="/api/placeholder/400/400" // 占位图片
-                  alt="Placeholder"
-                  className="w-full h-full object-cover"
-                />
-              )}
-            </div> */}
+
 
             <div className="p-6">
               <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
-                {node.vendor || 'Unknown Brand'} {/* Replace `product.brand` */}
+                {node.vendor || 'Unknown Brand'} 
               </div>
               <p className="text-pink-600 font-bold mb-4">
                 $
@@ -345,8 +354,42 @@ export default function Homepage() {
                   2,
                 )}
               </p>
-              {/* Optional button or additional actions */}
-              {/* SHOP NOW 按钮 */}
+              {/* Optional button or additional actions 
+              <Link
+                key={node.id}
+                to={`/products/${node.handle}`}
+                onClick={(e) => {
+                  if (!node?.handle) e.preventDefault();
+                }}
+                className="font-bold text-blue-600 hover:underline"
+              >
+                SHOP NOW ▸
+              </Link>
+            </div>
+          </div>
+        ))} */}
+
+
+        {sortedProducts.map(({ node }, index) => (
+          <div
+            key={node.id}
+            className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
+          >
+            <div className="relative aspect-square">
+              <img
+                src={node.images.edges[0].node.url}
+                alt={node.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-6">
+              <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
+                {node.vendor || 'Unknown Brand'}
+              </div>
+              <p className="text-pink-600 font-bold mb-4">
+                $
+                {Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+              </p>
               <Link
                 key={node.id}
                 to={`/products/${node.handle}`}
@@ -418,7 +461,7 @@ export default function Homepage() {
               <button
                 onClick={() =>
                   window.open(
-                    'https://www.tiktok.com/@omgbeautyshop/live...',
+                    'https://www.tiktok.com/@omgbeautyshop/live?enter_from_merge=others_homepage&enter_method=others_photo',
                     '_blank',
                     'noopener,noreferrer',
                   )
@@ -698,15 +741,15 @@ export default function Homepage() {
 
             {/* Sale 卡片 */}
             {/* <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"> */}
-              {/* 背景图片 */}
-              {/* <img
+            {/* 背景图片 */}
+            {/* <img
                 src="/assets/presentation/6.png"
                 alt="Women's Fragrances"
                 className="w-full h-full object-cover"
               /> */}
 
-              {/* 文字和按钮容器 */}
-              {/* <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
+            {/* 文字和按钮容器 */}
+            {/* <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
                 <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
                   Sale
                 </h3>
