@@ -67,12 +67,16 @@ async function loadDeferredData({ context }) {
     const trendingProducts = await context.storefront.query(
       TRENDING_PRODUCTS_QUERY,
     );
+    const newProducts = await context.storefront.query(
+      NEW_PRODUCTS_QUERY,
+    );
     // Log the resolved data for debugging
     console.log('Resolved Data in Loader:', promotingProducts);
     //console.log('Resolved Data in Loader:', trendingProducts);
     return {
       promotingProducts: promotingProducts || null,
       trendingProducts: trendingProducts || null,
+      newProducts: newProducts || null,
     };
   } catch (error) {
     // Log query errors, but don't throw them so the page can still render
@@ -214,6 +218,7 @@ export default function Homepage() {
 
   const promotingProducts = data.promotingProducts;
   const trendingProducts = data.trendingProducts;
+  const newProducts = data.newProducts;
 
   //console.log(promotingProducts)
 
@@ -616,7 +621,7 @@ export default function Homepage() {
             }}
           >
             {' '}
-            {trendingProducts.products.edges.map(({ node }, index) => (
+            {newProducts.products.edges.map(({ node }, index) => (
               <div
                 key={node.id}
                 className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
@@ -1196,6 +1201,42 @@ const PROMOTING_PRODUCTS_QUERY = `#graphql
 const TRENDING_PRODUCTS_QUERY = `#graphql
   query TrendingProducts {
     products(first: 10, query: "tag:Trending") {
+      edges {
+        node {
+          id
+          title
+          handle
+          tags
+          vendor
+          descriptionHtml
+          images(first: 1) {
+            edges {
+              node {
+                url
+              }
+            }
+          }
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                title
+                price {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const NEW_PRODUCTS_QUERY = `#graphql
+  query TrendingProducts {
+    products(first: 10, query: "tag:New Product") {
       edges {
         node {
           id
