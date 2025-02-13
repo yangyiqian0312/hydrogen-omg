@@ -10,6 +10,8 @@ import {
 } from '~/components/SearchFormPredictive';
 import { SearchResultsPredictive } from '~/components/SearchResultsPredictive';
 import OldHeader from '~/components/OldHeader';
+import SocialFooter from '~/components/SocialFooter';
+// import { NewFooter } from '~/components/NewFooter';
 /**
  * @param {PageLayoutProps}
  */
@@ -37,11 +39,17 @@ export function PageLayout({
       )} */}
       <OldHeader header={header} cart={cart} />
       <main>{children}</main>
-      <Footer
+      {/* <Footer
         footer={footer}
         header={header}
         publicStoreDomain={publicStoreDomain}
-      />
+      /> */}
+      {/* <Footer
+        footer={footer}
+        header={header}
+        publicStoreDomain={publicStoreDomain}
+      /> */}
+      <SocialFooter />
     </Aside.Provider>
   );
 }

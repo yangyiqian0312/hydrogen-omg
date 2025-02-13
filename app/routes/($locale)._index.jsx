@@ -903,7 +903,7 @@ export default function Homepage() {
                   }}
                   className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
                 >
-                  Shop Sales
+                  Explore Sales
                 </button>
               </div>
             </div>
@@ -1231,6 +1231,8 @@ export default function Homepage() {
         </div>
       </div>
 
+
+      {/* <div class="border-t my-4 mx-2 border-gray-300"></div> */}
 
     </div>
   );
