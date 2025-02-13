@@ -1,14 +1,14 @@
-import {useState, Suspense} from 'react';
-import {Await, NavLink, useAsyncValue} from '@remix-run/react';
-import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
-import {useAside} from '~/components/Aside';
-import {Link, useNavigate} from 'react-router-dom';
-import {ShoppingCart, User, Search, Menu, X} from 'lucide-react';
+import { useState, useEffect, Suspense } from 'react';
+import { Await, NavLink, useAsyncValue } from '@remix-run/react';
+import { useAnalytics, useOptimisticCart } from '@shopify/hydrogen';
+import { useAside } from '~/components/Aside';
+import { Link, useNavigate } from 'react-router-dom';
+import { ShoppingCart, User, Search, Menu, X } from 'lucide-react';
 
 /**
  * @param {Pick<HeaderProps, 'isLoggedIn' | 'cart'>}
  */
-function HeaderCtas({isLoggedIn, cart}) {
+function HeaderCtas({ isLoggedIn, cart }) {
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
@@ -26,7 +26,7 @@ function HeaderCtas({isLoggedIn, cart}) {
 }
 
 function HeaderMenuMobileToggle() {
-  const {open} = useAside();
+  const { open } = useAside();
   return (
     <button
       className="header-menu-mobile-toggle reset"
@@ -38,7 +38,7 @@ function HeaderMenuMobileToggle() {
 }
 
 function SearchToggle() {
-  const {open} = useAside();
+  const { open } = useAside();
   return (
     <Search className="reset" onClick={() => open('search')}>
       Search
@@ -50,9 +50,9 @@ function SearchToggle() {
  * @param {{count: number | null}}
  * 渲染购物车链接和商品数量，处理用户点击行为。
  */
-function CartBadge({count}) {
-  const {open} = useAside();
-  const {publish, shop, cart, prevCart} = useAnalytics();
+function CartBadge({ count }) {
+  const { open } = useAside();
+  const { publish, shop, cart, prevCart } = useAnalytics();
 
   // TODO: Cart item quantity needs fix
   return (
@@ -80,7 +80,7 @@ function CartBadge({count}) {
  * @param {Pick<HeaderProps, 'cart'>}
  * 管理购物车的异步状态并渲染正确的子组件。
  */
-function CartToggle({cart}) {
+function CartToggle({ cart }) {
   return (
     <Suspense fallback={<CartBadge count={null} />}>
       <Await resolve={cart}>
@@ -117,11 +117,45 @@ export default function OldHeader({
     navigate('/profile');
   };
 
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const promos = [
+    {
+      id: 1,
+      message: "Free shipping on all orders"
+    },
+    {
+      id: 2,
+      message: "20% OFF USE CODE: OMGBEAUTY"
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === promos.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000); // Change message every 3 seconds
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <>
       {/* Announcement Bar */}
-      <div className="bg-gradient-to-r from-pink-200 to-blue-50 text-center py-4 text-base">
-        <p className="text-gray-800">Use code OMGBEAUTY for $100+ orders</p>
+      <div className="bg-pink-200 text-center py-4 relative overflow-hidden">
+        <div className="h-6"> {/* Fixed height container */}
+          <p
+            className="text-gray-800 font-bold transition-all duration-500 ease-in-out"
+            style={{
+              opacity: 1,
+              transform: 'translateY(0)'
+            }}
+          >
+            {promos[currentIndex].message}
+          </p>
+        </div>
       </div>
 
       {/* Navigation */}
@@ -154,6 +188,12 @@ export default function OldHeader({
               </Link>
               <Link to="/products/women" className="text-gray-800 hover:text-gray-600">
                 Women
+              </Link>
+              <Link to="/products/sales" className="text-gray-800 hover:text-gray-600">
+                Sales
+              </Link>
+              <Link to="/products/giftsets" className="text-gray-800 hover:text-gray-600">
+                Gift Sets
               </Link>
               {/* <Link to="/mini" className="text-gray-800 hover:text-gray-600">
                 Mini
@@ -204,24 +244,18 @@ export default function OldHeader({
                 >
                   Women
                 </Link>
-                {/* <Link
-                  to="/mini"
+                <Link
+                  to="/products/sales"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
                 >
-                  Mini
+                  Sales
                 </Link>
                 <Link
-                  to="/gift-sets"
+                  to="products/giftsets"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
                 >
                   Gift Sets
                 </Link>
-                <Link
-                  to="/under-20"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
-                >
-                  Under $20
-                </Link> */}
               </div>
             </div>
           )}

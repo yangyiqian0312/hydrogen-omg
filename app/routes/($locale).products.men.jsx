@@ -240,7 +240,7 @@ export default Men;
 
 const MEN_PRODUCTS_QUERY = `#graphql
   query MenProducts {
-    products(first: 10, query: "tag:men") {
+    products(first: 100, query: "tag:men") {
       edges {
         node {
           id

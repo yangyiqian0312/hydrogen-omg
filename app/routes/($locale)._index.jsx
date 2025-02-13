@@ -220,42 +220,139 @@ export default function Homepage() {
   const trendingProducts = data.trendingProducts;
   const newProducts = data.newProducts;
 
-  //console.log(promotingProducts)
 
   const testimonials = [
     {
       id: 1,
       name: "@ᴊ*****︎",
+      userProfile: '/assets/reviews/1.jpeg',  // Replace with actual review photo
+      location: "United States",
+      verified: true,
+      rating: 5,
       title: "Repeat purchase, Smell good",
       text: "This Smells Amazing second time ordering this",
+      item: "Default",
+      date: "March 11, 2024",
+      helpfulCount: 0
     },
     {
       id: 2,
       name: "@H***l ***",
+      userProfile: '/assets/reviews/2.jpeg',
+      location: "United States",
+      verified: true,
+      rating: 5,
       title: "Fast delivery",
-      text: "Well I was impressed how fast it came. This is my first time buying this one I have to say it smelled so good it was light. The size was bigger than I thought. I would recommend if you're looking for something not so strong.",
+      text: "Fast shipping, great price and the perfume is authentic and smells amazing! I can't believe I scored an amazing deal 💙",
+      item: "Default",
+      date: "March 8, 2024",
+      helpfulCount: 2
     },
     {
       id: 3,
       name: "@l***a",
+      userProfile: '/assets/reviews/3.jpeg',
+      location: "United States",
+      verified: true,
+      rating: 5,
       title: "Love scent",
       text: "In love with the scent! 💞🫶 Worth it.",
+      item: "Default",
+      date: "March 5, 2024",
+      helpfulCount: 1
     },
     {
       id: 4,
       name: "@j*****6",
+      userProfile: '/assets/reviews/4.jpeg',
+      location: "United States",
+      verified: true,
+      rating: 5,
       title: "Good gift",
-      text: "I actually meant to order the touch cologne for men, but I ordered wrong, but this ladies perfume is nice it's going to make a great gift to someone, that's why I didn't send it back, it will make a nice gift",
+      text: "So happy I got my perfume today 🤗🤗thanks💕🥰🥰💕🥰",
+      item: "Default",
+      date: "March 2, 2024",
+      helpfulCount: 0
     },
     {
       id: 5,
       name: "@t*******7",
+      userProfile: '/assets/reviews/5.jpeg',
+      location: "United States",
+      verified: true,
+      rating: 5,
       title: "Smell good",
       text: "Smells so good got a lot of compliments",
+      item: "Default",
+      date: "February 28, 2024",
+      helpfulCount: 3
+    },
+    {
+      id: 6,
+      name: "@AuRoRa",
+      userProfile: '/assets/reviews/6.jpeg',
+      location: "United States",
+      verified: true,
+      rating: 5,
+      title: "Captivating smell",
+      text: "I get so may compliments from this",
+      item: "Default",
+      date: "February 25, 2024",
+      helpfulCount: 1
+    },
+    {
+      id: 7,
+      name: "@Jess",
+      userProfile: '/assets/reviews/7.jpeg',
+      location: "United States",
+      verified: true,
+      rating: 5,
+      title: "Huge discount",
+      text: "Favorite perfume at a huge discount",
+      item: "Default",
+      date: "February 22, 2024",
+      helpfulCount: 0
+    },
+    {
+      id: 8,
+      name: "@y*****⟬",
+      userProfile: '/assets/reviews/8.jpeg',
+      location: "United States",
+      verified: true,
+      rating: 5,
+      title: "Well packaged",
+      text: "Came well packaged and is legit product very pleased with this purchase",
+      item: "Default",
+      date: "February 19, 2024",
+      helpfulCount: 2
+    },
+    {
+      id: 9,
+      name: "@m*****i",
+      userProfile: '/assets/reviews/9.jpeg',
+      location: "United States",
+      verified: true,
+      rating: 5,
+      title: "Authentic",
+      text: "Smells super good! Was a bit skeptical because of the price but it's definitely legit",
+      item: "Default",
+      date: "February 16, 2024",
+      helpfulCount: 1
+    },
+    {
+      id: 10,
+      name: "@Mandaa.Jayne",
+      userProfile: '/assets/reviews/10.jpeg',
+      location: "United States",
+      verified: true,
+      rating: 5,
+      title: "Great deal",
+      text: "My Favorite Perfume!! Discount SO WORTH IT!!!!",
+      item: "Default",
+      date: "February 13, 2024",
+      helpfulCount: 0
     }
   ];
-
-
 
 
 
@@ -382,7 +479,7 @@ export default function Homepage() {
           >
             <div className="relative aspect-square">
               <img
-                src={node.images.edges[0].node.url}
+                src={`/assets/presentation/${index + 1}.png`} // 动态生成图片路径
                 alt={node.title}
                 className="w-full h-full object-cover"
               />
@@ -410,19 +507,6 @@ export default function Homepage() {
         ))}
       </div>
 
-      {/* Carousel Navigation Buttons */}
-      {/* <button
-        onClick={() => scroll('left')}
-        className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white"
-      >
-        <ChevronLeft className="h-6 w-6" />
-      </button>
-      <button
-        onClick={() => scroll('right')}
-        className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white"
-      >
-        <ChevronRight className="h-6 w-6" />
-      </button> */}
 
       {/* Main Content Grid for phone screens */}
       <div className="block sm:hidden">
@@ -485,7 +569,7 @@ export default function Homepage() {
               <div className="flex flex-col gap-4">
                 <div className="relative w-full h-48 rounded-lg overflow-hidden">
                   <img
-                    src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&auto=format"
+                    src="/assets/presentation/1.png"
                     alt="New arrival product"
                     className="w-full h-full object-cover"
                   />
@@ -493,9 +577,25 @@ export default function Homepage() {
                     20% OFF
                   </div>
                 </div>
-                <button className="bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-3xl text-sm font-medium w-full transition-colors duration-200">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/products/newarrivals');
+                  }}
+                  className="bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-3xl text-sm font-medium w-full transition-colors duration-200">
                   Shop Now
                 </button>
+
+
+                {/* <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/products/women');
+                  }}
+                  className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
+                >
+                  Explore Women
+                </button> */}
               </div>
             </div>
           </div>
@@ -532,6 +632,41 @@ export default function Homepage() {
           </div> */}
         </div>
         {/* TODO: ADD SHOW MORE BUTTON */}
+
+        <div class="border-t my-4 mx-2 border-gray-300"></div>
+
+        {/* Video Section */}
+        <div>
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto snap-x snap-mandatory gap-2 hide-scrollbar scrollbar-hide"
+            style={{
+              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
+              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
+              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
+            }}
+          >
+            {videoPaths.map((video, index) => (
+              <div
+                key={index}
+                className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
+              >
+                {/* 背景视频 */}
+                <video
+                  src={video}
+                  className="w-full h-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                ></video>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* <div class="border-t my-4 mx-2 border-gray-300"></div> */}
+
         {/* Trending Now Section */}
         <div>
           <div className="flex items-center mt-4 mb-2 space-x-2">
@@ -744,68 +879,71 @@ export default function Homepage() {
               </div>
             </div>
 
-            {/* Sale 卡片 */}
-            {/* <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"> */}
-            {/* 背景图片 */}
-            {/* <img
-                src="/assets/presentation/6.png"
-                alt="Women's Fragrances"
+            {/* Sales 卡片 */}
+            <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative">
+              {/* 背景图片 */}
+              <img
+                src="/assets/presentation/1.png"
+                alt="Special Sales"
                 className="w-full h-full object-cover"
-              /> */}
+              />
 
-            {/* 文字和按钮容器 */}
-            {/* <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
+              {/* 文字和按钮容器 */}
+              <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
                 <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
-                  Sale
+                  Special Sales
                 </h3>
                 <p className="text-white/90 text-xs sm:text-sm mb-3">
-                  Discover elegant and refined scents
+                  Limited time deals & discounts
                 </p>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate('/products/women');
+                    navigate('/products/sales');
                   }}
                   className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
                 >
-                  Explore Sale
+                  Shop Sales
                 </button>
-              </div> */}
-            {/* </div> */}
-          </div>
-        </div>
-
-        <div class="border-t my-4 mx-2 border-gray-300"></div>
-
-        {/* Video Section */}
-        <div>
-          <div
-            ref={carouselRef}
-            className="flex overflow-x-auto snap-x snap-mandatory gap-2 hide-scrollbar scrollbar-hide"
-            style={{
-              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
-              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
-              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
-            }}
-          >
-            {videoPaths.map((video, index) => (
-              <div
-                key={index}
-                className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
-              >
-                {/* 背景视频 */}
-                <video
-                  src={video}
-                  className="w-full h-full object-cover"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                ></video>
               </div>
-            ))}
+            </div>
+
+            {/* Gift Sets 卡片 */}
+            <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative">
+              {/* 背景图片 */}
+              <img
+                src="/assets/presentation/2.png"
+                alt="Gift Sets"
+                className="w-full h-full object-cover"
+              />
+
+              {/* 文字和按钮容器 */}
+              <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
+                <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
+                  Gift Sets
+                </h3>
+                <p className="text-white/90 text-xs sm:text-sm mb-3">
+                  Perfect presents for any occasion
+                </p>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/products/giftsets');
+                  }}
+                  className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
+                >
+                  Explore Sets
+                </button>
+              </div>
+            </div>
+
+
           </div>
         </div>
+
+        {/* <div class="border-t my-4 mx-2 border-gray-300"></div> */}
+
+
       </div>
 
       {/* Main Content Grid for larger screens */}
@@ -1002,44 +1140,98 @@ export default function Homepage() {
         </div>
       </div>
 
-      <div class="border-t my-4 mx-2 border-gray-300"></div>
+      {/* <div class="border-t my-4 mx-2 border-gray-300"></div> */}
 
       {/* Customer Reviews */}
-      <div className="bg-pink-50 py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h3 className="text-2xl font-semibold text-center mb-8">
-            What Our Customer Says
-          </h3>
+      <div>
+        <div className="flex items-center mt-4 mb-2 space-x-2">
+          <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span className="text-lg font-semibold align-middle">
+            Customer Reviews
+          </span>
+        </div>
 
-          <div className="w-full max-w-sm mx-auto px-4 h-50">
-            <div className="relative">
-              <div
-                className="overflow-hidden bg-white rounded-lg shadow-lg p-4 h-44 flex flex-col justify-between"
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-              >
-                <div className="space-y-4">
-                  <div className="text-gray-600 text-xs">{testimonials[currentIndex].name}</div>
-                  <h3 className="text-sm font-semibold text-gray-900">{testimonials[currentIndex].title}</h3>
-                  <p className="text-xs text-gray-700">{testimonials[currentIndex].text}</p>
+        {/* Reviews Carousel */}
+        <div
+          ref={carouselRef}
+          className="flex overflow-x-auto snap-x snap-mandatory gap-4 p-4 hide-scrollbar scrollbar-hide"
+          style={{
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            WebkitOverflowScrolling: 'touch',
+          }}
+        >
+          {testimonials.map((review) => (
+            <div
+              key={review.id}
+              className="flex-none w-full snap-start bg-white rounded-lg p-4 border border-gray-200 shadow-sm"
+            >
+              {/* User Info and Menu */}
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex items-center gap-3">
+                  {review.userProfile ? (
+                    <div className="w-8 h-8 rounded-full overflow-hidden">
+                      <img
+                        src={review.userProfile}
+                        alt={`${review.name}'s profile`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
+                      {review.name[0]}
+                    </div>
+                  )}
+                  <div>
+                    <div className="text-gray-900">{review.name}</div>
+                    <div className="text-gray-500 text-sm">United States</div>
+                  </div>
                 </div>
               </div>
 
+              {/* Rest of the review content remains the same */}
+              {/* Verified Purchase Badge */}
+              <div className="flex items-center gap-1 text-gray-500 text-sm mb-2">
+                <span>Verified purchase</span>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
 
-              <div className="flex justify-center mt-4 space-x-2">
-                {testimonials.map((_, index) => (
-                  <div
+              {/* Star Rating */}
+              <div className="flex gap-1 mb-2">
+                {[...Array(5)].map((_, index) => (
+                  <svg
                     key={index}
-                    className={`h-2 w-2 rounded-full ${index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
-                      }`}
-                  />
+                    className="w-5 h-5 text-yellow-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
                 ))}
               </div>
+
+              {/* Review Title and Content */}
+              <h3 className="text-xl font-medium text-gray-900 mb-2">
+                {review.title}
+              </h3>
+              <p className="text-gray-700 mb-4">
+                {review.text}
+              </p>
+
+              {/* Item and Date */}
+              <div className="text-gray-500 text-sm">
+                <div className="flex items-center justify-between mt-1">
+                  <span>{review.date}</span>
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
+
+
     </div>
   );
 }
