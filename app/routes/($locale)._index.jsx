@@ -5,7 +5,7 @@ import { Image, Money } from '@shopify/hydrogen';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import { products } from '~/data/products';
-import { Heart, ChevronLeft, ChevronRight, Clock, Gift } from 'lucide-react';
+import { Heart, ChevronLeft, ChevronRight, Clock, Gift, ShoppingBag } from 'lucide-react';
 import OldHeader from '~/components/OldHeader';
 /**
  * @type {MetaFunction}
@@ -38,6 +38,7 @@ async function loadCriticalData({ context }) {
     // Add other queries here, so that they are loaded in parallel
     context.storefront.query(PROMOTING_PRODUCTS_QUERY),
     context.storefront.query(TRENDING_PRODUCTS_QUERY),
+    context.storefront.query(VIDEO_PRODUCTS_QUERY),
   ]);
   console.table('collections:', collections.nodes);
 
@@ -70,13 +71,17 @@ async function loadDeferredData({ context }) {
     const newProducts = await context.storefront.query(
       NEW_PRODUCTS_QUERY,
     );
+    const videoProducts = await context.storefront.query(
+      VIDEO_PRODUCTS_QUERY,
+    );
     // Log the resolved data for debugging
-    console.log('Resolved Data in Loader:', promotingProducts);
+    console.log('Resolved Data in Loader:', videoProducts);
     //console.log('Resolved Data in Loader:', trendingProducts);
     return {
       promotingProducts: promotingProducts || null,
       trendingProducts: trendingProducts || null,
       newProducts: newProducts || null,
+      videoProducts: videoProducts || null,
     };
   } catch (error) {
     // Log query errors, but don't throw them so the page can still render
@@ -218,9 +223,10 @@ export default function Homepage() {
 
   const promotingProducts = data.promotingProducts;
   const trendingProducts = data.trendingProducts;
+  const videoProducts = data.videoProducts;
   const newProducts = data.newProducts;
 
-
+  console.log(videoProducts)
   const testimonials = [
     {
       id: 1,
@@ -410,13 +416,16 @@ export default function Homepage() {
     '/assets/video/1.mp4',
     '/assets/video/2.mp4',
     '/assets/video/3.mp4',
-    '/assets/video/4.mp4',
-    '/assets/video/5.mp4',
+    // '/assets/video/4.mp4',
     // 添加更多视频路径
   ];
 
-
-
+  // // Sort video products according to custom order
+  // const sortedVideoProducts = [...videoProducts].sort((a, b) => {
+  //   const indexA = customVideoOrder.indexOf(a.name);
+  //   const indexB = customVideoOrder.indexOf(b.name);
+  //   return (indexA === -1 ? 9999 : indexA) - (indexB === -1 ? 9999 : indexB);
+  // });
 
   return (
     <div className="home">
@@ -600,36 +609,6 @@ export default function Homepage() {
             </div>
           </div>
 
-          {/* Sale Products 卡片 */}
-          {/* <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 m-2 bg-white hover:shadow-md transition-shadow duration-300">
-            <div className="rounded-xl p-6 text-center">
-              <h3 className="text-lg font-medium">Sale</h3>
-              <div className="relative w-32 h-32 mx-auto mb-4">
-                <div className="absolute inset-0 rounded-full "></div>
-                <div className="relative w-full h-full rounded-full overflow-hidden">
-                  <img
-                    src="./assets/logo.jpeg"
-                    alt="OMG Beauty Shop"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-
-              TODO: CHANGE TT LIVE REDIRECT
-              <button
-                onClick={() =>
-                  window.open(
-                    'https://www.tiktok.com/@omgbeautyshop/live...',
-                    '_blank',
-                    'noopener,noreferrer',
-                  )
-                }
-                className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-3xl text-sm font-medium w-full transition-colors duration-200"
-              >
-                Go To TikTok
-              </button>
-            </div>
-          </div> */}
         </div>
         {/* TODO: ADD SHOW MORE BUTTON */}
 
@@ -646,23 +625,91 @@ export default function Homepage() {
               WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
             }}
           >
-            {videoPaths.map((video, index) => (
+            {videoProducts.products.edges.map(({ node }, index) => (
               <div
-                key={index}
-                className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
+                key={node.id}
+                className="flex-none flex flex-col gap-4 w-60 snap-start"
               >
-                {/* 背景视频 */}
-                <video
-                  src={video}
-                  className="w-full h-full object-cover"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                ></video>
+                {/* Video Card */}
+                <div className="h-80 rounded-lg overflow-hidden shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative">
+                  <video
+                    src={videoPaths[index]}
+                    className="w-full h-full object-cover"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  ></video>
+                </div>
+
+   
+                {/* Product Card */}
+                <div className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 group">
+                  {/* Product Image */}
+                  <div className="aspect-square relative overflow-hidden">
+                    <img
+                      src={node.images.edges[0]?.node.url}
+                      alt={node.title}
+                      className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                  </div>
+
+                  {/* Product Info */}
+                  <div className="p-4 space-y-2">
+                    <div className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                      {node.vendor || 'Unknown Brand'}
+                    </div>
+
+                    <p className="text-pink-600 font-bold">
+                      ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                    </p>
+
+                    <Link
+                      to={`/products/${node.handle}`}
+                      onClick={(e) => {
+                        if (!node?.handle) e.preventDefault();
+                      }}
+                      className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-bold transition-colors duration-200"
+                    >
+                      <span>SHOP NOW</span>
+                      <span className="transform transition-transform group-hover:translate-x-1">▸</span>
+                    </Link>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
+
+          {/* <div className="">
+            <div
+              ref={carouselRef}
+              className="flex overflow-x-auto snap-x snap-mandatory gap-4 hide-scrollbar scrollbar-hide pb-4"
+            >
+              {videoProducts.products.edges.map(({ node }, index) => (
+                <div
+                  key={node.id}
+                  className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
+                >
+                  <img
+                    src={node.images.edges[0].node.url} // 商品图片 URL
+                    alt={node.title}
+                    className="w-full h-full object-cover" // 确保图片填充整个容器
+                  />
+                  <Link
+                    key={node.id}
+                    to={`/products/${node.handle}`}
+                    onClick={(e) => {
+                      if (!node?.handle) e.preventDefault();
+                    }}
+                    className="font-bold text-blue-600 hover:underline"
+                  >
+                    SHOP NOW ▸
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div> */}
         </div>
 
         {/* <div class="border-t my-4 mx-2 border-gray-300"></div> */}
@@ -690,7 +737,7 @@ export default function Homepage() {
                 key={node.id}
                 className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
               >
-                {/* 图片容器，保持方形比例 */}
+
                 <div className="relative aspect-square">
                   {node.images.edges[0] ? (
                     <img
@@ -709,7 +756,7 @@ export default function Homepage() {
 
                 <div className="m-2">
                   {/* Optional button or additional actions */}
-                  {/* SHOP NOW 按钮 */}
+
                   <Link
                     key={node.id}
                     to={`/products/${node.handle}`}
@@ -739,7 +786,7 @@ export default function Homepage() {
 
         {/* TODO: ADD SHOW MORE BUTTON */}
         {/* New Arrivals Section */}
-        <div>
+        {/* <div>
           <div className="flex items-center mt-4 mb-2 space-x-2">
             <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
             <span className="text-lg font-semibold align-middle">
@@ -761,7 +808,7 @@ export default function Homepage() {
                 key={node.id}
                 className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
               >
-                {/* 图片容器，保持方形比例 */}
+               
                 <div className="relative aspect-square">
                   {node.images.edges[0] ? (
                     <img
@@ -779,8 +826,6 @@ export default function Homepage() {
                 </div>
 
                 <div className="m-2">
-                  {/* Optional button or additional actions */}
-                  {/* SHOP NOW 按钮 */}
                   <Link
                     key={node.id}
                     to={`/products/${node.handle}`}
@@ -806,7 +851,7 @@ export default function Homepage() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         <div class="border-t my-4 mx-2 border-gray-300"></div>
 
@@ -1395,6 +1440,42 @@ const PROMOTING_PRODUCTS_QUERY = `#graphql
 const TRENDING_PRODUCTS_QUERY = `#graphql
   query TrendingProducts {
     products(first: 10, query: "tag:Trending") {
+      edges {
+        node {
+          id
+          title
+          handle
+          tags
+          vendor
+          descriptionHtml
+          images(first: 1) {
+            edges {
+              node {
+                url
+              }
+            }
+          }
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                title
+                price {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const VIDEO_PRODUCTS_QUERY = `#graphql
+  query VideoProducts {
+    products(first: 10, query: "tag:Video") {
       edges {
         node {
           id

@@ -5,9 +5,9 @@ import { Instagram, Twitter, Youtube } from 'lucide-react';
 const SocialFooter = () => {
   const links = [
     { title: 'Customer Service', to: 'customer-service' },
-    { title: 'Returns & Exchanges', to: 'returns' },
-    { title: 'Shipping', to: 'shipping' },
-    { title: 'Beauty Services FAQ', to: 'faq' },
+    // { title: 'Returns & Exchanges', to: 'returns' },
+    { title: 'Shipping & Returns', to: 'shipping' },
+    { title: 'FAQs', to: 'faq' },
   ];
 
   return (
@@ -79,7 +79,7 @@ const SocialFooter = () => {
           </div>
 
           <div>
-            
+
           </div>
           {/* <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-gray-500">
             <div className="flex items-center gap-4">
