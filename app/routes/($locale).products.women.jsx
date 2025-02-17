@@ -96,9 +96,12 @@ async function loadDeferredData({ context }) {
 
 
 const Women = (selectedVariant) => {
-  const data = useLoaderData();
+  const [isOpen, setIsOpen] = useState(false);
+  const brands = ['Versace', 'Burberry', 'GUCCI', 'Valentino ', 'YSL', 'Viktor&Rolf'];
+  const [selectedBrand, setSelectedBrand] = useState(null);
 
-  const womenProducts = data.womenProducts;
+
+  const data = useLoaderData();
 
   const carouselRef = useRef(null);
 
@@ -121,15 +124,28 @@ const Women = (selectedVariant) => {
     }
   };
 
-  const [isOpen, setIsOpen] = useState(false);
-  const brands = ['Versace', 'Burberry', 'GUCCI', 'Valentino ', 'YSL', 'Viktor&Rolf'];
-  const [selectedBrand, setSelectedBrand] = useState(null);
+
+
+
+  const products = data.womenProducts?.collection?.products?.edges || [];
+  console.log("Products before filtering:", products);
+  
+
+  // Filter for products with "men" tag with extra logging
+  const womenProducts = products.filter(({ node }) => {
+    return node.tags && node.tags.includes('Women');
+  });
+
+  console.log("Filtered men products:", womenProducts);
+
 
   const filteredProducts = selectedBrand
-    ? womenProducts.products.edges.filter(
+    ? womenProducts.filter(
       ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
     )
-    : womenProducts.products.edges;
+    : womenProducts;
+
+
 
   return (
     <div>
@@ -238,32 +254,72 @@ const Women = (selectedVariant) => {
 
 export default Women;
 
+// const WOMEN_PRODUCTS_QUERY = `#graphql
+//   query WomenProducts {
+//     products(first: 100, query: "tag:Women") {
+//       edges {
+//         node {
+//           id
+//           title
+//           handle
+//           tags
+//           vendor
+//           descriptionHtml
+//           images(first: 1) {
+//             edges {
+//               node {
+//                 url
+//               }
+//             }
+//           }
+//           variants(first: 10) {
+//             edges {
+//               node {
+//                 id
+//                 title
+//                 price {
+//                   amount
+//                   currencyCode
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// `;
+
 const WOMEN_PRODUCTS_QUERY = `#graphql
   query WomenProducts {
-    products(first: 100, query: "tag:Women") {
-      edges {
-        node {
-          id
-          title
-          handle
-          tags
-          vendor
-          descriptionHtml
-          images(first: 1) {
-            edges {
-              node {
-                url
-              }
+    collection(id: "gid://shopify/Collection/285176168553") {
+      title
+      id
+      products(first: 100) {
+        edges {
+          node {
+            id
+            title
+            handle
+            tags
+            vendor
+            descriptionHtml
+            images(first: 6) {
+              edges {
+                node {
+                  url
+                }  
+              } 
             }
-          }
-          variants(first: 10) {
-            edges {
-              node {
-                id
-                title
-                price {
-                  amount
-                  currencyCode
+            variants(first: 10) {
+              edges {
+                node {
+                  id
+                  title
+                  price {
+                    amount
+                    currencyCode
+                  }
                 }
               }
             }

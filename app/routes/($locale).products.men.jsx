@@ -74,8 +74,8 @@ async function loadDeferredData({ context }) {
     //   VENDOR_PRODUCTS_QUERY,
     // );
     // Log the resolved data for debugging
-    console.log('Resolved Data in Loader:', promotingProducts);
-    console.log('Resolved Data in Loader:', trendingProducts);
+    // console.log('Resolved Data in Loader:', promotingProducts);
+    // console.log('Resolved Data in Loader:', trendingProducts);
     return {
       promotingProducts: promotingProducts || null,
       trendingProducts: trendingProducts || null,
@@ -96,9 +96,31 @@ async function loadDeferredData({ context }) {
 
 
 const Men = (selectedVariant) => {
-  const data = useLoaderData();
+  const [isOpen, setIsOpen] = useState(false);
+  const brands = ['Versace', 'Burberry', 'Gucci ', 'Valentino ', 'YSL', 'Viktor&Rolf'];
+  const [selectedBrand, setSelectedBrand] = useState(null);
+  
 
-  const menProducts = data.menProducts;
+  const data = useLoaderData();
+  
+  const products = data.menProducts?.collection?.products?.edges || [];
+  console.log("Products before filtering:", products);
+  
+
+  // Filter for products with "men" tag with extra logging
+  const menProducts = products.filter(({ node }) => {
+    return node.tags && node.tags.includes('men');
+  });
+
+  console.log("Filtered men products:", menProducts);
+
+
+  const filteredProducts = selectedBrand
+    ? menProducts.filter(
+      ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
+    )
+    : menProducts;
+
 
   const carouselRef = useRef(null);
 
@@ -121,15 +143,9 @@ const Men = (selectedVariant) => {
     }
   };
 
-  const [isOpen, setIsOpen] = useState(false);
-  const brands = ['Versace', 'Burberry', 'Gucci ', 'Valentino ', 'YSL', 'Viktor&Rolf'];
-  const [selectedBrand, setSelectedBrand] = useState(null);
 
-  const filteredProducts = selectedBrand
-    ? menProducts.products.edges.filter(
-      ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
-    )
-    : menProducts.products.edges;
+
+
 
   return (
     <div>
@@ -238,32 +254,72 @@ const Men = (selectedVariant) => {
 
 export default Men;
 
+// const MEN_PRODUCTS_QUERY = `#graphql
+//   query MenProducts {
+//     products(first: 100, query: "tag:men") {
+//       edges {
+//         node {
+//           id
+//           title
+//           handle
+//           tags
+//           vendor
+//           descriptionHtml
+//           images(first: 1) {
+//             edges {
+//               node {
+//                 url
+//               }
+//             }
+//           }
+//           variants(first: 10) {
+//             edges {
+//               node {
+//                 id
+//                 title
+//                 price {
+//                   amount
+//                   currencyCode
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// `;
+
 const MEN_PRODUCTS_QUERY = `#graphql
   query MenProducts {
-    products(first: 100, query: "tag:men") {
-      edges {
-        node {
-          id
-          title
-          handle
-          tags
-          vendor
-          descriptionHtml
-          images(first: 1) {
-            edges {
-              node {
-                url
-              }
+    collection(id: "gid://shopify/Collection/285176168553") {
+      title
+      id
+      products(first: 100) {
+        edges {
+          node {
+            id
+            title
+            handle
+            tags
+            vendor
+            descriptionHtml
+            images(first: 6) {
+              edges {
+                node {
+                  url
+                }  
+              } 
             }
-          }
-          variants(first: 10) {
-            edges {
-              node {
-                id
-                title
-                price {
-                  amount
-                  currencyCode
+            variants(first: 10) {
+              edges {
+                node {
+                  id
+                  title
+                  price {
+                    amount
+                    currencyCode
+                  }
                 }
               }
             }
@@ -400,41 +456,7 @@ const TRENDING_PRODUCTS_QUERY = `#graphql
   }
 `;
 
-// const VENDOR_PRODUCTS_QUERY = `#graphql
-//   query VendorProducts {
-//     products(first: 10) {
-//       edges {
-//         node {
-//           id
-//           title
-//           handle
-//           tags
-//           vendor
-//           descriptionHtml
-//           images(first: 1) {
-//             edges {
-//               node {
-//                 url
-//               }
-//             }
-//           }
-//           variants(first: 10) {
-//             edges {
-//               node {
-//                 id
-//                 title
-//                 price {
-//                   amount
-//                   currencyCode
-//                 }
-//               }
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// `;
+
 
 /** @typedef {import('@shopify/remix-oxygen').LoaderFunctionArgs} LoaderFunctionArgs */
 /** @template T @typedef {import('@remix-run/react').MetaFunction<T>} MetaFunction */

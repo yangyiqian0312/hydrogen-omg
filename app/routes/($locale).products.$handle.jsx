@@ -216,12 +216,12 @@ export default function Product() {
 
       {/* Product Details */}
       <div className="space-y-4 pt-6">
-        <h3 className="font-medium">Product Details</h3>
+        {/* <h3 className="font-medium">Product Details</h3> */}
         <div className="space-y-2 text-sm text-gray-600">
-          <p>
+          {/* <p>
             <span className="font-medium">SKU:</span>{' '}
             {product.selectedOrFirstAvailableVariant.sku}
-          </p>
+          </p> */}
           <div className="mt-2">
             <div
               dangerouslySetInnerHTML={{
@@ -330,12 +330,12 @@ export default function Product() {
       </div>
 
       <div className="space-y-3 pt-6">
-        <h3 className="text-base font-medium">Product Details</h3>
+        {/* <h3 className="text-base font-medium">Product Details</h3> */}
         <div className="space-y-2 text-xs text-gray-600">
-          <p>
+          {/* <p>
             <span className="font-medium">SKU:</span>{' '}
             {product.selectedOrFirstAvailableVariant.sku}
-          </p>
+          </p> */}
           <div className="mt-2">
             <div
               dangerouslySetInnerHTML={{

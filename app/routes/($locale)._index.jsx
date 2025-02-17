@@ -5,7 +5,7 @@ import { Image, Money } from '@shopify/hydrogen';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import { products } from '~/data/products';
-import { Heart, ChevronLeft, ChevronRight, Clock, Gift, ShoppingBag } from 'lucide-react';
+import { Heart, ChevronLeft, ChevronRight, Clock, Gift } from 'lucide-react';
 import OldHeader from '~/components/OldHeader';
 /**
  * @type {MetaFunction}
@@ -38,7 +38,7 @@ async function loadCriticalData({ context }) {
     // Add other queries here, so that they are loaded in parallel
     context.storefront.query(PROMOTING_PRODUCTS_QUERY),
     context.storefront.query(TRENDING_PRODUCTS_QUERY),
-    context.storefront.query(VIDEO_PRODUCTS_QUERY),
+    context.storefront.query(ALL_PRODUCTS_QUERY),
   ]);
   console.table('collections:', collections.nodes);
 
@@ -71,17 +71,19 @@ async function loadDeferredData({ context }) {
     const newProducts = await context.storefront.query(
       NEW_PRODUCTS_QUERY,
     );
-    const videoProducts = await context.storefront.query(
-      VIDEO_PRODUCTS_QUERY,
+
+    const allProducts = await context.storefront.query(
+      ALL_PRODUCTS_QUERY,
     );
+
     // Log the resolved data for debugging
-    console.log('Resolved Data in Loader:', videoProducts);
+    console.log('Resolved Data in Loader:', promotingProducts);
     //console.log('Resolved Data in Loader:', trendingProducts);
     return {
       promotingProducts: promotingProducts || null,
       trendingProducts: trendingProducts || null,
       newProducts: newProducts || null,
-      videoProducts: videoProducts || null,
+      allProducts: allProducts || null,
     };
   } catch (error) {
     // Log query errors, but don't throw them so the page can still render
@@ -221,12 +223,37 @@ export default function Homepage() {
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
 
-  const promotingProducts = data.promotingProducts;
-  const trendingProducts = data.trendingProducts;
-  const videoProducts = data.videoProducts;
-  const newProducts = data.newProducts;
 
-  console.log(videoProducts)
+  const products = data.allProducts?.collection?.products?.edges || [];
+  console.log(products)
+  // const trendingProducts = data.allProducts?.collection?.products?.edges || [];
+  // const newProducts = data.allProducts?.collection?.products?.edges || [];
+
+  // const promotingProducts = data.promotingProducts;
+  // const trendingProducts = data.trendingProducts;
+  // const newProducts = data.newProducts;
+
+
+  const promotingProducts = products.filter(({ node }) => {
+    return node.tags && node.tags.includes('Promoting');
+  });
+
+  console.log("Filtered promoting products:", promotingProducts);
+
+  const trendingProducts = products.filter(({ node }) => {
+    return node.tags && node.tags.includes('Trending');
+  });
+
+  console.log("Filtered trending products:", trendingProducts);
+
+  const newProducts = products.filter(({ node }) => {
+    return node.tags && node.tags.includes('New Products');
+  });
+
+  console.log("Filtered new products:", newProducts);
+
+
+
   const testimonials = [
     {
       id: 1,
@@ -372,7 +399,7 @@ export default function Homepage() {
   ];
 
   // 按照 customOrder 排序
-  const sortedProducts = [...promotingProducts.products.edges].sort((a, b) => {
+  const sortedProducts = [...promotingProducts].sort((a, b) => {
     const indexA = customOrder.indexOf(a.node.title);
     const indexB = customOrder.indexOf(b.node.title);
     return (indexA === -1 ? 9999 : indexA) - (indexB === -1 ? 9999 : indexB);
@@ -416,16 +443,13 @@ export default function Homepage() {
     '/assets/video/1.mp4',
     '/assets/video/2.mp4',
     '/assets/video/3.mp4',
-    // '/assets/video/4.mp4',
+    '/assets/video/4.mp4',
+    '/assets/video/5.mp4',
     // 添加更多视频路径
   ];
 
-  // // Sort video products according to custom order
-  // const sortedVideoProducts = [...videoProducts].sort((a, b) => {
-  //   const indexA = customVideoOrder.indexOf(a.name);
-  //   const indexB = customVideoOrder.indexOf(b.name);
-  //   return (indexA === -1 ? 9999 : indexA) - (indexB === -1 ? 9999 : indexB);
-  // });
+
+
 
   return (
     <div className="home">
@@ -609,6 +633,36 @@ export default function Homepage() {
             </div>
           </div>
 
+          {/* Sale Products 卡片 */}
+          {/* <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 m-2 bg-white hover:shadow-md transition-shadow duration-300">
+            <div className="rounded-xl p-6 text-center">
+              <h3 className="text-lg font-medium">Sale</h3>
+              <div className="relative w-32 h-32 mx-auto mb-4">
+                <div className="absolute inset-0 rounded-full "></div>
+                <div className="relative w-full h-full rounded-full overflow-hidden">
+                  <img
+                    src="./assets/logo.jpeg"
+                    alt="OMG Beauty Shop"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              TODO: CHANGE TT LIVE REDIRECT
+              <button
+                onClick={() =>
+                  window.open(
+                    'https://www.tiktok.com/@omgbeautyshop/live...',
+                    '_blank',
+                    'noopener,noreferrer',
+                  )
+                }
+                className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-3xl text-sm font-medium w-full transition-colors duration-200"
+              >
+                Go To TikTok
+              </button>
+            </div>
+          </div> */}
         </div>
         {/* TODO: ADD SHOW MORE BUTTON */}
 
@@ -625,91 +679,23 @@ export default function Homepage() {
               WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
             }}
           >
-            {videoProducts.products.edges.map(({ node }, index) => (
+            {videoPaths.map((video, index) => (
               <div
-                key={node.id}
-                className="flex-none flex flex-col gap-4 w-60 snap-start"
+                key={index}
+                className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
               >
-                {/* Video Card */}
-                <div className="h-80 rounded-lg overflow-hidden shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative">
-                  <video
-                    src={videoPaths[index]}
-                    className="w-full h-full object-cover"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                  ></video>
-                </div>
-
-   
-                {/* Product Card */}
-                <div className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 group">
-                  {/* Product Image */}
-                  <div className="aspect-square relative overflow-hidden">
-                    <img
-                      src={node.images.edges[0]?.node.url}
-                      alt={node.title}
-                      className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                  </div>
-
-                  {/* Product Info */}
-                  <div className="p-4 space-y-2">
-                    <div className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                      {node.vendor || 'Unknown Brand'}
-                    </div>
-
-                    <p className="text-pink-600 font-bold">
-                      ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                    </p>
-
-                    <Link
-                      to={`/products/${node.handle}`}
-                      onClick={(e) => {
-                        if (!node?.handle) e.preventDefault();
-                      }}
-                      className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-bold transition-colors duration-200"
-                    >
-                      <span>SHOP NOW</span>
-                      <span className="transform transition-transform group-hover:translate-x-1">▸</span>
-                    </Link>
-                  </div>
-                </div>
+                {/* 背景视频 */}
+                <video
+                  src={video}
+                  className="w-full h-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                ></video>
               </div>
             ))}
           </div>
-
-          {/* <div className="">
-            <div
-              ref={carouselRef}
-              className="flex overflow-x-auto snap-x snap-mandatory gap-4 hide-scrollbar scrollbar-hide pb-4"
-            >
-              {videoProducts.products.edges.map(({ node }, index) => (
-                <div
-                  key={node.id}
-                  className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
-                >
-                  <img
-                    src={node.images.edges[0].node.url} // 商品图片 URL
-                    alt={node.title}
-                    className="w-full h-full object-cover" // 确保图片填充整个容器
-                  />
-                  <Link
-                    key={node.id}
-                    to={`/products/${node.handle}`}
-                    onClick={(e) => {
-                      if (!node?.handle) e.preventDefault();
-                    }}
-                    className="font-bold text-blue-600 hover:underline"
-                  >
-                    SHOP NOW ▸
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div> */}
         </div>
 
         {/* <div class="border-t my-4 mx-2 border-gray-300"></div> */}
@@ -732,12 +718,12 @@ export default function Homepage() {
             }}
           >
             {' '}
-            {trendingProducts.products.edges.map(({ node }, index) => (
+            {trendingProducts.map(({ node }, index) => (
               <div
                 key={node.id}
                 className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
               >
-
+                {/* 图片容器，保持方形比例 */}
                 <div className="relative aspect-square">
                   {node.images.edges[0] ? (
                     <img
@@ -756,7 +742,7 @@ export default function Homepage() {
 
                 <div className="m-2">
                   {/* Optional button or additional actions */}
-
+                  {/* SHOP NOW 按钮 */}
                   <Link
                     key={node.id}
                     to={`/products/${node.handle}`}
@@ -803,12 +789,12 @@ export default function Homepage() {
             }}
           >
             {' '}
-            {newProducts.products.edges.map(({ node }, index) => (
+            {newProducts.map(({ node }, index) => (
               <div
                 key={node.id}
                 className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
               >
-               
+           
                 <div className="relative aspect-square">
                   {node.images.edges[0] ? (
                     <img
@@ -826,6 +812,8 @@ export default function Homepage() {
                 </div>
 
                 <div className="m-2">
+   
+   
                   <Link
                     key={node.id}
                     to={`/products/${node.handle}`}
@@ -948,7 +936,7 @@ export default function Homepage() {
                   }}
                   className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
                 >
-                  Explore Sales
+                  Shop Sales
                 </button>
               </div>
             </div>
@@ -1135,7 +1123,7 @@ export default function Homepage() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                  {trendingProducts.products.edges.map(({ node }, index) => (
+                  {trendingProducts.map(({ node }, index) => (
                     <div
                       key={node.id}
                       className={`flex-none w-80 sm:w-60 md:w-72 lg:w-80 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]
@@ -1277,8 +1265,6 @@ export default function Homepage() {
       </div>
 
 
-      {/* <div class="border-t my-4 mx-2 border-gray-300"></div> */}
-
     </div>
   );
 }
@@ -1346,6 +1332,49 @@ function RecommendedProducts({ products }) {
     </div>
   );
 }
+
+
+const ALL_PRODUCTS_QUERY = `
+  query MenProducts {
+    collection(id: "gid://shopify/Collection/285176168553") {
+      title
+      id
+      products(first: 100) {
+        edges {
+          node {
+            id
+            title
+            handle
+            tags
+            vendor
+            descriptionHtml
+            images(first: 6) {
+              edges {
+                node {
+                  url
+                }  
+              } 
+            }
+            variants(first: 10) {
+              edges {
+                node {
+                  id
+                  title
+                  price {
+                    amount
+                    currencyCode
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+
 
 const FEATURED_COLLECTION_QUERY = `#graphql
   fragment FeaturedCollection on Collection {
@@ -1473,42 +1502,6 @@ const TRENDING_PRODUCTS_QUERY = `#graphql
   }
 `;
 
-const VIDEO_PRODUCTS_QUERY = `#graphql
-  query VideoProducts {
-    products(first: 10, query: "tag:Video") {
-      edges {
-        node {
-          id
-          title
-          handle
-          tags
-          vendor
-          descriptionHtml
-          images(first: 1) {
-            edges {
-              node {
-                url
-              }
-            }
-          }
-          variants(first: 10) {
-            edges {
-              node {
-                id
-                title
-                price {
-                  amount
-                  currencyCode
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 const NEW_PRODUCTS_QUERY = `#graphql
   query TrendingProducts {
     products(first: 10, query: "tag:New Product") {
@@ -1545,40 +1538,40 @@ const NEW_PRODUCTS_QUERY = `#graphql
   }
 `;
 
-const ALL_PRODUCTS_QUERY = `
-query AllProduct {
-  products(first: 250, after: null) {
-    edges {
-      node {
-        id
-        title
-        handle
-        description
-        priceRange {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-        images(first: 1) {
-          edges {
-            node {
-              id
-              url
-              altText
-            }
-          }
-        }
-      }
-      cursor
-    }
-    pageInfo {
-      hasNextPage
-    }
-  }
-}
+// const ALL_PRODUCTS_QUERY = `
+// query AllProduct {
+//   products(first: 250, after: null) {
+//     edges {
+//       node {
+//         id
+//         title
+//         handle
+//         description
+//         priceRange {
+//           minVariantPrice {
+//             amount
+//             currencyCode
+//           }
+//         }
+//         images(first: 1) {
+//           edges {
+//             node {
+//               id
+//               url
+//               altText
+//             }
+//           }
+//         }
+//       }
+//       cursor
+//     }
+//     pageInfo {
+//       hasNextPage
+//     }
+//   }
+// }
 
-`;
+// `;
 
 /** @typedef {import('@shopify/remix-oxygen').LoaderFunctionArgs} LoaderFunctionArgs */
 /** @template T @typedef {import('@remix-run/react').MetaFunction<T>} MetaFunction */
