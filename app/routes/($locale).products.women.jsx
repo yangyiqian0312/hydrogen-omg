@@ -242,7 +242,7 @@ const Women = (selectedVariant) => {
                     )}
                   </p>
                 </div>
-                
+
               </div>
             </div>
           ))
@@ -298,7 +298,7 @@ export default Women;
 
 const WOMEN_PRODUCTS_QUERY = `#graphql
   query WomenProducts {
-    collection(id: "gid://shopify/Collection/285176168553") {
+    collection(id: "gid://shopify/Collection/282173505641") {
       title
       id
       products(first: 100) {

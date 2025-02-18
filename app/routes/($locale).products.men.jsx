@@ -298,7 +298,7 @@ export default Men;
 
 const MEN_PRODUCTS_QUERY = `#graphql
   query MenProducts {
-    collection(id: "gid://shopify/Collection/285176168553") {
+    collection(id: "gid://shopify/Collection/282173505641") {
       title
       id
       products(first: 100) {
