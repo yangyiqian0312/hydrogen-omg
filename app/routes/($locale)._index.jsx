@@ -1052,7 +1052,7 @@ export default function Homepage() {
                           className="w-full h-full object-cover"
                         />
                         <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
-                          20% OFF
+                          15% OFF
                         </div>
                       </div>
                       <button className="bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg text-sm font-medium w-full transition-colors duration-200">

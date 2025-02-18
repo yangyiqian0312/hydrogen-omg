@@ -10,8 +10,8 @@ import {
 } from '@shopify/hydrogen';
 import React, { useState, useEffect } from 'react';
 import { ProductPrice } from '~/components/ProductPrice';
-import { ProductImage } from '~/components/ProductImage';
 import { ProductForm } from '~/components/ProductForm';
+import { ProductImage } from '~/components/ProductImage';
 import { Heart, Truck, Store } from 'lucide-react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -314,7 +314,6 @@ export default function Product() {
               selectedVariant={selectedVariant}
             />
           </div>
-
         </div>
 
 

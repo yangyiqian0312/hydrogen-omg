@@ -129,7 +129,7 @@ const Women = (selectedVariant) => {
 
   const products = data.womenProducts?.collection?.products?.edges || [];
   console.log("Products before filtering:", products);
-  
+
 
   // Filter for products with "men" tag with extra logging
   const womenProducts = products.filter(({ node }) => {
@@ -225,18 +225,24 @@ const Women = (selectedVariant) => {
                   {node.vendor || 'Unknown Brand'}
                   <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
                     {node.title
-                      ? node.title.replace(
-                        new RegExp(`^${node.vendor}\\s*`),
-                        ''
-                      )
+                      ? node.title
+                        .replace(new RegExp(`^${node.vendor}\\s*`), '')
+                        .slice(0, -5)
                       : 'N/A'}
                   </p>
                 </Link>
-                <p className="font-bold mb-4">
-                  ${Number(
-                    node.variants.edges[0]?.node.price.amount || 0
-                  ).toFixed(2)}
-                </p>
+
+                <div>
+                  <p className="font-bold mb-4">
+                    ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                    {node.variants.edges[0]?.node.compareAtPrice && (
+                      <span className="ml-2 text-gray-500 line-through">
+                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
+                      </span>
+                    )}
+                  </p>
+                </div>
+                
               </div>
             </div>
           ))
@@ -317,6 +323,10 @@ const WOMEN_PRODUCTS_QUERY = `#graphql
                   id
                   title
                   price {
+                    amount
+                    currencyCode
+                  }
+                  compareAtPrice {
                     amount
                     currencyCode
                   }

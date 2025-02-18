@@ -126,7 +126,7 @@ export default function OldHeader({
   const promos = [
     {
       id: 1,
-      message: "Free shipping on all orders"
+      message: "Free shipping over $30"
     },
     {
       id: 2,
@@ -180,7 +180,7 @@ export default function OldHeader({
             {/* Logo */}
             <div className="flex-shrink-0">
               <Link to="/" className="text-xl md:text-2xl font-bold">
-                OMG BEAUTY
+                OMG BEAUTY BOX
               </Link>
             </div>
 
@@ -192,14 +192,14 @@ export default function OldHeader({
               <Link to="/products/women" className="text-gray-800 hover:text-gray-600">
                 Women
               </Link>
-              <Link to="/products/sales" className="text-gray-800 hover:text-gray-600">
-              Sales & Offers
-              </Link>
               <Link to="/products/giftsets" className="text-gray-800 hover:text-gray-600">
                 Gift Sets
               </Link>
               <Link to="/products/newarrivals" className="text-gray-800 hover:text-gray-600">
                 New Arrivals
+              </Link>
+              <Link to="/products/sales" className="text-gray-800 hover:text-gray-600">
+                Deals & Offers
               </Link>
               {/* <Link to="/mini" className="text-gray-800 hover:text-gray-600">
                 Mini
@@ -251,20 +251,19 @@ export default function OldHeader({
                   Women
                 </Link>
                 <Link
-                  to="/products/sales"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
-                >
-                  Sales & Offers
-                </Link>
-                <Link
                   to="products/giftsets"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
                 >
                   Gift Sets
                 </Link>
-
                 <Link to="/products/newarrivals" className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50">
                   New Arrivals
+                </Link>
+                <Link
+                  to="/products/sales"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
+                >
+                  Deals & Offers
                 </Link>
               </div>
             </div>
