@@ -1,6 +1,6 @@
-import {Link, useNavigate} from '@remix-run/react';
-import {AddToCartButton} from './AddToCartButton';
-import {useAside} from './Aside';
+import { Link, useNavigate } from '@remix-run/react';
+import { AddToCartButton } from './AddToCartButton';
+import { useAside } from './Aside';
 
 /**
  * @param {{
@@ -8,9 +8,9 @@ import {useAside} from './Aside';
  *   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
  * }}
  */
-export function ProductForm({productOptions, selectedVariant}) {
+export function ProductForm({ productOptions, selectedVariant }) {
   const navigate = useNavigate();
-  const {open} = useAside();
+  const { open } = useAside();
   return (
     <div className="product-form">
       {productOptions.map((option) => {
@@ -65,19 +65,21 @@ export function ProductForm({productOptions, selectedVariant}) {
                   return (
                     <button
                       type="button"
-                      className={`product-options-item${
-                        exists && !selected ? ' link' : ''
-                      }`}
                       key={option.name + name}
-                      style={{
-                        border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
-                        opacity: available ? 1 : 0.3,
-                      }}
-                      disabled={!exists}
+                      className={`
+    relative p-3 rounded-lg transition-all duration-200
+    flex flex-col items-center justify-center
+    w-[calc(50%-0.5rem)] h-10 cursor-pointer
+    ${exists && !selected ? 'hover:border-gray-300 hover:bg-gray-50' : ''}
+    ${selected
+                          ? 'border-2 border-black bg-gray-50'
+                          : 'border border-gray-200'
+                        }
+    ${!available || !exists ? 'opacity-40 cursor-not-allowed' : 'opacity-100'}
+  `}
+                      disabled={!exists || !available}
                       onClick={() => {
-                        if (!selected) {
+                        if (!selected && exists) {
                           navigate(`?${variantUriQuery}`, {
                             replace: true,
                             preventScrollReset: true,
@@ -85,7 +87,21 @@ export function ProductForm({productOptions, selectedVariant}) {
                         }
                       }}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
+                      {/* Option Image/Swatch */}
+                      <div className="pointer-events-none w-full aspect-square mb-1 flex items-center justify-center">
+                        <ProductOptionSwatch
+                          swatch={swatch}
+                          name={name}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+
+                      {/* Selected Indicator */}
+                      {selected && (
+                        <div className="pointer-events-none absolute top-1.5 right-1.5 w-3 h-3 bg-black rounded-full flex items-center justify-center">
+                          <div className="w-1.5 h-1.5 bg-white rounded-full" />
+                        </div>
+                      )}
                     </button>
                   );
                 }
@@ -103,12 +119,12 @@ export function ProductForm({productOptions, selectedVariant}) {
         lines={
           selectedVariant
             ? [
-                {
-                  merchandiseId: selectedVariant.id,
-                  quantity: 1,
-                  selectedVariant,
-                },
-              ]
+              {
+                merchandiseId: selectedVariant.id,
+                quantity: 1,
+                selectedVariant,
+              },
+            ]
             : []
         }
       >
@@ -124,7 +140,7 @@ export function ProductForm({productOptions, selectedVariant}) {
  *   name: string;
  * }}
  */
-function ProductOptionSwatch({swatch, name}) {
+function ProductOptionSwatch({ swatch, name }) {
   const image = swatch?.image?.previewImage?.url;
   const color = swatch?.color;
 

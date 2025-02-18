@@ -225,7 +225,7 @@ export default function Homepage() {
 
 
   const products = data.allProducts?.collection?.products?.edges || [];
-  console.log(products)
+  //console.log(products)
   // const trendingProducts = data.allProducts?.collection?.products?.edges || [];
   // const newProducts = data.allProducts?.collection?.products?.edges || [];
 
@@ -238,21 +238,25 @@ export default function Homepage() {
     return node.tags && node.tags.includes('Promoting');
   });
 
-  console.log("Filtered promoting products:", promotingProducts);
+  //console.log("Filtered promoting products:", promotingProducts);
 
   const trendingProducts = products.filter(({ node }) => {
     return node.tags && node.tags.includes('Trending');
   });
 
-  console.log("Filtered trending products:", trendingProducts);
+  //console.log("Filtered trending products:", trendingProducts);
 
   const newProducts = products.filter(({ node }) => {
     return node.tags && node.tags.includes('New Products');
   });
 
-  console.log("Filtered new products:", newProducts);
+  //console.log("Filtered new products:", newProducts);
 
+  const videoProducts = products.filter(({ node }) => {
+    return node.tags && node.tags.includes('Video');
+  });
 
+ // console.log("Filtered video products:", videoProducts);
 
   const testimonials = [
     {
@@ -390,11 +394,11 @@ export default function Homepage() {
 
 
   const customOrder = [
-    "Viktor & Rolf Flowerbomb 2pc Mini Fragrance Gift Set - 7ml EDP & 50ml Body Lotion - Floral Fragrance with Cattleya, Jasmine, and Rose",
-    "GUCCI 3PC SET: 1 X 100ML Bloom EDP + 1 X 100 ML Bloom Body lotion + 1 X 10 ML Bloom EDP Pen Spray - Floral Scent Fragrance Jasmine",
-    "Viktor & Rolf Flowerbomb 3.4 oz/100 ml Eau De Parfum Spray for Women - Full Size Floral Fragrance with Cattleya, Jasmine, and Rose",
-    "BURBERRY Touch Eau de Parfum Natural Spray For Women (3.4oz)",
-    "Carolina Herrera Good Girl Blush Eau de Parfum for Women - 2.7oz / 80ml EDP Spray",
+    "Viktor & Rolf Flowerbomb 2pc Mini Fragrance Gift Set - 7ml EDP & 50ml Body Lotion - Floral Fragrance with Cattleya, Jasmine, and Rose (OMG)",
+    "GUCCI 3PC SET: 1 X 100ML Bloom EDP + 1 X 100 ML Bloom Body lotion + 1 X 10 ML Bloom EDP Pen Spray - Floral Scent Fragrance Jasmine (OMG)",
+    "Viktor & Rolf Flowerbomb 3.4 oz/100 ml Eau De Parfum Spray for Women - Full Size Floral Fragrance with Cattleya, Jasmine, and Rose (OMG)",
+    "BURBERRY Touch Eau de Parfum Natural Spray For Women (3.4oz) (OMG)",
+    "Carolina Herrera Good Girl Blush Eau de Parfum for Women - 2.7oz / 80ml EDP Spray (OMG)",
     "Viktor&Rolf Spicebomb Eau de Toilette Spray for Men 3.04 Oz / 90 ml - Woody, Spicy, Gourmand Scent"
   ];
 
@@ -443,8 +447,8 @@ export default function Homepage() {
     '/assets/video/1.mp4',
     '/assets/video/2.mp4',
     '/assets/video/3.mp4',
-    '/assets/video/4.mp4',
-    '/assets/video/5.mp4',
+    // '/assets/video/4.mp4',
+    // '/assets/video/5.mp4',
     // 添加更多视频路径
   ];
 
@@ -602,7 +606,7 @@ export default function Homepage() {
               <div className="flex flex-col gap-4">
                 <div className="relative w-full h-48 rounded-lg overflow-hidden">
                   <img
-                    src="/assets/presentation/1.png"
+                    src="/assets/category/new.jpg"
                     alt="New arrival product"
                     className="w-full h-full object-cover"
                   />
@@ -674,9 +678,9 @@ export default function Homepage() {
             ref={carouselRef}
             className="flex overflow-x-auto snap-x snap-mandatory gap-2 hide-scrollbar scrollbar-hide"
             style={{
-              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
-              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
-              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              WebkitOverflowScrolling: 'touch',
             }}
           >
             {videoPaths.map((video, index) => (
@@ -684,7 +688,6 @@ export default function Homepage() {
                 key={index}
                 className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
               >
-                {/* 背景视频 */}
                 <video
                   src={video}
                   className="w-full h-full object-cover"
@@ -693,6 +696,16 @@ export default function Homepage() {
                   loop
                   playsInline
                 ></video>
+
+                {/* Shop Now Button */}
+                {videoProducts[index] && (
+                  <Link
+                    to={`/products/${videoProducts[index].node.handle}`}
+                    className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
+                  >
+                    Shop Now
+                  </Link>
+                )}
               </div>
             ))}
           </div>
@@ -858,9 +871,9 @@ export default function Homepage() {
             <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative">
               {/* 背景图片 */}
               <img
-                src="/assets/presentation/3.png"
+                src="/assets/category/women.png"
                 alt="Women's Fragrances"
-                className="w-full h-full object-cover"
+                className="w-full h-auto object-contain"
               />
 
               {/* 文字和按钮容器 */}
@@ -868,7 +881,7 @@ export default function Homepage() {
                 <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
                   Women's Fragrances
                 </h3>
-                <p className="text-white/90 text-xs sm:text-sm mb-3">
+                <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
                   Discover elegant and refined scents
                 </p>
                 <button
@@ -887,9 +900,9 @@ export default function Homepage() {
             <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative">
               {/* 背景图片 */}
               <img
-                src="/assets/presentation/1.png"
+                src="/assets/category/men.png"
                 alt="Women's Fragrances"
-                className="w-full h-full object-cover"
+                className="w-full h-auto object-contain"
               />
 
               {/* 文字和按钮容器 */}
@@ -897,7 +910,7 @@ export default function Homepage() {
                 <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
                   Men's Fragrances
                 </h3>
-                <p className="text-white/90 text-xs sm:text-sm mb-3">
+                <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
                   Discover elegant and refined scents
                 </p>
                 <button
@@ -916,9 +929,9 @@ export default function Homepage() {
             <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative">
               {/* 背景图片 */}
               <img
-                src="/assets/presentation/1.png"
+                src="/assets/category/sales.png"
                 alt="Special Sales"
-                className="w-full h-full object-cover"
+                className="w-full h-auto object-contain"
               />
 
               {/* 文字和按钮容器 */}
@@ -926,7 +939,7 @@ export default function Homepage() {
                 <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
                   Special Sales
                 </h3>
-                <p className="text-white/90 text-xs sm:text-sm mb-3">
+                <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
                   Limited time deals & discounts
                 </p>
                 <button
@@ -945,9 +958,9 @@ export default function Homepage() {
             <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative">
               {/* 背景图片 */}
               <img
-                src="/assets/presentation/2.png"
+                src="/assets/category/gift.png"
                 alt="Gift Sets"
-                className="w-full h-full object-cover"
+                className="w-full h-auto object-contain"
               />
 
               {/* 文字和按钮容器 */}
@@ -955,7 +968,7 @@ export default function Homepage() {
                 <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
                   Gift Sets
                 </h3>
-                <p className="text-white/90 text-xs sm:text-sm mb-3">
+                <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
                   Perfect presents for any occasion
                 </p>
                 <button

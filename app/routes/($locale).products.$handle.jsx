@@ -1,5 +1,5 @@
-import {defer} from '@shopify/remix-oxygen';
-import {useLoaderData} from '@remix-run/react';
+import { defer } from '@shopify/remix-oxygen';
+import { useLoaderData } from '@remix-run/react';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -8,19 +8,19 @@ import {
   getAdjacentAndFirstAvailableVariants,
   useSelectedOptionInUrlParam,
 } from '@shopify/hydrogen';
-import React, {useState, useEffect} from 'react';
-import {ProductPrice} from '~/components/ProductPrice';
-import {ProductImage} from '~/components/ProductImage';
-import {ProductForm} from '~/components/ProductForm';
-import {Heart, Truck, Store} from 'lucide-react';
-import {ChevronLeft, ChevronRight} from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ProductPrice } from '~/components/ProductPrice';
+import { ProductImage } from '~/components/ProductImage';
+import { ProductForm } from '~/components/ProductForm';
+import { Heart, Truck, Store } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 /**
  * @type {MetaFunction<typeof loader>}
  */
-export const meta = ({data}) => {
+export const meta = ({ data }) => {
   return [
-    {title: `OMG BEAUTY | ${data?.product.title ?? ''}`},
+    { title: `OMG BEAUTY | ${data?.product.title ?? ''}` },
     {
       rel: 'canonical',
       href: `/products/${data?.product.handle}`,
@@ -38,7 +38,7 @@ export async function loader(args) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return defer({...deferredData, ...criticalData});
+  return defer({ ...deferredData, ...criticalData });
 }
 
 /**
@@ -46,17 +46,17 @@ export async function loader(args) {
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  * @param {LoaderFunctionArgs}
  */
-async function loadCriticalData({context, params, request}) {
-  const {handle} = params;
-  const {storefront} = context;
+async function loadCriticalData({ context, params, request }) {
+  const { handle } = params;
+  const { storefront } = context;
 
   if (!handle) {
     throw new Error('Expected product handle to be defined');
   }
 
-  const [{product}] = await Promise.all([
+  const [{ product }] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {
-      variables: {handle, selectedOptions: getSelectedProductOptions(request)},
+      variables: { handle, selectedOptions: getSelectedProductOptions(request) },
     }),
     // Add other queries here, so that they are loaded in parallel
   ]);
@@ -64,7 +64,7 @@ async function loadCriticalData({context, params, request}) {
   console.log(product);
 
   if (!product?.id) {
-    throw new Response(null, {status: 404});
+    throw new Response(null, { status: 404 });
   }
 
   return {
@@ -78,7 +78,7 @@ async function loadCriticalData({context, params, request}) {
  * Make sure to not throw any errors here, as it will cause the page to 500.
  * @param {LoaderFunctionArgs}
  */
-function loadDeferredData({context, params}) {
+function loadDeferredData({ context, params }) {
   // Put any API calls that is not critical to be available on first page render
   // For example: product reviews, product recommendations, social feeds.
 
@@ -87,9 +87,9 @@ function loadDeferredData({context, params}) {
 
 export default function Product() {
   /** @type {LoaderReturnData} */
-  const {product} = useLoaderData();
+  const { product } = useLoaderData();
 
-  //console.log(product);
+  console.log(product);
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -107,9 +107,9 @@ export default function Product() {
     selectedOrFirstAvailableVariant: selectedVariant,
   });
 
-  const {title, descriptionHtml} = product;
+  const { title, descriptionHtml } = product;
 
-  //console.log(productOptions);
+  // console.log(productOptions);
 
   const [selectedImage, setSelectedImage] = useState(0);
 
@@ -125,11 +125,10 @@ export default function Product() {
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`rounded-lg overflow-hidden border-2 ${
-                    selectedImage === index
-                      ? 'border-black'
-                      : 'border-transparent'
-                  }`}
+                  className={`rounded-lg overflow-hidden border-2 ${selectedImage === index
+                    ? 'border-black'
+                    : 'border-transparent'
+                    }`}
                 >
                   <img
                     src={image.node.url || '/api/placeholder/400/400'}
@@ -155,6 +154,8 @@ export default function Product() {
             </div>
           </div>
         </div>
+
+
 
         {/* Product Info Section - Desktop */}
         <div className="lg:w-1/3 space-y-4">
@@ -237,7 +238,7 @@ export default function Product() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col">
       {/* Mobile Image Section */}
-      <div className="aspect-square w-full overflow-hidden">
+      {/* <div className="aspect-square w-full overflow-hidden">
         <div
           className="flex h-full transition-transform duration-300 ease-in-out"
           style={{
@@ -255,40 +256,68 @@ export default function Product() {
             </div>
           ))}
         </div>
+      </div> */}
+
+
+      <div className="flex gap-4">
+        {/* Thumbnails on the left */}
+        <div className="flex flex-col gap-3 w-20">
+          {product.images.edges.map((image, index) => (
+            <button
+              key={index}
+              onClick={() => setSelectedImage(index)}
+              className={`rounded-lg overflow-hidden border-2 ${selectedImage === index
+                ? 'border-black'
+                : 'border-transparent'
+                } hover:border-gray-300 transition-colors`}
+            >
+              <img
+                src={image.node?.url}
+                alt={image.node?.altText || `Product view ${index + 1}`}
+                className="w-full aspect-square object-cover"
+              />
+            </button>
+          ))}
+        </div>
+
+        {/* Main Image on the right */}
+        <div className="flex-1">
+          <div className="relative aspect-square rounded-xl overflow-hidden">
+            <img
+              src={product.images.edges[selectedImage]?.node?.url}
+              alt={product.images.edges[selectedImage]?.node?.altText || `Product main view`}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Mobile Product Info */}
       <div className="mt-4 space-y-3">
         <div>
           <h2 className="text-10px text-gray-500">{product.vendor}</h2>
-          <h2 className="text-14px font-medium mt-1">{product.title}</h2>
+          <h2 className="text-14px font-medium mt-1">{product.title.slice(0, -5)}</h2>
           <p className="text-10px text-gray-600 mt-1">{product.category}</p>
         </div>
-        {/* 
-        <div className="text-xs">
-          {product.selectedOrFirstAvailableVariant.availableForSale ? (
-            <span className="text-green-600">In Stock</span>
-          ) : (
-            <span className="text-red-600">Out of Stock</span>
-          )}
-        </div> */}
 
         <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <ProductPrice
-                price={selectedVariant?.price}
-                compareAtPrice={selectedVariant?.compareAtPrice}
-              />
-            </div>
-            <div className="pt-2">
-              <ProductForm
-                productOptions={productOptions}
-                selectedVariant={selectedVariant}
-              />
-            </div>
+
+          <div className="flex items-center gap-2">
+            <ProductPrice
+              price={selectedVariant?.price}
+              compareAtPrice={selectedVariant?.compareAtPrice}
+            />
           </div>
+          <div className="pt-2">
+            <ProductForm
+              productOptions={productOptions}
+              selectedVariant={selectedVariant}
+            />
+          </div>
+
         </div>
+
+
 
         <div className="border rounded-lg p-4 space-y-4 bg-white">
           <div className="flex items-center gap-3">
@@ -300,42 +329,13 @@ export default function Product() {
               </p>
             </div>
           </div>
-          {/* <div className="flex items-center gap-3">
-              <Store className="w-5 h-5" />
-              <div>
-                <p className="text-sm font-medium">Store Pickup</p>
-                <p className="text-xs text-gray-500">
-                  Usually ready in 2 hours
-                </p>
-              </div>
-            </div> */}
         </div>
 
-        {/* <div className="border rounded-lg p-3 space-y-3 bg-white">
-          <div className="flex items-center gap-2">
-            <Truck className="w-4 h-4" />
-            <div>
-              <p className="text-xs font-medium">Free Standard Delivery</p>
-              <p className="text-xs text-gray-500">Arrives within 3-5 business days</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Store className="w-4 h-4" />
-            <div>
-              <p className="text-xs font-medium">Store Pickup</p>
-              <p className="text-xs text-gray-500">Usually ready in 2 hours</p>
-            </div>
-          </div>
-        </div> */}
       </div>
 
       <div className="space-y-3 pt-6">
-        {/* <h3 className="text-base font-medium">Product Details</h3> */}
+        <h3 className="text-base font-medium">Product Details</h3>
         <div className="space-y-2 text-xs text-gray-600">
-          {/* <p>
-            <span className="font-medium">SKU:</span>{' '}
-            {product.selectedOrFirstAvailableVariant.sku}
-          </p> */}
           <div className="mt-2">
             <div
               dangerouslySetInnerHTML={{
@@ -419,7 +419,7 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
 
 const PRODUCT_FRAGMENT = `#graphql
   fragment Product on Product {
-    images(first: 100) {
+    images(first: 3) {
       edges {
         node {
           url

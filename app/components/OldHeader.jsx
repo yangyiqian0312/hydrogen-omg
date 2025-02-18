@@ -198,6 +198,9 @@ export default function OldHeader({
               <Link to="/products/giftsets" className="text-gray-800 hover:text-gray-600">
                 Gift Sets
               </Link>
+              <Link to="/products/newarrivals" className="text-gray-800 hover:text-gray-600">
+                New Arrivals
+              </Link>
               {/* <Link to="/mini" className="text-gray-800 hover:text-gray-600">
                 Mini
               </Link>
@@ -258,6 +261,10 @@ export default function OldHeader({
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
                 >
                   Gift Sets
+                </Link>
+
+                <Link to="/products/newarrivals" className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50">
+                  New Arrivals
                 </Link>
               </div>
             </div>
