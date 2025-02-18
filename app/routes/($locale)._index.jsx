@@ -256,7 +256,7 @@ export default function Homepage() {
     return node.tags && node.tags.includes('Video');
   });
 
- // console.log("Filtered video products:", videoProducts);
+  // console.log("Filtered video products:", videoProducts);
 
   const testimonials = [
     {
@@ -878,12 +878,13 @@ export default function Homepage() {
 
               {/* 文字和按钮容器 */}
               <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
-                <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
-                  Women's Fragrances
+                <h3 className="text-white font-semibold text-2xl sm:text-3xl mb-1">
+                  Women
                 </h3>
                 <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
                   Discover elegant and refined scents
                 </p>
+                <br></br>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -907,12 +908,13 @@ export default function Homepage() {
 
               {/* 文字和按钮容器 */}
               <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
-                <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
-                  Men's Fragrances
+                <h3 className="text-white font-semibold text-2xl sm:text-3xl mb-1">
+                  Men
                 </h3>
                 <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
                   Discover elegant and refined scents
                 </p>
+                <br></br>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -936,12 +938,13 @@ export default function Homepage() {
 
               {/* 文字和按钮容器 */}
               <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
-                <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
-                  Special Sales
+                <h3 className="text-white font-semibold text-2xl sm:text-3xl mb-1">
+                  Sales & Offers
                 </h3>
                 <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
                   Limited time deals & discounts
                 </p>
+                <br></br>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -949,7 +952,7 @@ export default function Homepage() {
                   }}
                   className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
                 >
-                  Shop Sales
+                  Explore Sales
                 </button>
               </div>
             </div>
@@ -965,12 +968,13 @@ export default function Homepage() {
 
               {/* 文字和按钮容器 */}
               <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
-                <h3 className="text-white font-semibold text-lg sm:text-xl mb-1">
+                <h3 className="text-white font-semibold text-2xl sm:text-3xl mb-1">
                   Gift Sets
                 </h3>
                 <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
                   Perfect presents for any occasion
                 </p>
+                <br></br>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -978,7 +982,7 @@ export default function Homepage() {
                   }}
                   className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300"
                 >
-                  Explore Sets
+                  Explore Gifts
                 </button>
               </div>
             </div>

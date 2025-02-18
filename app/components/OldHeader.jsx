@@ -193,7 +193,7 @@ export default function OldHeader({
                 Women
               </Link>
               <Link to="/products/sales" className="text-gray-800 hover:text-gray-600">
-                Sales
+              Sales & Offers
               </Link>
               <Link to="/products/giftsets" className="text-gray-800 hover:text-gray-600">
                 Gift Sets
@@ -254,7 +254,7 @@ export default function OldHeader({
                   to="/products/sales"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
                 >
-                  Sales
+                  Sales & Offers
                 </Link>
                 <Link
                   to="products/giftsets"
