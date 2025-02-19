@@ -227,7 +227,7 @@ const Women = (selectedVariant) => {
                     {node.title
                       ? node.title
                         .replace(new RegExp(`^${node.vendor}\\s*`), '')
-                        .slice(0, -5)
+                        // .slice(0, -5)
                       : 'N/A'}
                   </p>
                 </Link>
