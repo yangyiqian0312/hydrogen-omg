@@ -130,7 +130,7 @@ export default function OldHeader({
     },
     {
       id: 2,
-      message: "20% OFF USE CODE: OMGBEAUTY"
+      message: "New Here ? 20% Off Code: OMGBEAUTY"
     }
   ];
 
