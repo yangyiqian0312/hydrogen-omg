@@ -1271,11 +1271,11 @@ export default function Homepage() {
               </p>
 
               {/* Item and Date */}
-              <div className="text-gray-500 text-sm">
+              {/* <div className="text-gray-500 text-sm">
                 <div className="flex items-center justify-between mt-1">
                   <span>{review.date}</span>
                 </div>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
