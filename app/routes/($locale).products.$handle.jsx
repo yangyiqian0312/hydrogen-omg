@@ -296,7 +296,8 @@ export default function Product() {
       <div className="mt-4 space-y-3">
         <div>
           <h2 className="text-10px text-gray-500">{product.vendor}</h2>
-          <h2 className="text-14px font-medium mt-1">{product.title.slice(0, -5)}</h2>
+          {/* <h2 className="text-14px font-medium mt-1">{product.title.slice(0, -5)}</h2> */}
+          <h2 className="text-14px font-medium mt-1">{product.title}</h2>
           <p className="text-10px text-gray-600 mt-1">{product.category}</p>
         </div>
 
