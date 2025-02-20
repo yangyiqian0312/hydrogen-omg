@@ -69,15 +69,23 @@ function OrdersTable({orders}) {
 
 function EmptyOrders() {
   return (
-    <div>
-      <p>You haven&apos;t placed any orders yet.</p>
-      <br />
-      <p>
-        <Link to="/">Start Shopping →</Link>
+    <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+      <p className="text-lg text-gray-600 mb-6">
+        You haven't placed any orders yet.
       </p>
+      <Link 
+        to="/" 
+        className="inline-flex items-center text-indigo-600 hover:text-indigo-700 font-medium transition duration-150 ease-in-out group"
+      >
+        Start Shopping 
+        <span className="ml-2 group-hover:translate-x-1 transition-transform duration-150">
+          →
+        </span>
+      </Link>
     </div>
   );
 }
+
 
 /**
  * @param {{order: OrderItemFragment}}

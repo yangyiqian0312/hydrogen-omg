@@ -1,5 +1,5 @@
-import {CUSTOMER_UPDATE_MUTATION} from '~/graphql/customer-account/CustomerUpdateMutation';
-import {json} from '@shopify/remix-oxygen';
+import { CUSTOMER_UPDATE_MUTATION } from '~/graphql/customer-account/CustomerUpdateMutation';
+import { json } from '@shopify/remix-oxygen';
 import {
   Form,
   useActionData,
@@ -11,13 +11,13 @@ import {
  * @type {MetaFunction}
  */
 export const meta = () => {
-  return [{title: 'Profile'}];
+  return [{ title: 'Profile' }];
 };
 
 /**
  * @param {LoaderFunctionArgs}
  */
-export async function loader({context}) {
+export async function loader({ context }) {
   await context.customerAccount.handleAuthStatus();
 
   return json({});
@@ -26,11 +26,11 @@ export async function loader({context}) {
 /**
  * @param {ActionFunctionArgs}
  */
-export async function action({request, context}) {
-  const {customerAccount} = context;
+export async function action({ request, context }) {
+  const { customerAccount } = context;
 
   if (request.method !== 'PUT') {
-    return json({error: 'Method not allowed'}, {status: 405});
+    return json({ error: 'Method not allowed' }, { status: 405 });
   }
 
   const form = await request.formData();
@@ -48,7 +48,7 @@ export async function action({request, context}) {
     }
 
     // update customer and possibly password
-    const {data, errors} = await customerAccount.mutate(
+    const { data, errors } = await customerAccount.mutate(
       CUSTOMER_UPDATE_MUTATION,
       {
         variables: {
@@ -71,7 +71,7 @@ export async function action({request, context}) {
     });
   } catch (error) {
     return json(
-      {error: error.message, customer: null},
+      { error: error.message, customer: null },
       {
         status: 400,
       },
@@ -81,52 +81,90 @@ export async function action({request, context}) {
 
 export default function AccountProfile() {
   const account = useOutletContext();
-  const {state} = useNavigation();
+  const { state } = useNavigation();
   /** @type {ActionReturnData} */
   const action = useActionData();
   const customer = action?.customer ?? account?.customer;
 
   return (
-    <div className="account-profile">
-      <h2>My profile</h2>
-      <br />
-      <Form method="PUT">
-        <legend>Personal information</legend>
-        <fieldset>
-          <label htmlFor="firstName">First name</label>
-          <input
-            id="firstName"
-            name="firstName"
-            type="text"
-            autoComplete="given-name"
-            placeholder="First name"
-            aria-label="First name"
-            defaultValue={customer.firstName ?? ''}
-            minLength={2}
-          />
-          <label htmlFor="lastName">Last name</label>
-          <input
-            id="lastName"
-            name="lastName"
-            type="text"
-            autoComplete="family-name"
-            placeholder="Last name"
-            aria-label="Last name"
-            defaultValue={customer.lastName ?? ''}
-            minLength={2}
-          />
-        </fieldset>
+    <div className="max-w-xl mx-auto p-6">
+      <h2 className="text-2xl font-semibold text-gray-900 mb-8">My Profile</h2>
+
+      <Form method="PUT" className="space-y-8">
+        <div>
+          <legend className="text-lg font-medium text-gray-900 mb-6">
+            Personal Information
+          </legend>
+
+          <fieldset className="grid grid-cols-1 gap-6">
+            <div>
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                First Name
+              </label>
+              <input
+                id="firstName"
+                name="firstName"
+                type="text"
+                autoComplete="given-name"
+                placeholder="First name"
+                aria-label="First name"
+                defaultValue={customer.firstName ?? ''}
+                minLength={2}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Last Name
+              </label>
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                autoComplete="family-name"
+                placeholder="Last name"
+                aria-label="Last name"
+                defaultValue={customer.lastName ?? ''}
+                minLength={2}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+          </fieldset>
+        </div>
+
         {action?.error ? (
-          <p>
-            <mark>
-              <small>{action.error}</small>
-            </mark>
+          <p className="bg-red-50 border border-red-200 rounded-md p-4">
+            <small className="text-red-600">{action.error}</small>
           </p>
-        ) : (
-          <br />
-        )}
-        <button type="submit" disabled={state !== 'idle'}>
-          {state !== 'idle' ? 'Updating' : 'Update'}
+        ) : null}
+
+        <button
+          type="submit"
+          disabled={state !== 'idle'}
+          className={`
+       inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm
+       ${state !== 'idle'
+              ? 'bg-indigo-400 cursor-not-allowed'
+              : 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+            }
+     `}
+        >
+          {state !== 'idle' ? (
+            <>
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+              Updating
+            </>
+          ) : 'Update'}
         </button>
       </Form>
     </div>

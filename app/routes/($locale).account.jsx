@@ -59,20 +59,53 @@ function AccountMenu() {
   }
 
   return (
-    <nav role="navigation">
-      <NavLink to="/account/orders" style={isActiveStyle}>
-        Orders &nbsp;
+    <nav role="navigation" className="flex items-center justify-center space-x-6 py-4 border-b">
+      <NavLink 
+        to="/account/orders" 
+        className={({isActive}) => 
+          `text-sm font-medium transition-colors duration-200 ${
+            isActive 
+              ? 'text-indigo-600' 
+              : 'text-gray-600 hover:text-gray-900'
+          }`
+        }
+      >
+        Orders
       </NavLink>
-      &nbsp;|&nbsp;
-      <NavLink to="/account/profile" style={isActiveStyle}>
-        &nbsp; Profile &nbsp;
+      
+      <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+      
+      <NavLink 
+        className={({isActive}) => 
+          `text-sm font-medium transition-colors duration-200 ${
+            isActive 
+              ? 'text-indigo-600' 
+              : 'text-gray-600 hover:text-gray-900'
+          }`
+        }
+        to="/account/profile"
+      >
+        Profile
       </NavLink>
-      &nbsp;|&nbsp;
-      <NavLink to="/account/addresses" style={isActiveStyle}>
-        &nbsp; Addresses &nbsp;
-      </NavLink>
-      &nbsp;|&nbsp;
-      <Logout />
+      
+      <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+      
+      {/* <NavLink 
+        className={({isActive}) => 
+          `text-sm font-medium transition-colors duration-200 ${
+            isActive 
+              ? 'text-indigo-600' 
+              : 'text-gray-600 hover:text-gray-900'
+          }`
+        }
+        to="/account/addresses"
+      >
+        Addresses
+      </NavLink> */}
+      
+      <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+      
+      <Logout className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" />
     </nav>
   );
 }
