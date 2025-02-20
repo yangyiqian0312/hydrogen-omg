@@ -114,7 +114,7 @@ export default function OldHeader({
   };
 
   const handleProfileClick = () => {
-    navigate('/profile');
+    navigate('/account');
   };
 
   const handleLogin = () => {
@@ -229,7 +229,7 @@ export default function OldHeader({
                 onClick={handleProfileClick}
                 className="text-gray-800 hover:text-gray-600"
               >
-                {/* <User className="h-6 w-6 md:block" onClick={handleLogin}/> */}
+                <User className="h-6 w-6 md:block" onClick={handleLogin}/>
               </button>
             </div>
           </div>

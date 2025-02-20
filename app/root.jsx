@@ -114,6 +114,12 @@ async function loadCriticalData({context}) {
 function loadDeferredData({context}) {
   const {storefront, customerAccount, cart} = context;
 
+
+  // added log in 
+  const isLoggedInPromise = context.customerAccount.isLoggedIn();
+
+
+  
   // defer the footer query (below the fold)
   const footer = storefront
     .query(FOOTER_QUERY, {
@@ -128,8 +134,12 @@ function loadDeferredData({context}) {
       return null;
     });
   return {
+
+    isLoggedInPromise,
     cart: cart.get(),
-    isLoggedIn: customerAccount.isLoggedIn(),
+
+
+    // isLoggedIn: customerAccount.isLoggedIn(),
     footer,
   };
 }
@@ -170,6 +180,25 @@ export function Layout({children}) {
 }
 
 export default function App() {
+  // const {isLoggedInPromise} = useLoaderData();
+  // return (
+  //   <html lang="en">
+  //     <body>
+  //       <header className="header">
+  //         <NavLink prefetch="intent" to="/account">
+  //           <Suspense fallback="Sign in">
+  //             <Await resolve={isLoggedInPromise} errorElement="Sign in">
+  //               {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
+  //             </Await>
+  //           </Suspense>
+  //         </NavLink>
+  //       </header>
+        
+        
+  //       <Outlet />
+  //     </body>
+  //   </html>
+  // );
   return <Outlet />;
 }
 
