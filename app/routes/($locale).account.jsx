@@ -1,6 +1,6 @@
-import {json} from '@shopify/remix-oxygen';
-import {Form, NavLink, Outlet, useLoaderData} from '@remix-run/react';
-import {CUSTOMER_DETAILS_QUERY} from '~/graphql/customer-account/CustomerDetailsQuery';
+import { json } from '@shopify/remix-oxygen';
+import { Form, NavLink, Outlet, useLoaderData } from '@remix-run/react';
+import { CUSTOMER_DETAILS_QUERY } from '~/graphql/customer-account/CustomerDetailsQuery';
 
 export function shouldRevalidate() {
   return true;
@@ -9,8 +9,8 @@ export function shouldRevalidate() {
 /**
  * @param {LoaderFunctionArgs}
  */
-export async function loader({context}) {
-  const {data, errors} = await context.customerAccount.query(
+export async function loader({ context }) {
+  const { data, errors } = await context.customerAccount.query(
     CUSTOMER_DETAILS_QUERY,
   );
 
@@ -19,7 +19,7 @@ export async function loader({context}) {
   }
 
   return json(
-    {customer: data.customer},
+    { customer: data.customer },
     {
       headers: {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -30,7 +30,7 @@ export async function loader({context}) {
 
 export default function AccountLayout() {
   /** @type {LoaderReturnData} */
-  const {customer} = useLoaderData();
+  const { customer } = useLoaderData();
 
   const heading = customer
     ? customer.firstName
@@ -41,17 +41,16 @@ export default function AccountLayout() {
   return (
     <div className="account">
       <h1>{heading}</h1>
-      <br />
       <AccountMenu />
       <br />
       <br />
-      <Outlet context={{customer}} />
+      <Outlet context={{ customer }} />
     </div>
   );
 }
 
 function AccountMenu() {
-  function isActiveStyle({isActive, isPending}) {
+  function isActiveStyle({ isActive, isPending }) {
     return {
       fontWeight: isActive ? 'bold' : undefined,
       color: isPending ? 'grey' : 'black',
@@ -59,53 +58,37 @@ function AccountMenu() {
   }
 
   return (
-    <nav role="navigation" className="flex items-center justify-center space-x-6 py-4 border-b">
-      <NavLink 
-        to="/account/orders" 
-        className={({isActive}) => 
-          `text-sm font-medium transition-colors duration-200 ${
-            isActive 
-              ? 'text-indigo-600' 
-              : 'text-gray-600 hover:text-gray-900'
+    <nav role="navigation" className="flex items-center justify-start space-x-8 py-4 mb-8">
+      <NavLink
+        to="/account/orders"
+        className={({ isActive }) =>
+          `text-base font-medium transition-colors duration-200 ${isActive
+            ? 'text-black border-b-2 border-black'
+            : 'text-gray-600 hover:text-black'
           }`
         }
       >
         Orders
       </NavLink>
-      
-      <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
-      
-      <NavLink 
-        className={({isActive}) => 
-          `text-sm font-medium transition-colors duration-200 ${
-            isActive 
-              ? 'text-indigo-600' 
-              : 'text-gray-600 hover:text-gray-900'
+
+      <NavLink
+        className={({ isActive }) =>
+          `text-base font-medium transition-colors duration-200 ${isActive
+            ? 'text-black border-b-2 border-black'
+            : 'text-gray-600 hover:text-black'
           }`
         }
         to="/account/profile"
       >
         Profile
       </NavLink>
-      
-      <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
-      
-      {/* <NavLink 
-        className={({isActive}) => 
-          `text-sm font-medium transition-colors duration-200 ${
-            isActive 
-              ? 'text-indigo-600' 
-              : 'text-gray-600 hover:text-gray-900'
-          }`
-        }
-        to="/account/addresses"
+
+      <button
+        onClick={() => signOut()}
+        className="text-base font-medium text-gray-600 hover:text-black transition-colors duration-200"
       >
-        Addresses
-      </NavLink> */}
-      
-      <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
-      
-      <Logout className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" />
+        Sign out
+      </button>
     </nav>
   );
 }
