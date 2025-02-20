@@ -83,12 +83,7 @@ function AccountMenu() {
         Profile
       </NavLink>
 
-      <button
-        onClick={() => signOut()}
-        className="text-base font-medium text-gray-600 hover:text-black transition-colors duration-200"
-      >
-        Sign out
-      </button>
+      <Logout className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200" />
     </nav>
   );
 }

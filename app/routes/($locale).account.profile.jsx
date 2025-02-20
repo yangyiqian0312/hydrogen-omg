@@ -151,8 +151,8 @@ export default function AccountProfile() {
           className={`
        inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm
        ${state !== 'idle'
-              ? 'bg-indigo-400 cursor-not-allowed'
-              : 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+              ? 'bg-pink-200 cursor-not-allowed'
+              : 'bg-pink-200 hover:bg-pink-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
             }
      `}
         >
