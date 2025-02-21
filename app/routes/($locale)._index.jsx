@@ -402,6 +402,11 @@ export default function Homepage() {
     "Viktor&Rolf Spicebomb Eau de Toilette Spray for Men 3.04 Oz / 90 ml - Woody, Spicy, Gourmand Scent"
   ];
 
+  // Create image mapping
+  const imageMapping = Object.fromEntries(
+    customOrder.map((title, index) => [title, index])
+  );
+
   // 按照 customOrder 排序
   const sortedProducts = [...promotingProducts].sort((a, b) => {
     const indexA = customOrder.indexOf(a.node.title);
@@ -509,39 +514,42 @@ export default function Homepage() {
         ))} */}
 
 
-        {sortedProducts.map(({ node }, index) => (
-          <div
-            key={node.id}
-            className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
-          >
-            <div className="relative aspect-square">
-              <img
-                src={`/assets/presentation/${index}.png`} // 动态生成图片路径
-                alt={node.title}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="p-6">
-              <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
-                {node.vendor || 'Unknown Brand'}
+        {sortedProducts.map(({ node }) => {
+          // Get correct image index from mapping
+          const imageIndex = imageMapping[node.title] ?? 0;
+
+          return (
+            <div
+              key={node.id}
+              className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[imageIndex % bgColors.length]}`}
+            >
+              <div className="relative aspect-square">
+                <img
+                  src={`/assets/presentation/${imageIndex}.png`}
+                  alt={node.title}
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <p className="text-pink-600 font-bold mb-4">
-                $
-                {Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-              </p>
-              <Link
-                key={node.id}
-                to={`/products/${node.handle}`}
-                onClick={(e) => {
-                  if (!node?.handle) e.preventDefault();
-                }}
-                className="font-bold text-blue-600 hover:underline"
-              >
-                SHOP NOW ▸
-              </Link>
+              <div className="p-6">
+                <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
+                  {node.vendor || 'Unknown Brand'}
+                </div>
+                <p className="text-pink-600 font-bold mb-4">
+                  ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                </p>
+                <Link
+                  to={`/products/${node.handle}`}
+                  onClick={(e) => {
+                    if (!node?.handle) e.preventDefault();
+                  }}
+                  className="font-bold text-blue-600 hover:underline"
+                >
+                  SHOP NOW ▸
+                </Link>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
 
