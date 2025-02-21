@@ -225,7 +225,7 @@ export default function Homepage() {
 
 
   const products = data.allProducts?.collection?.products?.edges || [];
-  //console.log(products)
+  console.log(products)
   // const trendingProducts = data.allProducts?.collection?.products?.edges || [];
   // const newProducts = data.allProducts?.collection?.products?.edges || [];
 
@@ -238,7 +238,7 @@ export default function Homepage() {
     return node.tags && node.tags.includes('Promoting');
   });
 
-  //console.log("Filtered promoting products:", promotingProducts);
+  console.log("Filtered promoting products:", promotingProducts);
 
   const trendingProducts = products.filter(({ node }) => {
     return node.tags && node.tags.includes('Trending');
@@ -394,11 +394,11 @@ export default function Homepage() {
 
 
   const customOrder = [
-    "Viktor & Rolf Flowerbomb 2pc Mini Fragrance Gift Set - 7ml EDP & 50ml Body Lotion - Floral Fragrance with Cattleya, Jasmine, and Rose ",
-    "GUCCI 3PC SET: 1 X 100ML Bloom EDP + 1 X 100 ML Bloom Body lotion + 1 X 10 ML Bloom EDP Pen Spray - Floral Scent Fragrance Jasmine ",
+    "Viktor & Rolf Flowerbomb 2pc Mini Fragrance Gift Set - 7ml EDP & 50ml Body Lotion - Floral Fragrance with Cattleya, Jasmine, and Rose",
+    "GUCCI 3PC SET: 1 X 100ML Bloom EDP + 1 X 100 ML Bloom Body lotion + 1 X 10 ML Bloom EDP Pen Spray - Floral Scent Fragrance Jasmine",
     "Viktor & Rolf Flowerbomb 3.4 oz/100 ml Eau De Parfum Spray for Women - Full Size Floral Fragrance with Cattleya, Jasmine, and Rose",
-    "BURBERRY Touch Eau de Parfum Natural Spray For Women (3.4oz) ",
-    "Carolina Herrera Good Girl Blush Eau de Parfum for Women - 2.7oz / 80ml EDP Spray ",
+    "BURBERRY Touch Eau de Parfum Natural Spray For Women (3.4oz)",
+    "Carolina Herrera Good Girl Blush Eau de Parfum for Women - 2.7oz / 80ml EDP Spray",
     "Viktor&Rolf Spicebomb Eau de Toilette Spray for Men 3.04 Oz / 90 ml - Woody, Spicy, Gourmand Scent"
   ];
 
@@ -1353,7 +1353,7 @@ function RecommendedProducts({ products }) {
 
 const ALL_PRODUCTS_QUERY = `
   query MenProducts {
-    collection(id: "gid://shopify/Collection/285176168553") {
+    collection(id: "gid://shopify/Collection/282173505641") {
       title
       id
       products(first: 100) {
