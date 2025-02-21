@@ -394,11 +394,11 @@ export default function Homepage() {
 
 
   const customOrder = [
-    "Viktor & Rolf Flowerbomb 2pc Mini Fragrance Gift Set - 7ml EDP & 50ml Body Lotion - Floral Fragrance with Cattleya, Jasmine, and Rose (OMG)",
-    "GUCCI 3PC SET: 1 X 100ML Bloom EDP + 1 X 100 ML Bloom Body lotion + 1 X 10 ML Bloom EDP Pen Spray - Floral Scent Fragrance Jasmine (OMG)",
-    "Viktor & Rolf Flowerbomb 3.4 oz/100 ml Eau De Parfum Spray for Women - Full Size Floral Fragrance with Cattleya, Jasmine, and Rose (OMG)",
-    "BURBERRY Touch Eau de Parfum Natural Spray For Women (3.4oz) (OMG)",
-    "Carolina Herrera Good Girl Blush Eau de Parfum for Women - 2.7oz / 80ml EDP Spray (OMG)",
+    "Viktor & Rolf Flowerbomb 2pc Mini Fragrance Gift Set - 7ml EDP & 50ml Body Lotion - Floral Fragrance with Cattleya, Jasmine, and Rose ",
+    "GUCCI 3PC SET: 1 X 100ML Bloom EDP + 1 X 100 ML Bloom Body lotion + 1 X 10 ML Bloom EDP Pen Spray - Floral Scent Fragrance Jasmine ",
+    "Viktor & Rolf Flowerbomb 3.4 oz/100 ml Eau De Parfum Spray for Women - Full Size Floral Fragrance with Cattleya, Jasmine, and Rose",
+    "BURBERRY Touch Eau de Parfum Natural Spray For Women (3.4oz) ",
+    "Carolina Herrera Good Girl Blush Eau de Parfum for Women - 2.7oz / 80ml EDP Spray ",
     "Viktor&Rolf Spicebomb Eau de Toilette Spray for Men 3.04 Oz / 90 ml - Woody, Spicy, Gourmand Scent"
   ];
 
