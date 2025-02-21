@@ -393,7 +393,7 @@ export default function Homepage() {
 
 
 
-  const customOrder = [
+  const preferredOrder = [
     "Viktor & Rolf Flowerbomb 2pc Mini Fragrance Gift Set - 7ml EDP & 50ml Body Lotion - Floral Fragrance with Cattleya, Jasmine, and Rose",
     "GUCCI 3PC SET: 1 X 100ML Bloom EDP + 1 X 100 ML Bloom Body lotion + 1 X 10 ML Bloom EDP Pen Spray - Floral Scent Fragrance Jasmine",
     "Viktor & Rolf Flowerbomb 3.4 oz/100 ml Eau De Parfum Spray for Women - Full Size Floral Fragrance with Cattleya, Jasmine, and Rose",
@@ -402,18 +402,18 @@ export default function Homepage() {
     "Viktor&Rolf Spicebomb Eau de Toilette Spray for Men 3.04 Oz / 90 ml - Woody, Spicy, Gourmand Scent"
   ];
 
-  // Create image mapping
-  const imageMapping = Object.fromEntries(
-    customOrder.map((title, index) => [title, index])
+  // 找出優先顯示的產品
+  const priorityProducts = preferredOrder
+    .map(title => promotingProducts.find(({ node }) => node.title === title))
+    .filter(Boolean);
+
+  // 找出其他產品
+  const otherProducts = promotingProducts.filter(
+    ({ node }) => !preferredOrder.includes(node.title)
   );
 
-  // 按照 customOrder 排序
-  const sortedProducts = [...promotingProducts].sort((a, b) => {
-    const indexA = customOrder.indexOf(a.node.title);
-    const indexB = customOrder.indexOf(b.node.title);
-    return (indexA === -1 ? 9999 : indexA) - (indexB === -1 ? 9999 : indexB);
-  });
-
+  // 合併所有產品
+  const orderedProducts = [...priorityProducts, ...otherProducts];
 
   const handleTouchStart = (e) => {
     setTouchStart(e.touches[0].clientX);
@@ -514,42 +514,37 @@ export default function Homepage() {
         ))} */}
 
 
-        {sortedProducts.map(({ node }) => {
-          // Get correct image index from mapping
-          const imageIndex = imageMapping[node.title] ?? 0;
-
-          return (
-            <div
-              key={node.id}
-              className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[imageIndex % bgColors.length]}`}
-            >
-              <div className="relative aspect-square">
-                <img
-                  src={`/assets/presentation/${imageIndex}.png`}
-                  alt={node.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
-                  {node.vendor || 'Unknown Brand'}
-                </div>
-                <p className="text-pink-600 font-bold mb-4">
-                  ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                </p>
-                <Link
-                  to={`/products/${node.handle}`}
-                  onClick={(e) => {
-                    if (!node?.handle) e.preventDefault();
-                  }}
-                  className="font-bold text-blue-600 hover:underline"
-                >
-                  SHOP NOW ▸
-                </Link>
-              </div>
+        {orderedProducts.map(({ node }, index) => (
+          <div
+            key={node.id}
+            className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
+          >
+            <div className="relative aspect-square">
+              <img
+                src={`/assets/presentation/${index}.png`}
+                alt={node.title}
+                className="w-full h-full object-cover"
+              />
             </div>
-          );
-        })}
+            <div className="p-6">
+              <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
+                {node.vendor || 'Unknown Brand'}
+              </div>
+              <p className="text-pink-600 font-bold mb-4">
+                ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+              </p>
+              <Link
+                to={`/products/${node.handle}`}
+                onClick={(e) => {
+                  if (!node?.handle) e.preventDefault();
+                }}
+                className="font-bold text-blue-600 hover:underline"
+              >
+                SHOP NOW ▸
+              </Link>
+            </div>
+          </div>
+        ))}
       </div>
 
 
