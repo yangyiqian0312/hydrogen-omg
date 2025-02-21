@@ -88,7 +88,7 @@ export default function AccountProfile() {
 
   return (
     <div className="max-w-xl mx-auto p-6">
-      <h2 className="text-2xl font-semibold text-gray-900 mb-8">My Profile</h2>
+      <h2 className="text-2xl font-semibold text-gray-900 mb-2">My Profile</h2>
 
       <Form method="PUT" className="space-y-8">
         <div>
