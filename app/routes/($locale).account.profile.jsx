@@ -87,7 +87,7 @@ export default function AccountProfile() {
   const customer = action?.customer ?? account?.customer;
 
   return (
-    <div className="max-w-xl mx-auto p-1">
+    <div className="max-w-xl mx-auto">
       <h2 className="text-2xl font-semibold text-gray-900 mb-2">My Profile</h2>
 
       <Form method="PUT" className="space-y-8">
