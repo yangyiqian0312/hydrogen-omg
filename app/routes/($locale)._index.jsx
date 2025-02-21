@@ -521,7 +521,7 @@ export default function Homepage() {
           >
             <div className="relative aspect-square">
               <img
-                src={`/assets/presentation/${index}.png`}
+                src={`/assets/presentation/${index + 1}.png`}
                 alt={node.title}
                 className="w-full h-full object-cover"
               />
