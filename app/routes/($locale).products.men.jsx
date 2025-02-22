@@ -97,7 +97,7 @@ async function loadDeferredData({ context }) {
 
 const Men = (selectedVariant) => {
   const [isOpen, setIsOpen] = useState(false);
-  const brands = ['Versace', 'Burberry', 'Gucci ', 'Valentino ', 'YSL', 'Viktor&Rolf'];
+  const brands = ['Versace', 'Burberry', 'Gucci ', 'Valentino ', 'Viktor & Rolf'];
   const [selectedBrand, setSelectedBrand] = useState(null);
 
 

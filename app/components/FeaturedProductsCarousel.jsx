@@ -220,7 +220,7 @@ export function FeaturedProductsCarousel() {
                 </div>
 
                 {/* New Arrivals */}
-                <div className="bg-gradient-to-br from-pink-50 to-white rounded-xl p-6">
+                {/* <div className="bg-gradient-to-br from-pink-50 to-white rounded-xl p-6">
                   <h3 className="font-medium text-lg mb-2">New Arrivals</h3>
                   <p className="text-sm text-gray-600 mb-4">
                     Introducing our latest collection
@@ -240,7 +240,7 @@ export function FeaturedProductsCarousel() {
                       Shop Now
                     </button>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Flash Sale */}
                 <div className="bg-gradient-to-br from-red-600 to-red-700 text-white rounded-xl p-6">
