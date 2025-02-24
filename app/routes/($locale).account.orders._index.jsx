@@ -71,7 +71,7 @@ function EmptyOrders() {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
       <h2 className="text-xl font-medium text-gray-900 mb-6">
-        Looks like you haven't added anything yet, let's get you started!
+        You haven't placed any orders yet.
       </h2>
       <Link
         to="/"
