@@ -92,7 +92,7 @@ function OrderItem({ order }) {
   return (
     <>
       <fieldset>
-        <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 p-5 border border-gray-100">
+        <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 p-3 border border-gray-100">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="flex flex-col">
               <Link
