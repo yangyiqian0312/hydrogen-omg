@@ -67,76 +67,63 @@ export default function OrderRoute() {
   } = useLoaderData();
   return (
     <div className="max-w-4xl mx-auto p-4 bg-white rounded-lg shadow-md">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-1 pb-6 border-b border-gray-100">
-        <div>
-          <span className="inline-block px-3 py-1 text-pink-400 rounded-full text-sm font-medium mb-3">
-            Order {order.name}
-          </span>
-          <h2 className="text-2xl font-bold text-gray-900">Order Details</h2>
-          <p className="text-gray-500 mt-2">
-            Placed on {new Date(order.processedAt).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </p>
-        </div>
+      <tr className="hover:bg-gray-50">
+        <td className="py-4 flex items-start space-x-4">
+          {lineItem.variant?.image && (
+            <img
+              src={lineItem.variant.image.url}
+              alt={lineItem.title}
+              className="w-16 h-20 object-cover border border-gray-200 rounded"
+            />
+          )}
+          <div>
+            <h4 className="font-bold text-gray-900">{lineItem.title}</h4>
+            <p className="text-gray-600 mt-1">Returnable until {new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
 
-        {/* <div className="mt-4 md:mt-0">
-          <div className="inline-block px-4 py-2 bg-gray-50 text-gray-700 rounded-full font-medium">
-            {fulfillmentStatus || 'Processing'}
+            {lineItem.variant && (
+              <>
+                <div className="mt-1">
+                  <span className="font-semibold text-gray-700">Color:</span> {lineItem.variant.title.split(' / ')[0] || 'Default'}
+                </div>
+
+                <div className="mt-1">
+                  <span className="font-semibold text-gray-700">Size:</span> {lineItem.variant.title.split(' / ')[1] || 'One Size'}
+                </div>
+
+                {lineItem.variant.title.includes('7/8') && (
+                  <div className="mt-1">
+                    <span className="font-semibold text-gray-700">Length:</span> 7/8 24.5"
+                  </div>
+                )}
+              </>
+            )}
+
+            <div className="mt-2">
+              <span className="font-semibold text-gray-700">Quantity:</span> {lineItem.quantity}
+            </div>
+
+            <div className="mt-3 space-x-3">
+              <a href="#" className="text-black font-medium hover:underline">Buy it again</a>
+              <span className="text-gray-300">|</span>
+              <a href="#" className="text-black font-medium hover:underline">Shop All {lineItem.variant?.title.split(' / ')[0] || 'Items'}</a>
+            </div>
           </div>
-        </div> */}
-      </div>
+        </td>
 
-      <div className="rounded-lg p-6 mb-8">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Items</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th scope="col" className="py-4 text-left font-semibold text-gray-700 text-sm uppercase tracking-wider">Product</th>
-                <th scope="col" className="py-4 text-right font-semibold text-gray-700 text-sm uppercase tracking-wider">Price</th>
-                <th scope="col" className="py-4 text-right font-semibold text-gray-700 text-sm uppercase tracking-wider">Quantity</th>
-                <th scope="col" className="py-4 text-right font-semibold text-gray-700 text-sm uppercase tracking-wider">Total</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {lineItems.map((lineItem, lineItemIndex) => (
-                <OrderLineRow key={lineItemIndex} lineItem={lineItem} />
-              ))}
-            </tbody>
-            <tfoot>
-              {((discountValue && discountValue.amount) || discountPercentage) && (
-                <tr className="text-green-600">
-                  <th scope="row" colSpan={3} className="py-4 text-left font-medium">Discounts</th>
-                  <td className="py-4 text-right font-medium">
-                    {discountPercentage ? (
-                      <span>-{discountPercentage}% OFF</span>
-                    ) : (
-                      discountValue && <Money data={discountValue} />
-                    )}
-                  </td>
-                </tr>
-              )}
-              <tr className="border-t border-gray-200">
-                <th scope="row" colSpan={3} className="py-4 text-left text-gray-600">Subtotal</th>
-                <td className="py-4 text-right text-gray-600"><Money data={order.subtotal} /></td>
-              </tr>
-              <tr>
-                <th scope="row" colSpan={3} className="py-4 text-left text-gray-600">Tax</th>
-                <td className="py-4 text-right text-gray-600"><Money data={order.totalTax} /></td>
-              </tr>
-              <tr className="font-bold text-lg">
-                <th scope="row" colSpan={3} className="py-4 text-left text-gray-900">Total</th>
-                <td className="py-4 text-right text-gray-900"><Money data={order.totalPrice} /></td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </div>
+        <td className="py-4 text-right align-top">
+          <Money data={lineItem.variant.price} />
+        </td>
 
-      <div className="grid md:grid-cols-2 gap-8 mb-8">
+        <td className="py-4 text-right align-top">
+          {lineItem.quantity}
+        </td>
+
+        <td className="py-4 text-right align-top font-medium">
+          <Money data={lineItem.totalPrice} />
+        </td>
+      </tr>
+
+      {/* <div className="grid md:grid-cols-2 gap-8 mb-8">
         <div className="rounded-lg p-6">
           <h3 className="text-lg font-semibold mb-4 text-gray-900 flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -160,7 +147,7 @@ export default function OrderRoute() {
           )}
         </div>
 
-        {/* <div className="bg-gray-50 rounded-lg p-6">
+        <div className="bg-gray-50 rounded-lg p-6">
           <h3 className="text-lg font-semibold mb-4 text-gray-900 flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
@@ -182,15 +169,15 @@ export default function OrderRoute() {
               <span>Credit Card</span>
             </div>
           </div>
-        </div> */}
-      </div>
+        </div>
+      </div> */}
 
       <div className="flex justify-center mt-10">
         <a
           target="_blank"
           href={order.statusPageUrl}
           rel="noreferrer"
-          className="inline-flex items-center px-6 py-3 bg-pink-300 hover:bg-pink-400 text-white font-medium rounded-lg transition duration-150 ease-in-out"
+          className="inline-flex items-center px-6 py-3 bg-pink-200 hover:bg-pink-300 text-white font-medium rounded-lg transition duration-150 ease-in-out"
         >
           Track Your Order
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
