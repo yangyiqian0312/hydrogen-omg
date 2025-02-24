@@ -1025,7 +1025,7 @@ export default function Homepage() {
                       <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
                       <div className="relative w-full h-full rounded-full overflow-hidden">
                         <img
-                          src="/logo.jpeg" // Path to your logo in public folder
+                          src="/assets/logo/logo.png" // Path to your logo in public folder
                           alt="OMG Beauty Shop"
                           className="w-full h-full object-cover"
                         />
@@ -1042,7 +1042,7 @@ export default function Homepage() {
                   </div>
 
                   {/* New Arrivals */}
-                  <div className="bg-gradient-to-br from-pink-50 to-white rounded-xl p-6">
+                  {/* <div className="bg-gradient-to-br from-pink-50 to-white rounded-xl p-6">
                     <h3 className="font-medium text-lg mb-2">New Arrivals</h3>
                     <p className="text-sm text-gray-600 mb-4">
                       Introducing our latest collection
@@ -1062,69 +1062,8 @@ export default function Homepage() {
                         Shop Now
                       </button>
                     </div>
-                  </div>
+                  </div> */}
 
-                  {/* Flash Sale */}
-                  <div className="bg-gradient-to-br from-red-600 to-red-700 text-white rounded-xl p-6">
-                    <div className="text-center">
-                      <h3 className="font-medium text-xl mb-2">FLASH SALE</h3>
-                      <p className="text-sm text-white/90 mb-4">
-                        Limited time offer
-                      </p>
-                      <div className="flex justify-center gap-2">
-                        {/* Hours */}
-                        <div className="flex gap-2">
-                          {String(timeLeft.hours)
-                            .padStart(2, '0')
-                            .split('')
-                            .map((digit, idx) => (
-                              <div
-                                key={`hours-${idx}`}
-                                className="bg-white text-red-600 w-10 h-12 rounded-lg flex items-center justify-center text-xl font-bold"
-                              >
-                                {digit}
-                              </div>
-                            ))}
-                          <div className="flex items-center text-2xl px-1">
-                            :
-                          </div>
-                        </div>
-
-                        {/* Minutes */}
-                        <div className="flex gap-2">
-                          {String(timeLeft.minutes)
-                            .padStart(2, '0')
-                            .split('')
-                            .map((digit, idx) => (
-                              <div
-                                key={`minutes-${idx}`}
-                                className="bg-white text-red-600 w-10 h-12 rounded-lg flex items-center justify-center text-xl font-bold"
-                              >
-                                {digit}
-                              </div>
-                            ))}
-                          <div className="flex items-center text-2xl px-1">
-                            :
-                          </div>
-                        </div>
-
-                        {/* Seconds */}
-                        <div className="flex gap-2">
-                          {String(timeLeft.seconds)
-                            .padStart(2, '0')
-                            .split('')
-                            .map((digit, idx) => (
-                              <div
-                                key={`seconds-${idx}`}
-                                className="bg-white text-red-600 w-10 h-12 rounded-lg flex items-center justify-center text-xl font-bold"
-                              >
-                                {digit}
-                              </div>
-                            ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

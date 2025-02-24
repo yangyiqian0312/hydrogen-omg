@@ -66,7 +66,7 @@ export default function OrderRoute() {
     fulfillmentStatus,
   } = useLoaderData();
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-pink-50 rounded-lg shadow-md">
+    <div className="max-w-4xl mx-auto p-6 rounded-lg shadow-md">
       <div className="mb-8">
         <h2 className="text-2xl font-semibold text-gray-900 mb-2">Order {order.name}</h2>
         <p className="text-gray-600">Placed on {new Date(order.processedAt).toDateString()}</p>

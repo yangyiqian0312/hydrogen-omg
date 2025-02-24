@@ -1,29 +1,29 @@
-import {Link, useLoaderData} from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react';
 import {
   Money,
   getPaginationVariables,
   flattenConnection,
 } from '@shopify/hydrogen';
-import {json} from '@shopify/remix-oxygen';
-import {CUSTOMER_ORDERS_QUERY} from '~/graphql/customer-account/CustomerOrdersQuery';
-import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
+import { json } from '@shopify/remix-oxygen';
+import { CUSTOMER_ORDERS_QUERY } from '~/graphql/customer-account/CustomerOrdersQuery';
+import { PaginatedResourceSection } from '~/components/PaginatedResourceSection';
 
 /**
  * @type {MetaFunction}
  */
 export const meta = () => {
-  return [{title: 'Orders'}];
+  return [{ title: 'Orders' }];
 };
 
 /**
  * @param {LoaderFunctionArgs}
  */
-export async function loader({request, context}) {
+export async function loader({ request, context }) {
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 20,
   });
 
-  const {data, errors} = await context.customerAccount.query(
+  const { data, errors } = await context.customerAccount.query(
     CUSTOMER_ORDERS_QUERY,
     {
       variables: {
@@ -36,13 +36,13 @@ export async function loader({request, context}) {
     throw Error('Customer orders not found');
   }
 
-  return json({customer: data.customer});
+  return json({ customer: data.customer });
 }
 
 export default function Orders() {
   /** @type {LoaderReturnData} */
-  const {customer} = useLoaderData();
-  const {orders} = customer;
+  const { customer } = useLoaderData();
+  const { orders } = customer;
   return (
     <div className="orders">
       {orders.nodes.length ? <OrdersTable orders={orders} /> : <EmptyOrders />}
@@ -53,12 +53,12 @@ export default function Orders() {
 /**
  * @param {Pick<CustomerOrdersFragment, 'orders'>}
  */
-function OrdersTable({orders}) {
+function OrdersTable({ orders }) {
   return (
     <div className="acccount-orders">
       {orders?.nodes.length ? (
         <PaginatedResourceSection connection={orders}>
-          {({node: order}) => <OrderItem key={order.id} order={order} />}
+          {({ node: order }) => <OrderItem key={order.id} order={order} />}
         </PaginatedResourceSection>
       ) : (
         <EmptyOrders />
@@ -70,17 +70,14 @@ function OrdersTable({orders}) {
 function EmptyOrders() {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-      <p className="text-lg text-gray-600 mb-6">
-        You haven't placed any orders yet.
-      </p>
-      <Link 
-        to="/" 
-        className="inline-flex items-center text-indigo-600 hover:text-indigo-700 font-medium transition duration-150 ease-in-out group"
+      <h2 className="text-xl font-medium text-gray-900 mb-6">
+        Looks like you haven't added anything yet, let's get you started!
+      </h2>
+      <Link
+        to="/"
+        className="flex items-center justify-center bg-pink-200 text-gray-800 font-medium py-3 px-8 rounded-full w-64 transition-all duration-150 hover:bg-pink-300"
       >
-        Start Shopping 
-        <span className="ml-2 group-hover:translate-x-1 transition-transform duration-150">
-          →
-        </span>
+        Continue shopping →
       </Link>
     </div>
   );
@@ -90,7 +87,7 @@ function EmptyOrders() {
 /**
  * @param {{order: OrderItemFragment}}
  */
-function OrderItem({order}) {
+function OrderItem({ order }) {
   const fulfillmentStatus = flattenConnection(order.fulfillments)[0]?.status;
   return (
     <>
