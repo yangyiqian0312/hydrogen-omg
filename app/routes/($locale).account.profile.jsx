@@ -149,7 +149,7 @@ export default function AccountProfile() {
           type="submit"
           disabled={state !== 'idle'}
           className={`
-       inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm
+       inline-flex justify-center rounded-md border border-transparent px-4 py-1 text-sm font-medium text-white shadow-sm
        ${state !== 'idle'
               ? 'bg-pink-200 cursor-not-allowed'
               : 'bg-pink-200 hover:bg-pink-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'

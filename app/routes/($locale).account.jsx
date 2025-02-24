@@ -42,8 +42,6 @@ export default function AccountLayout() {
     <div className="account">
       <h1>{heading}</h1>
       <AccountMenu />
-      <br />
-      <br />
       <Outlet context={{ customer }} />
     </div>
   );
