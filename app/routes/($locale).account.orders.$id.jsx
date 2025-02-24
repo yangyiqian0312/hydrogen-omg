@@ -67,9 +67,9 @@ export default function OrderRoute() {
   } = useLoaderData();
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 pb-6 border-b border-gray-100">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-1 pb-6 border-b border-gray-100">
         <div>
-          <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-3">
+          <span className="inline-block px-3 py-1 bg-blue-50 text-pink-300 rounded-full text-sm font-medium mb-3">
             Order {order.name}
           </span>
           <h2 className="text-2xl font-bold text-gray-900">Order Details</h2>
@@ -82,14 +82,14 @@ export default function OrderRoute() {
           </p>
         </div>
 
-        <div className="mt-4 md:mt-0">
+        {/* <div className="mt-4 md:mt-0">
           <div className="inline-block px-4 py-2 bg-gray-50 text-gray-700 rounded-full font-medium">
             {fulfillmentStatus || 'Processing'}
           </div>
-        </div>
+        </div> */}
       </div>
 
-      <div className="bg-gray-50 rounded-lg p-6 mb-8">
+      <div className="rounded-lg p-6 mb-8">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Items</h3>
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -137,7 +137,7 @@ export default function OrderRoute() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-8 mb-8">
-        <div className="bg-gray-50 rounded-lg p-6">
+        <div className="rounded-lg p-6">
           <h3 className="text-lg font-semibold mb-4 text-gray-900 flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -160,7 +160,7 @@ export default function OrderRoute() {
           )}
         </div>
 
-        <div className="bg-gray-50 rounded-lg p-6">
+        {/* <div className="bg-gray-50 rounded-lg p-6">
           <h3 className="text-lg font-semibold mb-4 text-gray-900 flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
@@ -182,7 +182,7 @@ export default function OrderRoute() {
               <span>Credit Card</span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="flex justify-center mt-10">
@@ -190,7 +190,7 @@ export default function OrderRoute() {
           target="_blank"
           href={order.statusPageUrl}
           rel="noreferrer"
-          className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-150 ease-in-out"
+          className="inline-flex items-center px-6 py-3 bg-pink-300 hover:bg-pink-400 text-white font-medium rounded-lg transition duration-150 ease-in-out"
         >
           Track Your Order
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
