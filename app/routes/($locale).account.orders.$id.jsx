@@ -71,8 +71,8 @@ export default function OrderRoute() {
           {/* <span className="inline-block px-3 py-1 text-gray-700 bg-gray-100 rounded-full text-sm font-medium mb-2">
             Order {order.name}
           </span> */}
-          <h2 className="text-sm font-bold text-gray-900">Order Details</h2>
-          <p className="text-gray-500 text-xs mt-0.5">
+          <h2 className="text-xs font-bold text-gray-900">Order Details</h2>
+          <p className="text-gray-500 text-xs mt-0.5 opacity-75">
             Placed on {new Date(order.processedAt).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',

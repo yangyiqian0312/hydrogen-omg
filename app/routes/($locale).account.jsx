@@ -39,9 +39,9 @@ export default function AccountLayout() {
     : 'Account Details';
 
   return (
-    <div className="account">
-      <h1>{heading}</h1>
-      <AccountMenu />
+    <div className="account py-2">
+      <h1 className="text-lg font-bold mb-1">{heading}</h1>
+      <AccountMenu className="mb-2" />
       <Outlet context={{ customer }} />
     </div>
   );
