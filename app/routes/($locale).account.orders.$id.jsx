@@ -68,9 +68,9 @@ export default function OrderRoute() {
     <div className="max-w-4xl mx-auto p-3 bg-white rounded-lg shadow-md">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-1 pb-4 border-b border-gray-100">
         <div>
-          <span className="inline-block px-3 py-1 text-gray-700 bg-gray-100 rounded-full text-sm font-medium mb-2">
+          {/* <span className="inline-block px-3 py-1 text-gray-700 bg-gray-100 rounded-full text-sm font-medium mb-2">
             Order {order.name}
-          </span>
+          </span> */}
           <h2 className="text-xl font-bold text-gray-900">Order Details</h2>
           <p className="text-gray-500 text-sm mt-1">
             Placed on {new Date(order.processedAt).toLocaleDateString('en-US', {
@@ -85,6 +85,14 @@ export default function OrderRoute() {
       <div className="rounded-lg p-4 mb-6">
         <div className="overflow-x-auto">
           <table className="w-full">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="text-left py-3 text-gray-700">Product</th>
+                <th className="text-right py-3 text-gray-700">Price</th>
+                <th className="text-right py-3 text-gray-700">Quantity</th>
+                <th className="text-right py-3 text-gray-700">Discount</th>
+              </tr>
+            </thead>
             <tbody className="divide-y divide-gray-200">
               {lineItems.map((lineItem, lineItemIndex) => (
                 <OrderLineRow key={lineItemIndex} lineItem={lineItem} />
@@ -93,7 +101,7 @@ export default function OrderRoute() {
             <tfoot>
               {((discountValue && discountValue.amount) || discountPercentage) && (
                 <tr className="text-green-600">
-                  <th scope="row" colSpan={1} className="py-2 text-left font-medium">Discounts</th>
+                  <th scope="row" colSpan={3} className="py-2 text-left font-medium">Discounts</th>
                   <td className="py-2 text-right font-medium">
                     {discountPercentage ? (
                       <span>-{discountPercentage}% OFF</span>
@@ -104,15 +112,15 @@ export default function OrderRoute() {
                 </tr>
               )}
               <tr className="border-t border-gray-200">
-                <th scope="row" colSpan={1} className="py-2 text-left text-gray-600">Subtotal</th>
+                <th scope="row" colSpan={3} className="py-2 text-left text-gray-600">Subtotal</th>
                 <td className="py-2 text-right text-gray-600"><Money data={order.subtotal} /></td>
               </tr>
               <tr>
-                <th scope="row" colSpan={1} className="py-2 text-left text-gray-600">Tax</th>
+                <th scope="row" colSpan={3} className="py-2 text-left text-gray-600">Tax</th>
                 <td className="py-2 text-right text-gray-600"><Money data={order.totalTax} /></td>
               </tr>
               <tr className="font-bold text-lg">
-                <th scope="row" colSpan={1} className="py-3 text-left text-gray-900">Total</th>
+                <th scope="row" colSpan={3} className="py-3 text-left text-gray-900">Total</th>
                 <td className="py-3 text-right text-gray-900"><Money data={order.totalPrice} /></td>
               </tr>
             </tfoot>
@@ -149,7 +157,7 @@ function OrderLineRow({ lineItem }) {
           )}
           <div>
             <p className="font-medium text-gray-900">{lineItem.title}</p>
-            <small className="text-gray-600">{lineItem.variantTitle}</small>
+            {/* <small className="text-gray-600">{lineItem.variantTitle}</small> */}
           </div>
         </div>
       </td>
