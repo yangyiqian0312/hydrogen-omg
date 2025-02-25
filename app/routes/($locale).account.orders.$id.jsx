@@ -71,8 +71,8 @@ export default function OrderRoute() {
           {/* <span className="inline-block px-3 py-1 text-gray-700 bg-gray-100 rounded-full text-sm font-medium mb-2">
             Order {order.name}
           </span> */}
-          <h2 className="text-base font-bold text-gray-900">Order Details</h2>
-          <p className="text-gray-500 text-sm mt-0.5">
+          <h2 className="text-sm font-bold text-gray-900">Order Details</h2>
+          <p className="text-gray-500 text-xs mt-0.5">
             Placed on {new Date(order.processedAt).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
@@ -133,10 +133,10 @@ export default function OrderRoute() {
           target="_blank"
           href={order.statusPageUrl}
           rel="noreferrer"
-          className="inline-flex items-center px-4 py-2 bg-pink-200 hover:bg-pink-300 text-white font-medium rounded-lg transition duration-150 ease-in-out"
+          className="inline-flex items-center px-3 py-1.5 bg-pink-200 hover:bg-pink-300 text-white text-xs font-medium rounded-lg transition duration-150 ease-in-out"
         >
           Track Your Order
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </a>
