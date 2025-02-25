@@ -199,62 +199,26 @@ export default function OrderRoute() {
  */
 function OrderLineRow({ lineItem }) {
   return (
-<tr className="border-t border-gray-200">
-      <td className="py-4">
-        <div className="flex">
+    <tr key={lineItem.id}>
+      <td>
+        <div>
           {lineItem?.image && (
-            <div className="flex-shrink-0 mr-4">
-              <Image 
-                data={lineItem.image} 
-                width={80} 
-                height={100} 
-                className="object-cover"
-              />
+            <div>
+              <Image data={lineItem.image} width={96} height={96} />
             </div>
           )}
-          <div className="flex flex-col">
-            <p className="font-bold text-gray-900">{lineItem.title}</p>
-            
-            {lineItem.variantTitle && (
-              <>
-                <div className="mt-1 text-sm">
-                  <span className="font-semibold">Color:</span> {lineItem.variantTitle.split(' / ')[0] || 'Black'}
-                </div>
-                <div className="mt-1 text-sm">
-                  <span className="font-semibold">Size:</span> {lineItem.variantTitle.split(' / ')[1] || 'S'}
-                </div>
-                <div className="mt-1 text-sm">
-                  <span className="font-semibold">Length:</span> 7/8 24.5"
-                </div>
-              </>
-            )}
-            
-            <div className="mt-1 text-sm">
-              <span className="font-semibold">Quantity:</span> {lineItem.quantity}
-            </div>
-            
-            <div className="mt-3 text-sm font-medium">
-              <a href="#" className="text-black hover:underline">Buy it again</a>
-              <span className="mx-2 text-gray-300">|</span>
-              <a href="#" className="text-black hover:underline">
-                Shop All {lineItem.variantTitle?.split(' / ')[0] || 'Black'}
-              </a>
-            </div>
+          <div>
+            <p>{lineItem.title}</p>
+            <small>{lineItem.variantTitle}</small>
           </div>
         </div>
       </td>
-      <td className="py-4 text-right align-top">
+      <td>
         <Money data={lineItem.price} />
       </td>
-      <td className="py-4 text-right align-top">
-        {lineItem.quantity}
-      </td>
-      <td className="py-4 text-right align-top">
-        {lineItem.totalDiscount?.amount > 0 ? (
-          <Money data={lineItem.totalDiscount} />
-        ) : (
-          <Money data={lineItem.price} multiplier={lineItem.quantity} />
-        )}
+      <td>{lineItem.quantity}</td>
+      <td>
+        <Money data={lineItem.totalDiscount} />
       </td>
     </tr>
   );
