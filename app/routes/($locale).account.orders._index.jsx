@@ -93,15 +93,15 @@ function OrderItem({ order }) {
     <>
       <fieldset>
         <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 p-3 border border-gray-100">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
             <div className="flex flex-col">
               <Link
                 to={`/account/orders/${btoa(order.id)}`}
-                className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors"
+                className="text-base font-semibold text-gray-900 hover:text-grey-1000 transition-colors"
               >
                 Order #{order.number}
               </Link>
-              <div className="text-sm text-gray-500 mt-1">
+              <div className="text-xs text-gray-500 mt-0.5">
                 {new Date(order.processedAt).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
@@ -110,8 +110,8 @@ function OrderItem({ order }) {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-2">
-              <span className={`px-3 py-1 rounded-full text-xs font-medium 
+            <div className="flex flex-wrap gap-1">
+              <span className={`px-2 py-0.5 rounded-full text-xs font-medium
         ${order.financialStatus === 'PAID' ? 'bg-green-100 text-green-800' :
                   order.financialStatus === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
                     'bg-gray-100 text-gray-800'}`}>
@@ -119,7 +119,7 @@ function OrderItem({ order }) {
               </span>
 
               {fulfillmentStatus && (
-                <span className={`px-3 py-1 rounded-full text-xs font-medium 
+                <span className={`px-2 py-0.5 rounded-full text-xs font-medium
           ${fulfillmentStatus === 'FULFILLED' ? 'bg-blue-100 text-blue-800' :
                     fulfillmentStatus === 'IN_PROGRESS' ? 'bg-purple-100 text-purple-800' :
                       'bg-gray-100 text-gray-800'}`}>
@@ -129,17 +129,17 @@ function OrderItem({ order }) {
             </div>
           </div>
 
-          <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
-            <div className="font-medium text-gray-900">
+          <div className="flex justify-between items-center mt-3 pt-2 border-t border-gray-100">
+            <div className="font-medium text-gray-900 text-sm">
               <Money data={order.totalPrice} />
             </div>
 
             <Link
               to={`/account/orders/${btoa(order.id)}`}
-              className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+              className="inline-flex items-center text-xs font-medium text-blue-600 hover:text-blue-800 transition-colors"
             >
               View Order
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
