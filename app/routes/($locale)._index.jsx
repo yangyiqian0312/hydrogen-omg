@@ -1204,13 +1204,12 @@ export default function Homepage() {
               </div>
 
               {/* Review Title and Content */}
-              <h3 className="text-xl font-medium text-gray-900 mb-2">
+              <h3 className="text-base font-medium text-gray-900 mb-1">
                 {review.title}
               </h3>
-              <p className="text-gray-700 mb-4">
+              <p className="text-sm text-gray-700 mb-3">
                 {review.text}
               </p>
-
               {/* Item and Date */}
               {/* <div className="text-gray-500 text-sm">
                 <div className="flex items-center justify-between mt-1">
