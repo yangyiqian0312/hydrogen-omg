@@ -884,10 +884,10 @@ export default function Homepage() {
                 <h3 className="text-white font-semibold text-2xl sm:text-3xl mb-1">
                   Women
                 </h3>
-                <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
+                {/* <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
                   Discover elegant and refined scents
-                </p>
-                <br></br>
+                </p> */}
+                {/* <br></br> */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -914,10 +914,9 @@ export default function Homepage() {
                 <h3 className="text-white font-semibold text-2xl sm:text-3xl mb-1">
                   Men
                 </h3>
-                <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
+                {/* <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
                   Discover elegant and refined scents
-                </p>
-                <br></br>
+                </p> */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -942,12 +941,12 @@ export default function Homepage() {
               {/* 文字和按钮容器 */}
               <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/70 to-transparent">
                 <h3 className="text-white font-semibold text-2xl sm:text-3xl mb-1">
-                  Sales & Offers
+                  Deals & Offers
                 </h3>
-                <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
+                {/* <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
                   Limited time deals & discounts
                 </p>
-                <br></br>
+                <br></br> */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -974,10 +973,10 @@ export default function Homepage() {
                 <h3 className="text-white font-semibold text-2xl sm:text-3xl mb-1">
                   Gift Sets
                 </h3>
-                <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
+                {/* <p className="text-white/90 mb-8" style={{ fontSize: '13px' }}>
                   Perfect presents for any occasion
                 </p>
-                <br></br>
+                <br></br> */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -1183,12 +1182,12 @@ export default function Homepage() {
 
               {/* Rest of the review content remains the same */}
               {/* Verified Purchase Badge */}
-              <div className="flex items-center gap-1 text-gray-500 text-sm mb-2">
+              {/* <div className="flex items-center gap-1 text-gray-500 text-sm mb-2">
                 <span>Verified purchase</span>
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-              </div>
+              </div> */}
 
               {/* Star Rating */}
               <div className="flex gap-1 mb-2">
