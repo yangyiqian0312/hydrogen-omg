@@ -57,7 +57,6 @@ export async function loader({ params, context }) {
 }
 
 export default function OrderRoute() {
-  /** @type {LoaderReturnData} */
   const {
     order,
     lineItems,
@@ -81,12 +80,6 @@ export default function OrderRoute() {
             })}
           </p>
         </div>
-
-        {/* <div className="mt-4 md:mt-0">
-          <div className="inline-block px-4 py-2 bg-gray-50 text-gray-700 rounded-full font-medium">
-            {fulfillmentStatus || 'Processing'}
-          </div>
-        </div> */}
       </div>
 
       <div className="rounded-lg p-6 mb-8">
@@ -128,55 +121,6 @@ export default function OrderRoute() {
         </div>
       </div>
 
-      {/* <div className="grid md:grid-cols-2 gap-8 mb-8">
-        <div className="rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4 text-gray-900 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            Shipping Address
-          </h3>
-          {order?.shippingAddress ? (
-            <address className="not-italic text-gray-600 bg-white p-4 rounded-lg border border-gray-100">
-              <p className="font-medium text-gray-800 mb-2">{order.shippingAddress.name}</p>
-              {order.shippingAddress.formatted && (
-                <p className="mb-2">{order.shippingAddress.formatted}</p>
-              )}
-              {order.shippingAddress.formattedArea && (
-                <p>{order.shippingAddress.formattedArea}</p>
-              )}
-            </address>
-          ) : (
-            <p className="text-gray-600 bg-white p-4 rounded-lg border border-gray-100">No shipping address defined</p>
-          )}
-        </div>
-
-        <div className="bg-gray-50 rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4 text-gray-900 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-            </svg>
-            Payment Details
-          </h3>
-          <div className="bg-white p-4 rounded-lg border border-gray-100">
-            <div className="flex justify-between text-gray-600 mb-2">
-              <span>Payment Status:</span>
-              <span className={`px-2 py-1 rounded text-xs font-medium ${order.financialStatus === 'PAID' ? 'bg-green-100 text-green-800' :
-                  order.financialStatus === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-gray-100 text-gray-800'
-                }`}>
-                {order.financialStatus}
-              </span>
-            </div>
-            <div className="flex justify-between text-gray-600">
-              <span>Payment Method:</span>
-              <span>Credit Card</span>
-            </div>
-          </div>
-        </div>
-      </div> */}
-
       <div className="flex justify-center mt-10">
         <a
           target="_blank"
@@ -194,30 +138,27 @@ export default function OrderRoute() {
   );
 }
 
-/**
- * @param {{lineItem: OrderLineItemFullFragment}}
- */
 function OrderLineRow({ lineItem }) {
   return (
     <tr key={lineItem.id}>
-      <td>
-        <div>
+      <td className="py-4">
+        <div className="flex items-center">
           {lineItem?.image && (
-            <div>
+            <div className="mr-4">
               <Image data={lineItem.image} width={96} height={96} />
             </div>
           )}
           <div>
-            <p>{lineItem.title}</p>
-            <small>{lineItem.variantTitle}</small>
+            <p className="font-medium text-gray-900">{lineItem.title}</p>
+            <small className="text-gray-600">{lineItem.variantTitle}</small>
           </div>
         </div>
       </td>
-      <td>
+      <td className="py-4 text-right text-gray-600">
         <Money data={lineItem.price} />
       </td>
-      <td>{lineItem.quantity}</td>
-      <td>
+      <td className="py-4 text-right">{lineItem.quantity}</td>
+      <td className="py-4 text-right text-gray-600">
         <Money data={lineItem.totalDiscount} />
       </td>
     </tr>
