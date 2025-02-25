@@ -129,6 +129,7 @@ export default function OrderRoute() {
       </div>
 
       <div className="flex justify-center mt-4">
+      {console.log("Order status URL:", order.statusPageUrl)}
         <a
           target="_blank"
           href={order.statusPageUrl}
