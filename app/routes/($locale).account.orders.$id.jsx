@@ -65,14 +65,14 @@ export default function OrderRoute() {
     fulfillmentStatus,
   } = useLoaderData();
   return (
-    <div className="max-w-4xl mx-auto p-3 bg-white rounded-lg shadow-md">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-1 pb-4 border-b border-gray-100">
+    <div className="max-w-4xl mx-auto p-2 bg-white rounded-lg shadow-md">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-1 pb-2 border-b border-gray-100">
         <div>
           {/* <span className="inline-block px-3 py-1 text-gray-700 bg-gray-100 rounded-full text-sm font-medium mb-2">
             Order {order.name}
           </span> */}
-          <h2 className="text-xl font-bold text-gray-900">Order Details</h2>
-          <p className="text-gray-500 text-sm mt-1">
+          <h2 className="text-base font-bold text-gray-900">Order Details</h2>
+          <p className="text-gray-500 text-sm mt-0.5">
             Placed on {new Date(order.processedAt).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
@@ -82,15 +82,15 @@ export default function OrderRoute() {
         </div>
       </div>
 
-      <div className="rounded-lg p-4 mb-6">
+      <div className="rounded-lg p-2 mb-3">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-200">
-                <th className="text-left py-3 text-gray-700">Product</th>
-                <th className="text-right py-3 text-gray-700">Price</th>
-                <th className="text-right py-3 text-gray-700">Quantity</th>
-                <th className="text-right py-3 text-gray-700">Discount</th>
+                <th className="text-left py-2 text-gray-700 text-xs">Product</th>
+                <th className="text-left py-2 text-gray-700 text-xs">Price</th>
+                <th className="text-right py-2 text-gray-700 text-xs">Quantity</th>
+                <th className="text-right py-2 text-gray-700 text-xs">Discount</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -101,8 +101,8 @@ export default function OrderRoute() {
             <tfoot>
               {((discountValue && discountValue.amount) || discountPercentage) && (
                 <tr className="text-green-600">
-                  <th scope="row" colSpan={3} className="py-2 text-left font-medium">Discounts</th>
-                  <td className="py-2 text-right font-medium">
+                  <th scope="row" colSpan={3} className="py-1 text-left font-medium">Discounts</th>
+                  <td className="py-1 text-right font-medium text-xs">
                     {discountPercentage ? (
                       <span>-{discountPercentage}% OFF</span>
                     ) : (
@@ -112,28 +112,28 @@ export default function OrderRoute() {
                 </tr>
               )}
               <tr className="border-t border-gray-200">
-                <th scope="row" colSpan={3} className="py-2 text-left text-gray-600">Subtotal</th>
-                <td className="py-2 text-right text-gray-600"><Money data={order.subtotal} /></td>
+                <th scope="row" colSpan={3} className="py-1 text-left text-gray-600">Subtotal</th>
+                <td className="py-1 text-right text-gray-600"><Money data={order.subtotal} /></td>
               </tr>
               <tr>
-                <th scope="row" colSpan={3} className="py-2 text-left text-gray-600">Tax</th>
-                <td className="py-2 text-right text-gray-600"><Money data={order.totalTax} /></td>
+                <th scope="row" colSpan={3} className="py-1 text-left text-gray-600">Tax</th>
+                <td className="py-1 text-right text-gray-600"><Money data={order.totalTax} /></td>
               </tr>
               <tr className="font-bold text-lg">
-                <th scope="row" colSpan={3} className="py-3 text-left text-gray-900">Total</th>
-                <td className="py-3 text-right text-gray-900"><Money data={order.totalPrice} /></td>
+                <th scope="row" colSpan={3} className="py-2 text-left text-gray-900">Total</th>
+                <td className="py-2 text-right text-gray-900"><Money data={order.totalPrice} /></td>
               </tr>
             </tfoot>
           </table>
         </div>
       </div>
 
-      <div className="flex justify-center mt-6">
+      <div className="flex justify-center mt-4">
         <a
           target="_blank"
           href={order.statusPageUrl}
           rel="noreferrer"
-          className="inline-flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-800 text-white font-medium rounded-lg transition duration-150 ease-in-out"
+          className="inline-flex items-center px-4 py-2 bg-pink-200 hover:bg-pink-300 text-white font-medium rounded-lg transition duration-150 ease-in-out"
         >
           Track Your Order
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -148,11 +148,11 @@ export default function OrderRoute() {
 function OrderLineRow({ lineItem }) {
   return (
     <tr key={lineItem.id}>
-      <td className="py-4">
+      <td className="py-2">
         <div className="flex items-center">
           {lineItem?.image && (
-            <div className="mr-4">
-              <Image data={lineItem.image} width={96} height={96} />
+            <div className="mr-3">
+              <Image data={lineItem.image} width={80} height={80} />
             </div>
           )}
           <div>
@@ -161,11 +161,11 @@ function OrderLineRow({ lineItem }) {
           </div>
         </div>
       </td>
-      <td className="py-4 text-right text-gray-600">
+      <td className="py-2 text-right text-gray-600 text-sm">
         <Money data={lineItem.price} />
       </td>
-      <td className="py-4 text-right">{lineItem.quantity}</td>
-      <td className="py-4 text-right text-gray-600">
+      <td className="py-2 text-right text-sm">{lineItem.quantity}</td>
+      <td className="py-2 text-right text-gray-600 text-sm">
         <Money data={lineItem.totalDiscount} />
       </td>
     </tr>
