@@ -17,6 +17,7 @@
     "@remix-run/server-runtime": "^2.13.1",
     "@shopify/hydrogen": "2024.10.1",
     "@shopify/remix-oxygen": "^2.0.9",
+    "@shopify/shopify-api": "^11.9.0",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "isbot": "^3.8.0",
