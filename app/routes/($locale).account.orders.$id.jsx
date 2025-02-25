@@ -101,7 +101,7 @@ export default function OrderRoute() {
             <tfoot>
               {((discountValue && discountValue.amount) || discountPercentage) && (
                 <tr className="text-green-600">
-                  <th scope="row" colSpan={3} className="py-1 text-left font-medium">Discounts</th>
+                  <th scope="row" colSpan={3} className="py-1 text-left font-medium text-xs">Discounts</th>
                   <td className="py-1 text-right font-medium text-xs">
                     {discountPercentage ? (
                       <span>-{discountPercentage}% OFF</span>
@@ -112,16 +112,16 @@ export default function OrderRoute() {
                 </tr>
               )}
               <tr className="border-t border-gray-200">
-                <th scope="row" colSpan={3} className="py-1 text-left text-gray-600">Subtotal</th>
-                <td className="py-1 text-right text-gray-600"><Money data={order.subtotal} /></td>
+                <th scope="row" colSpan={3} className="py-1 text-left text-gray-600 text-xs">Subtotal</th>
+                <td className="py-1 text-right text-gray-600 text-xs"><Money data={order.subtotal} /></td>
               </tr>
               <tr>
-                <th scope="row" colSpan={3} className="py-1 text-left text-gray-600">Tax</th>
-                <td className="py-1 text-right text-gray-600"><Money data={order.totalTax} /></td>
+                <th scope="row" colSpan={3} className="py-1 text-left text-gray-600 text-xs">Tax</th>
+                <td className="py-1 text-right text-gray-600 text-xs"><Money data={order.totalTax} /></td>
               </tr>
               <tr className="font-bold text-lg">
-                <th scope="row" colSpan={3} className="py-2 text-left text-gray-900">Total</th>
-                <td className="py-2 text-right text-gray-900"><Money data={order.totalPrice} /></td>
+                <th scope="row" colSpan={3} className="py-2 text-left text-gray-900 text-sm">Total</th>
+                <td className="py-2 text-right text-gray-900 text-xs"><Money data={order.totalPrice} /></td>
               </tr>
             </tfoot>
           </table>
