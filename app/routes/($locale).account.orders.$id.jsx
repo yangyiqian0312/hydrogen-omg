@@ -129,10 +129,23 @@ export default function OrderRoute() {
       </div>
 
       <div className="flex justify-center mt-4">
-      {console.log("Order status URL:", order.statusPageUrl)}
+        {/* {console.log("Order status URL:", order.statusPageUrl)}
         <a
           target="_blank"
           href={order.statusPageUrl}
+          rel="noreferrer"
+          className="inline-flex items-center px-3 py-1.5 bg-pink-200 hover:bg-pink-300 text-white text-xs font-medium rounded-lg transition duration-150 ease-in-out"
+        >
+          Track Your Order
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </a> */}
+        {console.log("Original Order status URL:", order.statusPageUrl)}
+        <a
+          target="_blank"
+          // Use your store's orders page URL format instead of statusPageUrl
+          href={`/account/orders/${btoa(order.id)}`}
           rel="noreferrer"
           className="inline-flex items-center px-3 py-1.5 bg-pink-200 hover:bg-pink-300 text-white text-xs font-medium rounded-lg transition duration-150 ease-in-out"
         >
