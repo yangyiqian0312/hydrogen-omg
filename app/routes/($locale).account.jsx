@@ -20,9 +20,6 @@ export async function loader({ context }) {
 
   console.log({
     customerId: data.customer.id,
-    name: `${data.customer.firstName} ${data.customer.lastName}`,
-    email: data.customer.email, // You'll need to add email to your CUSTOMER_FRAGMENT
-    hasAddress: !!data.customer.defaultAddress
   });
 
   return json(
@@ -44,6 +41,9 @@ export default function AccountLayout() {
       ? `Welcome, ${customer.firstName}`
       : `Welcome to your account.`
     : 'Account Details';
+
+  const customerId = customer?.id;
+  console.log(customerId);
 
   return (
     <div className="account py-2">
