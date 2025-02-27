@@ -18,6 +18,13 @@ export async function loader({ context }) {
     throw new Error('Customer not found');
   }
 
+  console.log({
+    customerId: data.customer.id,
+    name: `${data.customer.firstName} ${data.customer.lastName}`,
+    email: data.customer.email, // You'll need to add email to your CUSTOMER_FRAGMENT
+    hasAddress: !!data.customer.defaultAddress
+  });
+
   return json(
     { customer: data.customer },
     {

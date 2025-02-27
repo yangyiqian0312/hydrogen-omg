@@ -36,12 +36,12 @@ export async function loader({ request, context }) {
     throw Error('Customer orders not found');
   }
 
-  console.log({
-    customerId: data.customer.id,
-    name: `${data.customer.firstName} ${data.customer.lastName}`,
-    email: data.customer.email, // You'll need to add email to your CUSTOMER_FRAGMENT
-    hasAddress: !!data.customer.defaultAddress
-  });
+  // console.log({
+  //   customerId: data.customer.id,
+  //   name: `${data.customer.firstName} ${data.customer.lastName}`,
+  //   email: data.customer.email, // You'll need to add email to your CUSTOMER_FRAGMENT
+  //   hasAddress: !!data.customer.defaultAddress
+  // });
 
   return json({ customer: data.customer });
 }
