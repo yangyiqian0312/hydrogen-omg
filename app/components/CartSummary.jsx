@@ -12,7 +12,7 @@ export function CartSummary({cart, layout}) {
   return (
     <div
       aria-labelledby="cart-summary"
-      className={`${className} bg-pink-200 p-2 rounded-lg border-none`}
+      className={`${className} p-2 rounded-lg border-none`}
     >
       <dl className="cart-total space-y-3">
         <dt className="text-lg font-medium text-gray-500">Total</dt>

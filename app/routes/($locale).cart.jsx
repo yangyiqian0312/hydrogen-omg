@@ -106,9 +106,11 @@ export default function Cart() {
   /** @type {LoaderReturnData} */
   const cart = useLoaderData();
 
+
+  
   return (
     <div className="cart">
-      <h1>Cart</h1>
+      <h1 className="relative z-10">Cart</h1>
       <CartMain layout="page" cart={cart} />
     </div>
   );
