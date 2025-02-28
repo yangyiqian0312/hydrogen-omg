@@ -37,11 +37,14 @@ export function CartSummary({cart, layout}) {
 function CartCheckoutActions({checkoutUrl}) {
   if (!checkoutUrl) return null;
 
+  const modifiedCheckoutUrl = `${checkoutUrl}?logged_in_checkout=no`;
+
   return (
     //  done Todo: 这里是checkoutbutton  
     <div className="mb-10">
       <a
-        href={checkoutUrl}
+        // href={checkoutUrl}
+        href={modifiedCheckoutUrl}
         target="_self"
         className="inline-block bg-pink-200 text-white py-2 px-6 rounded-lg font-bold text-center transition duration-300"
       >
