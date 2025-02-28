@@ -22,21 +22,17 @@ export function CartMain({layout, cart: originalCart}) {
   const cartHasItems = cart?.totalQuantity > 0;
 
   return (
-    <div className={`${className} max-w-4xl mx-auto p-4`}>
+    <div className={className}>
       <CartEmpty hidden={linesCount} layout={layout} />
-      <div className="cart-details flex flex-col md:flex-row gap-6">
-        <div aria-labelledby="cart-lines" className="flex-grow">
-          <ul className="divide-y divide-gray-200">
+      <div className="cart-details">
+        <div aria-labelledby="cart-lines">
+          <ul>
             {(cart?.lines?.nodes ?? []).map((line) => (
               <CartLineItem key={line.id} line={line} layout={layout} />
             ))}
           </ul>
         </div>
-        {cartHasItems && (
-          <div className="md:w-1/3 sticky top-4">
-            <CartSummary cart={cart} layout={layout} />
-          </div>
-        )}
+        {cartHasItems && <CartSummary cart={cart} layout={layout} />}
       </div>
     </div>
   );
@@ -55,7 +51,11 @@ function CartEmpty({hidden = false}) {
             <br />
             <br />
             <br />
-        
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />           
       <p className="text-lg text-black-600 my-4 font-bold">
         Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you started!
       </p>
