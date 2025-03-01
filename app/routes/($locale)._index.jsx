@@ -11,7 +11,10 @@ import OldHeader from '~/components/OldHeader';
  * @type {MetaFunction}
  */
 export const meta = () => {
-  return [{ title: 'OMG BEAUTY' }];
+  return [
+    { title: 'OMG Beauty Box – Premium Beauty Subscription' },
+    { name: 'description', content: 'Get the best beauty products with OMG Beauty Box. Subscribe now for exclusive beauty items delivered to your doorstep.' }
+  ];
 };
 
 /**
@@ -92,7 +95,7 @@ async function loadDeferredData({ context }) {
   }
 
   // return {
-  //   allProducts,
+  //   allProducts,title
   //   promotingProducts,
   // };
 }

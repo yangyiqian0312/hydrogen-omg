@@ -60,7 +60,7 @@ function CartEmpty({hidden = false}) {
         Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you started!
       </p>
       <br />
-      <button className='inline-block bg-pink-200 text-white py-2 px-6 rounded-lg font-bold text-center hover:bg-blue-700 transition duration-300'>
+      <button className='inline-block bg-pink-200 text-white py-2 px-6 rounded-lg font-bold text-center hover: bg-pink-300 transition duration-300'>
         <Link 
           to="/" 
           onClick={close} 
