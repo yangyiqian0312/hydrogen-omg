@@ -147,7 +147,7 @@ const Giftsets = (selectedVariant) => {
 
   return (
     <div>
-      {/* <div className="flex items-center">
+ <div className="flex items-center">
         <div className="relative flex gap-2 items-center p-2">
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -159,8 +159,7 @@ const Giftsets = (selectedVariant) => {
             </span>
             <ChevronDown
               size={16}
-              className={`text-gray-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''
-                }`}
+              className={`text-gray-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
             />
           </button>
 
@@ -190,9 +189,10 @@ const Giftsets = (selectedVariant) => {
             </div>
           )}
         </div>
-      </div> */}
+      </div>
 
-      <div className="grid grid-cols-2 gap-4 p-4">
+      {/* Updated grid - 2 columns on mobile, 4 columns on desktop with increased spacing */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 p-4">
         {filteredProducts.length > 0 ? (
           filteredProducts.map(({ node }) => (
             <div
@@ -221,17 +221,16 @@ const Giftsets = (selectedVariant) => {
                   className="font-semibold text-blue-600 hover:underline truncate"
                 >
                   {node.vendor || 'Unknown Brand'}
-                  <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
+                  <p className="text-sm font-normal mb-2 overflow-hidden text-ellipsis whitespace-normal break-words h-10">
                     {node.title
                       ? node.title
                         .replace(new RegExp(`^${node.vendor}\\s*`), '')
-                        // .slice(0, -5)
                       : 'N/A'}
                   </p>
                 </Link>
 
                 <div>
-                  <p className="font-bold mb-4">
+                  <p className="font-bold mb-3">
                     ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
                     {node.variants.edges[0]?.node.compareAtPrice && (
                       <span className="ml-2 text-gray-500 line-through">
@@ -240,12 +239,11 @@ const Giftsets = (selectedVariant) => {
                     )}
                   </p>
                 </div>
-
               </div>
             </div>
           ))
         ) : (
-          <div className="col-span-2 text-center py-8 text-gray-500">
+          <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">
             No products found for {selectedBrand}
           </div>
         )}

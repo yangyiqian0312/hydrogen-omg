@@ -104,128 +104,31 @@ export default function Homepage() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
-
-  const [timeLeft, setTimeLeft] = useState({
-    hours: 12,
-    minutes: 57,
-    seconds: 0,
-  });
-
-  // Timer Effect
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        const totalSeconds =
-          prevTime.hours * 3600 + prevTime.minutes * 60 + prevTime.seconds - 1;
-
-        if (totalSeconds <= 0) {
-          clearInterval(timer);
-          return { hours: 0, minutes: 0, seconds: 0 };
-        }
-
-        return {
-          hours: Math.floor(totalSeconds / 3600),
-          minutes: Math.floor((totalSeconds % 3600) / 60),
-          seconds: totalSeconds % 60,
-        };
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  // Products Selection Effect
-  useEffect(() => {
-    // Get the last 6 products for featured
-    const featured = products.slice(-6);
-    setFeaturedProducts(featured);
-
-    // Get the first 6 products for trending
-    const trending = products.slice(0, 6);
-    // setTrendingProducts(trending);
-  }, []); // Empty dependency array ensures this runs only once
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1,
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1,
-    );
-  };
 
   const carouselRef = useRef(null);
 
-  const scroll = (direction) => {
-    if (!carouselRef.current) return;
+  // const scroll = (direction) => {
+  //   if (!carouselRef.current) return;
 
-    const scrollAmount = 320; // Width of one card
-    const currentScroll = carouselRef.current.scrollLeft;
+  //   const scrollAmount = 320; 
+  //   const currentScroll = carouselRef.current.scrollLeft;
 
-    if (direction === 'left') {
-      carouselRef.current.scrollTo({
-        left: currentScroll - scrollAmount,
-        behavior: 'smooth',
-      });
-    } else {
-      carouselRef.current.scrollTo({
-        left: currentScroll + scrollAmount,
-        behavior: 'smooth',
-      });
-    }
-  };
+  //   if (direction === 'left') {
+  //     carouselRef.current.scrollTo({
+  //       left: currentScroll - scrollAmount,
+  //       behavior: 'smooth',
+  //     });
+  //   } else {
+  //     carouselRef.current.scrollTo({
+  //       left: currentScroll + scrollAmount,
+  //       behavior: 'smooth',
+  //     });
+  //   }
+  // };
 
-  // const testimonials = [
-  //   {
-  //     id: 1,
-  //     name: 'Sarah Johnson',
-  //     text: 'I absolutely love the selection of fragrances! The staff was incredibly helpful in finding the perfect scent for me.',
-  //     title: 'Good service and quality',
-  //     image:
-  //       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&auto=format',
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Michael Lee',
-  //     text: 'The quality of the perfumes is unmatched. I always get compliments whenever I wear them!',
-  //     title: 'Super fast shipping',
-  //     image:
-  //       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format',
-  //   },
-  //   {
-  //     id: 3,
-  //     name: 'Emily Davis',
-  //     text: 'I found my signature scent here! The experience was fantastic and I will definitely be back.',
-  //     title: 'A perfect Christmas gift',
-  //     image:
-  //       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format',
-  //   },
-  //   {
-  //     id: 4,
-  //     name: 'Sarah Johnson',
-  //     text: 'I absolutely love the selection of fragrances! The staff was incredibly helpful in finding the perfect scent for me.',
-  //     title: 'Good service and quality',
-  //     image:
-  //       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&auto=format',
-  //   },
-  //   {
-  //     id: 5,
-  //     name: 'Michael Lee',
-  //     text: 'The quality of the perfumes is unmatched. I always get compliments whenever I wear them!',
-  //     title: 'Super fast shipping',
-  //     image:
-  //       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format',
-  //   },
-  // ];
 
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
-
 
   const products = data.allProducts?.collection?.products?.edges || [];
   console.log(products)
@@ -241,7 +144,7 @@ export default function Homepage() {
     return node.tags && node.tags.includes('Promoting');
   });
 
-  console.log("Filtered promoting products:", promotingProducts);
+  //console.log("Filtered promoting products:", promotingProducts);
 
   const trendingProducts = products.filter(({ node }) => {
     return node.tags && node.tags.includes('Trending');
@@ -395,7 +298,6 @@ export default function Homepage() {
   ];
 
 
-
   const preferredOrder = [
     "Viktor & Rolf Flowerbomb 2pc Mini Fragrance Gift Set - 7ml EDP & 50ml Body Lotion - Floral Fragrance with Cattleya, Jasmine, and Rose",
     "GUCCI 3PC SET: 1 X 100ML Bloom EDP + 1 X 100 ML Bloom Body lotion + 1 X 10 ML Bloom EDP Pen Spray - Floral Scent Fragrance Jasmine",
@@ -405,43 +307,19 @@ export default function Homepage() {
     "Viktor&Rolf Spicebomb Eau de Toilette Spray for Men 3.04 Oz / 90 ml - Woody, Spicy, Gourmand Scent"
   ];
 
-  // 找出優先顯示的產品
+  // 找出优先显示的商品
   const priorityProducts = preferredOrder
     .map(title => promotingProducts.find(({ node }) => node.title === title))
     .filter(Boolean);
 
-  // 找出其他產品
+  // 找出其他产品
   const otherProducts = promotingProducts.filter(
     ({ node }) => !preferredOrder.includes(node.title)
   );
 
-  // 合併所有產品
+  // 合并所有产品
   const orderedProducts = [...priorityProducts, ...otherProducts];
 
-  const handleTouchStart = (e) => {
-    setTouchStart(e.touches[0].clientX);
-  };
-
-  const handleTouchMove = (e) => {
-    setTouchEnd(e.touches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-
-    if (isLeftSwipe) {
-      nextSlide();
-    } else if (isRightSwipe) {
-      prevSlide();
-    }
-
-    setTouchStart(null);
-    setTouchEnd(null);
-  };
 
   const bgColors = [
     'bg-[#C4C3E7]',
@@ -455,12 +333,10 @@ export default function Homepage() {
     '/assets/video/1.mp4',
     '/assets/video/2.mp4',
     '/assets/video/3.mp4',
-    // '/assets/video/4.mp4',
+    '/assets/video/4.mp4',
     // '/assets/video/5.mp4',
     // 添加更多视频路径
   ];
-
-
 
 
   return (
@@ -474,49 +350,6 @@ export default function Homepage() {
           WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
         }}
       >
-        {/* {promotingProducts.products.edges.map(({ node }, index) => (
-          <div
-            key={node.id}
-            className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]
-              }`}
-          >
-     
-            <div className="relative aspect-square">
-              <img
-                src={`/assets/presentation/${index + 1}.png`} // 动态生成图片路径
-                alt={node.title}
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-
-
-            <div className="p-6">
-              <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
-                {node.vendor || 'Unknown Brand'} 
-              </div>
-              <p className="text-pink-600 font-bold mb-4">
-                $
-                {Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(
-                  2,
-                )}
-              </p>
-              {/* Optional button or additional actions 
-              <Link
-                key={node.id}
-                to={`/products/${node.handle}`}
-                onClick={(e) => {
-                  if (!node?.handle) e.preventDefault();
-                }}
-                className="font-bold text-blue-600 hover:underline"
-              >
-                SHOP NOW ▸
-              </Link>
-            </div>
-          </div>
-        ))} */}
-
-
         {orderedProducts.map(({ node }, index) => (
           <div
             key={node.id}
@@ -1001,129 +834,199 @@ export default function Homepage() {
 
       </div>
 
-      {/* Main Content Grid for larger screens */}
-      <div className="hidden mx-20 sm:block md:mx-20 lg:mx-40 xl:mx-60 2xl:mx-80">
-        <div className="px-4 pb-8 sm:text-center">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            {/* Special Offers section */}
-            <div className="lg:col-span-3">
-              <div className="bg-white rounded-lg shadow-sm h-full">
-                <div className="flex items-center mt-4 mb-2 space-x-2">
-                  <Gift className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span className="text-lg font-semibold align-middle">
-                    Special Offers
-                  </span>
-                </div>
+      {/* 桌面版布局 */}
+      <div className="hidden sm:block">
+        <div className="px-4 pb-8">
+          {/* 标题部分 */}
+          <div className="grid grid-cols-12 mb-4 mt-4">
+            {/* Special Offers 位于1/4处 (占用第3列) */}
+            <div className="col-start-1 col-span-2 flex items-center space-x-2">
+              <Gift className="w-5 h-5" />
+              <span className="text-lg font-semibold">Special Offers</span>
+            </div>
 
-                <div className="space-y-6">
-                  {/* TikTok Live Deal */}
-                  <div className="bg-gradient-to-br from-pink-50 to-white rounded-xl p-6 text-center">
-                    <h3 className="text-lg font-medium mb-4">
-                      Exclusive Deal On TikTok LIVE
-                    </h3>
-                    <div className="relative w-32 h-32 mx-auto mb-4">
-                      {' '}
-                      {/* Increased size for logo */}
-                      <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
-                      <div className="relative w-full h-full rounded-full overflow-hidden">
-                        <img
-                          src="/assets/logo/logo.png" // Path to your logo in public folder
-                          alt="OMG Beauty Shop"
-                          className="w-full h-full object-cover"
-                        />
+            {/* Featured Videos 位于3/4处 (占用第9列) */}
+            <div className="col-start-4 col-span-2 flex items-center space-x-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              <span className="text-lg font-semibold">Featured Videos</span>
+            </div>
+          </div>
+
+          {/* 内容部分 */}
+          <div className="flex gap-6">
+            {/* 左侧列 */}
+            <div className="w-1/4 flex flex-col">
+              {/* TikTok Live Deal */}
+              <div className="bg-pink-50 rounded-lg p-6 text-center mb-6">
+                <h3 className="text-lg font-medium mb-2">
+                  Exclusive Deal On TikTok<br />LIVE
+                </h3>
+                <div className="relative w-32 h-32 mx-auto mb-4">
+                  <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
+                  <div className="relative w-full h-full rounded-full overflow-hidden">
+                    <img
+                      src="/assets/logo/logo.png"
+                      alt="OMG Beauty Shop"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <a
+                  href="https://www.tiktok.com/@omgbeautyshop/live"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-md text-sm font-medium w-full block"
+                >
+                  Go To TikTok
+                </a>
+              </div>
+
+              {/* New Arrivals */}
+              <div className="bg-[#F7CAC9] rounded-lg overflow-hidden flex-grow">
+                <div className="p-6 h-full flex flex-col">
+                  <h3 className="font-medium text-lg mb-2">New Arrivals</h3>
+                  <div className="flex flex-col gap-4 flex-grow">
+                    <div className="relative w-full rounded-lg overflow-hidden flex-grow">
+                      <img
+                        src="/assets/category/new.jpg"
+                        alt="New arrival product"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
+                        20% OFF
                       </div>
                     </div>
                     <a
-                      href="https://www.tiktok.com/@omgbeautyshop/live?enter_from_merge=general_search&enter_method=others_photo&search_id=20250116183935112EAE20D9596102F13D&search_keyword=omgbeautyshop&search_result_id=7166140096579650606&search_type=general"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg text-sm font-medium w-full transition-colors duration-200 inline-block"
+                      href="/products/newarrivals"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      className="inline-block bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-md text-sm font-medium w-full mt-auto text-center"
                     >
-                      Go To TikTok
+                      Shop Now
                     </a>
                   </div>
-
-                  {/* New Arrivals */}
-                  {/* <div className="bg-gradient-to-br from-pink-50 to-white rounded-xl p-6">
-                    <h3 className="font-medium text-lg mb-2">New Arrivals</h3>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Introducing our latest collection
-                    </p>
-                    <div className="flex flex-col gap-4">
-                      <div className="relative w-full h-48 rounded-lg overflow-hidden">
-                        <img
-                          src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&auto=format"
-                          alt="New arrival product"
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
-                          15% OFF
-                        </div>
-                      </div>
-                      <button className="bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg text-sm font-medium w-full transition-colors duration-200">
-                        Shop Now
-                      </button>
-                    </div>
-                  </div> */}
-
                 </div>
               </div>
             </div>
 
-            {/* Main Content Area */}
-            <div className="lg:col-span-9">
-              {/* Trending Now Section */}
-              <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center mt-4 mb-2 space-x-2">
-                    <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
-                    <span className="text-lg font-semibold align-middle">
-                      Trending Now
-                    </span>
-                  </div>
+            {/* 右侧列 */}
+            <div className="w-3/4 flex flex-col">
+              {/* 视频轮播 */}
+              <div className="relative mb-8">
+                <div
+                  ref={carouselRef}
+                  className="flex overflow-x-auto snap-x gap-4 hide-scrollbar scrollbar-hide"
+                  style={{
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none',
+                    WebkitOverflowScrolling: 'touch',
+                  }}
+                >
+                  {videoPaths.map((video, index) => (
+                    <div
+                      key={index}
+                      className="flex-none w-72 rounded-lg overflow-hidden snap-start shadow-sm relative aspect-[3/4]"
+                    >
+                      <video
+                        src={video}
+                        className="w-full h-full object-cover"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                      ></video>
+
+                      {/* Shop Now Button */}
+                      <div className="absolute bottom-4 left-0 w-full flex justify-center">
+                        <Link
+                          to={videoProducts[index] ? `/products/${videoProducts[index].node.handle}` : '#'}
+                          className="bg-white text-black px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
+                        >
+                          Shop Now
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                  {trendingProducts.map(({ node }, index) => (
-                    <div
-                      key={node.id}
-                      className={`flex-none w-80 sm:w-60 md:w-72 lg:w-80 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]
-                        }`}
-                    >
-                      {/* 图片容器，保持方形比例 */}
-                      <div className="relative aspect-square">
+                {/* 导航按钮 */}
+                {/* <button
+                  className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 p-2 rounded-full shadow-md z-10"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scroll('left');
+                  }}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+
+                <button
+                  className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 p-2 rounded-full shadow-md z-10"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scroll('right');
+                  }}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button> */}
+              </div>
+
+              {/* Trending Now Section */}
+              <div className="flex-grow">
+                <div className="flex items-center mb-6">
+                  <Clock className="w-5 h-5 mr-2" />
+                  <span className="text-lg font-semibold">
+                    Trending Now
+                  </span>
+                </div>
+
+                {/* 产品网格 - 显示4个产品 */}
+                <div className="grid grid-cols-4 gap-4">
+                  {trendingProducts.slice(0, 4).map(({ node }, index) => (
+                    <div key={node.id} className="flex flex-col">
+                      <div className="flex justify-center mb-3">
                         {node.images.edges[0] ? (
                           <img
-                            src={node.images.edges[0].node.url} // 商品图片 URL
+                            src={node.images.edges[0].node.url}
                             alt={node.title}
-                            className="w-full h-full object-cover" // 确保图片填充整个容器
+                            className="h-32 object-contain"
                           />
                         ) : (
                           <img
-                            src="/api/placeholder/400/400" // 占位图片
+                            src="/api/placeholder/400/400"
                             alt="Placeholder"
-                            className="w-full h-full object-cover"
+                            className="h-32 object-contain"
                           />
                         )}
                       </div>
-
-                      <div>
-                        <p className="text-pink-600 font-bold mb-4">
-                          $
-                          {Number(
-                            node.variants.edges[0]?.node.price.amount || 0,
-                          ).toFixed(2)}
-                        </p>
-                        {/* Optional button or additional actions */}
-                        {/* SHOP NOW 按钮 */}
+                      <div className="text-left">
                         <Link
                           key={node.id}
                           to={`/products/${node.handle}`}
-                          className="font-bold text-blue-600 hover:underline"
+                          className="font-semibold text-blue-600 hover:underline truncate"
                         >
-                          {node.vendor || 'Unknown Brand'}{' '}
-                          {/* Replace `product.brand` */}
+                          <div className="font-bold text-xs uppercase mb-1">
+                            {node.vendor || 'Unknown Brand'}
+                          </div>
+                          <p className="text-xs font-normal mb-2 overflow-hidden text-ellipsis whitespace-normal break-words h-7">
+                            {node.title
+                              ? node.title.replace(
+                                new RegExp(`^${node.vendor}\\s*`),
+                                '',
+                              )
+                              : 'N/A'}
+                          </p>
                         </Link>
+                        <div className="font-bold text-sm">
+                          ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -1131,100 +1034,225 @@ export default function Homepage() {
               </div>
             </div>
           </div>
+
+          {/* Shop By Category */}
+          <div className="mt-10">
+            <div className="flex items-center mb-4 space-x-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+              <span className="text-lg font-semibold">Shop By Category</span>
+            </div>
+
+            {/* 电脑版网格布局 */}
+            <div className="grid grid-cols-4 gap-4">
+              {/* Women Category */}
+              <div className="rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 relative">
+                <img
+                  src="/assets/category/women.png"
+                  alt="Women's Fragrances"
+                  className="w-full h-auto object-contain"
+                />
+                <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/70 to-transparent">
+                  <h3 className="text-white font-semibold text-2xl mb-2">Women</h3>
+                  <a
+                    href="/products/women"
+                    className="bg-white text-black hover:bg-gray-100 px-6 py-3 rounded-full text-sm font-medium transition-colors duration-300 inline-block text-center"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Explore Women
+                  </a>
+                </div>
+              </div>
+
+              {/* Men Category */}
+              <div className="rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 relative">
+                <img
+                  src="/assets/category/men.png"
+                  alt="Men's Fragrances"
+                  className="w-full h-auto object-contain"
+                />
+                <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/70 to-transparent">
+                  <h3 className="text-white font-semibold text-2xl mb-2">Men</h3>
+                  <a
+                    href="/products/men"
+                    className="bg-white text-black hover:bg-gray-100 px-6 py-3 rounded-full text-sm font-medium transition-colors duration-300 inline-block text-center"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Explore Men
+                  </a>
+                </div>
+              </div>
+
+              {/* Sales Category */}
+              <div className="rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 relative">
+                <img
+                  src="/assets/category/sales.png"
+                  alt="Special Sales"
+                  className="w-full h-auto object-contain"
+                />
+                <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/70 to-transparent">
+                  <h3 className="text-white font-semibold text-2xl mb-2">Deals & Offers</h3>
+                  <a
+                    href="/products/sales"
+                    className="bg-white text-black hover:bg-gray-100 px-6 py-3 rounded-full text-sm font-medium transition-colors duration-300 inline-block text-center"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Explore Sales
+                  </a>
+                </div>
+              </div>
+
+              {/* Gift Sets Category */}
+              <div className="rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 relative">
+                <img
+                  src="/assets/category/gift.png"
+                  alt="Gift Sets"
+                  className="w-full h-auto object-contain"
+                />
+                <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/70 to-transparent">
+                  <h3 className="text-white font-semibold text-2xl mb-2">Gift Sets</h3>
+                  <a
+                    href="/products/giftsets"
+                    className="bg-white text-black hover:bg-gray-100 px-6 py-3 rounded-full text-sm font-medium transition-colors duration-300 inline-block text-center"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Explore Gifts
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
 
       {/* <div class="border-t my-4 mx-2 border-gray-300"></div> */}
 
-      {/* Customer Reviews */}
-      <div>
-        <div className="flex items-center mt-4 mb-2 space-x-2">
-          <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
-          <span className="text-lg font-semibold align-middle">
-            Customer Reviews
-          </span>
-        </div>
-
-        {/* Reviews Carousel */}
-        <div
-          ref={carouselRef}
-          className="flex overflow-x-auto snap-x snap-mandatory gap-4 p-4 hide-scrollbar scrollbar-hide"
-          style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            WebkitOverflowScrolling: 'touch',
-          }}
-        >
-          {testimonials.map((review) => (
-            <div
-              key={review.id}
-              className="flex-none w-full snap-start bg-white rounded-lg p-4 border border-gray-200 shadow-sm"
-            >
-              {/* User Info and Menu */}
-              <div className="flex items-start justify-between mb-2">
-                <div className="flex items-center gap-3">
-                  {review.userProfile ? (
-                    <div className="w-8 h-8 rounded-full overflow-hidden">
-                      <img
-                        src={review.userProfile}
-                        alt={`${review.name}'s profile`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
-                      {review.name[0]}
-                    </div>
-                  )}
-                  <div>
-                    <div className="text-gray-900">{review.name}</div>
-                    <div className="text-gray-500 text-sm">United States</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Rest of the review content remains the same */}
-              {/* Verified Purchase Badge */}
-              {/* <div className="flex items-center gap-1 text-gray-500 text-sm mb-2">
-                <span>Verified purchase</span>
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div> */}
-
-              {/* Star Rating */}
-              <div className="flex gap-1 mb-2">
-                {[...Array(5)].map((_, index) => (
-                  <svg
-                    key={index}
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-
-              {/* Review Title and Content */}
-              <h3 className="text-base font-medium text-gray-900 mb-1">
-                {review.title}
-              </h3>
-              <p className="text-sm text-gray-700 mb-3">
-                {review.text}
-              </p>
-              {/* Item and Date */}
-              {/* <div className="text-gray-500 text-sm">
-                <div className="flex items-center justify-between mt-1">
-                  <span>{review.date}</span>
-                </div>
-              </div> */}
-            </div>
-          ))}
-        </div>
+      <div className="flex items-center mt-4 mb-2 space-x-2">
+        <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+        <span className="text-lg font-semibold align-middle">
+          Customer Reviews
+        </span>
       </div>
 
+      {/* Mobile View: Original carousel (hidden on md and above screens) */}
+      <div
+        ref={carouselRef}
+        className="md:hidden flex overflow-x-auto snap-x snap-mandatory gap-4 p-4 hide-scrollbar scrollbar-hide"
+        style={{
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          WebkitOverflowScrolling: 'touch',
+        }}
+      >
+        {testimonials.map((review) => (
+          <div
+            key={review.id}
+            className="flex-none w-full snap-start bg-white rounded-lg p-4 border border-gray-200 shadow-sm"
+          >
+            {/* User Info and Menu */}
+            <div className="flex items-start justify-between mb-2">
+              <div className="flex items-center gap-3">
+                {review.userProfile ? (
+                  <div className="w-8 h-8 rounded-full overflow-hidden">
+                    <img
+                      src={review.userProfile}
+                      alt={`${review.name}'s profile`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
+                    {review.name[0]}
+                  </div>
+                )}
+                <div>
+                  <div className="text-gray-900">{review.name}</div>
+                  <div className="text-gray-500 text-sm">United States</div>
+                </div>
+              </div>
+            </div>
 
+            {/* Star Rating */}
+            <div className="flex gap-1 mb-2">
+              {[...Array(5)].map((_, index) => (
+                <svg
+                  key={index}
+                  className="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+            </div>
+
+            {/* Review Title and Content */}
+            <h3 className="text-base font-medium text-gray-900 mb-1">
+              {review.title}
+            </h3>
+            <p className="text-sm text-gray-700 mb-3">
+              {review.text}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop View: Grid layout with 3 columns (visible only on md and above screens) */}
+      <div className="hidden md:grid md:grid-cols-3 gap-4 p-4">
+        {testimonials.slice(0, 3).map((review) => (
+          <div
+            key={review.id}
+            className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm"
+          >
+            {/* User Info and Menu */}
+            <div className="flex items-start justify-between mb-2">
+              <div className="flex items-center gap-3">
+                {review.userProfile ? (
+                  <div className="w-8 h-8 rounded-full overflow-hidden">
+                    <img
+                      src={review.userProfile}
+                      alt={`${review.name}'s profile`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
+                    {review.name[0]}
+                  </div>
+                )}
+                <div>
+                  <div className="text-gray-900">{review.name}</div>
+                  <div className="text-gray-500 text-sm">United States</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Star Rating */}
+            <div className="flex gap-1 mb-2">
+              {[...Array(5)].map((_, index) => (
+                <svg
+                  key={index}
+                  className="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+            </div>
+
+            {/* Review Title and Content */}
+            <h3 className="text-base font-medium text-gray-900 mb-1">
+              {review.title}
+            </h3>
+            <p className="text-sm text-gray-700 mb-3">
+              {review.text}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -1333,8 +1361,6 @@ const ALL_PRODUCTS_QUERY = `
     }
   }
 `;
-
-
 
 const FEATURED_COLLECTION_QUERY = `#graphql
   fragment FeaturedCollection on Collection {

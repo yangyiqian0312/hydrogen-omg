@@ -236,32 +236,10 @@ export default function Product() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col">
-      {/* Mobile Image Section */}
-      {/* <div className="aspect-square w-full overflow-hidden">
-        <div
-          className="flex h-full transition-transform duration-300 ease-in-out"
-          style={{
-            transform: `translateX(-${selectedImage * 100}%)`,
-            width: `${product.images.edges.length * 100}%`,
-          }}
-        >
-          {product.images.edges.map((image, index) => (
-            <div key={index} className="w-full h-full flex-shrink-0">
-              <img
-                src={image.node.url || '/api/placeholder/400/400'}
-                alt={`${product.product_name}`}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))}
-        </div>
-      </div> */}
-
-
-      <div className="flex gap-4">
+    <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col lg:flex-row lg:gap-8 lg:py-8">
+      <div className="flex gap-4 lg:w-3/5">
         {/* Thumbnails on the left */}
-        <div className="flex flex-col gap-3 w-20">
+        <div className="flex flex-col gap-3 w-20 lg:w-24">
           {product.images.edges.map((image, index) => (
             <button
               key={index}
@@ -282,7 +260,7 @@ export default function Product() {
 
         {/* Main Image on the right */}
         <div className="flex-1">
-          <div className="relative aspect-square rounded-xl overflow-hidden">
+          <div className="relative aspect-square rounded-xl overflow-hidden lg:shadow-sm">
             <img
               src={product.images.edges[selectedImage]?.node?.url}
               alt={product.images.edges[selectedImage]?.node?.altText || `Product main view`}
@@ -292,24 +270,22 @@ export default function Product() {
         </div>
       </div>
 
-      {/* Mobile Product Info */}
-      <div className="mt-4 space-y-3">
+      {/* Product Info - right side on desktop */}
+      <div className="mt-4 space-y-3 lg:mt-0 lg:w-2/5 lg:pl-4">
         <div>
-          <h2 className="text-10px text-gray-500">{product.vendor}</h2>
-          {/* <h2 className="text-14px font-medium mt-1">{product.title.slice(0, -5)}</h2> */}
-          <h2 className="text-14px font-medium mt-1">{product.title}</h2>
-          <p className="text-10px text-gray-600 mt-1">{product.category}</p>
+          <h2 className="text-10px text-gray-500 lg:text-sm">{product.vendor}</h2>
+          <h2 className="text-14px font-medium mt-1 lg:text-xl lg:font-semibold">{product.title}</h2>
+          <p className="text-10px text-gray-600 mt-1 lg:text-sm">{product.category}</p>
         </div>
 
-        <div className="flex flex-col gap-2">
-
+        <div className="flex flex-col gap-2 lg:mt-6">
           <div className="flex items-center gap-2">
             <ProductPrice
               price={selectedVariant?.price}
               compareAtPrice={selectedVariant?.compareAtPrice}
             />
           </div>
-          <div className="pt-2">
+          <div className="pt-2 lg:pt-4">
             <ProductForm
               productOptions={productOptions}
               selectedVariant={selectedVariant}
@@ -317,9 +293,7 @@ export default function Product() {
           </div>
         </div>
 
-
-
-        <div className="border rounded-lg p-4 space-y-4 bg-white">
+        <div className="border rounded-lg p-4 space-y-4 bg-white lg:mt-6 lg:shadow-sm">
           <div className="flex items-center gap-3">
             <Truck className="w-5 h-5" />
             <div>
@@ -331,17 +305,16 @@ export default function Product() {
           </div>
         </div>
 
-      </div>
-
-      <div className="space-y-3 pt-6">
-        <h3 className="text-base font-medium">Product Details</h3>
-        <div className="space-y-2 text-xs text-gray-600">
-          <div className="mt-2">
-            <div
-              dangerouslySetInnerHTML={{
-                __html: product.descriptionHtml,
-              }}
-            />
+        <div className="space-y-3 pt-6 lg:pt-8 lg:border-t lg:mt-8">
+          <h3 className="text-base font-medium lg:text-lg">Product Details</h3>
+          <div className="space-y-2 text-xs text-gray-600 lg:text-sm">
+            <div className="mt-2">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: product.descriptionHtml,
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

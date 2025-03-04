@@ -122,26 +122,26 @@ const Men = (selectedVariant) => {
     : menProducts;
 
 
-  const carouselRef = useRef(null);
+  // const carouselRef = useRef(null);
 
-  const scroll = (direction) => {
-    if (!carouselRef.current) return;
+  // const scroll = (direction) => {
+  //   if (!carouselRef.current) return;
 
-    const scrollAmount = 320; // Width of one card
-    const currentScroll = carouselRef.current.scrollLeft;
+  //   const scrollAmount = 320; // Width of one card
+  //   const currentScroll = carouselRef.current.scrollLeft;
 
-    if (direction === 'left') {
-      carouselRef.current.scrollTo({
-        left: currentScroll - scrollAmount,
-        behavior: 'smooth',
-      });
-    } else {
-      carouselRef.current.scrollTo({
-        left: currentScroll + scrollAmount,
-        behavior: 'smooth',
-      });
-    }
-  };
+  //   if (direction === 'left') {
+  //     carouselRef.current.scrollTo({
+  //       left: currentScroll - scrollAmount,
+  //       behavior: 'smooth',
+  //     });
+  //   } else {
+  //     carouselRef.current.scrollTo({
+  //       left: currentScroll + scrollAmount,
+  //       behavior: 'smooth',
+  //     });
+  //   }
+  // };
 
 
 
@@ -149,7 +149,7 @@ const Men = (selectedVariant) => {
 
   return (
     <div>
-      <div className="flex items-center">
+      {/* <div className="flex items-center">
         <div className="relative flex gap-2 items-center p-2">
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -251,9 +251,111 @@ const Men = (selectedVariant) => {
             No products found for {selectedBrand}
           </div>
         )}
+      </div> */}
+
+
+      <div className="flex items-center">
+        <div className="relative flex gap-2 items-center p-2">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex items-center gap-2 px-6 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200"
+          >
+            <Filter size={18} className="text-gray-600" />
+            <span className="font-medium">
+              {selectedBrand || 'Shop by brand'}
+            </span>
+            <ChevronDown
+              size={16}
+              className={`text-gray-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+            />
+          </button>
+
+          {isOpen && (
+            <div className="absolute top-full left-4 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+              <button
+                onClick={() => {
+                  setSelectedBrand(null);
+                  setIsOpen(false);
+                }}
+                className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200"
+              >
+                All Brands
+              </button>
+              {brands.map((brand) => (
+                <button
+                  key={brand}
+                  onClick={() => {
+                    setSelectedBrand(brand);
+                    setIsOpen(false);
+                  }}
+                  className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200"
+                >
+                  {brand}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Updated grid - 2 columns on mobile, 4 columns on desktop with increased spacing */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 p-4">
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map(({ node }) => (
+            <div
+              key={node.id}
+              className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+            >
+              <div className="relative aspect-square">
+                {node.images.edges[0] ? (
+                  <img
+                    src={node.images.edges[0].node.url}
+                    alt={node.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src="/api/placeholder/400/400"
+                    alt="Placeholder"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+
+              <div className="m-2">
+                <Link
+                  to={`/products/${node.handle}`}
+                  className="font-semibold text-blue-600 hover:underline truncate"
+                >
+                  {node.vendor || 'Unknown Brand'}
+                  <p className="text-sm font-normal mb-2 overflow-hidden text-ellipsis whitespace-normal break-words h-10">
+                    {node.title
+                      ? node.title
+                        .replace(new RegExp(`^${node.vendor}\\s*`), '')
+                      : 'N/A'}
+                  </p>
+                </Link>
+
+                <div>
+                  <p className="font-bold mb-3">
+                    ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                    {node.variants.edges[0]?.node.compareAtPrice && (
+                      <span className="ml-2 text-gray-500 line-through">
+                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">
+            No products found for {selectedBrand}
+          </div>
+        )}
       </div>
     </div>
-
 
   );
 };

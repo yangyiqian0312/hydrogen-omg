@@ -225,12 +225,12 @@ export default function OldHeader({
               </button> */}
               <SearchToggle />
               <CartToggle cart={cart} />
-              <button
+              <a
                 onClick={handleProfileClick}
                 className="text-gray-800 hover:text-gray-600"
               >
                 <User className="h-6 w-6 md:block" onClick={handleLogin}/>
-              </button>
+              </a>
             </div>
           </div>
 

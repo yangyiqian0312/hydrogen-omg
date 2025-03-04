@@ -23,15 +23,15 @@ const SocialFooter = () => {
   ];
 
   return (
-    <footer className="bg-white">
+<footer className="bg-white">
       <div className="border-t my-4 mx-2 border-gray-300"></div>
       <nav className="py-2 px-4">
         <div className="max-w-screen-xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6">
             {links.map((link, index) => (
               <Link
                 key={index}
-                to={link.to}  // removed the leading '/'
+                to={link.to}
                 className="group relative px-4 py-3 rounded-lg hover:bg-gray-50 transition-all duration-200"
               >
                 <div className="flex items-center justify-between">
@@ -61,45 +61,23 @@ const SocialFooter = () => {
       <div className="border-t my-4 mx-2 border-gray-300"></div>
 
       <div className="max-w-screen-xl mx-auto px-4 py-4">
-        {/* Social Media Icons */}
-        <div className="flex justify-center mb-12">
-          <div className="flex gap-8">
-            <a href="https://www.instagram.com/omgbeautybox?igsh=NTc4MTIwNjQ2YQ==" className="text-gray-400 hover:text-gray-900 transition-colors duration-200 transform hover:scale-110" aria-label="Instagram">
-              <Instagram size={24} strokeWidth={1.5} />
-            </a>
-            {/* <a href="#" className="text-gray-400 hover:text-gray-900 transition-colors duration-200 transform hover:scale-110" aria-label="Twitter">
-              <Twitter size={24} strokeWidth={1.5} />
-            </a> */}
-            {/* <a href="#" className="text-gray-400 hover:text-gray-900 transition-colors duration-200 transform hover:scale-110" aria-label="Youtube">
-              <Youtube size={24} strokeWidth={1.5} />
-            </a> */}
-            <a href="https://www.tiktok.com/@omgbeautyshop" className="text-gray-400 hover:text-gray-900 transition-colors duration-200 transform hover:scale-110" aria-label="TikTok">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        <div className="space-y-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-gray-500">
-            <span>© 2025 OMG BEAUTY, Inc. All rights reserved.</span>
-            {/* <nav className="flex flex-wrap justify-center gap-x-8 gap-y-4">
-              <Link to="/privacy" className="hover:text-gray-900 transition-colors duration-200">Privacy Policy</Link>
-              <Link to="/terms" className="hover:text-gray-900 transition-colors duration-200">Terms of Use</Link>
-            </nav> */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex justify-center mb-8 lg:mb-0 order-2 lg:order-1">
+            <span className="text-sm text-gray-500">© 2025 OMG BEAUTY, Inc. All rights reserved.</span>
           </div>
 
-          <div>
-
-          </div>
-          {/* <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-gray-500">
-            <div className="flex items-center gap-4">
-              <a href="tel:1-xxx-xxx-xxxx" className="hover:text-gray-900 transition-colors duration-200">
-                1-xxx-xxx-xxxx
+          <div className="flex justify-center mb-8 lg:mb-0 order-1 lg:order-2">
+            <div className="flex gap-8">
+              <a href="https://www.instagram.com/omgbeautybox?igsh=NTc4MTIwNjQ2YQ==" className="text-gray-400 hover:text-gray-900 transition-colors duration-200 transform hover:scale-110" aria-label="Instagram">
+                <Instagram size={24} strokeWidth={1.5} />
+              </a>
+              <a href="https://www.tiktok.com/@omgbeautyshop" className="text-gray-400 hover:text-gray-900 transition-colors duration-200 transform hover:scale-110" aria-label="TikTok">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+                </svg>
               </a>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </footer>

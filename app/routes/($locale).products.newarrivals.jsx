@@ -147,52 +147,7 @@ const Newarrivals = (selectedVariant) => {
 
   return (
     <div>
-      <div className="flex items-center">
-        {/* <div className="relative flex gap-2 items-center p-2">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-2 px-6 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200"
-          >
-            <Filter size={18} className="text-gray-600" />
-            <span className="font-medium">
-              {selectedBrand || 'Shop by brand'}
-            </span>
-            <ChevronDown
-              size={16}
-              className={`text-gray-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''
-                }`}
-            />
-          </button>
-
-          {isOpen && (
-            <div className="absolute top-full left-4 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-              <button
-                onClick={() => {
-                  setSelectedBrand(null);
-                  setIsOpen(false);
-                }}
-                className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200"
-              >
-                All Brands
-              </button>
-              {brands.map((brand) => (
-                <button
-                  key={brand}
-                  onClick={() => {
-                    setSelectedBrand(brand);
-                    setIsOpen(false);
-                  }}
-                  className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200"
-                >
-                  {brand}
-                </button>
-              ))}
-            </div>
-          )}
-        </div> */}
-      </div>
-
-      <div className="grid grid-cols-2 gap-4 p-4">
+<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 p-4">
         {filteredProducts.length > 0 ? (
           filteredProducts.map(({ node }) => (
             <div
@@ -246,7 +201,7 @@ const Newarrivals = (selectedVariant) => {
             </div>
           ))
         ) : (
-          <div className="col-span-2 text-center py-8 text-gray-500">
+          <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">
             No products found for {selectedBrand}
           </div>
         )}
