@@ -333,7 +333,7 @@ export default function Homepage() {
     '/assets/video/1.mp4',
     '/assets/video/2.mp4',
     '/assets/video/3.mp4',
-    '/assets/video/4.mp4',
+    // '/assets/video/4.mp4',
     // '/assets/video/5.mp4',
     // 添加更多视频路径
   ];
@@ -928,16 +928,18 @@ export default function Homepage() {
                   {videoPaths.map((video, index) => (
                     <div
                       key={index}
-                      className="flex-none w-72 rounded-lg overflow-hidden snap-start shadow-sm relative aspect-[3/4]"
+                      className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-md transition-shadow duration-300 relative"
                     >
-                      <video
-                        src={video}
-                        className="w-full h-full object-cover"
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                      ></video>
+                      <div className="aspect-square">
+                        <video
+                          src={video}
+                          className="w-full h-full object-cover"
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                        ></video>
+                      </div>
 
                       {/* Shop Now Button */}
                       <div className="absolute bottom-4 left-0 w-full flex justify-center">
@@ -951,31 +953,6 @@ export default function Homepage() {
                     </div>
                   ))}
                 </div>
-
-                {/* 导航按钮 */}
-                {/* <button
-                  className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 p-2 rounded-full shadow-md z-10"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scroll('left');
-                  }}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-
-                <button
-                  className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 p-2 rounded-full shadow-md z-10"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scroll('right');
-                  }}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button> */}
               </div>
 
               {/* Trending Now Section */}

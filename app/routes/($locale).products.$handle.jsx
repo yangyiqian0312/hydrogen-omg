@@ -113,141 +113,141 @@ export default function Product() {
 
   const [selectedImage, setSelectedImage] = useState(0);
 
-  const DesktopLayout = () => (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col">
-      <div className="flex flex-col lg:flex-row gap-8">
-        {/* Product Images Section */}
-        <div className="lg:w-2/3">
-          <div className="flex gap-4">
-            {/* Thumbnails */}
-            <div className="flex flex-col gap-3 w-20">
-              {product.images.edges.map((image, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedImage(index)}
-                  className={`rounded-lg overflow-hidden border-2 ${selectedImage === index
-                    ? 'border-black'
-                    : 'border-transparent'
-                    }`}
-                >
-                  <img
-                    src={image.node.url || '/api/placeholder/400/400'}
-                    alt={`Product view ${index + 1}`}
-                    className="w-full aspect-square object-cover"
-                  />
-                </button>
-              ))}
-            </div>
+  // const DesktopLayout = () => (
+  //   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col">
+  //     <div className="flex flex-col lg:flex-row gap-8">
+  //       {/* Product Images Section */}
+  //       <div className="lg:w-2/3">
+  //         <div className="flex gap-4">
+  //           {/* Thumbnails */}
+  //           <div className="flex flex-col gap-3 w-20">
+  //             {product.images.edges.map((image, index) => (
+  //               <button
+  //                 key={index}
+  //                 onClick={() => setSelectedImage(index)}
+  //                 className={`rounded-lg overflow-hidden border-2 ${selectedImage === index
+  //                   ? 'border-black'
+  //                   : 'border-transparent'
+  //                   }`}
+  //               >
+  //                 <img
+  //                   src={image.node.url || '/api/placeholder/400/400'}
+  //                   alt={`Product view ${index + 1}`}
+  //                   className="w-full aspect-square object-cover"
+  //                 />
+  //               </button>
+  //             ))}
+  //           </div>
 
-            {/* Main Image */}
-            <div className="flex-1">
-              <div className="relative aspect-square rounded-xl overflow-hidden">
-                <img
-                  src={
-                    product.images.edges[selectedImage].node.url ||
-                    '/api/placeholder/400/400'
-                  }
-                  alt={product.product_name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+  //           {/* Main Image */}
+  //           <div className="flex-1">
+  //             <div className="relative aspect-square rounded-xl overflow-hidden">
+  //               <img
+  //                 src={
+  //                   product.images.edges[selectedImage].node.url ||
+  //                   '/api/placeholder/400/400'
+  //                 }
+  //                 alt={product.product_name}
+  //                 className="w-full h-full object-cover"
+  //               />
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
 
 
 
-        {/* Product Info Section - Desktop */}
-        <div className="lg:w-1/3 space-y-4">
-          <div>
-            <h2 className="text-sm text-gray-500">{product.vendor}</h2>
-            <h1 className="text-2xl font-medium mt-1">{product.title}</h1>
-            <p className="text-sm text-gray-600 mt-1">{product.category}</p>
-          </div>
+  //       {/* Product Info Section - Desktop */}
+  //       <div className="lg:w-1/3 space-y-4">
+  //         <div>
+  //           <h2 className="text-sm text-gray-500">{product.vendor}</h2>
+  //           <h1 className="text-2xl font-medium mt-1">{product.title}</h1>
+  //           <p className="text-sm text-gray-600 mt-1">{product.category}</p>
+  //         </div>
 
-          <div className="text-sm">
-            {product.selectedOrFirstAvailableVariant.availableForSale ? (
-              <span className="text-green-600">In Stock</span>
-            ) : (
-              <span className="text-red-600">Out of Stock</span>
-            )}
-          </div>
+  //         <div className="text-sm">
+  //           {product.selectedOrFirstAvailableVariant.availableForSale ? (
+  //             <span className="text-green-600">In Stock</span>
+  //           ) : (
+  //             <span className="text-red-600">Out of Stock</span>
+  //           )}
+  //         </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-2xl font-medium">
-              ${product.selectedOrFirstAvailableVariant.price.amount}
-            </span>
-            <span className="text-lg text-gray-500 line-through">
-              ${product.selectedOrFirstAvailableVariant.compareAtPrice.amount}
-            </span>
-          </div>
+  //         <div className="flex items-center gap-3">
+  //           <span className="text-2xl font-medium">
+  //             ${product.selectedOrFirstAvailableVariant.price.amount}
+  //           </span>
+  //           <span className="text-lg text-gray-500 line-through">
+  //             ${product.selectedOrFirstAvailableVariant.compareAtPrice.amount}
+  //           </span>
+  //         </div>
 
-          <div className="border rounded-lg p-4 space-y-4 bg-white">
-            <div className="flex items-center gap-3">
-              <Truck className="w-5 h-5" />
-              <div>
-                <p className="text-sm font-medium">Free Standard Delivery</p>
-                <p className="text-xs text-gray-500">
-                  Arrives within 3-5 business days
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Store className="w-5 h-5" />
-              <div>
-                <p className="text-sm font-medium">Store Pickup</p>
-                <p className="text-xs text-gray-500">
-                  Usually ready in 2 hours
-                </p>
-              </div>
-            </div>
-          </div>
+  //         <div className="border rounded-lg p-4 space-y-4 bg-white">
+  //           <div className="flex items-center gap-3">
+  //             <Truck className="w-5 h-5" />
+  //             <div>
+  //               <p className="text-sm font-medium">Free Standard Delivery</p>
+  //               <p className="text-xs text-gray-500">
+  //                 Arrives within 3-5 business days
+  //               </p>
+  //             </div>
+  //           </div>
+  //           <div className="flex items-center gap-3">
+  //             <Store className="w-5 h-5" />
+  //             <div>
+  //               <p className="text-sm font-medium">Store Pickup</p>
+  //               <p className="text-xs text-gray-500">
+  //                 Usually ready in 2 hours
+  //               </p>
+  //             </div>
+  //           </div>
+  //         </div>
 
-          <div className="space-y-4">
-            <div className="flex gap-3">
-              {/* 
-              <ProductForm
-                productOptions={productOptions}
-                selectedVariant={selectedVariant}
-              /> */}
-            </div>
-          </div>
-        </div>
-      </div>
+  //         <div className="space-y-4">
+  //           <div className="flex gap-3">
+  //             {/* 
+  //             <ProductForm
+  //               productOptions={productOptions}
+  //               selectedVariant={selectedVariant}
+  //             /> */}
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
 
-      {/* Product Details */}
-      <div className="space-y-4 pt-6">
-        {/* <h3 className="font-medium">Product Details</h3> */}
-        <div className="space-y-2 text-sm text-gray-600">
-          {/* <p>
-            <span className="font-medium">SKU:</span>{' '}
-            {product.selectedOrFirstAvailableVariant.sku}
-          </p> */}
-          <div className="mt-2">
-            <div
-              dangerouslySetInnerHTML={{
-                __html: product.descriptionHtml,
-              }}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  //     {/* Product Details */}
+  //     <div className="space-y-4 pt-6">
+  //       {/* <h3 className="font-medium">Product Details</h3> */}
+  //       <div className="space-y-2 text-sm text-gray-600">
+  //         {/* <p>
+  //           <span className="font-medium">SKU:</span>{' '}
+  //           {product.selectedOrFirstAvailableVariant.sku}
+  //         </p> */}
+  //         <div className="mt-2">
+  //           <div
+  //             dangerouslySetInnerHTML={{
+  //               __html: product.descriptionHtml,
+  //             }}
+  //           />
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col lg:flex-row lg:gap-8 lg:py-8">
-      <div className="flex gap-4 lg:w-3/5">
+      <div className="flex gap-6 lg:w-3/5">
         {/* Thumbnails on the left */}
-        <div className="flex flex-col gap-3 w-20 lg:w-24">
+        <div className="flex flex-col gap-4 w-20 lg:w-28">
           {product.images.edges.map((image, index) => (
             <button
               key={index}
               onClick={() => setSelectedImage(index)}
-              className={`rounded-lg overflow-hidden border-2 ${selectedImage === index
-                ? 'border-black'
-                : 'border-transparent'
-                } hover:border-gray-300 transition-colors`}
+              className={`rounded-lg overflow-hidden border-2 transition-all duration-200 transform hover:scale-105 ${selectedImage === index
+                  ? 'border-black ring-2 ring-gray-200 shadow-md'
+                  : 'border-transparent'
+                } hover:border-gray-300`}
             >
               <img
                 src={image.node?.url}
@@ -260,11 +260,11 @@ export default function Product() {
 
         {/* Main Image on the right */}
         <div className="flex-1">
-          <div className="relative aspect-square rounded-xl overflow-hidden lg:shadow-sm">
+          <div className="relative aspect-square rounded-xl overflow-hidden border border-gray-100 lg:shadow-md hover:shadow-lg transition-shadow duration-300">
             <img
               src={product.images.edges[selectedImage]?.node?.url}
               alt={product.images.edges[selectedImage]?.node?.altText || `Product main view`}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
             />
           </div>
         </div>

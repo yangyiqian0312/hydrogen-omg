@@ -217,22 +217,25 @@ const Women = (selectedVariant) => {
                 )}
               </div>
 
-              <div className="m-2">
+              <div className="p-3">
                 <Link
                   to={`/products/${node.handle}`}
-                  className="font-semibold text-blue-600 hover:underline truncate"
+                  className="block"
                 >
-                  {node.vendor || 'Unknown Brand'}
-                  <p className="text-sm font-normal mb-2 overflow-hidden text-ellipsis whitespace-normal break-words h-10">
+                  <div className="font-semibold text-blue-600 hover:underline truncate">
+                    {node.vendor || 'Unknown Brand'}
+                  </div>
+                  <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
+                  h-auto max-h-12
+                  line-clamp-2">
                     {node.title
-                      ? node.title
-                        .replace(new RegExp(`^${node.vendor}\\s*`), '')
+                      ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
                       : 'N/A'}
                   </p>
                 </Link>
 
                 <div>
-                  <p className="font-bold mb-3">
+                  <p className="font-bold">
                     ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
                     {node.variants.edges[0]?.node.compareAtPrice && (
                       <span className="ml-2 text-gray-500 line-through">
@@ -251,8 +254,6 @@ const Women = (selectedVariant) => {
         )}
       </div>
     </div>
-
-
   );
 };
 
