@@ -294,6 +294,32 @@ export default function Homepage() {
       item: "Default",
       date: "February 13, 2024",
       helpfulCount: 0
+    },
+    {
+      id: 11,
+      name: "@wyattdkmn",
+      userProfile: '/assets/reviews/11.jpeg',
+      location: "United States",
+      verified: true,
+      rating: 5,
+      title: "great smell",
+      text: "It’s really strong when you smell it right after you spray, but when it dialates it becomes a really great smell",
+      item: "Default",
+      date: "February 13, 2024",
+      helpfulCount: 0
+    },
+    {
+      id: 12,
+      name: "@Noah",
+      userProfile: '/assets/reviews/12.jpeg',
+      location: "United States",
+      verified: true,
+      rating: 5,
+      title: "Perfectly Balanced Scent",
+      text: "It’s a really relaxing sent not to hard but not too light very good blind but for starters",
+      item: "Default",
+      date: "February 13, 2024",
+      helpfulCount: 0
     }
   ];
 

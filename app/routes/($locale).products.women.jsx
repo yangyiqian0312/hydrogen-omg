@@ -150,13 +150,13 @@ const Women = (selectedVariant) => {
   return (
     <div>
       <div className="flex items-center">
-        <div className="relative flex gap-2 items-center p-2">
+        <div className="relative">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-2 px-6 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200"
+            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-gray-100 to-gray-50 hover:from-gray-200 hover:to-gray-100 rounded-full shadow-sm border border-gray-200 transition-all duration-200"
           >
-            <Filter size={18} className="text-gray-600" />
-            <span className="font-medium">
+            {/* <Filter size={18} className="text-gray-600" /> */}
+            <span className="font-medium text-gray-700">
               {selectedBrand || 'Shop by brand'}
             </span>
             <ChevronDown
@@ -166,15 +166,19 @@ const Women = (selectedVariant) => {
           </button>
 
           {isOpen && (
-            <div className="absolute top-full left-4 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+            <div className="absolute top-full left-4 mt-2 w-52 bg-white rounded-lg shadow-lg py-2 z-50 border border-gray-100">
+              <div className="px-4 py-1 mb-1 text-xs font-medium text-gray-500 uppercase tracking-wide border-b border-gray-100">
+                Brands
+              </div>
               <button
                 onClick={() => {
                   setSelectedBrand(null);
                   setIsOpen(false);
                 }}
-                className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200"
+                className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between"
               >
-                All Brands
+                <span className="font-medium">All Brands</span>
+                {selectedBrand === null && <div className="w-2 h-2 rounded-full bg-green-500"></div>}
               </button>
               {brands.map((brand) => (
                 <button
@@ -183,9 +187,10 @@ const Women = (selectedVariant) => {
                     setSelectedBrand(brand);
                     setIsOpen(false);
                   }}
-                  className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200"
+                  className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between"
                 >
-                  {brand}
+                  <span>{brand}</span>
+                  {selectedBrand === brand && <div className="w-2 h-2 rounded-full bg-green-500"></div>}
                 </button>
               ))}
             </div>
