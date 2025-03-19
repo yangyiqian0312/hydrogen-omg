@@ -448,8 +448,8 @@ export default function Homepage() {
                 <div className="relative w-full h-full rounded-full overflow-hidden">
                   <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20 "></div>
                   <img
-                    src="/assets/logo/logo.png"
-                    alt="OMG Beauty Shop"
+                    src="/assets/logo/omgbeautybox.png"
+                    alt="OMG Beauty Box"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -900,8 +900,8 @@ export default function Homepage() {
                   <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
                   <div className="relative w-full h-full rounded-full overflow-hidden">
                     <img
-                      src="/assets/logo/logo.png"
-                      alt="OMG Beauty Shop"
+                      src="/assets/logo/omgbeautybox.png"
+                      alt="OMG Beauty Box"
                       className="w-full h-full object-cover"
                     />
                   </div>
