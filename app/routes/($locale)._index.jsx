@@ -304,15 +304,18 @@ export default function Homepage() {
 
 
   const preferredOrder = [
+    "Valentino Donna Born In Roma Eau de Parfum For Women 1.7 oz / 50 mL",
+    "BURBERRY Touch Eau De Toilette Spray 3.3 oz / 100 ml Cologne for Men - Full Size Luxurious Warm & Spicy Woody Fragrance",
+    "Versace Bright Crystal Eau de Toilette for Women 3.0 oz/90ml - Full Size Floral Scent Fragrance",
+    "Valentino Donna Born in Roma Yellow Dream 3.4oz",
     "GUCCI 3PC SET: 1 X 100ML Bloom EDP + 1 X 100 ML Bloom Body lotion + 1 X 10 ML Bloom EDP Pen Spray - Floral Scent Fragrance Jasmine",
     "Versace Pour Homme Eau De Toilette Spray 1.7 Oz/ 50 ml - Full Size Woody & Citrus Aromatic Fragrance for Men",
     "VERSACE Eros Eau de Toilette Spray for MEN 1.7oz / 50ml - Luxury, Long Lasting Perfume",
     "Viktor & Rolf Flowerbomb 3.4 oz/100 ml Eau De Parfum Spray for Women - Full Size Floral Fragrance with Cattleya, Jasmine, and Rose",
-    "Valentino Donna Born in Roma Yellow Dream 3.4oz",
+    
     "Viktor&Rolf Spicebomb Eau de Toilette Spray for Men 3.04 Oz / 90 ml - Woody, Spicy, Gourmand Scent",
-    "Versace Bright Crystal Eau de Toilette for Women 3.0 oz/90ml - Full Size Floral Scent Fragrance",
-    "Valentino Donna Born In Roma Eau de Parfum For Women 1.7 oz / 50 mL",
-    "BURBERRY Touch Eau De Toilette Spray 3.3 oz / 100 ml Cologne for Men - Full Size Luxurious Warm & Spicy Woody Fragrance"
+    
+
   ];
 
   // 找出优先显示的商品
@@ -411,7 +414,7 @@ export default function Homepage() {
           <img
             src="/assets/banner.jpg"
             alt="Banner"
-            className="w-full h-64 object-cover"
+            className=" "
           />
         </div>
 
