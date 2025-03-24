@@ -312,9 +312,9 @@ export default function Homepage() {
     "Versace Pour Homme Eau De Toilette Spray 1.7 Oz/ 50 ml - Full Size Woody & Citrus Aromatic Fragrance for Men",
     "VERSACE Eros Eau de Toilette Spray for MEN 1.7oz / 50ml - Luxury, Long Lasting Perfume",
     "Viktor & Rolf Flowerbomb 3.4 oz/100 ml Eau De Parfum Spray for Women - Full Size Floral Fragrance with Cattleya, Jasmine, and Rose",
-    
+
     "Viktor&Rolf Spicebomb Eau de Toilette Spray for Men 3.04 Oz / 90 ml - Woody, Spicy, Gourmand Scent",
-    
+
 
   ];
 
@@ -414,13 +414,12 @@ export default function Homepage() {
           <img
             src="/assets/banner.jpg"
             alt="Banner"
-            className=" "
           />
         </div>
 
         {/* TikTok LIVE element positioned at the top right corner */}
-        <div className="absolute top-40 right-20 bg-white/80 backdrop-blur-sm rounded-lg shadow-lg p-3 max-w-xs hidden md:block">
-          <div className="rounded-xl text-center">
+        <div className="absolute top-20 right-10 p-3 max-w-xs hidden md:block">
+          <div className="text-center">
             <div className="relative w-20 h-20 mx-auto mb-2">
               <div className="relative w-full h-full rounded-full overflow-hidden">
                 <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>

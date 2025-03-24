@@ -38,6 +38,7 @@ export function PageLayout({
         />
       )} */}
       <OldHeader header={header} cart={cart} />
+      <div className="border-b border-gray-200"></div>
       <main>{children}</main>
       {/* <Footer
         footer={footer}

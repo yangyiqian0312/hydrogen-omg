@@ -224,8 +224,8 @@ export default function OldHeader({
   return (
     <>
       {/* Announcement Bar */}
-      <div className="bg-pink-200 text-center py-4 relative overflow-hidden">
-        <div className="h-6"> {/* Fixed height container */}
+      {/* <div className="bg-pink-200 text-center py-4 relative overflow-hidden">
+        <div className="h-6"> 
           <p
             className="text-gray-800 font-bold transition-all duration-500 ease-in-out"
             style={{
@@ -236,7 +236,7 @@ export default function OldHeader({
             {promos[currentIndex].message}
           </p>
         </div>
-      </div>
+      </div> */}
 
       {/* Navigation */}
       <nav className="bg-white">
