@@ -7,6 +7,7 @@ import { products } from '~/data/products';
 import { useLoaderData } from '@remix-run/react';
 import { AddToCartButton } from '~/components/AddToCartButton';
 
+import { useSearchParams } from '@remix-run/react';
 
 /**
  * @param {{
@@ -96,10 +97,23 @@ async function loadDeferredData({ context }) {
 
 
 const Men = (selectedVariant) => {
+
+   const [searchParams] = useSearchParams();
+    const urlBrand = searchParams.get('brand');
+  
+
   const [isOpen, setIsOpen] = useState(false);
   const brands = ['Versace', 'Burberry', 'Gucci ', 'Valentino ', 'Viktor & Rolf'];
   const [selectedBrand, setSelectedBrand] = useState(null);
 
+
+    // Set selected brand from URL when component mounts or URL changes
+    useEffect(() => {
+      if (urlBrand) {
+        setSelectedBrand(urlBrand);
+      }
+    }, [urlBrand]);
+  
 
   const data = useLoaderData();
 
@@ -255,12 +269,11 @@ const Men = (selectedVariant) => {
 
 
       <div className="flex items-center">
-        <div className="relative">
+        {/* <div className="relative">
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-gray-100 to-gray-50 hover:from-gray-200 hover:to-gray-100 rounded-full shadow-sm border border-gray-200 transition-all duration-200"
           >
-            {/* <Filter size={18} className="text-gray-600" /> */}
             <span className="font-medium text-gray-700">
               {selectedBrand || 'Shop by brand'}
             </span>
@@ -300,7 +313,7 @@ const Men = (selectedVariant) => {
               ))}
             </div>
           )}
-        </div>
+        </div> */}
       </div>
 
       {/* Updated grid - 2 columns on mobile, 4 columns on desktop with increased spacing */}

@@ -3,7 +3,7 @@ import { Await, NavLink, useAsyncValue } from '@remix-run/react';
 import { useAnalytics, useOptimisticCart } from '@shopify/hydrogen';
 import { useAside } from '~/components/Aside';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, Search, Menu, X } from 'lucide-react';
+import { ShoppingCart, User, Search, Menu, X, ChevronDown } from 'lucide-react';
 
 /**
  * @param {Pick<HeaderProps, 'isLoggedIn' | 'cart'>}
@@ -100,6 +100,52 @@ function CartBanner() {
   return <CartBadge count={cart?.totalQuantity ?? 0} />;
 }
 
+
+function NavDropdown({ title, items, path }) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <Link
+        to={path}
+        className="flex items-center text-gray-800 hover:text-gray-600 font-medium no-underline transition-colors duration-200 px-3 py-2 rounded-md"
+      >
+        {title}
+        <ChevronDown
+          className={`h-4 w-4 ml-1 transition-transform duration-300 ease-in-out ${isHovered ? 'rotate-180 text-blue-600' : ''
+            }`}
+        />
+      </Link>
+
+      {/* Dropdown menu with animation */}
+      <div
+        className={`absolute left-0 mt-1 w-56 bg-white border border-gray-100 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out transform origin-top ${isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+          }`}
+      >
+        {/* Dropdown arrow */}
+        <div className="absolute -top-2 left-4 w-4 h-4 rotate-45 bg-white border-t border-l border-gray-100"></div>
+
+        <div className="py-2 px-1 relative">
+          {items.map((item, index) => (
+            <Link
+              key={index}
+              to={item.path}
+              className="block px-4 py-2.5 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-all duration-200 no-underline font-medium"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 export default function OldHeader({
   header,
   isLoggedIn,
@@ -123,6 +169,37 @@ export default function OldHeader({
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
+
+  // Brand lists
+  const womenBrands = [
+    { name: "Versace", path: "/products/women?brand=Versace" },
+    { name: "Burberry", path: "/products/women?brand=Burberry" },
+    { name: "GUCCI", path: "/products/women?brand=GUCCI" },
+    { name: "Valentino", path: "/products/women?brand=Valentino" },
+    { name: "Viktor & Rolf", path: "/products/women?brand=Viktor%20%26%20Rolf" },
+    { name: "All Women's Products", path: "/products/women" }
+  ];
+
+  const menBrands = [
+    { name: "Versace", path: "/products/men?brand=Versace" },
+    { name: "Burberry", path: "/products/men?brand=Burberry" },
+    { name: "GUCCI", path: "/products/men?brand=GUCCI" },
+    { name: "Valentino", path: "/products/men?brand=Valentino" },
+    { name: "Armani", path: "/products/men?brand=Armani" },
+    { name: "All Men's Products", path: "/products/men" }
+  ];
+
+  const giftSetItems = [
+    { name: "View All", path: "/products/giftsets" },
+  ];
+
+  const newArrivalItems = [
+    { name: "View All", path: "/products/newarrivals" },
+  ];
+
+  const dealsItems = [
+    { name: "View All", path: "/products/sales" },
+  ];
   const promos = [
     {
       id: 1,
@@ -186,21 +263,33 @@ export default function OldHeader({
 
             {/* Desktop Navigation Tabs */}
             <div className="hidden md:flex flex-1 justify-center space-x-8 px-8">
-              <Link to="/products/men" className="text-gray-800 hover:text-gray-600">
-                Men
-              </Link>
-              <Link to="/products/women" className="text-gray-800 hover:text-gray-600">
-                Women
-              </Link>
-              <Link to="/products/giftsets" className="text-gray-800 hover:text-gray-600">
-                Gift Sets
-              </Link>
-              <Link to="/products/newarrivals" className="text-gray-800 hover:text-gray-600">
-                New Arrivals
-              </Link>
-              <Link to="/products/sales" className="text-gray-800 hover:text-gray-600">
-                Deals & Offers
-              </Link>
+              <NavDropdown
+                title="WOMEN"
+                items={womenBrands}
+                path="/products/women"
+              />
+              <NavDropdown
+                title="MEN"
+                items={menBrands}
+                path="/products/men"
+              />
+              <NavDropdown
+                title="GIFT SETS"
+                items={giftSetItems}
+                path="/products/giftsets"
+              />
+
+              <NavDropdown
+                title="NEW ARRIVALS"
+                items={newArrivalItems}
+                path="/products/newarrivals"
+              />
+
+              <NavDropdown
+                title="DEALS & OFFERS"
+                items={dealsItems}
+                path="/products/sales"
+              />
               {/* <Link to="/mini" className="text-gray-800 hover:text-gray-600">
                 Mini
               </Link>
@@ -229,7 +318,7 @@ export default function OldHeader({
                 onClick={handleProfileClick}
                 className="text-gray-800 hover:text-gray-600"
               >
-                <User className="h-6 w-6 md:block" onClick={handleLogin}/>
+                <User className="h-6 w-6 md:block" onClick={handleLogin} />
               </a>
             </div>
           </div>

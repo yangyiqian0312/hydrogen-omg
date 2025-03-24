@@ -7,6 +7,7 @@ import { products } from '~/data/products';
 import { useLoaderData } from '@remix-run/react';
 import { AddToCartButton } from '~/components/AddToCartButton';
 
+import { useSearchParams } from '@remix-run/react';
 
 /**
  * @param {{
@@ -96,33 +97,46 @@ async function loadDeferredData({ context }) {
 
 
 const Women = (selectedVariant) => {
+
+  const [searchParams] = useSearchParams();
+  const urlBrand = searchParams.get('brand');
+
+
   const [isOpen, setIsOpen] = useState(false);
   const brands = ['Versace', 'Burberry', 'GUCCI', 'Valentino', 'Viktor & Rolf'];
-  const [selectedBrand, setSelectedBrand] = useState(null);
+  const [selectedBrand, setSelectedBrand] = useState(urlBrand);
+
+
+  // Set selected brand from URL when component mounts or URL changes
+  useEffect(() => {
+    if (urlBrand) {
+      setSelectedBrand(urlBrand);
+    }
+  }, [urlBrand]);
 
 
   const data = useLoaderData();
 
-  const carouselRef = useRef(null);
+  // const carouselRef = useRef(null);
 
-  const scroll = (direction) => {
-    if (!carouselRef.current) return;
+  // const scroll = (direction) => {
+  //   if (!carouselRef.current) return;
 
-    const scrollAmount = 320; // Width of one card
-    const currentScroll = carouselRef.current.scrollLeft;
+  //   const scrollAmount = 320; // Width of one card
+  //   const currentScroll = carouselRef.current.scrollLeft;
 
-    if (direction === 'left') {
-      carouselRef.current.scrollTo({
-        left: currentScroll - scrollAmount,
-        behavior: 'smooth',
-      });
-    } else {
-      carouselRef.current.scrollTo({
-        left: currentScroll + scrollAmount,
-        behavior: 'smooth',
-      });
-    }
-  };
+  //   if (direction === 'left') {
+  //     carouselRef.current.scrollTo({
+  //       left: currentScroll - scrollAmount,
+  //       behavior: 'smooth',
+  //     });
+  //   } else {
+  //     carouselRef.current.scrollTo({
+  //       left: currentScroll + scrollAmount,
+  //       behavior: 'smooth',
+  //     });
+  //   }
+  // };
 
 
 
@@ -131,7 +145,7 @@ const Women = (selectedVariant) => {
   console.log("Products before filtering:", products);
 
 
-  // Filter for products with "men" tag with extra logging
+  // Filter for products with "Women" tag with extra logging
   const womenProducts = products.filter(({ node }) => {
     return node.tags && node.tags.includes('Women');
   });
@@ -147,119 +161,124 @@ const Women = (selectedVariant) => {
 
 
 
-  return (
-    <div>
-      <div className="flex items-center">
-        <div className="relative">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-gray-100 to-gray-50 hover:from-gray-200 hover:to-gray-100 rounded-full shadow-sm border border-gray-200 transition-all duration-200"
-          >
-            {/* <Filter size={18} className="text-gray-600" /> */}
-            <span className="font-medium text-gray-700">
-              {selectedBrand || 'Shop by brand'}
-            </span>
-            <ChevronDown
-              size={16}
-              className={`text-gray-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-            />
-          </button>
-
-          {isOpen && (
-            <div className="absolute top-full left-4 mt-2 w-52 bg-white rounded-lg shadow-lg py-2 z-50 border border-gray-100">
-              <div className="px-4 py-1 mb-1 text-xs font-medium text-gray-500 uppercase tracking-wide border-b border-gray-100">
-                Brands
-              </div>
-              <button
-                onClick={() => {
-                  setSelectedBrand(null);
-                  setIsOpen(false);
-                }}
-                className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between"
-              >
-                <span className="font-medium">All Brands</span>
-                {selectedBrand === null && <div className="w-2 h-2 rounded-full bg-green-500"></div>}
-              </button>
-              {brands.map((brand) => (
+    return (
+      <div>
+        <div className="flex items-center">
+          <div className="relative">
+            {/* <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-gray-100 to-gray-50 hover:from-gray-200 hover:to-gray-100 rounded-full shadow-sm border border-gray-200 transition-all duration-200"
+            >
+              <span className="font-medium text-gray-700">
+                {selectedBrand || 'Shop by brand'}
+              </span>
+              <ChevronDown
+                size={16}
+                className={`text-gray-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+              />
+            </button> */}
+  
+            {/* Brand dropdown menu */}
+            {/* {isOpen && (
+              <div className="absolute top-full left-4 mt-2 w-52 bg-white rounded-lg shadow-lg py-2 z-50 border border-gray-100">
+                <div className="px-4 py-1 mb-1 text-xs font-medium text-gray-500 uppercase tracking-wide border-b border-gray-100">
+                  Brands
+                </div>
                 <button
-                  key={brand}
                   onClick={() => {
-                    setSelectedBrand(brand);
+                    setSelectedBrand(null);
                     setIsOpen(false);
+                    // Navigate to base URL without brand parameter
+                    window.history.pushState({}, "", "/products/women");
                   }}
                   className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between"
                 >
-                  <span>{brand}</span>
-                  {selectedBrand === brand && <div className="w-2 h-2 rounded-full bg-green-500"></div>}
+                  <span className="font-medium">All Brands</span>
+                  {selectedBrand === null && <div className="w-2 h-2 rounded-full bg-green-500"></div>}
                 </button>
-              ))}
+                {brands.map((brand) => (
+                  <button
+                    key={brand}
+                    onClick={() => {
+                      setSelectedBrand(brand);
+                      setIsOpen(false);
+                      // Update URL with selected brand parameter
+                      window.history.pushState({}, "", `/products/women?brand=${encodeURIComponent(brand)}`);
+                    }}
+                    className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between"
+                  >
+                    <span>{brand}</span>
+                    {selectedBrand === brand && <div className="w-2 h-2 rounded-full bg-green-500"></div>}
+                  </button>
+                ))}
+              </div>
+            )} */}
+          </div>
+        </div>
+  
+        {/* Products grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 p-4">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map(({ node }) => (
+              <div
+                key={node.id}
+                className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+              >
+                {/* Product card content remains the same */}
+                <div className="relative aspect-square">
+                  {node.images.edges[0] ? (
+                    <img
+                      src={node.images.edges[0].node.url}
+                      alt={node.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <img
+                      src="/api/placeholder/400/400"
+                      alt="Placeholder"
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+  
+                <div className="p-3">
+                  <Link
+                    to={`/products/${node.handle}`}
+                    className="block"
+                  >
+                    <div className="font-semibold text-blue-600 hover:underline truncate">
+                      {node.vendor || 'Unknown Brand'}
+                    </div>
+                    <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
+                    h-auto max-h-12
+                    line-clamp-2">
+                      {node.title
+                        ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
+                        : 'N/A'}
+                    </p>
+                  </Link>
+  
+                  <div>
+                    <p className="font-bold">
+                      ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                      {node.variants.edges[0]?.node.compareAtPrice && (
+                        <span className="ml-2 text-gray-500 line-through">
+                          ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">
+              No products found for {selectedBrand}
             </div>
           )}
         </div>
       </div>
-
-      {/* Updated grid - 2 columns on mobile, 4 columns on desktop with increased spacing */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 p-4">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map(({ node }) => (
-            <div
-              key={node.id}
-              className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
-            >
-              <div className="relative aspect-square">
-                {node.images.edges[0] ? (
-                  <img
-                    src={node.images.edges[0].node.url}
-                    alt={node.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <img
-                    src="/api/placeholder/400/400"
-                    alt="Placeholder"
-                    className="w-full h-full object-cover"
-                  />
-                )}
-              </div>
-
-              <div className="p-3">
-                <Link
-                  to={`/products/${node.handle}`}
-                  className="block"
-                >
-                  <div className="font-semibold text-blue-600 hover:underline truncate">
-                    {node.vendor || 'Unknown Brand'}
-                  </div>
-                  <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
-                  h-auto max-h-12
-                  line-clamp-2">
-                    {node.title
-                      ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
-                      : 'N/A'}
-                  </p>
-                </Link>
-
-                <div>
-                  <p className="font-bold">
-                    ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                    {node.variants.edges[0]?.node.compareAtPrice && (
-                      <span className="ml-2 text-gray-500 line-through">
-                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
-                      </span>
-                    )}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">
-            No products found for {selectedBrand}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Women;

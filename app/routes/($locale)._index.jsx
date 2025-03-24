@@ -105,27 +105,6 @@ export default function Homepage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [featuredProducts, setFeaturedProducts] = useState([]);
 
-  const carouselRef = useRef(null);
-
-  // const scroll = (direction) => {
-  //   if (!carouselRef.current) return;
-
-  //   const scrollAmount = 320; 
-  //   const currentScroll = carouselRef.current.scrollLeft;
-
-  //   if (direction === 'left') {
-  //     carouselRef.current.scrollTo({
-  //       left: currentScroll - scrollAmount,
-  //       behavior: 'smooth',
-  //     });
-  //   } else {
-  //     carouselRef.current.scrollTo({
-  //       left: currentScroll + scrollAmount,
-  //       behavior: 'smooth',
-  //     });
-  //   }
-  // };
-
 
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
@@ -325,12 +304,15 @@ export default function Homepage() {
 
 
   const preferredOrder = [
-    "Viktor & Rolf Flowerbomb 2pc Mini Fragrance Gift Set - 7ml EDP & 50ml Body Lotion - Floral Fragrance with Cattleya, Jasmine, and Rose",
     "GUCCI 3PC SET: 1 X 100ML Bloom EDP + 1 X 100 ML Bloom Body lotion + 1 X 10 ML Bloom EDP Pen Spray - Floral Scent Fragrance Jasmine",
+    "Versace Pour Homme Eau De Toilette Spray 1.7 Oz/ 50 ml - Full Size Woody & Citrus Aromatic Fragrance for Men",
+    "VERSACE Eros Eau de Toilette Spray for MEN 1.7oz / 50ml - Luxury, Long Lasting Perfume",
     "Viktor & Rolf Flowerbomb 3.4 oz/100 ml Eau De Parfum Spray for Women - Full Size Floral Fragrance with Cattleya, Jasmine, and Rose",
-    "BURBERRY Touch Eau de Parfum Natural Spray For Women (3.4oz)",
-    "Carolina Herrera Good Girl Blush Eau de Parfum for Women - 2.7oz / 80ml EDP Spray",
-    "Viktor&Rolf Spicebomb Eau de Toilette Spray for Men 3.04 Oz / 90 ml - Woody, Spicy, Gourmand Scent"
+    "Valentino Donna Born in Roma Yellow Dream 3.4oz",
+    "Viktor&Rolf Spicebomb Eau de Toilette Spray for Men 3.04 Oz / 90 ml - Woody, Spicy, Gourmand Scent",
+    "Versace Bright Crystal Eau de Toilette for Women 3.0 oz/90ml - Full Size Floral Scent Fragrance",
+    "Valentino Donna Born In Roma Eau de Parfum For Women 1.7 oz / 50 mL",
+    "BURBERRY Touch Eau De Toilette Spray 3.3 oz / 100 ml Cologne for Men - Full Size Luxurious Warm & Spicy Woody Fragrance"
   ];
 
   // 找出优先显示的商品
@@ -347,12 +329,18 @@ export default function Homepage() {
   const orderedProducts = [...priorityProducts, ...otherProducts];
 
 
+
+
   const bgColors = [
-    'bg-[#C4C3E7]',
-    'bg-[#FFB6C1]',
-    'bg-[#FFF4E6]',
-    'bg-[#F7CAC9]',
-    'bg-[#FADADD]',
+    'bg-[#A1E9ED]',
+    'bg-[#FFB2FF]',
+    'bg-[#FFB2A4]',
+    'bg-[#AD9CFF]',
+    'bg-[#F6EDDF]',
+    'bg-[#FFB2FF]',
+    'bg-[#FFB2A4]',
+    'bg-[#AD9CFF]',
+    'bg-[#F6EDDF]'
   ]; // 展示图背景颜色
 
   const videoPaths = [
@@ -365,56 +353,168 @@ export default function Homepage() {
   ];
 
 
-
   const [currentTestimonialPage, setCurrentTestimonialPage] = useState(0);
   const testimonialCarouselRef = useRef(null);
 
+  const carouselRef = useRef(null);
 
+  const orderCarouselRef = useRef(null);
+  useEffect(() => {
+    if (orderCarouselRef.current) {
+      console.log('Carousel mounted successfully');
+    }
+  }, []);
+
+  const orderScrollLeft = () => {
+    if (orderCarouselRef.current) {
+      orderCarouselRef.current.scrollBy({
+        left: -320,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const orderScrollRight = () => {
+    if (orderCarouselRef.current) {
+      orderCarouselRef.current.scrollBy({
+        left: 320,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+
+  const videoCarouselRef = useRef(null);
+  const videoScrollLeft = () => {
+    if (videoCarouselRef.current) {
+      videoCarouselRef.current.scrollBy({
+        left: -320,
+        behavior: 'smooth'
+      });
+    }
+  };
+  const videoScrollRight = () => {
+    if (videoCarouselRef.current) {
+      videoCarouselRef.current.scrollBy({
+        left: 320,
+        behavior: 'smooth'
+      });
+    }
+  };
 
 
   return (
     <div className="home">
-      <div
-        ref={carouselRef}
-        className="flex overflow-x-auto snap-x snap-mandatory gap-2 hide-scrollbar scrollbar-hide"
-        style={{
-          scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
-          msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
-          WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
-        }}
-      >
-        {orderedProducts.map(({ node }, index) => (
-          <div
-            key={node.id}
-            className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
-          >
-            <div className="relative aspect-square">
-              <img
-                src={`/assets/presentation/${index + 1}.png`}
-                alt={node.title}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="p-6">
-              <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
-                {node.vendor || 'Unknown Brand'}
+      <div className="flex flex-col space-y-4" >
+        {/* Main banner image */}
+        <div>
+          <img
+            src="/assets/banner.jpg"
+            alt="Banner"
+            className="w-full h-64 object-cover"
+          />
+        </div>
+
+        {/* TikTok LIVE element positioned at the top right corner */}
+        <div className="absolute top-40 right-20 bg-white/80 backdrop-blur-sm rounded-lg shadow-lg p-3 max-w-xs hidden md:block">
+          <div className="rounded-xl text-center">
+            <div className="relative w-20 h-20 mx-auto mb-2">
+              <div className="relative w-full h-full rounded-full overflow-hidden">
+                <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
+                <img
+                  src="/assets/logo/omgbeautybox.png"
+                  alt="OMG Beauty Box"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <p className="text-pink-600 font-bold mb-4">
-                ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-              </p>
-              <Link
-                to={`/products/${node.handle}`}
-                onClick={(e) => {
-                  if (!node?.handle) e.preventDefault();
-                }}
-                className="font-bold text-blue-600 hover:underline"
-              >
-                SHOP NOW ▸
-              </Link>
             </div>
+
+            <button
+              onClick={() =>
+                window.open(
+                  'https://www.tiktok.com/@omgbeautyshop/live?enter_from_merge=others_homepage&enter_method=others_photo',
+                  '_blank',
+                  'noopener,noreferrer',
+                )
+              }
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-3xl text-xs font-medium w-full transition-colors duration-200"
+            >
+              Go To TikTok
+            </button>
           </div>
-        ))}
+        </div>
       </div>
+
+
+      <div className="relative">
+        <button
+          onClick={orderScrollLeft}
+          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+          aria-label="Scroll left"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+        <div
+          ref={orderCarouselRef}
+          className="flex overflow-x-auto snap-x gap-4 hide-scrollbar scrollbar-hide"
+          style={{
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            WebkitOverflowScrolling: 'touch',
+          }}
+        >
+          {orderedProducts.map(({ node }, index) => (
+            <div
+              key={node.id}
+              className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
+            >
+              <div className="relative aspect-square">
+                <Link
+                  to={`/products/${node.handle}`}
+                  onClick={(e) => {
+                    if (!node?.handle) e.preventDefault();
+                  }}
+                >
+                  <img
+                    src={`/assets/presentation/${index + 1}.jpg`}
+                    alt={node.title}
+                    className="w-full h-full object-cover"
+                  />
+                </Link>
+              </div>
+              <div className="p-6">
+                <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
+                  {node.vendor || 'Unknown Brand'}
+                </div>
+                <p className="text-pink-600 font-bold mb-4">
+                  ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                </p>
+                <Link
+                  to={`/products/${node.handle}`}
+                  onClick={(e) => {
+                    if (!node?.handle) e.preventDefault();
+                  }}
+                  className="font-bold text-blue-600 hover:underline"
+                >
+                  SHOP NOW ▸
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button
+          onClick={orderScrollRight}
+          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+          aria-label="Scroll right"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      </div>
+
 
 
       {/* Main Content Grid for phone screens */}
@@ -899,11 +999,18 @@ export default function Homepage() {
                 <div className="relative w-32 h-32 mx-auto mb-4">
                   <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
                   <div className="relative w-full h-full rounded-full overflow-hidden">
-                    <img
-                      src="/assets/logo/omgbeautybox.png"
-                      alt="OMG Beauty Box"
-                      className="w-full h-full object-cover"
-                    />
+                    <a
+                      href="https://www.tiktok.com/@omgbeautyshop/live"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src="/assets/logo/omgbeautybox.png"
+                        alt="OMG Beauty Box"
+                        className="w-full h-full object-cover"
+                      />
+                    </a>
+
                   </div>
                 </div>
                 <a
@@ -949,8 +1056,17 @@ export default function Homepage() {
             <div className="w-3/4 flex flex-col">
               {/* 视频轮播 */}
               <div className="relative mb-8">
+                <button
+                  onClick={videoScrollLeft}
+                  className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                  aria-label="Scroll left"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M15 18l-6-6 6-6" />
+                  </svg>
+                </button>
                 <div
-                  ref={carouselRef}
+                  ref={videoCarouselRef}
                   className="flex overflow-x-auto snap-x gap-4 hide-scrollbar scrollbar-hide"
                   style={{
                     scrollbarWidth: 'none',
@@ -984,31 +1100,16 @@ export default function Homepage() {
                     </div>
                   ))}
                 </div>
-
-                {/* 导航按钮 */}
-                {/* <button
-                  className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 p-2 rounded-full shadow-md z-10"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scroll('left');
-                  }}
+                {/* Right Arrow Button (Desktop only) */}
+                <button
+                  onClick={videoScrollRight}
+                  className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                  aria-label="Scroll right"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 18l6-6-6-6" />
                   </svg>
                 </button>
-
-                <button
-                  className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 p-2 rounded-full shadow-md z-10"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scroll('right');
-                  }}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button> */}
               </div>
 
               {/* Trending Now Section */}
