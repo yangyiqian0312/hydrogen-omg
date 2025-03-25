@@ -313,9 +313,6 @@ export default function Homepage() {
     "VERSACE Eros Eau de Toilette Spray for MEN 1.7oz / 50ml - Luxury, Long Lasting Perfume",
     "Viktor & Rolf Flowerbomb 3.4 oz/100 ml Eau De Parfum Spray for Women - Full Size Floral Fragrance with Cattleya, Jasmine, and Rose",
     "Versace Pour Homme Eau De Toilette Spray 1.7 Oz/ 50 ml - Full Size Woody & Citrus Aromatic Fragrance for Men"
-   
-
-
   ];
 
   // 找出优先显示的商品
@@ -418,9 +415,9 @@ export default function Homepage() {
         </div>
 
         {/* TikTok LIVE element positioned at the top right corner */}
-        <div className="absolute top-20 right-10 p-3 max-w-xs hidden md:block">
+        <div className="absolute top-15 right-12 p-4 max-w-sm hidden md:block">
           <div className="text-center">
-            <div className="relative w-20 h-20 mx-auto mb-2">
+            <div className="relative w-24 h-24 mx-auto mb-4">
               <div className="relative w-full h-full rounded-full overflow-hidden">
                 <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
                 <img
@@ -439,7 +436,7 @@ export default function Homepage() {
                   'noopener,noreferrer',
                 )
               }
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-3xl text-xs font-medium w-full transition-colors duration-200"
+              className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-3xl text-sm font-medium w-full transition-colors duration-200"
             >
               Go To TikTok
             </button>
