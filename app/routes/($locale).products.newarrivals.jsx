@@ -216,7 +216,7 @@ export default Newarrivals;
 
 const NEW_PRODUCTS_QUERY = `#graphql
   query NewProducts {
-    collection(id: "gid://shopify/Collection/282173505641") {
+    collection(id: "gid://shopify/Collection/285176168553") {
       title
       id
       products(first: 70) {

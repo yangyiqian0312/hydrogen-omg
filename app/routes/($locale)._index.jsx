@@ -1518,7 +1518,7 @@ function RecommendedProducts({ products }) {
 
 const ALL_PRODUCTS_QUERY = `
   query MenProducts {
-    collection(id: "gid://shopify/Collection/282173505641") {
+    collection(id: "gid://shopify/Collection/285176168553") {
       title
       id
       products(first: 100) {
