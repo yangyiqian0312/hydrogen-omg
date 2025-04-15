@@ -3,7 +3,7 @@ import React from 'react';
 import { Heart, Filter, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
-import { products } from '~/data/products';
+
 import { useLoaderData } from '@remix-run/react';
 import { AddToCartButton } from '~/components/AddToCartButton';
 
@@ -103,7 +103,7 @@ const Women = (selectedVariant) => {
 
 
   const [isOpen, setIsOpen] = useState(false);
-  const brands = ['Versace', 'Burberry', 'GUCCI', 'Valentino', 'Viktor & Rolf'];
+  const brands = ['Versace', 'Burberry', 'GUCCI', 'Valentino', 'Viktor & Rolf', 'Chloe'];
   const [selectedBrand, setSelectedBrand] = useState(urlBrand);
 
 
@@ -150,7 +150,7 @@ const Women = (selectedVariant) => {
     return node.tags && node.tags.includes('Women');
   });
 
-  console.log("Filtered men products:", womenProducts);
+  console.log("Filtered women products:", womenProducts);
 
 
   const filteredProducts = selectedBrand

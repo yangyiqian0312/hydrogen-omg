@@ -177,6 +177,7 @@ export default function OldHeader({
     { name: "GUCCI", path: "/products/women?brand=GUCCI" },
     { name: "Valentino", path: "/products/women?brand=Valentino" },
     { name: "Viktor & Rolf", path: "/products/women?brand=Viktor%20%26%20Rolf" },
+    { name: "Chloe", path: "/products/women?brand=Chloe" },
     { name: "All Women's Products", path: "/products/women" }
   ];
 
@@ -244,7 +245,7 @@ export default function OldHeader({
           <div className="flex justify-between items-center h-16">
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden"
+              className="lg:hidden"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? (
@@ -256,13 +257,13 @@ export default function OldHeader({
 
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Link to="/" className="text-xl md:text-2xl font-bold">
+              <Link to="/" className="text-xl lg:text-2xl font-bold">
                 OMG BEAUTY BOX
               </Link>
             </div>
 
             {/* Desktop Navigation Tabs */}
-            <div className="hidden md:flex flex-1 justify-center space-x-8 px-8">
+            <div className="hidden lg:flex flex-1 justify-center space-x-8 px-2 xl:px-8">
               <NavDropdown
                 title="WOMEN"
                 items={womenBrands}
