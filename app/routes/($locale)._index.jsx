@@ -4,7 +4,6 @@ import { Suspense } from 'react';
 import { Image, Money } from '@shopify/hydrogen';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
-import { products } from '~/data/products';
 import { Heart, ChevronLeft, ChevronRight, Clock, Gift } from 'lucide-react';
 import OldHeader from '~/components/OldHeader';
 /**

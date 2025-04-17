@@ -37,17 +37,58 @@ export async function action({ request, context }) {
 
   try {
     const customer = {};
-    const validInputKeys = ['firstName', 'lastName'];
+    const address = {};
+
+    // Define all valid input keys
+    const validInputKeys = [
+      'firstName', 'lastName', // Customer fields
+      'address1', 'address2', 'city', 'state', 'zip', 'country' // Address fields
+    ];
+
+    // Process form entries
     for (const [key, value] of form.entries()) {
       if (!validInputKeys.includes(key)) {
         continue;
       }
+
       if (typeof value === 'string' && value.length) {
-        customer[key] = value;
+        // Handle customer fields
+        if (['firstName', 'lastName'].includes(key)) {
+          customer[key] = value;
+        }
+        // Handle address fields
+        else {
+          address[key] = value;
+        }
       }
     }
 
-    // update customer and possibly password
+    // If we have address data, update the default address
+    if (Object.keys(address).length > 0) {
+      // Copy phone number from customer if not provided
+      if (!address.phoneNumber && customer.phoneNumber?.phoneNumber) {
+        address.phoneNumber = customer.phoneNumber.phoneNumber;
+      }
+
+      const { data: addressData, errors: addressErrors } = await customerAccount.mutate(
+        CUSTOMER_ADDRESS_UPDATE_MUTATION,
+        {
+          variables: {
+            address: {
+              ...address,
+              customerAccessToken: customerAccount.accessToken,
+              id: customer.defaultAddress?.id
+            }
+          }
+        }
+      );
+
+      if (addressErrors?.length) {
+        throw new Error('Failed to update address');
+      }
+    }
+
+    // Update customer information
     const { data, errors } = await customerAccount.mutate(
       CUSTOMER_UPDATE_MUTATION,
       {
@@ -58,24 +99,15 @@ export async function action({ request, context }) {
     );
 
     if (errors?.length) {
-      throw new Error(errors[0].message);
+      throw new Error('Failed to update customer information');
     }
 
-    if (!data?.customerUpdate?.customer) {
-      throw new Error('Customer profile update failed.');
-    }
-
-    return json({
-      error: null,
-      customer: data?.customerUpdate?.customer,
-    });
+    return json({ success: true });
   } catch (error) {
-    return json(
-      { error: error.message, customer: null },
-      {
-        status: 400,
-      },
-    );
+    console.error('Profile update error:', error);
+    return json({
+      error: 'Failed to update profile. Please try again.'
+    }, { status: 400 });
   }
 }
 
@@ -85,6 +117,7 @@ export default function AccountProfile() {
   /** @type {ActionReturnData} */
   const action = useActionData();
   const customer = action?.customer ?? account?.customer;
+  console.log(customer)
 
   return (
     <div className="max-w-xl mx-auto">
@@ -133,6 +166,166 @@ export default function AccountProfile() {
                 aria-label="Last name"
                 defaultValue={customer.lastName ?? ''}
                 minLength={2}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Phone Number
+              </label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                autoComplete="tel"
+                placeholder="Phone number"
+                aria-label="Phone number"
+                defaultValue={customer.phoneNumber?.phoneNumber ?? ''}
+                className="block w-full rounded-md border-gray-200 shadow-sm bg-gray-100 sm:text-sm"
+                readOnly
+              />
+            </div>
+          </fieldset>
+
+          <legend className="text-lg font-medium text-gray-900 mb-6">
+            Default Address Information
+          </legend>
+
+          <fieldset className="grid grid-cols-1 gap-6">
+            <div>
+              <label
+                htmlFor="address1"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Address Line 1
+              </label>
+              <input
+                id="address1"
+                name="address1"
+                type="text"
+                autoComplete="address-line1"
+                placeholder="Street address"
+                aria-label="Address line 1"
+                defaultValue={customer.defaultAddress?.address1 ?? ''}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="address2"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Address Line 2
+              </label>
+              <input
+                id="address2"
+                name="address2"
+                type="text"
+                autoComplete="address-line2"
+                placeholder="Apt, suite, etc."
+                aria-label="Address line 2"
+                defaultValue={customer.defaultAddress?.address2 ?? ''}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="city"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                City
+              </label>
+              <input
+                id="city"
+                name="city"
+                type="text"
+                autoComplete="address-level2"
+                placeholder="City"
+                aria-label="City"
+                defaultValue={customer.defaultAddress?.city ?? ''}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="state"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                State
+              </label>
+              <input
+                id="state"
+                name="state"
+                type="text"
+                autoComplete="address-level1"
+                placeholder="State"
+                aria-label="State"
+                defaultValue={customer.defaultAddress?.zoneCode ?? ''}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="zip"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                ZIP Code
+              </label>
+              <input
+                id="zip"
+                name="zip"
+                type="text"
+                autoComplete="postal-code"
+                placeholder="ZIP code"
+                aria-label="ZIP code"
+                defaultValue={customer.defaultAddress?.zip ?? ''}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="country"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Country
+              </label>
+              <input
+                id="country"
+                name="country"
+                type="text"
+                autoComplete="country"
+                placeholder="Country"
+                aria-label="Country"
+                defaultValue={customer.defaultAddress?.territoryCode ?? ''}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Phone Number
+              </label
+              >
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                autoComplete="tel"
+                placeholder="Phone number"
+                aria-label="Phone number"
+                defaultValue={customer.defaultAddress?.phoneNumber ?? ''}
                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
             </div>

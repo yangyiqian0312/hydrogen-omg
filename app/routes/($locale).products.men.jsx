@@ -3,7 +3,7 @@ import React from 'react';
 import { Heart, Filter, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
-import { products } from '~/data/products';
+
 import { useLoaderData } from '@remix-run/react';
 import { AddToCartButton } from '~/components/AddToCartButton';
 

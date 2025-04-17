@@ -46,12 +46,7 @@ export async function action({request, context}) {
     // this will ensure redirecting to login never happen for mutatation
     const isLoggedIn = await customerAccount.isLoggedIn();
     if (!isLoggedIn) {
-      return json(
-        {error: {[addressId]: 'Unauthorized'}},
-        {
-          status: 401,
-        },
-      );
+      return redirect('/signup');
     }
 
     const defaultAddress = form.has('defaultAddress')

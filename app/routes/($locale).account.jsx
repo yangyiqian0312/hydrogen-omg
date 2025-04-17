@@ -10,6 +10,7 @@ export function shouldRevalidate() {
  * @param {LoaderFunctionArgs}
  */
 export async function loader({ context }) {
+
   const { data, errors } = await context.customerAccount.query(
     CUSTOMER_DETAILS_QUERY,
   );
@@ -96,7 +97,12 @@ function AccountMenu() {
 function Logout() {
   return (
     <Form className="account-logout" method="POST" action="/account/logout">
-      &nbsp;<button type="submit">Sign out</button>
+      &nbsp;
+      <button type="submit"
+        className="font-medium bg-black text-white p-2 rounded hover:bg-gray-600"
+      >
+        Sign out
+      </button>
     </Form>
   );
 }

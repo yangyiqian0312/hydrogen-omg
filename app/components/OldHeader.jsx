@@ -115,14 +115,16 @@ function NavDropdown({ title, items, path }) {
         className="flex items-center text-gray-800 hover:text-gray-600 font-medium no-underline transition-colors duration-200 px-3 py-2 rounded-md"
       >
         {title}
-        <ChevronDown
-          className={`h-4 w-4 ml-1 transition-transform duration-300 ease-in-out ${isHovered ? 'rotate-180 text-blue-600' : ''
-            }`}
-        />
+        {items.length>0 && 
+          <ChevronDown
+            className={`h-4 w-4 ml-1 transition-transform duration-300 ease-in-out ${isHovered ? 'rotate-180 text-blue-600' : ''
+              }`}
+          />
+        }
       </Link>
 
       {/* Dropdown menu with animation */}
-      <div
+      {items.length>0 && <div
         className={`absolute left-0 mt-1 w-56 bg-white border border-gray-100 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out transform origin-top ${isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
           }`}
       >
@@ -140,7 +142,7 @@ function NavDropdown({ title, items, path }) {
             </Link>
           ))}
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
@@ -154,18 +156,22 @@ export default function OldHeader({
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const isLoggedInPromise = useAsyncValue();
 
   const handleCartClick = () => {
     navigate('/cart');
   };
 
-  const handleProfileClick = () => {
-    navigate('/account');
+  const handleProfileClick = async () => {
+
+    if (isLoggedIn) {
+      navigate('/account/profile');
+    } else {
+      navigate('/account/signup');
+    }
+
   };
 
-  const handleLogin = () => {
-    navigate('/login')
-  }
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -190,17 +196,12 @@ export default function OldHeader({
     { name: "All Men's Products", path: "/products/men" }
   ];
 
-  const giftSetItems = [
-    { name: "View All", path: "/products/giftsets" },
-  ];
+  const giftSetItems = [ ];
 
-  const newArrivalItems = [
-    { name: "View All", path: "/products/newarrivals" },
-  ];
+  const newArrivalItems = [ ];
 
-  const dealsItems = [
-    { name: "View All", path: "/products/sales" },
-  ];
+  const dealsItems = [ ];
+
   const promos = [
     {
       id: 1,
@@ -319,14 +320,14 @@ export default function OldHeader({
                 onClick={handleProfileClick}
                 className="text-gray-800 hover:text-gray-600"
               >
-                <User className="h-6 w-6 md:block" onClick={handleLogin} />
+                <User className="h-6 w-6 md:block" />
               </a>
             </div>
           </div>
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <div className="md:hidden">
+            <div className="lg:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 border-t">
                 <Link
                   to="/products/men"
