@@ -184,6 +184,7 @@ export default function OldHeader({
     { name: "Valentino", path: "/products/women?brand=Valentino" },
     { name: "Viktor & Rolf", path: "/products/women?brand=Viktor%20%26%20Rolf" },
     { name: "Chloe", path: "/products/women?brand=Chloe" },
+    { name: "Mini Set", path: "/products/women?tag=Mini" },
     { name: "All Women's Products", path: "/products/women" }
   ];
 

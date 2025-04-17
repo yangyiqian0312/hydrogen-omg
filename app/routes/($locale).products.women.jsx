@@ -100,11 +100,14 @@ const Women = (selectedVariant) => {
 
   const [searchParams] = useSearchParams();
   const urlBrand = searchParams.get('brand');
+  const urlTag = searchParams.get('tag');
 
 
   const [isOpen, setIsOpen] = useState(false);
   const brands = ['Versace', 'Burberry', 'GUCCI', 'Valentino', 'Viktor & Rolf', 'Chloe'];
+  const tags = ['Mini'];
   const [selectedBrand, setSelectedBrand] = useState(urlBrand);
+  const [selectedTag, setSelectedTag] = useState(urlTag);
 
 
   // Set selected brand from URL when component mounts or URL changes
@@ -112,7 +115,10 @@ const Women = (selectedVariant) => {
     if (urlBrand) {
       setSelectedBrand(urlBrand);
     }
-  }, [urlBrand]);
+    if (urlTag) {
+      setSelectedTag(urlTag);
+    }
+  }, [urlBrand, urlTag]);
 
 
   const data = useLoaderData();
@@ -158,14 +164,19 @@ const Women = (selectedVariant) => {
       ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
     )
     : womenProducts;
+  
+  const filteredProductsbyTags = selectedTag
+    ? womenProducts.filter(
+      ({ node }) => node.tags && node.tags.includes(selectedTag)
+    )
+    : womenProducts;
 
 
-
-    return (
-      <div>
-        <div className="flex items-center">
-          <div className="relative">
-            {/* <button
+  return (
+    <div>
+      <div className="flex items-center">
+        <div className="relative">
+          {/* <button
               onClick={() => setIsOpen(!isOpen)}
               className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-gray-100 to-gray-50 hover:from-gray-200 hover:to-gray-100 rounded-full shadow-sm border border-gray-200 transition-all duration-200"
             >
@@ -177,9 +188,9 @@ const Women = (selectedVariant) => {
                 className={`text-gray-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
               />
             </button> */}
-  
-            {/* Brand dropdown menu */}
-            {/* {isOpen && (
+
+          {/* Brand dropdown menu */}
+          {/* {isOpen && (
               <div className="absolute top-full left-4 mt-2 w-52 bg-white rounded-lg shadow-lg py-2 z-50 border border-gray-100">
                 <div className="px-4 py-1 mb-1 text-xs font-medium text-gray-500 uppercase tracking-wide border-b border-gray-100">
                   Brands
@@ -213,72 +224,127 @@ const Women = (selectedVariant) => {
                 ))}
               </div>
             )} */}
-          </div>
-        </div>
-  
-        {/* Products grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 p-4">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map(({ node }) => (
-              <div
-                key={node.id}
-                className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
-              >
-                {/* Product card content remains the same */}
-                <div className="relative aspect-square">
-                  {node.images.edges[0] ? (
-                    <img
-                      src={node.images.edges[0].node.url}
-                      alt={node.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <img
-                      src="/api/placeholder/400/400"
-                      alt="Placeholder"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-  
-                <div className="p-3">
-                  <Link
-                    to={`/products/${node.handle}`}
-                    className="block"
-                  >
-                    <div className="font-semibold text-blue-600 hover:underline truncate">
-                      {node.vendor || 'Unknown Brand'}
-                    </div>
-                    <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
-                    h-auto max-h-12
-                    line-clamp-2">
-                      {node.title
-                        ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
-                        : 'N/A'}
-                    </p>
-                  </Link>
-  
-                  <div>
-                    <p className="font-bold">
-                      ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                      {node.variants.edges[0]?.node.compareAtPrice && (
-                        <span className="ml-2 text-gray-500 line-through">
-                          ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
-                        </span>
-                      )}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">
-              No products found for {selectedBrand}
-            </div>
-          )}
         </div>
       </div>
-    );
+
+      {/* Products grid */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 p-4">
+        {filteredProducts.length > 0 &&
+          filteredProducts.map(({ node }) => (
+            <div
+              key={node.id}
+              className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+            >
+              {/* Product card content remains the same */}
+              <div className="relative aspect-square">
+                {node.images.edges[0] ? (
+                  <img
+                    src={node.images.edges[0].node.url}
+                    alt={node.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src="/api/placeholder/400/400"
+                    alt="Placeholder"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+
+              <div className="p-3">
+                <Link
+                  to={`/products/${node.handle}`}
+                  className="block"
+                >
+                  <div className="font-semibold text-blue-600 hover:underline truncate">
+                    {node.vendor || 'Unknown Brand'}
+                  </div>
+                  <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
+                    h-auto max-h-12
+                    line-clamp-2">
+                    {node.title
+                      ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
+                      : 'N/A'}
+                  </p>
+                </Link>
+
+                <div>
+                  <p className="font-bold">
+                    ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                    {node.variants.edges[0]?.node.compareAtPrice && (
+                      <span className="ml-2 text-gray-500 line-through">
+                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+        {filteredProductsbyTags.length>0 &&
+          filteredProductsbyTags.map(({ node }) => (
+            <div
+              key={node.id}
+              className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+            >
+              {/* Product card content remains the same */}
+              <div className="relative aspect-square">
+                {node.images.edges[0] ? (
+                  <img
+                    src={node.images.edges[0].node.url}
+                    alt={node.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src="/api/placeholder/400/400"
+                    alt="Placeholder"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+
+              <div className="p-3">
+                <Link
+                  to={`/products/${node.handle}`}
+                  className="block"
+                >
+                  <div className="font-semibold text-blue-600 hover:underline truncate">
+                    {node.vendor || 'Unknown Brand'}
+                  </div>
+                  <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
+                    h-auto max-h-12
+                    line-clamp-2">
+                    {node.title
+                      ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
+                      : 'N/A'}
+                  </p>
+                </Link>
+
+                <div>
+                  <p className="font-bold">
+                    ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                    {node.variants.edges[0]?.node.compareAtPrice && (
+                      <span className="ml-2 text-gray-500 line-through">
+                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+        {filteredProductsbyTags.length === 0 && filteredProducts.length == 0 && (
+          <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">
+            No products found for {selectedTag}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Women;

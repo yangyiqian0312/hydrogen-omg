@@ -1,5 +1,8 @@
+import { CUSTOMER_ADDRESS_UPDATE_MUTATION,CUSTOMER_ADDRESS_DEFAULT_MUTATION, CUSTOMER_ADDRESS_CREATE_MUTATION } from '~/graphql/customer-account/CustomerAddressMutations';
 import { CUSTOMER_UPDATE_MUTATION } from '~/graphql/customer-account/CustomerUpdateMutation';
 import { json } from '@shopify/remix-oxygen';
+import { useState } from 'react';
+import usStates from '~/data/usStates';
 import {
   Form,
   useActionData,
@@ -42,7 +45,7 @@ export async function action({ request, context }) {
     // Define all valid input keys
     const validInputKeys = [
       'firstName', 'lastName', // Customer fields
-      'address1', 'address2', 'city', 'state', 'zip', 'country' // Address fields
+      'address1', 'address2', 'city', 'zoneCode', 'zip', 'territoryCode', 'phoneNumber' // Address fields
     ];
 
     // Process form entries
@@ -63,22 +66,32 @@ export async function action({ request, context }) {
       }
     }
 
-    // If we have address data, update the default address
+    // If we have address data, update or create the default address
     if (Object.keys(address).length > 0) {
+
+      address.zoneCode = form.get('zoneCode');
+      address.territoryCode = 'US';
+
       // Copy phone number from customer if not provided
       if (!address.phoneNumber && customer.phoneNumber?.phoneNumber) {
         address.phoneNumber = customer.phoneNumber.phoneNumber;
       }
 
+      // Use create mutation if there's no existing address
+      // const mutation = customer.defaultAddress?.id 
+      //   ? CUSTOMER_ADDRESS_DEFAULT_MUTATION 
+      //   : CUSTOMER_ADDRESS_CREATE_MUTATION;
+
       const { data: addressData, errors: addressErrors } = await customerAccount.mutate(
-        CUSTOMER_ADDRESS_UPDATE_MUTATION,
+        CUSTOMER_ADDRESS_DEFAULT_MUTATION,
         {
           variables: {
             address: {
               ...address,
-              customerAccessToken: customerAccount.accessToken,
-              id: customer.defaultAddress?.id
-            }
+              customerAccessToken: customerAccount.accessToken
+            },
+            addressId: customer.defaultAddress?.id,
+            defaultAddress: true
           }
         }
       );
@@ -118,7 +131,7 @@ export default function AccountProfile() {
   const action = useActionData();
   const customer = action?.customer ?? account?.customer;
   console.log(customer)
-
+ 
   return (
     <div className="max-w-xl mx-auto">
       <h2 className="text-2xl font-semibold text-gray-900">My Profile</h2>
@@ -211,7 +224,8 @@ export default function AccountProfile() {
                 placeholder="Street address"
                 aria-label="Address line 1"
                 defaultValue={customer.defaultAddress?.address1 ?? ''}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                readOnly
+                className="block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 sm:text-sm"
               />
             </div>
 
@@ -230,7 +244,8 @@ export default function AccountProfile() {
                 placeholder="Apt, suite, etc."
                 aria-label="Address line 2"
                 defaultValue={customer.defaultAddress?.address2 ?? ''}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                readOnly
+                className="block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 sm:text-sm"
               />
             </div>
 
@@ -249,7 +264,8 @@ export default function AccountProfile() {
                 placeholder="City"
                 aria-label="City"
                 defaultValue={customer.defaultAddress?.city ?? ''}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                readOnly
+                className="block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 sm:text-sm"
               />
             </div>
 
@@ -260,16 +276,21 @@ export default function AccountProfile() {
               >
                 State
               </label>
-              <input
-                id="state"
-                name="state"
-                type="text"
-                autoComplete="address-level1"
-                placeholder="State"
-                aria-label="State"
-                defaultValue={customer.defaultAddress?.zoneCode ?? ''}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
+               <select
+                  id="state"
+                  name="zoneCode"
+                  className="block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 sm:text-sm"
+                  defaultValue={customer.defaultAddress?.zoneCode ?? ''}
+                  readOnly
+                  onChange={(e) => setSelectedState(e.target.value)}
+                >
+                  <option value="" className="text-lg">Select a state</option>
+                  {usStates.map((state) => (
+                    <option key={state.code} value={state.code} className="text-lg">
+                      {state.name}
+                    </option>
+                  ))}
+                </select>
             </div>
 
             <div>
@@ -287,30 +308,13 @@ export default function AccountProfile() {
                 placeholder="ZIP code"
                 aria-label="ZIP code"
                 defaultValue={customer.defaultAddress?.zip ?? ''}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                readOnly
+                className="block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 sm:text-sm"
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="country"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Country
-              </label>
-              <input
-                id="country"
-                name="country"
-                type="text"
-                autoComplete="country"
-                placeholder="Country"
-                aria-label="Country"
-                defaultValue={customer.defaultAddress?.territoryCode ?? ''}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
 
-            <div>
+            {/* <div>
               <label
                 htmlFor="phone"
                 className="block text-sm font-medium text-gray-700 mb-2"
@@ -326,9 +330,10 @@ export default function AccountProfile() {
                 placeholder="Phone number"
                 aria-label="Phone number"
                 defaultValue={customer.defaultAddress?.phoneNumber ?? ''}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                readOnly
+                className="block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 sm:text-sm"
               />
-            </div>
+            </div> */}
           </fieldset>
         </div>
 

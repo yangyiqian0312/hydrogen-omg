@@ -59,3 +59,110 @@ export const CREATE_ADDRESS_MUTATION = `#graphql
     }
   }
 `;
+
+export const CUSTOMER_ADDRESS_UPDATE_MUTATION = `
+  mutation customerAddressUpdate(
+    $address: CustomerAddressInput!
+    $addressId: ID!
+    $defaultAddress: Boolean
+  ) {
+    customerAddressUpdate(
+      address: $address
+      addressId: $addressId
+      defaultAddress: $defaultAddress
+    ) {
+      customerAddress {
+        id
+        address1
+        address2
+        city
+        company
+        country
+        firstName
+        lastName
+        phoneNumber
+        territoryCode
+        zip
+        zoneCode
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const CUSTOMER_ADDRESS_CREATE_MUTATION = `
+  mutation customerAddressCreate(
+    $address: CustomerAddressInput!
+  ) {
+    customerAddressCreate(
+      address: $address
+    ) {
+      customerAddress {
+        id
+        address1
+        address2
+        city
+        company
+        country
+        firstName
+        lastName
+        phoneNumber
+        territoryCode
+        zip
+        zoneCode
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const CUSTOMER_ADDRESS_DELETE_MUTATION = `
+  mutation customerAddressDelete(
+    $addressId: ID!
+  ) {
+    customerAddressDelete(
+      addressId: $addressId
+    ) {
+      deletedAddressId
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const CUSTOMER_ADDRESS_DEFAULT_MUTATION = `
+  mutation customerAddressDefault(
+    $addressId: ID!
+  ) {
+    customerAddressDefault(
+      addressId: $addressId
+    ) {
+      customerAddress {
+        id
+        address1
+        address2
+        city
+        company
+        country
+        firstName
+        lastName
+        phoneNumber
+        territoryCode
+        zip
+        zoneCode
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
