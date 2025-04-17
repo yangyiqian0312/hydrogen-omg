@@ -640,7 +640,7 @@ export default function Homepage() {
         </div>
         {/* TODO: ADD SHOW MORE BUTTON */}
 
-        <div class="border-t my-4 mx-2 border-gray-300"></div>
+        <div className="border-t my-4 mx-2 border-gray-300"></div>
 
         {/* Video Section */}
         <div>

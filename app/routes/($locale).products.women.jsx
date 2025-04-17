@@ -105,7 +105,7 @@ const Women = (selectedVariant) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const brands = ['Versace', 'Burberry', 'GUCCI', 'Valentino', 'Viktor & Rolf', 'Chloe'];
-  const tags = ['Mini'];
+  const tags = ['Minis'];
   const [selectedBrand, setSelectedBrand] = useState(urlBrand);
   const [selectedTag, setSelectedTag] = useState(urlTag);
 
@@ -114,9 +114,13 @@ const Women = (selectedVariant) => {
   useEffect(() => {
     if (urlBrand) {
       setSelectedBrand(urlBrand);
+    }else{
+      setSelectedBrand(null);
     }
     if (urlTag) {
       setSelectedTag(urlTag);
+    }else{
+      setSelectedTag(null);
     }
   }, [urlBrand, urlTag]);
 
@@ -148,29 +152,26 @@ const Women = (selectedVariant) => {
 
 
   const products = data.womenProducts?.collection?.products?.edges || [];
-  console.log("Products before filtering:", products);
-
 
   // Filter for products with "Women" tag with extra logging
   const womenProducts = products.filter(({ node }) => {
     return node.tags && node.tags.includes('Women');
   });
 
-  console.log("Filtered women products:", womenProducts);
-
-
   const filteredProducts = selectedBrand
     ? womenProducts.filter(
       ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
     )
-    : womenProducts;
+    : [];
   
   const filteredProductsbyTags = selectedTag
     ? womenProducts.filter(
       ({ node }) => node.tags && node.tags.includes(selectedTag)
     )
-    : womenProducts;
-
+    : [];
+  console.log(selectedBrand)
+  console.log(selectedTag)
+  console.log(filteredProductsbyTags)
 
   return (
     <div>
@@ -341,6 +342,60 @@ const Women = (selectedVariant) => {
           <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">
             No products found for {selectedTag}
           </div>
+        )}
+        {!urlBrand && !urlTag && (
+          womenProducts.map(({ node }) => (
+            <div
+              key={node.id}
+              className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+            >
+              {/* Product card content remains the same */}
+              <div className="relative aspect-square">
+                {node.images.edges[0] ? (
+                  <img
+                    src={node.images.edges[0].node.url}
+                    alt={node.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src="/api/placeholder/400/400"
+                    alt="Placeholder"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+
+              <div className="p-3">
+                <Link
+                  to={`/products/${node.handle}`}
+                  className="block"
+                >
+                  <div className="font-semibold text-blue-600 hover:underline truncate">
+                    {node.vendor || 'Unknown Brand'}
+                  </div>
+                  <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
+                    h-auto max-h-12
+                    line-clamp-2">
+                    {node.title
+                      ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
+                      : 'N/A'}
+                  </p>
+                </Link>
+
+                <div>
+                  <p className="font-bold">
+                    ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                    {node.variants.edges[0]?.node.compareAtPrice && (
+                      <span className="ml-2 text-gray-500 line-through">
+                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))
         )}
       </div>
     </div>

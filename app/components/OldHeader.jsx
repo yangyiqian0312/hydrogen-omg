@@ -184,8 +184,8 @@ export default function OldHeader({
     { name: "Valentino", path: "/products/women?brand=Valentino" },
     { name: "Viktor & Rolf", path: "/products/women?brand=Viktor%20%26%20Rolf" },
     { name: "Chloe", path: "/products/women?brand=Chloe" },
-    { name: "Mini Set", path: "/products/women?tag=Mini" },
-    { name: "All Women's Products", path: "/products/women" }
+    { name: "Mini Set", path: "/products/women?tag=Minis" },
+    // { name: "All Women's Products", path: "/products/women" }
   ];
 
   const menBrands = [
@@ -194,7 +194,7 @@ export default function OldHeader({
     { name: "GUCCI", path: "/products/men?brand=GUCCI" },
     { name: "Valentino", path: "/products/men?brand=Valentino" },
     { name: "Armani", path: "/products/men?brand=Armani" },
-    { name: "All Men's Products", path: "/products/men" }
+    // { name: "All Men's Products", path: "/products/men" }
   ];
 
   const giftSetItems = [ ];
