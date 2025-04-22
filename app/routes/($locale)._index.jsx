@@ -323,6 +323,7 @@ export default function Homepage() {
   const otherProducts = promotingProducts.filter(
     ({ node }) => !preferredOrder.includes(node.title)
   );
+  console.log("otherProducts", otherProducts);
 
   // 合并所有产品
   const orderedProducts = [...priorityProducts, ...otherProducts];
@@ -476,7 +477,7 @@ export default function Homepage() {
                   }}
                 >
                   <img
-                    src={`/assets/presentation/${index + 1}.jpg`}
+                    src={`/assets/presentation/${index+1}.jpg`}
                     alt={node.title}
                     className="w-full h-full object-cover"
                   />

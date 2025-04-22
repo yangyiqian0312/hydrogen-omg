@@ -30,12 +30,14 @@ export async function loader({context}) {
     let accessToken = '';
     
     if (isLoggedIn) {
-      accessToken = await customerAccount.getAccessToken();
+      console.log("is Logged in from Cart Loader");
+      accessToken = customerAccount.getAccessToken().customerAccessToken;
       const { data } = await customerAccount.query(`#graphql
         query getCustomerDetails {
           customer {
             emailAddress{emailAddress}
             phoneNumber{phoneNumber}
+            
           }
         }
       `);
@@ -44,11 +46,10 @@ export async function loader({context}) {
         customer = data.customer;
       }
     }
+    console.log("cart Loader: ", accessToken)
     await cart.updateBuyerIdentity({
       customerAccessToken: isLoggedIn ? accessToken : '',
-      email: customer?.emailAddress.emailAddress || '',
-      phone: customer?.phoneNumber.phoneNumber || '',
-      countryCode: 'US',
+
     });
     const cartData = await cart.get();
 
@@ -165,7 +166,7 @@ export default function Cart() {
   return (
     <div className="cart">
       <h1>Cart</h1>
-      <CartMain layout="page" cart={cart} />
+      <CartMain layout="page" cart={cart}/>
     </div>
   );
 }
