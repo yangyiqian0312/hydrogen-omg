@@ -10,7 +10,7 @@ export async function loader() {
  * @param {ActionFunctionArgs}
  */
 export async function action({context}) {
-  return context.customerAccount.logout();
+  return await context.customerAccount.logout();
 }
 
 /** @typedef {import('@shopify/remix-oxygen').ActionFunctionArgs} ActionFunctionArgs */

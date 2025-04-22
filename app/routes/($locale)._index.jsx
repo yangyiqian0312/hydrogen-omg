@@ -824,7 +824,7 @@ export default function Homepage() {
           </div>
         </div> */}
 
-        <div class="border-t my-4 mx-2 border-gray-300"></div>
+        <div className="border-t my-4 mx-2 border-gray-300"></div>
 
         {/* Shop By Category Section */}
         <div>

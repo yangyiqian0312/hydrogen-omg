@@ -35,10 +35,7 @@ export async function createAppLoadContext(request, env, executionContext) {
       queryFragment: CART_QUERY_FRAGMENT,
     },
 
-    // // new added here
-    // customerAccount: {
-    //   unstableB2b: true,
-    // },
+    
   });
 
   return {

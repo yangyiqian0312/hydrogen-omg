@@ -20,6 +20,7 @@ import {redirect} from '@shopify/remix-oxygen';
  * @param {LoaderFunctionArgs}
  */
 export async function loader({request, context, params}) {
+  
   const {cart} = context;
   const {lines} = params;
   if (!lines) return redirect('/cart');
@@ -44,6 +45,9 @@ export async function loader({request, context, params}) {
   const result = await cart.create({
     lines: linesMap,
     discountCodes: discountArray,
+    buyerIdentity: {
+      customerAccessToken: context.customerAccount.accessToken,
+    },
   });
 
   const cartResult = result.cart;

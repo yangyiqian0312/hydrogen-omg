@@ -2,6 +2,13 @@ import {useLoaderData} from '@remix-run/react';
 import {CartForm} from '@shopify/hydrogen';
 import {json} from '@shopify/remix-oxygen';
 import {CartMain} from '~/components/CartMain';
+import {
+  Form,
+  useActionData,
+  useNavigation,
+  useOutletContext,
+} from '@remix-run/react';
+import { CUSTOMER_DETAILS_QUERY } from '~/graphql/customer-account/CustomerDetailsQuery';
 
 /**
  * @type {MetaFunction}
@@ -11,10 +18,64 @@ export const meta = () => {
 };
 
 /**
+ * @param {LoaderFunctionArgs}
+ * @returns {Promise<Response>}
+ */
+export async function loader({context}) {
+  const {cart, customerAccount} = context;
+  
+  try {
+    const isLoggedIn = await customerAccount.isLoggedIn();
+    let customer = null;
+    let accessToken = '';
+    
+    if (isLoggedIn) {
+      accessToken = await customerAccount.getAccessToken();
+      const { data } = await customerAccount.query(`#graphql
+        query getCustomerDetails {
+          customer {
+            emailAddress{emailAddress}
+            phoneNumber{phoneNumber}
+          }
+        }
+      `);
+      
+      if (data && data.customer) {
+        customer = data.customer;
+      }
+    }
+    await cart.updateBuyerIdentity({
+      customerAccessToken: isLoggedIn ? accessToken : '',
+      email: customer?.emailAddress.emailAddress || '',
+      phone: customer?.phoneNumber.phoneNumber || '',
+      countryCode: 'US',
+    });
+    const cartData = await cart.get();
+
+    return json({
+      cart: cartData,
+    });
+
+  } catch (error) {
+    console.error('Error in cart loader:', error);
+    throw new Response('Internal Server Error', { status: 500 });
+  }
+}
+     
+
+/**
  * @param {ActionFunctionArgs}
  */
 export async function action({request, context}) {
-  const {cart} = context;
+  const {cart, customerAccount} = context;
+  
+  // const isLoggedIn = await customerAccount.isLoggedIn();
+  // if (isLoggedIn) {
+  //   const accessToken = await customerAccount.getAccessToken();
+  //   await cart.updateBuyerIdentity({
+  //     customerAccessToken: accessToken,
+  //   })
+  // }
 
   const formData = await request.formData();
 
@@ -65,6 +126,7 @@ export async function action({request, context}) {
       result = await cart.updateBuyerIdentity({
         ...inputs.buyerIdentity,
       });
+      
       break;
     }
     default:
@@ -94,18 +156,12 @@ export async function action({request, context}) {
   );
 }
 
-/**
- * @param {LoaderFunctionArgs}
- */
-export async function loader({context}) {
-  const {cart} = context;
-  return json(await cart.get());
-}
+
 
 export default function Cart() {
   /** @type {LoaderReturnData} */
-  const cart = useLoaderData();
-
+  const {cart} = useLoaderData();
+  
   return (
     <div className="cart">
       <h1>Cart</h1>

@@ -1,6 +1,6 @@
 import { CUSTOMER_ADDRESS_UPDATE_MUTATION,CUSTOMER_ADDRESS_DEFAULT_MUTATION, CUSTOMER_ADDRESS_CREATE_MUTATION } from '~/graphql/customer-account/CustomerAddressMutations';
 import { CUSTOMER_UPDATE_MUTATION } from '~/graphql/customer-account/CustomerUpdateMutation';
-import { json } from '@shopify/remix-oxygen';
+import { json,redirect } from '@shopify/remix-oxygen';
 import { useState } from 'react';
 import usStates from '~/data/usStates';
 import {
@@ -22,7 +22,11 @@ export const meta = () => {
  */
 export async function loader({ context }) {
   await context.customerAccount.handleAuthStatus();
-
+  const isLoggedIn = await context.customerAccount.isLoggedIn();
+  
+  if (!isLoggedIn) {
+    return redirect(`/account/signup`);
+  }
   return json({});
 }
 
@@ -30,14 +34,14 @@ export async function loader({ context }) {
  * @param {ActionFunctionArgs}
  */
 export async function action({ request, context }) {
-  const { customerAccount } = context;
+  const { cart, customerAccount } = context;
 
   if (request.method !== 'PUT') {
     return json({ error: 'Method not allowed' }, { status: 405 });
   }
 
   const form = await request.formData();
-
+  
   try {
     const customer = {};
     const address = {};

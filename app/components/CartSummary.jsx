@@ -1,4 +1,5 @@
-import {CartForm, Money} from '@shopify/hydrogen';
+import { CartForm, Money} from '@shopify/hydrogen';
+
 import {useRef} from 'react';
 //done TODO: Cart aside UI change
 
@@ -8,7 +9,7 @@ import {useRef} from 'react';
 export function CartSummary({cart, layout}) {
   const className =
     layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
-
+  
   return (
     <div
       aria-labelledby="cart-summary"
@@ -26,27 +27,27 @@ export function CartSummary({cart, layout}) {
       </dl>
 
       <div className="mt-4">
-        <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
+        <CartCheckoutActions 
+          cart={cart}
+          
+        />
       </div>
     </div>
   );
 }
 /**
- * @param {{checkoutUrl?: string}}
+ * @param {{checkoutUrl: string}}
  */
-function CartCheckoutActions({checkoutUrl}) {
-  if (!checkoutUrl) return null;
+function CartCheckoutActions({cart}) {
 
-  const modifiedCheckoutUrl = `${checkoutUrl}?logged_in_checkout=no`;
+  if (!cart.checkoutUrl) return null;
 
   return (
-    //  done Todo: 这里是checkoutbutton  
     <div className="mb-10">
       <a
-        // href={checkoutUrl}
-        href={modifiedCheckoutUrl}
-        target="_self"
-        className="inline-block bg-pink-200 text-white py-2 px-6 rounded-lg font-bold text-center transition duration-300"
+        href={cart.checkoutUrl}
+ 
+        className='inline-block bg-pink-200 text-white py-2 px-6 rounded-lg font-bold text-center transition duration-300'
       >
         Continue to Checkout &rarr;
       </a>
