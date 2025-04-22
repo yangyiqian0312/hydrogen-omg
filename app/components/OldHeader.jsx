@@ -53,7 +53,7 @@ function SearchToggle() {
 function CartBadge({ count }) {
   const { open } = useAside();
   const { publish, shop, cart, prevCart } = useAnalytics();
-
+  const navigate = useNavigate();
   // TODO: Cart item quantity needs fix
   return (
     <a
@@ -67,6 +67,7 @@ function CartBadge({ count }) {
           shop,
           url: window.location.href || '',
         });
+        navigate('/cart'); 
       }}
       className="flex items-center space-x-2 text-gray-800 hover:text-gray-600"
     >
