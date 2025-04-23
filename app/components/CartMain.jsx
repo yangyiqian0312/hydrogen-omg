@@ -10,7 +10,7 @@ import { useEffect } from 'react';
  * It is used by both the /cart route and the cart aside dialog.
  * @param {CartMainProps}
  */
-export function CartMain({layout, cart: originalCart}) {
+export function CartMain({layout, cart: originalCart, isLoggedIn}) {
   // The useOptimisticCart hook applies pending actions to the cart
   // so the user immediately sees feedback when they modify the cart.
   const cart = useOptimisticCart(originalCart);
@@ -32,7 +32,7 @@ export function CartMain({layout, cart: originalCart}) {
             ))}
           </ul>
         </div>
-        {cartHasItems && <CartSummary cart={cart} layout={layout} />}
+        {cartHasItems && <CartSummary cart={cart} layout={layout} isLoggedIn={isLoggedIn}/>}
       </div>
     </div>
   );

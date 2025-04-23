@@ -10,6 +10,12 @@ export async function loader() {
  * @param {ActionFunctionArgs}
  */
 export async function action({context}) {
+  const {cart} = context;
+  await cart.updateBuyerIdentity({
+    customerAccessToken:null,
+    email: null,
+    phone: null,
+  });
   return await context.customerAccount.logout();
 }
 

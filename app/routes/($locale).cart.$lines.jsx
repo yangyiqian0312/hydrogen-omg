@@ -45,9 +45,7 @@ export async function loader({request, context, params}) {
   const result = await cart.create({
     lines: linesMap,
     discountCodes: discountArray,
-    buyerIdentity: {
-      customerAccessToken: context.customerAccount.accessToken,
-    },
+    
   });
 
   const cartResult = result.cart;

@@ -6,7 +6,7 @@ import {useRef} from 'react';
 /**
  * @param {CartSummaryProps}
  */
-export function CartSummary({cart, layout}) {
+export function CartSummary({cart, layout, isLoggedIn}) {
   const className =
     layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
   
@@ -28,8 +28,8 @@ export function CartSummary({cart, layout}) {
 
       <div className="mt-4">
         <CartCheckoutActions 
-          cart={cart}
-          
+          checkoutUrl={cart.checkoutUrl}
+          isLoggedIn={isLoggedIn} 
         />
       </div>
     </div>
@@ -38,15 +38,17 @@ export function CartSummary({cart, layout}) {
 /**
  * @param {{checkoutUrl: string}}
  */
-function CartCheckoutActions({cart}) {
-
-  if (!cart.checkoutUrl) return null;
-
+function CartCheckoutActions({checkoutUrl, isLoggedIn}) {
+ 
+  if (!checkoutUrl) return null;
+  
+  // const loggedInParam = isLoggedIn ? 'true' : 'false';
+  // const finalCheckoutUrl = `${checkoutUrl}?logged_in=${loggedInParam}`;
+  // console.log(finalCheckoutUrl)
   return (
     <div className="mb-10">
       <a
-        href={cart.checkoutUrl}
- 
+        href={checkoutUrl}
         className='inline-block bg-pink-200 text-white py-2 px-6 rounded-lg font-bold text-center transition duration-300'
       >
         Continue to Checkout &rarr;

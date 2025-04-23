@@ -27,11 +27,9 @@ export async function loader({context}) {
   try {
     const isLoggedIn = await customerAccount.isLoggedIn();
     let customer = null;
-    let accessToken = '';
     
     if (isLoggedIn) {
-      console.log("is Logged in from Cart Loader");
-      accessToken = customerAccount.getAccessToken().customerAccessToken;
+      const accessToken = await customerAccount.getAccessToken();
       const { data } = await customerAccount.query(`#graphql
         query getCustomerDetails {
           customer {
@@ -45,16 +43,25 @@ export async function loader({context}) {
       if (data && data.customer) {
         customer = data.customer;
       }
-    }
-    console.log("cart Loader: ", accessToken)
-    await cart.updateBuyerIdentity({
-      customerAccessToken: isLoggedIn ? accessToken : '',
 
-    });
+      await cart.updateBuyerIdentity({
+        customerAccessToken: accessToken,
+        email: customer.emailAddress.emailAddress,
+        phone: customer.phoneNumber.phoneNumber,
+      });
+    }else{
+      await cart.updateBuyerIdentity({
+        customerAccessToken:null,
+        email: null,
+        phone: null,
+      });
+    }
+    
     const cartData = await cart.get();
 
     return json({
       cart: cartData,
+      isLoggedIn: isLoggedIn,
     });
 
   } catch (error) {
@@ -70,14 +77,6 @@ export async function loader({context}) {
 export async function action({request, context}) {
   const {cart, customerAccount} = context;
   
-  // const isLoggedIn = await customerAccount.isLoggedIn();
-  // if (isLoggedIn) {
-  //   const accessToken = await customerAccount.getAccessToken();
-  //   await cart.updateBuyerIdentity({
-  //     customerAccessToken: accessToken,
-  //   })
-  // }
-
   const formData = await request.formData();
 
   const {action, inputs} = CartForm.getFormInput(formData);
@@ -161,12 +160,12 @@ export async function action({request, context}) {
 
 export default function Cart() {
   /** @type {LoaderReturnData} */
-  const {cart} = useLoaderData();
+  const {cart, isLoggedIn} = useLoaderData();
   
   return (
     <div className="cart">
       <h1>Cart</h1>
-      <CartMain layout="page" cart={cart}/>
+      <CartMain layout="page" cart={cart} isLoggedIn={isLoggedIn}/>
     </div>
   );
 }

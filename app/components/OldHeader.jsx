@@ -60,7 +60,7 @@ function CartBadge({ count }) {
       href="/cart"
       onClick={(e) => {
         e.preventDefault();
-        open('cart');
+
         publish('cart_viewed', {
           cart,
           prevCart,
