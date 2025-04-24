@@ -206,6 +206,26 @@ export default function AccountProfile() {
                 readOnly
               />
             </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                placeholder="Email"
+                aria-label="Email"
+                defaultValue={customer.emailAddress.emailAddress ?? ''}
+                className="block w-full rounded-md border-gray-200 shadow-sm bg-gray-100 sm:text-sm"
+                readOnly
+              />
+            </div>
           </fieldset>
 
           <legend className="text-lg font-medium text-gray-900 mb-6">

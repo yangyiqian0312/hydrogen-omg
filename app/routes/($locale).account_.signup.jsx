@@ -3,12 +3,16 @@ import { useNavigate, useActionData, useLoaderData } from '@remix-run/react';
 import SignupForm from '~/components/SignupForm';
 import { useState } from 'react';
 
-export async function loader({ context }) {
+export async function loader({ context, request }) {
   const isLoggedIn = await context.customerAccount.isLoggedIn();
   if (isLoggedIn) {
     return redirect('/account/profile');
   }
-  return json({});
+  const url = new URL(request.url);
+  const firstname = url.searchParams.get('firstname') || '';
+  const email = url.searchParams.get('email') || '';
+  const lastname = url.searchParams.get('lastname') || '';
+  return json({firstname, email, lastname});
 }
 
 export const action = async ({ request, context }) => {
@@ -90,10 +94,11 @@ export const action = async ({ request, context }) => {
 
 export default function SignupPage() {
     const navigate = useNavigate();
+    const {firstname, email, lastname} = useLoaderData();
     return (
       <div>
         <h1 className="text-xl font-bold text-center">Create Account</h1>
-        <SignupForm />
+        <SignupForm firstname={firstname} email={email} lastname={lastname}/>
       </div>
     );
 }

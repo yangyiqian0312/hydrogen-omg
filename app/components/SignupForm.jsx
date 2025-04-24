@@ -2,11 +2,11 @@ import { useActionData, Form } from '@remix-run/react';
 import { useState } from 'react';
 import { Link, useNavigate } from '@remix-run/react';
 
-export default function SignupForm() {
+export default function SignupForm({firstname, email, lastname}) {
     const [form, setForm] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
+        firstName: firstname,
+        lastName: lastname,
+        email: email,
         phone: '',
         password: '',
         acceptsMarketing: true,

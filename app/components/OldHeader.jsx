@@ -207,7 +207,7 @@ export default function OldHeader({
   const promos = [
     {
       id: 1,
-      message: "Free shipping over $30"
+      message: "Free shipping over $49.99"
     },
     {
       id: 2,
