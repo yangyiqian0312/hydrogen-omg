@@ -769,48 +769,50 @@ export default function Homepage() {
                 key={node.id}
                 className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
               >
-                {/* 图片容器，保持方形比例 */}
-                <div className="relative aspect-square">
-                  {node.images.edges[0] ? (
-                    <img
-                      src={node.images.edges[0].node.url} // 商品图片 URL
-                      alt={node.title}
-                      className="w-full h-full object-cover" // 确保图片填充整个容器
-                    />
-                  ) : (
-                    <img
-                      src="/api/placeholder/400/400" // 占位图片
-                      alt="Placeholder"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
+                <a href={`/products/${node.handle}`}>
+                  {/* 图片容器，保持方形比例 */}
+                  <div className="relative aspect-square">
+                    {node.images.edges[0] ? (
+                      <img
+                        src={node.images.edges[0].node.url} // 商品图片 URL
+                        alt={node.title}
+                        className="w-full h-full object-cover" // 确保图片填充整个容器
+                      />
+                    ) : (
+                      <img
+                        src="/api/placeholder/400/400" // 占位图片
+                        alt="Placeholder"
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
 
-                <div className="m-2">
-                  {/* Optional button or additional actions */}
-                  {/* SHOP NOW 按钮 */}
-                  <Link
-                    key={node.id}
-                    to={`/products/${node.handle}`}
-                    className="font-semibold text-blue-600 hover:underline truncate"
-                  >
-                    {node.vendor || 'Unknown Brand'}{' '}
-                    <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
-                      {node.title
-                        ? node.title.replace(
-                          new RegExp(`^${node.vendor}\\s*`),
-                          '',
-                        )
-                        : 'N/A'}
+                  <div className="m-2">
+                    {/* Optional button or additional actions */}
+                    {/* SHOP NOW 按钮 */}
+                    <Link
+                      key={node.id}
+                      to={`/products/${node.handle}`}
+                      className="font-semibold text-blue-600 hover:underline truncate"
+                    >
+                      {node.vendor || 'Unknown Brand'}{' '}
+                      <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
+                        {node.title
+                          ? node.title.replace(
+                            new RegExp(`^${node.vendor}\\s*`),
+                            '',
+                          )
+                          : 'N/A'}
+                      </p>
+                    </Link>
+                    <p className="font-bold mb-4">
+                      $
+                      {Number(
+                        node.variants.edges[0]?.node.price.amount || 0,
+                      ).toFixed(2)}
                     </p>
-                  </Link>
-                  <p className="font-bold mb-4">
-                    $
-                    {Number(
-                      node.variants.edges[0]?.node.price.amount || 0,
-                    ).toFixed(2)}
-                  </p>
-                </div>
+                  </div>
+                </a>
               </div>
             ))}
           </div>
@@ -1205,19 +1207,19 @@ export default function Homepage() {
                     <div key={node.id} className="flex flex-col  rounded-lg overflow-hidden shadow-lg border-gray-200 shadow-gray-300 hover:shadow-md transition-shadow duration-300">
                       <div className="flex justify-center mb-3">
                         <a href={`/products/${node.handle}`}>
-                        {node.images.edges[0] ? (
-                          <img
-                            src={node.images.edges[0].node.url}
-                            alt={node.title}
-                            className="h-full object-fill"
-                          />
-                        ) : (
-                          <img
-                            src="/api/placeholder/400/400"
-                            alt="Placeholder"
-                            className="h-full object-fill"
-                          />
-                        )}
+                          {node.images.edges[0] ? (
+                            <img
+                              src={node.images.edges[0].node.url}
+                              alt={node.title}
+                              className="h-full object-fill"
+                            />
+                          ) : (
+                            <img
+                              src="/api/placeholder/400/400"
+                              alt="Placeholder"
+                              className="h-full object-fill"
+                            />
+                          )}
                         </a>
                       </div>
                       <div className="text-left m-2">
