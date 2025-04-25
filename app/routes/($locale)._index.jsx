@@ -690,7 +690,7 @@ export default function Homepage() {
                 {/* Mute/Unmute Button */}
                 <button
                   ref={el => mobileVideoButtonRefs.current[index] = el}
-                  className="absolute top-2 right-2 bg-white/80 rounded-full px-2 py-1 text-xs shadow"
+                  className="absolute top-2 right-2 bg-white/80 rounded-full px-2 py-1 text-xl shadow"
                   onClick={() => {
                     if (activeMobileVideoIndex === index) {
                       setActiveMobileVideoIndex(null); // Mute all
@@ -1126,7 +1126,7 @@ export default function Homepage() {
                       {/* Mute/Unmute Button */}
                       <button
                         ref={el => desktopVideoButtonRefs.current[index] = el}
-                        className="absolute top-2 right-2 bg-white/80 rounded-full px-2 py-1 text-xs shadow"
+                        className="absolute top-2 right-2 bg-white/80 rounded-full px-2 py-1 text-xl shadow"
                         onClick={() => {
                           if (activeDesktopVideoIndex === index) {
                             setActiveDesktopVideoIndex(null); // Mute all
