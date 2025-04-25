@@ -1128,7 +1128,7 @@ export default function Homepage() {
                 </button>
                 <div
                   ref={videoCarouselRef}
-                  className="flex overflow-x-auto snap-x gap-4 hide-scrollbar scrollbar-hide"
+                  className="flex h-full overflow-x-auto snap-x gap-4 hide-scrollbar scrollbar-hide"
                   style={{
                     scrollbarWidth: 'none',
                     msOverflowStyle: 'none',
@@ -1138,7 +1138,7 @@ export default function Homepage() {
                   {videoPaths.map((video, index) => (
                     <div
                       key={index}
-                      className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
+                      className=" w-64 h-86 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
                     >
                       <video
                         ref={el => desktopVideoRefs.current[index] = el}
@@ -1170,7 +1170,7 @@ export default function Homepage() {
                       {videoProducts[index] && (
                         <Link
                           to={`/products/${videoProducts[index].node.handle}`}
-                          className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
+                          className="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
                         >
                           Shop Now
                         </Link>
