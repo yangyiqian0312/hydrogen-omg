@@ -102,8 +102,10 @@ async function loadDeferredData({ context }) {
 export default function Homepage() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [activeDesktopVideoIndex, setActiveDesktopVideoIndex] = useState(null);
+  const [activeMobileVideoIndex, setActiveMobileVideoIndex] = useState(null);
   const [featuredProducts, setFeaturedProducts] = useState([]);
-
+  const [isMobile, setIsMobile] = useState(false);
 
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
@@ -328,9 +330,6 @@ export default function Homepage() {
   // 合并所有产品
   const orderedProducts = [...priorityProducts, ...otherProducts];
 
-
-
-
   const bgColors = [
     'bg-[#A1E9ED]',
     'bg-[#FFB2FF]',
@@ -357,12 +356,32 @@ export default function Homepage() {
   const testimonialCarouselRef = useRef(null);
 
   const carouselRef = useRef(null);
+  const desktopVideoButtonRefs = useRef([]);
+  const mobileVideoButtonRefs = useRef([]);
 
   const orderCarouselRef = useRef(null);
   useEffect(() => {
     if (orderCarouselRef.current) {
       console.log('Carousel mounted successfully');
     }
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    // if (isMobile) {
+    //   setTimeout(() => {
+    //     const firstMobileButton = mobileVideoButtonRefs.current[0];
+    //     if (firstMobileButton) firstMobileButton.click();
+    //   }, 3000);
+    // }
+    // else {
+    //   setTimeout(() => {
+    //     const firstDesktopButton = desktopVideoButtonRefs.current[0];
+    //     if (firstDesktopButton) firstDesktopButton.click();
+    //   }, 3000);
+    // }
+
+
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const orderScrollLeft = () => {
@@ -477,7 +496,7 @@ export default function Homepage() {
                   }}
                 >
                   <img
-                    src={`/assets/presentation/${index+1}.jpg`}
+                    src={`/assets/presentation/${index + 1}.jpg`}
                     alt={node.title}
                     className="w-full h-full object-cover"
                   />
@@ -663,10 +682,26 @@ export default function Homepage() {
                   src={video}
                   className="w-full h-full object-cover"
                   autoPlay
-                  muted
+                  muted={!isMobile || activeMobileVideoIndex !== index}
                   loop
                   playsInline
                 ></video>
+
+                {/* Mute/Unmute Button */}
+                <button
+                  ref={el => mobileVideoButtonRefs.current[index] = el}
+                  className="absolute top-2 right-2 bg-white/80 rounded-full px-2 py-1 text-xs shadow"
+                  onClick={() => {
+                    if (activeMobileVideoIndex === index) {
+                      setActiveMobileVideoIndex(null); // Mute all
+                    } else {
+                      setActiveMobileVideoIndex(index); // Unmute this one
+                    }
+                  }}
+                  aria-label={activeMobileVideoIndex === index ? "Mute" : "Unmute"}
+                >
+                  {activeMobileVideoIndex === index ? "🔊" : "🔇"}
+                </button>
 
                 {/* Shop Now Button */}
                 {videoProducts[index] && (
@@ -1076,26 +1111,43 @@ export default function Homepage() {
                   {videoPaths.map((video, index) => (
                     <div
                       key={index}
-                      className="flex-none w-80 rounded-lg overflow-hidden snap-start shadow-sm relative aspect-[3/4]"
+                      className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
                     >
                       <video
                         src={video}
                         className="w-full h-full object-cover"
                         autoPlay
-                        muted
+                        muted={isMobile || activeDesktopVideoIndex !== index}
                         loop
                         playsInline
+                      // Optionally, add ref for more control
                       ></video>
 
+                      {/* Mute/Unmute Button */}
+                      <button
+                        ref={el => desktopVideoButtonRefs.current[index] = el}
+                        className="absolute top-2 right-2 bg-white/80 rounded-full px-2 py-1 text-xs shadow"
+                        onClick={() => {
+                          if (activeDesktopVideoIndex === index) {
+                            setActiveDesktopVideoIndex(null); // Mute all
+                          } else {
+                            setActiveDesktopVideoIndex(index); // Unmute this one
+                          }
+                        }}
+                        aria-label={activeDesktopVideoIndex === index ? "Mute" : "Unmute"}
+                      >
+                        {activeDesktopVideoIndex === index ? "🔊" : "🔇"}
+                      </button>
+
                       {/* Shop Now Button */}
-                      <div className="absolute bottom-4 left-0 w-full flex justify-center">
+                      {videoProducts[index] && (
                         <Link
-                          to={videoProducts[index] ? `/products/${videoProducts[index].node.handle}` : '#'}
-                          className="bg-white text-black px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
+                          to={`/products/${videoProducts[index].node.handle}`}
+                          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
                         >
                           Shop Now
                         </Link>
-                      </div>
+                      )}
                     </div>
                   ))}
                 </div>
