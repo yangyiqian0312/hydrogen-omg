@@ -211,7 +211,7 @@ export default function OldHeader({
     },
     {
       id: 2,
-      message: "New Here ? 20% Off Code: OMGBEAUTY"
+      message: "New Here? Sign up for 20% Off"
     }
   ];
 
@@ -228,10 +228,10 @@ export default function OldHeader({
   return (
     <>
       {/* Announcement Bar */}
-      {/* <div className="bg-pink-200 text-center py-4 relative overflow-hidden">
+      <div className="bg-black text-center py-2 relative overflow-hidden">
         <div className="h-6"> 
           <p
-            className="text-gray-800 font-bold transition-all duration-500 ease-in-out"
+            className="text-white font-bold transition-all duration-1500 ease-in-out"
             style={{
               opacity: 1,
               transform: 'translateY(0)'
@@ -240,7 +240,7 @@ export default function OldHeader({
             {promos[currentIndex].message}
           </p>
         </div>
-      </div> */}
+      </div>
 
       {/* Navigation */}
       <nav className="bg-white">
