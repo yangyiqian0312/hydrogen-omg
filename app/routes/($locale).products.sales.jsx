@@ -154,50 +154,52 @@ const Sales = (selectedVariant) => {
               key={node.id}
               className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
             >
-              <div className="relative aspect-square">
-                {node.images.edges[0] ? (
-                  <img
-                    src={node.images.edges[0].node.url}
-                    alt={node.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <img
-                    src="/api/placeholder/400/400"
-                    alt="Placeholder"
-                    className="w-full h-full object-cover"
-                  />
-                )}
-              </div>
+              <a href={`/products/${node.handle}`}>
+                <div className="relative aspect-square">
+                  {node.images.edges[0] ? (
+                    <img
+                      src={node.images.edges[0].node.url}
+                      alt={node.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <img
+                      src="/api/placeholder/400/400"
+                      alt="Placeholder"
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
 
-              <div className="p-3">
-                <Link
-                  to={`/products/${node.handle}`}
-                  className="block"
-                >
-                  <div className="font-semibold text-blue-600 hover:underline truncate">
-                    {node.vendor || 'Unknown Brand'}
-                  </div>
-                  <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
+                <div className="p-3">
+                  <Link
+                    to={`/products/${node.handle}`}
+                    className="block"
+                  >
+                    <div className="font-semibold text-blue-600 hover:underline truncate">
+                      {node.vendor || 'Unknown Brand'}
+                    </div>
+                    <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
                   h-auto max-h-12
                   line-clamp-2">
-                    {node.title
-                      ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
-                      : 'N/A'}
-                  </p>
-                </Link>
+                      {node.title
+                        ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
+                        : 'N/A'}
+                    </p>
+                  </Link>
 
-                <div>
-                  <p className="font-bold">
-                    ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                    {node.variants.edges[0]?.node.compareAtPrice && (
-                      <span className="ml-2 text-gray-500 line-through">
-                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
-                      </span>
-                    )}
-                  </p>
+                  <div>
+                    <p className="font-bold">
+                      ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                      {node.variants.edges[0]?.node.compareAtPrice && (
+                        <span className="ml-2 text-gray-500 line-through">
+                          ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
+                        </span>
+                      )}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </a>
             </div>
           ))
         ) : (
