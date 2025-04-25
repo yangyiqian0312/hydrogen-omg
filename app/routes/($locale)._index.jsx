@@ -102,8 +102,8 @@ async function loadDeferredData({ context }) {
 export default function Homepage() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [activeDesktopVideoIndex, setActiveDesktopVideoIndex] = useState(null);
-  const [activeMobileVideoIndex, setActiveMobileVideoIndex] = useState(null);
+  const [playingDesktopIndex, setPlayingDesktopIndex] = useState(null);
+  const [playingMobileIndex, setPlayingMobileIndex] = useState(null);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -356,8 +356,8 @@ export default function Homepage() {
   const testimonialCarouselRef = useRef(null);
 
   const carouselRef = useRef(null);
-  const desktopVideoButtonRefs = useRef([]);
-  const mobileVideoButtonRefs = useRef([]);
+  const desktopVideoRefs = useRef([]);
+  const mobileVideoRefs = useRef([]);
 
   const orderCarouselRef = useRef(null);
   useEffect(() => {
@@ -367,22 +367,48 @@ export default function Homepage() {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     handleResize();
     window.addEventListener('resize', handleResize);
-    // if (isMobile) {
-    //   setTimeout(() => {
-    //     const firstMobileButton = mobileVideoButtonRefs.current[0];
-    //     if (firstMobileButton) firstMobileButton.click();
-    //   }, 3000);
-    // }
-    // else {
-    //   setTimeout(() => {
-    //     const firstDesktopButton = desktopVideoButtonRefs.current[0];
-    //     if (firstDesktopButton) firstDesktopButton.click();
-    //   }, 3000);
-    // }
+
+    // Base on screen size, play the video
+    if (isMobile) {
+      desktopVideoRefs.current.forEach((video, idx) => {
+        video.pause();
+        video.currentTime = 0;
+      });
+      mobileVideoRefs.current.forEach((video, idx) => {
+        if (video) {
+          if (idx === playingMobileIndex) {
+            video.muted = false;
+            video.currentTime = 0;
+            video.play();
+          } else {
+            video.pause();
+            video.currentTime = 0;
+          }
+        }
+      });
+    } else {
+
+      mobileVideoRefs.current.forEach((video, idx) => {
+        video.pause();
+        video.currentTime = 0;
+      });
+      desktopVideoRefs.current.forEach((video, idx) => {
+        if (video) {
+          if (idx === playingDesktopIndex) {
+            video.muted = false;
+            video.currentTime = 0;
+            video.play();
+          } else {
+            video.pause();
+            video.currentTime = 0;
+          }
+        }
+      });
+    }
 
 
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [playingDesktopIndex, playingMobileIndex, isMobile]);
 
   const orderScrollLeft = () => {
     if (orderCarouselRef.current) {
@@ -679,35 +705,36 @@ export default function Homepage() {
                 className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
               >
                 <video
+                  ref={el => mobileVideoRefs.current[index] = el}
                   src={video}
                   className="w-full h-full object-cover"
-                  autoPlay
-                  muted={!isMobile || activeMobileVideoIndex !== index}
-                  loop
+                  controls={playingMobileIndex === index}
+                  controlsList="nodownload nofullscreen noplaybackrate"
+                  muted={false}
+                  loop={false}
+                  disablePictureInPicture
                   playsInline
-                ></video>
-
-                {/* Mute/Unmute Button */}
-                <button
-                  ref={el => mobileVideoButtonRefs.current[index] = el}
-                  className="absolute top-2 right-2 bg-white/80 rounded-full px-2 py-1 text-xl shadow"
-                  onClick={() => {
-                    if (activeMobileVideoIndex === index) {
-                      setActiveMobileVideoIndex(null); // Mute all
-                    } else {
-                      setActiveMobileVideoIndex(index); // Unmute this one
-                    }
+                  onPause={() => {
+                    if (playingMobileIndex === index) setPlayingMobileIndex(null);
                   }}
-                  aria-label={activeMobileVideoIndex === index ? "Mute" : "Unmute"}
-                >
-                  {activeMobileVideoIndex === index ? "🔊" : "🔇"}
-                </button>
+                  style={{ background: "#000" }}
+                />
+                {playingMobileIndex !== index && (
+                  <button
+                    className="absolute inset-0 flex items-center justify-center text-5xl text-white bg-black/40 hover:bg-black/60 transition"
+                    style={{ pointerEvents: "auto" }}
+                    onClick={() => setPlayingMobileIndex(index)}
+                    aria-label="Play video"
+                  >
+                    ▶
+                  </button>
+                )}
 
                 {/* Shop Now Button */}
                 {videoProducts[index] && (
                   <Link
                     to={`/products/${videoProducts[index].node.handle}`}
-                    className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
+                    className="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
                   >
                     Shop Now
                   </Link>
@@ -1114,36 +1141,36 @@ export default function Homepage() {
                       className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
                     >
                       <video
+                        ref={el => desktopVideoRefs.current[index] = el}
                         src={video}
                         className="w-full h-full object-cover"
-                        autoPlay
-                        muted={isMobile || activeDesktopVideoIndex !== index}
-                        loop
+                        controls={playingDesktopIndex === index}
+                        controlsList="nodownload nofullscreen noplaybackrate"
+                        muted={false}
+                        loop={false}
+                        disablePictureInPicture
                         playsInline
-                      // Optionally, add ref for more control
-                      ></video>
-
-                      {/* Mute/Unmute Button */}
-                      <button
-                        ref={el => desktopVideoButtonRefs.current[index] = el}
-                        className="absolute top-2 right-2 bg-white/80 rounded-full px-2 py-1 text-xl shadow"
-                        onClick={() => {
-                          if (activeDesktopVideoIndex === index) {
-                            setActiveDesktopVideoIndex(null); // Mute all
-                          } else {
-                            setActiveDesktopVideoIndex(index); // Unmute this one
-                          }
+                        onPause={() => {
+                          if (playingDesktopIndex === index) setPlayingDesktopIndex(null);
                         }}
-                        aria-label={activeDesktopVideoIndex === index ? "Mute" : "Unmute"}
-                      >
-                        {activeDesktopVideoIndex === index ? "🔊" : "🔇"}
-                      </button>
+                        style={{ background: "#000" }}
+                      />
+                      {playingDesktopIndex !== index && (
+                        <button
+                          className="absolute inset-0 flex items-center justify-center text-5xl text-white bg-black/40 hover:bg-black/60 transition"
+                          style={{ pointerEvents: "auto" }}
+                          onClick={() => { setPlayingDesktopIndex(index) }}
+                          aria-label="Play video"
+                        >
+                          ▶
+                        </button>
+                      )}
 
                       {/* Shop Now Button */}
                       {videoProducts[index] && (
                         <Link
                           to={`/products/${videoProducts[index].node.handle}`}
-                          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
+                          className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
                         >
                           Shop Now
                         </Link>
