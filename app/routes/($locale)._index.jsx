@@ -1053,13 +1053,13 @@ export default function Homepage() {
           {/* 内容部分 */}
           <div className="flex gap-6">
             {/* 左侧列 */}
-            <div className="w-1/4 flex flex-col">
+            <div className="w-1/4 grid grid-rows-2 gap-4">
               {/* TikTok Live Deal */}
-              <div className="bg-pink-50 rounded-lg p-6 text-center mb-6">
-                <h3 className="text-lg font-medium mb-2">
-                  Exclusive Deal On TikTok<br />LIVE
+              <div className="bg-pink-50 rounded-lg p-6 text-center mb-8">
+                <h3 className="text-lg font-medium mb-8">
+                  Exclusive Deal On TikTok LIVE
                 </h3>
-                <div className="relative w-32 h-32 mx-auto mb-4">
+                <div className="relative w-32 h-32 mx-auto ">
                   <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
                   <div className="relative w-full h-full rounded-full overflow-hidden">
                     <a
@@ -1080,16 +1080,16 @@ export default function Homepage() {
                   href="https://www.tiktok.com/@omgbeautyshop/live"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-md text-sm font-medium w-full block"
+                  className="bg-red-600  hover:bg-red-700 text-white px-6 py-3 mt-12 rounded-md text-sm font-medium w-full block"
                 >
                   Go To TikTok
                 </a>
               </div>
 
               {/* New Arrivals */}
-              <div className="bg-[#F7CAC9] rounded-lg overflow-hidden flex-grow">
+              <div className="bg-[#F7CAC9] rounded-lg overflow-hidden mb-8 flex-grow">
                 <div className="p-6 h-full flex flex-col">
-                  <h3 className="font-medium text-lg mb-2">New Arrivals</h3>
+                  <h3 className="font-medium text-lg mb-8">New Arrivals</h3>
                   <div className="flex flex-col gap-4 flex-grow">
                     <div className="relative w-full rounded-lg overflow-hidden flex-grow" style={{ height: "240px" }}>
                       <img
@@ -1106,7 +1106,7 @@ export default function Homepage() {
                       onClick={(e) => {
                         e.stopPropagation();
                       }}
-                      className="inline-block bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-md text-sm font-medium w-full mt-auto text-center"
+                      className="inline-block bg-red-600 hover:bg-red-700 text-white py-3 px-6 my-4 rounded-md text-sm font-medium w-full mt-auto text-center"
                     >
                       Shop Now
                     </a>
