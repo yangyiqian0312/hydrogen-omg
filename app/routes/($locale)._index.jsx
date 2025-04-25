@@ -1114,7 +1114,7 @@ export default function Homepage() {
             </div>
 
             {/* 右侧列 */}
-            <div className="w-3/4 flex flex-col">
+            <div className="w-3/4 grid grid-rows-2">
               {/* 视频轮播 */}
               <div className="relative mb-8">
                 <button
@@ -1200,25 +1200,27 @@ export default function Homepage() {
                 </div>
 
                 {/* 产品网格 - 显示4个产品 */}
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-4 gap-4  m-4">
                   {trendingProducts.slice(0, 4).map(({ node }, index) => (
-                    <div key={node.id} className="flex flex-col">
+                    <div key={node.id} className="flex flex-col  rounded-lg overflow-hidden shadow-lg border-gray-200 shadow-gray-300 hover:shadow-md transition-shadow duration-300">
                       <div className="flex justify-center mb-3">
+                        <a href={`/products/${node.handle}`}>
                         {node.images.edges[0] ? (
                           <img
                             src={node.images.edges[0].node.url}
                             alt={node.title}
-                            className="h-32 object-contain"
+                            className="h-full object-fill"
                           />
                         ) : (
                           <img
                             src="/api/placeholder/400/400"
                             alt="Placeholder"
-                            className="h-32 object-contain"
+                            className="h-full object-fill"
                           />
                         )}
+                        </a>
                       </div>
-                      <div className="text-left">
+                      <div className="text-left m-2">
                         <Link
                           key={node.id}
                           to={`/products/${node.handle}`}
