@@ -259,7 +259,7 @@ const Women = (selectedVariant) => {
                     to={`/products/${node.handle}`}
                     className="block"
                   >
-                    <div className="font-semibold text-black hover:underline truncate">
+                    <div className="font-semibold text-black uppercase hover:underline truncate">
                       {node.vendor || 'Unknown Brand'}
                     </div>
                     <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
@@ -315,7 +315,7 @@ const Women = (selectedVariant) => {
                     to={`/products/${node.handle}`}
                     className="block"
                   >
-                    <div className="font-semibold text-black hover:underline truncate">
+                    <div className="font-semibold text-black uppercase hover:underline truncate">
                       {node.vendor || 'Unknown Brand'}
                     </div>
                     <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
@@ -351,7 +351,7 @@ const Women = (selectedVariant) => {
           womenProducts.map(({ node }) => (
             <div
               key={node.id}
-              className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+              className="rounded-lg overflow-hidden shadow-lg shadow-gray-300  hover:shadow-md transition-shadow duration-300"
             >
               <a href={`/products/${node.handle}`}>
                 {/* Product card content remains the same */}
@@ -376,7 +376,7 @@ const Women = (selectedVariant) => {
                     to={`/products/${node.handle}`}
                     className="block"
                   >
-                    <div className="font-semibold text-black hover:underline truncate">
+                    <div className="font-semibold text-black uppercase hover:underline truncate">
                       {node.vendor || 'Unknown Brand'}
                     </div>
                     <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
