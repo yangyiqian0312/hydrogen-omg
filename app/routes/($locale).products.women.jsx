@@ -259,7 +259,7 @@ const Women = (selectedVariant) => {
                     to={`/products/${node.handle}`}
                     className="block"
                   >
-                    <div className="font-semibold text-blue-600 hover:underline truncate">
+                    <div className="font-semibold text-black hover:underline truncate">
                       {node.vendor || 'Unknown Brand'}
                     </div>
                     <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
@@ -315,7 +315,7 @@ const Women = (selectedVariant) => {
                     to={`/products/${node.handle}`}
                     className="block"
                   >
-                    <div className="font-semibold text-blue-600 hover:underline truncate">
+                    <div className="font-semibold text-black hover:underline truncate">
                       {node.vendor || 'Unknown Brand'}
                     </div>
                     <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
@@ -376,7 +376,7 @@ const Women = (selectedVariant) => {
                     to={`/products/${node.handle}`}
                     className="block"
                   >
-                    <div className="font-semibold text-blue-600 hover:underline truncate">
+                    <div className="font-semibold text-black hover:underline truncate">
                       {node.vendor || 'Unknown Brand'}
                     </div>
                     <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
