@@ -450,19 +450,20 @@ export default function Homepage() {
 
   return (
     <div className="home">
-      <div className="flex flex-col space-y-4" >
+      <div className="flex flex-col space-y-4 relative" >
         {/* Main banner image */}
         <div>
           <img
-            src="/assets/banner.jpg"
+            src="/assets/BANNER.png"
             alt="Banner"
+            className="w-full h-auto max-h-[400px] object-contain bg-red-300"
           />
         </div>
 
         {/* TikTok LIVE element positioned at the top right corner */}
-        <div className="absolute top-15 right-12 p-4 max-w-sm hidden md:block">
+        <div className="absolute inset-y-0 right-12 p-4 max-w-sm hidden md:flex flex-col justify-center items-center">
           <div className="text-center">
-            <div className="relative w-24 h-24 mx-auto mb-4">
+            <div className="relative w-32 h-32 mx-auto mb-4">
               <div className="relative w-full h-full rounded-full overflow-hidden">
                 <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
                 <img
