@@ -346,7 +346,7 @@ const Women = (selectedVariant) => {
         }
         {filteredProductsbyTags.length === 0 && filteredProducts.length == 0 && (urlBrand || urlTag) && (
           <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">
-            No products found for {selectedTag}
+            No products found for {selectedTag || selectedBrand}
           </div>
         )}
         {!urlBrand && !urlTag && (
