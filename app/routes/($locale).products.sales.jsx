@@ -110,7 +110,7 @@ const Sales = (selectedVariant) => {
   // Filter for products with "men" tag with extra logging
   const salesProducts = products.filter(({ node }) => {
     return node.tags && node.tags.includes('Sale');
-  });
+  }).sort((a, b) => b.node.totalInventory - a.node.totalInventory);
 
   console.log("Filtered sales products:", salesProducts);
 
@@ -226,6 +226,7 @@ const SALES_PRODUCTS_QUERY = `#graphql
             title
             handle
             tags
+            totalInventory
             vendor
             descriptionHtml
             images(first: 6) {

@@ -109,7 +109,7 @@ const Newarrivals = (selectedVariant) => {
   // Filter for products with "men" tag with extra logging
   const newProducts = products.filter(({ node }) => {
     return node.tags && node.tags.includes('New Product');
-  });
+  }).sort((a, b) => b.node.totalInventory - a.node.totalInventory);
 
   console.log("Filtered new products:", newProducts);
 
@@ -117,7 +117,7 @@ const Newarrivals = (selectedVariant) => {
   const filteredProducts = selectedBrand
     ? newProducts.filter(
       ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
-    )
+    ).sort((a, b) => b.node.totalInventory - a.node.totalInventory)
     : newProducts;
 
 
@@ -228,6 +228,7 @@ const NEW_PRODUCTS_QUERY = `#graphql
             handle
             tags
             vendor
+            totalInventory
             descriptionHtml
             images(first: 6) {
               edges {

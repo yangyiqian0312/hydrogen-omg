@@ -103,7 +103,7 @@ const Men = (selectedVariant) => {
 
 
   const [isOpen, setIsOpen] = useState(false);
-  const brands = ['Versace', 'Burberry', 'Gucci ', 'Valentino ', 'Viktor & Rolf'];
+  const brands = ['Versace', 'Burberry', 'GUCCI','Tiffany','Giorgio Armani', 'Valentino ', 'Viktor & Rolf', 'YSL'];
   const [selectedBrand, setSelectedBrand] = useState(null);
 
 
@@ -122,9 +122,9 @@ const Men = (selectedVariant) => {
 
 
   // Filter for products with "men" tag with extra logging
-  const menProducts = products.filter(({ node }) => {
-    return node.tags && node.tags.includes('men');
-  });
+  const menProducts = products
+    .filter(({ node }) => node.tags && node.tags.includes('men'))
+    .sort((a, b) => b.node.totalInventory - a.node.totalInventory);
 
   console.log("Filtered men products:", menProducts);
 
@@ -133,6 +133,7 @@ const Men = (selectedVariant) => {
     ? menProducts.filter(
       ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
     )
+    .sort((a, b) => b.node.totalInventory - a.node.totalInventory)
     : menProducts;
 
 
@@ -433,6 +434,7 @@ const MEN_PRODUCTS_QUERY = `#graphql
             title
             handle
             tags
+            totalInventory
             vendor
             descriptionHtml
             images(first: 6) {

@@ -179,23 +179,29 @@ export default function OldHeader({
 
   // Brand lists
   const womenBrands = [
-    { name: "Versace", path: "/products/women?brand=Versace" },
+    { name: "All Women's Products", path: "/products/women" },
     { name: "Burberry", path: "/products/women?brand=Burberry" },
-    { name: "GUCCI", path: "/products/women?brand=GUCCI" },
-    { name: "Valentino", path: "/products/women?brand=Valentino" },
-    { name: "Viktor & Rolf", path: "/products/women?brand=Viktor%20%26%20Rolf" },
+    { name: "Carolina Herrera", path: "/products/women?brand=Carolina%20Herrera" },
     { name: "Chloe", path: "/products/women?brand=Chloe" },
-    { name: "Mini Set", path: "/products/women?tag=Minis" },
-    // { name: "All Women's Products", path: "/products/women" }
+    { name: "GUCCI", path: "/products/women?brand=GUCCI" },
+    { name: "Prada", path: "/products/women?brand=Prada" },
+    { name: "Valentino", path: "/products/women?brand=Valentino" },
+    { name: "Versace", path: "/products/women?brand=Versace" },
+    { name: "Viktor & Rolf", path: "/products/women?brand=Viktor%20%26%20Rolf" },
+    { name: "YSL", path: "/products/women?brand=YSL" },
+    // { name: "Mini Set", path: "/products/women?tag=Minis" }
   ];
 
   const menBrands = [
-    { name: "Versace", path: "/products/men?brand=Versace" },
+    { name: "All Men's Products", path: "/products/men" },
     { name: "Burberry", path: "/products/men?brand=Burberry" },
+    { name: "Giorgio Armani", path: "/products/men?brand=GIORGIO%20ARMANI" },
     { name: "GUCCI", path: "/products/men?brand=GUCCI" },
+    { name: "Tiffany", path: "/products/men?brand=Tiffany" },
     { name: "Valentino", path: "/products/men?brand=Valentino" },
-    { name: "Armani", path: "/products/men?brand=Armani" },
-    // { name: "All Men's Products", path: "/products/men" }
+    { name: "Versace", path: "/products/men?brand=Versace" },
+    { name: "YSL", path: "/products/men?brand=YSL" },
+
   ];
 
   const giftSetItems = [ ];

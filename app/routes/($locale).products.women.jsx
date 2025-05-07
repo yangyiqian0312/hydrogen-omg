@@ -104,7 +104,7 @@ const Women = (selectedVariant) => {
 
 
   const [isOpen, setIsOpen] = useState(false);
-  const brands = ['Versace', 'Burberry', 'GUCCI', 'Valentino', 'Viktor & Rolf', 'Chloe'];
+  const brands = ['all brands','YSL','Versace', 'Burberry', 'GUCCI', 'Valentino', 'Viktor & Rolf', 'Chloe','Prada','Carolina Herrera'];
   const tags = ['Minis'];
   const [selectedBrand, setSelectedBrand] = useState(urlBrand);
   const [selectedTag, setSelectedTag] = useState(urlTag);
@@ -154,20 +154,22 @@ const Women = (selectedVariant) => {
   const products = data.womenProducts?.collection?.products?.edges || [];
 
   // Filter for products with "Women" tag with extra logging
-  const womenProducts = products.filter(({ node }) => {
-    return node.tags && node.tags.includes('Women');
-  });
+  const womenProducts = products
+    .filter(({ node }) => node.tags && node.tags.includes('Women'))
+    .sort((a, b) => b.node.totalInventory - a.node.totalInventory);
 
   const filteredProducts = selectedBrand
     ? womenProducts.filter(
       ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
     )
+    .sort((a, b) => b.node.totalInventory - a.node.totalInventory)
     : [];
 
   const filteredProductsbyTags = selectedTag
     ? womenProducts.filter(
       ({ node }) => node.tags && node.tags.includes(selectedTag)
     )
+    .sort((a, b) => b.node.totalInventory - a.node.totalInventory)
     : [];
   console.log(selectedBrand)
   console.log(selectedTag)
@@ -459,6 +461,7 @@ const WOMEN_PRODUCTS_QUERY = `#graphql
             handle
             tags
             vendor
+            totalInventory
             descriptionHtml
             images(first: 6) {
               edges {

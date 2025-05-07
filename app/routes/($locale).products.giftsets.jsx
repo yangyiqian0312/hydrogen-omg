@@ -108,8 +108,8 @@ const Giftsets = (selectedVariant) => {
 
   // Filter for products with "men" tag with extra logging
   const giftProducts = products.filter(({ node }) => {
-    return node.tags && node.tags.includes('Gift Sets');
-  });
+    return node.tags && node.tags.includes('Gift Sets') || node.tags && node.tags.includes('Minis');
+  }).sort((a, b) => b.node.totalInventory - a.node.totalInventory);
 
   console.log("Filtered men products:", giftProducts);
 
@@ -117,7 +117,7 @@ const Giftsets = (selectedVariant) => {
   const filteredProducts = selectedBrand
     ? giftProducts.filter(
       ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
-    )
+    ).sort((a, b) => b.node.totalInventory - a.node.totalInventory)
     : giftProducts;
 
 
@@ -272,6 +272,7 @@ const GIFT_PRODUCTS_QUERY = `#graphql
             title
             handle
             tags
+            totalInventory
             vendor
             descriptionHtml
             images(first: 6) {
