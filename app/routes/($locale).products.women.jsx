@@ -104,7 +104,7 @@ const Women = (selectedVariant) => {
 
 
   const [isOpen, setIsOpen] = useState(false);
-  const brands = ['all brands','YSL','Versace', 'Burberry', 'GUCCI', 'Valentino', 'Viktor & Rolf', 'Chloe','Prada','Carolina Herrera'];
+  const brands = ['all brands','YSL','Bvlgari','Versace','Tiffany','Lattafa' ,'Burberry', 'GUCCI', 'Givenchy', 'Valentino', 'Viktor & Rolf', 'Chloe','Prada','Carolina Herrera'];
   const tags = ['Minis'];
   const [selectedBrand, setSelectedBrand] = useState(urlBrand);
   const [selectedTag, setSelectedTag] = useState(urlTag);

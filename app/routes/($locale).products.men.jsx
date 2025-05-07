@@ -103,7 +103,7 @@ const Men = (selectedVariant) => {
 
 
   const [isOpen, setIsOpen] = useState(false);
-  const brands = ['Versace', 'Burberry', 'GUCCI','Tiffany','Giorgio Armani', 'Valentino ', 'Viktor & Rolf', 'YSL'];
+  const brands = ['Versace','Bvlgari', 'Burberry', 'GUCCI','Givenchy','Tiffany','Lattafa','Giorgio Armani', 'Valentino ', 'Viktor & Rolf', 'YSL'];
   const [selectedBrand, setSelectedBrand] = useState(null);
 
 
