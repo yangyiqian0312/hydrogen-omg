@@ -1141,7 +1141,7 @@ export default function Homepage() {
                     {videoPaths.map((video, index) => (
                       <div
                         key={index}
-                        className=" lg:w-1/4 w-1/2 h-full flex-none overflow-hidden rounded-lg snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
+                        className=" lg:w-1/3 xl:w-1/4 w-1/2 h-full flex-none overflow-hidden rounded-lg snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
                       >
                         <video
                           ref={el => desktopVideoRefs.current[index] = el}
@@ -1225,7 +1225,7 @@ export default function Homepage() {
                     }}
                   >
                     {trendingProducts.slice(0, 4).map(({ node }, index) => (
-                      <div key={node.id} className="flex-none flex flex-col py-2 my-2 w-1/2 lg:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
+                      <div key={node.id} className="flex-none flex flex-col py-2 my-2 w-1/2 lg:w-1/3 xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
                         <div className="flex justify-center">
                           <a href={`/products/${node.handle}`}>
                             {node.images.edges[0] ? (
