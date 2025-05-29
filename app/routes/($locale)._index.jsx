@@ -449,7 +449,7 @@ export default function Homepage() {
 
 
   return (
-    <div className="home">
+    <div className="home w-full">
       <div className="flex flex-col space-y-4 relative" >
         {/* Main banner image */}
         <div>
@@ -461,9 +461,9 @@ export default function Homepage() {
         </div>
 
         {/* TikTok LIVE element positioned at the top right corner */}
-        <div className="absolute inset-y-0 right-12 p-4 max-w-sm hidden md:flex flex-col justify-center items-center">
+        <div className="absolute inset-y-0 xl:right-12 xl:p-4 lg:right-2 lg:pb-3 max-w-sm hidden lg:flex flex-col justify-center items-center">
           <div className="text-center">
-            <div className="relative w-32 h-32 mx-auto mb-4">
+            <div className="relative w-32 h-32 mx-auto lg:mb-2 xl:mb-4">
               <div className="relative w-full h-full rounded-full overflow-hidden">
                 <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
                 <img
@@ -482,7 +482,7 @@ export default function Homepage() {
                   'noopener,noreferrer',
                 )
               }
-              className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-3xl text-sm font-medium w-full transition-colors duration-200"
+              className="bg-red-600 hover:bg-red-700 text-white px-6 lg:py-3 rounded-3xl text-sm font-medium w-full transition-colors duration-200"
             >
               Go To TikTok
             </button>
@@ -1032,67 +1032,56 @@ export default function Homepage() {
       </div>
 
       {/* 桌面版布局 */}
-      <div className="hidden sm:block">
-        <div className="px-4 pb-8">
-          {/* 标题部分 */}
-          <div className="grid grid-cols-12 mb-4 mt-4">
-            {/* Special Offers 位于1/4处 (占用第3列) */}
-            <div className="col-start-1 col-span-2 flex items-center space-x-2">
-              <Gift className="w-5 h-5" />
-              <span className="text-lg font-semibold">Special Offers</span>
-            </div>
-
-            {/* Featured Videos 位于3/4处 (占用第9列) */}
-            <div className="col-start-4 col-span-2 flex items-center space-x-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-              <span className="text-lg font-semibold">Featured Videos</span>
-            </div>
-          </div>
-
+      <div className="hidden sm:block w-full">
+        <div className="px-2 pb-8">
           {/* 内容部分 */}
-          <div className="flex gap-6">
+          <div className="flex gap-6 w-full">
             {/* 左侧列 */}
-            <div className="w-1/4 grid grid-rows-2 gap-4">
+            <div className="w-1/3 lg:w-1/4 grid grid-rows-2 gap-4">
               {/* TikTok Live Deal */}
-              <div className="bg-pink-50 rounded-lg p-6 text-center mb-8">
-                <h3 className="text-lg font-medium mb-8">
-                  Exclusive Deal On TikTok LIVE
-                </h3>
-                <div className="relative w-32 h-32 mx-auto ">
-                  <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
-                  <div className="relative w-full h-full rounded-full overflow-hidden">
-                    <a
-                      href="https://www.tiktok.com/@omgbeautyshop/live"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <img
-                        src="/assets/logo/omgbeautybox.png"
-                        alt="OMG Beauty Box"
-                        className="w-full h-full object-cover"
-                      />
-                    </a>
-
-                  </div>
+              <div className="flex-grow h-full flex flex-col">
+                <div className="my-4 flex items-center space-x-2">
+                  <Gift className="w-5 h-5" />
+                  <span className="text-lg font-semibold">Special Offers</span>
                 </div>
-                <a
-                  href="https://www.tiktok.com/@omgbeautyshop/live"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-red-600  hover:bg-red-700 text-white px-6 py-3 mt-12 rounded-md text-sm font-medium w-full block"
-                >
-                  Go To TikTok
-                </a>
+                <div className="h-full bg-pink-50 rounded-lg p-6 text-center flex flex-col xl:gap-4">
+                  <h3 className="text-lg font-medium mb-8">
+                    Exclusive Deal On TikTok LIVE
+                  </h3>
+                  <div className="relative w-32 h-32 xl:w-40 xl:h-40 mx-auto ">
+                    <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
+                    <div className="relative w-full h-full rounded-full overflow-hidden">
+                      <a
+                        href="https://www.tiktok.com/@omgbeautyshop/live"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img
+                          src="/assets/logo/omgbeautybox.png"
+                          alt="OMG Beauty Box"
+                          className="w-full h-full object-cover"
+                        />
+                      </a>
+
+                    </div>
+                  </div>
+                  <a
+                    href="https://www.tiktok.com/@omgbeautyshop/live"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white bg-red-600 xl:w-64 xl:mx-auto hover:bg-red-700 px-6 py-3 mt-12 rounded-md text-sm font-medium w-full block"
+                  >
+                    Go To TikTok
+                  </a>
+                </div>
               </div>
 
               {/* New Arrivals */}
-              <div className="bg-[#F7CAC9] rounded-lg overflow-hidden mb-8 flex-grow">
+              <div className="bg-[#F7CAC9] rounded-lg overflow-hidden mt-2 flex-grow">
                 <div className="p-6 h-full flex flex-col">
-                  <h3 className="font-medium text-lg mb-8">New Arrivals</h3>
+                  <h3 className="font-medium text-center text-lg mb-8">New Arrivals</h3>
                   <div className="flex flex-col gap-4 flex-grow">
-                    <div className="relative w-full rounded-lg overflow-hidden flex-grow" style={{ height: "240px" }}>
+                    <div className="relative h-full w-full rounded-lg overflow-hidden flex-grow">
                       <img
                         src="/assets/category/new.jpg"
                         alt="New arrival product"
@@ -1117,136 +1106,215 @@ export default function Homepage() {
             </div>
 
             {/* 右侧列 */}
-            <div className="w-3/4 grid grid-rows-2">
+            <div className="w-2/3 lg:w-3/4 mx-auto grid grid-rows-2 gap-4">
               {/* 视频轮播 */}
-              <div className="relative mb-8">
-                <button
-                  onClick={videoScrollLeft}
-                  className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
-                  aria-label="Scroll left"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M15 18l-6-6 6-6" />
+              <div className="flex-grow w-full h-full flex flex-col">
+                <div className="my-4 flex items-center space-x-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                   </svg>
-                </button>
-                <div
-                  ref={videoCarouselRef}
-                  className="flex h-full overflow-x-auto snap-x gap-4 hide-scrollbar scrollbar-hide"
-                  style={{
-                    scrollbarWidth: 'none',
-                    msOverflowStyle: 'none',
-                    WebkitOverflowScrolling: 'touch',
-                  }}
-                >
-                  {videoPaths.map((video, index) => (
-                    <div
-                      key={index}
-                      className=" w-64 h-86 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
-                    >
-                      <video
-                        ref={el => desktopVideoRefs.current[index] = el}
-                        src={video}
-                        className="w-full h-full object-cover"
-                        controls={playingDesktopIndex === index}
-                        controlsList="nodownload nofullscreen noplaybackrate"
-                        muted={false}
-                        loop={false}
-                        disablePictureInPicture
-                        playsInline
-                        onPause={() => {
-                          if (playingDesktopIndex === index) setPlayingDesktopIndex(null);
-                        }}
-                        style={{ background: "#000" }}
-                      />
-                      {playingDesktopIndex !== index && (
-                        <button
-                          className="absolute inset-0 flex items-center justify-center text-5xl text-white bg-black/40 hover:bg-black/60 transition"
-                          style={{ pointerEvents: "auto" }}
-                          onClick={() => { setPlayingDesktopIndex(index) }}
-                          aria-label="Play video"
-                        >
-                          ▶
-                        </button>
-                      )}
-
-                      {/* Shop Now Button */}
-                      {videoProducts[index] && (
-                        <Link
-                          to={`/products/${videoProducts[index].node.handle}`}
-                          className="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
-                        >
-                          Shop Now
-                        </Link>
-                      )}
-                    </div>
-                  ))}
+                  <span className="text-lg font-semibold">Featured Videos</span>
                 </div>
-                {/* Right Arrow Button (Desktop only) */}
-                <button
-                  onClick={videoScrollRight}
-                  className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
-                  aria-label="Scroll right"
+
+                <div
+                  className="relative w-full h-full"
+
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M9 18l6-6-6-6" />
-                  </svg>
-                </button>
+                  <button
+                    onClick={videoScrollLeft}
+                    className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                    aria-label="Scroll left"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                  </button>
+                  <div
+                    ref={videoCarouselRef}
+                    className="flex overflow-x-auto h-full snap-x gap-4 hide-scrollbar scrollbar-hide"
+                    style={{
+                      msOverflowStyle: 'none',
+                      WebkitOverflowScrolling: 'touch',
+                      scrollbarWidth: 'none',
+                    }}
+                  >
+                    {videoPaths.map((video, index) => (
+                      <div
+                        key={index}
+                        className=" lg:w-1/4 w-1/2 h-full flex-none overflow-hidden rounded-lg snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
+                      >
+                        <video
+                          ref={el => desktopVideoRefs.current[index] = el}
+                          src={video}
+                          className="w-full h-full object-cover"
+                          controls={playingDesktopIndex === index}
+                          controlsList="nodownload nofullscreen noplaybackrate"
+                          muted={false}
+                          loop={false}
+                          disablePictureInPicture
+                          playsInline
+                          onPause={() => {
+                            if (playingDesktopIndex === index) setPlayingDesktopIndex(null);
+                          }}
+                          style={{ background: "#000" }}
+                        />
+                        {playingDesktopIndex !== index && (
+                          <button
+                            className="absolute inset-0 text-5xl text-white bg-black/40 hover:bg-black/60 transition"
+                            style={{ pointerEvents: "auto" }}
+                            onClick={() => { setPlayingDesktopIndex(index) }}
+                            aria-label="Play video"
+                          >
+                            ▶
+                          </button>
+                        )}
+
+                        {/* Shop Now Button */}
+                        {videoProducts[index] && (
+                          <Link
+                            to={`/products/${videoProducts[index].node.handle}`}
+                            className="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
+                          >
+                            Shop Now
+                          </Link>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  {/* Right Arrow Button (Desktop only) */}
+                  <button
+                    onClick={videoScrollRight}
+                    className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                    aria-label="Scroll right"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </button>
+                </div>
               </div>
 
+
+
               {/* Trending Now Section */}
-              <div className="flex-grow">
-                <div className="flex items-center mb-6">
+              <div className="w-full h-full flex flex-col">
+                <div className="flex items-center my-2 lg:my-4">
                   <Clock className="w-5 h-5 mr-2" />
                   <span className="text-lg font-semibold">
                     Trending Now
                   </span>
                 </div>
 
-                {/* 产品网格 - 显示4个产品 */}
-                <div className="grid grid-cols-4 gap-4  m-4">
-                  {trendingProducts.slice(0, 4).map(({ node }, index) => (
-                    <div key={node.id} className="flex flex-col  rounded-lg overflow-hidden shadow-lg border-gray-200 shadow-gray-300 hover:shadow-md transition-shadow duration-300">
-                      <div className="flex justify-center mb-3">
-                        <a href={`/products/${node.handle}`}>
-                          {node.images.edges[0] ? (
-                            <img
-                              src={node.images.edges[0].node.url}
-                              alt={node.title}
-                              className="h-full object-fill"
-                            />
-                          ) : (
-                            <img
-                              src="/api/placeholder/400/400"
-                              alt="Placeholder"
-                              className="h-full object-fill"
-                            />
-                          )}
-                        </a>
-                      </div>
-                      <div className="text-left m-2">
-                        <Link
-                          key={node.id}
-                          to={`/products/${node.handle}`}
-                          className="font-semibold text-blue-600 hover:underline truncate"
-                        >
-                          <div className="font-bold text-xs uppercase mb-1">
-                            {node.vendor || 'Unknown Brand'}
+                <div className="relative w-full h-full">
+                  <button
+                    onClick={orderScrollLeft}
+                    className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                    aria-label="Scroll left"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                  </button>
+                  <div
+                    ref={orderCarouselRef}
+                    className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                    style={{
+                      scrollbarWidth: 'none',
+                      msOverflowStyle: 'none',
+                      WebkitOverflowScrolling: 'touch',
+                    }}
+                  >
+                    {trendingProducts.slice(0, 4).map(({ node }, index) => (
+                      <div key={node.id} className="flex-none flex flex-col py-2 my-2 w-1/2 lg:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div className="flex justify-center">
+                          <a href={`/products/${node.handle}`}>
+                            {node.images.edges[0] ? (
+                              <img
+                                src={node.images.edges[0].node.url}
+                                alt={node.title}
+                                className="h-full object-fill"
+                              />
+                            ) : (
+                              <img
+                                src="/api/placeholder/400/400"
+                                alt="Placeholder"
+                                className="h-full object-fill"
+                              />
+                            )}
+                          </a>
+                        </div>
+                        <div className="text-left h-full flex flex-col mx-2 border-t border-gray-200 pt-2">
+                          <Link
+                            key={node.id}
+                            to={`/products/${node.handle}`}
+                            className="font-semibold text-blue-600 hover:underline flex flex-col py-2"
+                          >
+                            <div className="font-bold text-xs uppercase mb-1">
+                              {node.vendor || 'Unknown Brand'}
+                            </div>
+                            <p className="text-xs font-normal mb-2 overflow-hidden text-ellipsis ">
+                              {node.title
+                                ? node.title.replace(
+                                  new RegExp(`^${node.vendor}\\s*`),
+                                  '',
+                                )
+                                : 'N/A'}
+                            </p>
+                          </Link>
+                          <div className="font-bold text-sm">
+                            ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
                           </div>
-                          <p className="text-xs font-normal mb-2 overflow-hidden text-ellipsis whitespace-normal break-words h-7">
-                            {node.title
-                              ? node.title.replace(
-                                new RegExp(`^${node.vendor}\\s*`),
-                                '',
-                              )
-                              : 'N/A'}
-                          </p>
-                        </Link>
-                        <div className="font-bold text-sm">
-                          ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
                         </div>
                       </div>
+                    ))}
+                    {/* {orderedProducts.map(({ node }, index) => (
+                    <div
+                      key={node.id}
+                      className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300`}
+                    >
+                      <div className="relative aspect-square">
+                        <Link
+                          to={`/products/${node.handle}`}
+                          onClick={(e) => {
+                            if (!node?.handle) e.preventDefault();
+                          }}
+                        >
+                          <img
+                            src={`/assets/presentation/${index + 1}.jpg`}
+                            alt={node.title}
+                            className="w-full h-full object-cover"
+                          />
+                        </Link>
+                      </div>
+                      <div className="p-6">
+                        <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
+                          {node.vendor || 'Unknown Brand'}
+                        </div>
+                        <p className="text-pink-600 font-bold mb-4">
+                          ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                        </p>
+                        <Link
+                          to={`/products/${node.handle}`}
+                          onClick={(e) => {
+                            if (!node?.handle) e.preventDefault();
+                          }}
+                          className="font-bold text-blue-600 hover:underline"
+                        >
+                          SHOP NOW ▸
+                        </Link>
+                      </div>
                     </div>
-                  ))}
+                  ))} */}
+                  </div>
+                  <button
+                    onClick={orderScrollRight}
+                    className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                    aria-label="Scroll right"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>
