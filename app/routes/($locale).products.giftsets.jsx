@@ -194,12 +194,12 @@ const Giftsets = (selectedVariant) => {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 p-4">
         {filteredProducts.length > 0 ? (
           filteredProducts.map(({ node }) => (
-            <div
+            <Link
               key={node.id}
+              to={`/products/${node.handle}`}
               className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
             >
-              <a href={`/products/${node.handle}`}>
-                <div className="relative aspect-square">
+              <div className="relative aspect-square">
                   {node.images.edges[0] ? (
                     <img
                       src={node.images.edges[0].node.url}
@@ -216,11 +216,7 @@ const Giftsets = (selectedVariant) => {
                 </div>
 
                 <div className="p-3">
-                  <Link
-                    to={`/products/${node.handle}`}
-                    className="block"
-                  >
-                    <div className="font-semibold text-black uppercase hover:underline truncate">
+                  <div className="font-semibold text-black uppercase hover:underline truncate">
                       {node.vendor || 'Unknown Brand'}
                     </div>
                     <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
@@ -230,7 +226,6 @@ const Giftsets = (selectedVariant) => {
                         ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
                         : 'N/A'}
                     </p>
-                  </Link>
 
                   <div>
                     <p className="font-bold">
@@ -243,8 +238,7 @@ const Giftsets = (selectedVariant) => {
                     </p>
                   </div>
                 </div>
-              </a>
-            </div>
+              </Link>
           ))
         ) : (
           <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">

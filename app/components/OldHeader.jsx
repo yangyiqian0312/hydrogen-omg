@@ -1,14 +1,15 @@
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useRef } from 'react';
 import { Await, NavLink, useAsyncValue } from '@remix-run/react';
 import { useAnalytics, useOptimisticCart } from '@shopify/hydrogen';
 import { useAside } from '~/components/Aside';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, User, Search, Menu, X, ChevronDown } from 'lucide-react';
-
+import Modal from '~/components/Modal';
 /**
  * @param {Pick<HeaderProps, 'isLoggedIn' | 'cart'>}
  */
 function HeaderCtas({ isLoggedIn, cart }) {
+  
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
@@ -156,6 +157,8 @@ export default function OldHeader({
   publicStoreDomain,
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  
   const navigate = useNavigate();
   const isLoggedInPromise = useAsyncValue();
 
@@ -175,7 +178,7 @@ export default function OldHeader({
 
 
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  
 
   // Brand lists
   const womenBrands = [
@@ -227,7 +230,7 @@ export default function OldHeader({
     },
     {
       id: 2,
-      message: "New Here? Sign up for 20% Off"
+      message: "New Here? Subscribe for 20% Off"
     }
   ];
 
@@ -237,17 +240,21 @@ export default function OldHeader({
         prevIndex === promos.length - 1 ? 0 : prevIndex + 1
       );
     }, 3000); // Change message every 3 seconds
-
+   
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <>
+    <div>
+      {/* Modal */}
+      {showModal && <Modal onClose={() => setShowModal(false)} />}
+      
       {/* Announcement Bar */}
       <div className="bg-black text-center py-2 relative overflow-hidden">
         <div className="h-6"> 
           <p
-            className="text-white font-bold transition-all duration-1500 ease-in-out"
+            className="text-white font-bold transition-all duration-1500 ease-in-out cursor-pointer"
+            onClick={() => setShowModal(true)}
             style={{
               opacity: 1,
               transform: 'translateY(0)'
@@ -260,7 +267,7 @@ export default function OldHeader({
 
       {/* Navigation */}
       <nav className="bg-white">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-full mx-auto px-2 md:px-4 xl:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Mobile Menu Button */}
             <button
@@ -379,7 +386,7 @@ export default function OldHeader({
           )}
         </div>
       </nav>
-    </>
+    </div>
   );
 }
 

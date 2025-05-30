@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import { Heart, ChevronLeft, ChevronRight, Clock, Gift } from 'lucide-react';
 import OldHeader from '~/components/OldHeader';
+import Modal from '~/components/Modal'
 /**
  * @type {MetaFunction}
  */
@@ -16,7 +17,7 @@ export const meta = () => {
   ];
 };
 
-/**
+/** 
  * @param {LoaderFunctionArgs} args
  */
 export async function loader(args) {
@@ -106,6 +107,7 @@ export default function Homepage() {
   const [playingMobileIndex, setPlayingMobileIndex] = useState(null);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
@@ -353,6 +355,7 @@ export default function Homepage() {
 
 
   const [currentTestimonialPage, setCurrentTestimonialPage] = useState(0);
+  const [showModal, setShowModal] = useState(false);
   const testimonialCarouselRef = useRef(null);
 
   const carouselRef = useRef(null);
@@ -361,12 +364,23 @@ export default function Homepage() {
 
   const orderCarouselRef = useRef(null);
   useEffect(() => {
+    setIsClient(true);
     if (orderCarouselRef.current) {
       console.log('Carousel mounted successfully');
     }
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    handleResize();
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      if (playingDesktopIndex !== null || playingMobileIndex !== null) {
+        const videoRefs = isMobile ? mobileVideoRefs : desktopVideoRefs;
+        const currentIndex = isMobile ? playingMobileIndex : playingDesktopIndex;
+        if (videoRefs.current[currentIndex]) {
+          videoRefs.current[currentIndex].pause();
+        }
+      }
+    };
+
     window.addEventListener('resize', handleResize);
+    handleResize();
 
     // Base on screen size, play the video
     if (isMobile) {
@@ -405,9 +419,14 @@ export default function Homepage() {
         }
       });
     }
-
-
-    return () => window.removeEventListener('resize', handleResize);
+    if (typeof window !== 'undefined') {
+      const hadModal = sessionStorage.getItem('hadModal');
+      if (!hadModal) {
+        setShowModal(true);
+        sessionStorage.setItem('hadModal', true);
+      }
+    }
+    return () => {window.removeEventListener('resize', handleResize); };
   }, [playingDesktopIndex, playingMobileIndex, isMobile]);
 
   const orderScrollLeft = () => {
@@ -450,6 +469,7 @@ export default function Homepage() {
 
   return (
     <div className="home w-full">
+      {showModal && <Modal onClose={() => setShowModal(false)}/>}
       <div className="flex flex-col space-y-4 relative" >
         {/* Main banner image */}
         <div>
@@ -458,10 +478,14 @@ export default function Homepage() {
             alt="Banner"
             className="w-full h-auto max-h-[400px] object-contain bg-red-300"
           />
+          <div
+            onClick={() => setShowModal(true)}
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 block w-2/3 h-3/4 cursor-pointer"
+          />
         </div>
 
         {/* TikTok LIVE element positioned at the top right corner */}
-        <div className="absolute inset-y-0 xl:right-12 xl:p-4 lg:right-2 lg:pb-3 max-w-sm hidden lg:flex flex-col justify-center items-center">
+        <div className="absolute inset-y-0 xl:right-10 xl:p-4 lg:right-4 lg:pb-3 max-w-sm hidden lg:flex flex-col justify-center items-center">
           <div className="text-center">
             <div className="relative w-32 h-32 mx-auto lg:mb-2 xl:mb-4">
               <div className="relative w-full h-full rounded-full overflow-hidden">
@@ -525,7 +549,7 @@ export default function Homepage() {
                   <img
                     src={`/assets/presentation/${index + 1}.jpg`}
                     alt={node.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover lazy"
                   />
                 </Link>
               </div>
@@ -617,7 +641,7 @@ export default function Homepage() {
           </div>
 
           {/* New Arrivals 卡片 */}
-          <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 m-2 bg-[#F7CAC9] hover:shadow-md transition-shadow duration-300">
+          <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-[#F7CAC9] hover:shadow-md transition-shadow duration-300">
             <div className="rounded-xl p-6">
               <h3 className="font-medium text-lg">New Arrivals</h3>
               <div className="flex flex-col gap-4">
@@ -655,7 +679,7 @@ export default function Homepage() {
           </div>
 
           {/* Sale Products 卡片 */}
-          {/* <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 m-2 bg-white hover:shadow-md transition-shadow duration-300">
+          {/* <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300">
             <div className="rounded-xl p-6 text-center">
               <h3 className="text-lg font-medium">Sale</h3>
               <div className="relative w-32 h-32 mx-auto mb-4">
@@ -766,55 +790,47 @@ export default function Homepage() {
           >
             {' '}
             {trendingProducts.map(({ node }, index) => (
-              <div
+              <Link
                 key={node.id}
+                to={`/products/${node.handle}`}
                 className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
               >
-                <a href={`/products/${node.handle}`}>
-                  {/* 图片容器，保持方形比例 */}
-                  <div className="relative aspect-square">
-                    {node.images.edges[0] ? (
-                      <img
-                        src={node.images.edges[0].node.url} // 商品图片 URL
-                        alt={node.title}
-                        className="w-full h-full object-cover" // 确保图片填充整个容器
-                      />
-                    ) : (
-                      <img
-                        src="/api/placeholder/400/400" // 占位图片
-                        alt="Placeholder"
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
+                <div className="relative aspect-square">
+                  {node.images.edges[0] ? (
+                    <img
+                      src={node.images.edges[0].node.url} // 商品图片 URL
+                      alt={node.title}
+                      className="w-full h-full object-cover" // 确保图片填充整个容器
+                    />
+                  ) : (
+                    <img
+                      src="/api/placeholder/400/400" // 占位图片
+                      alt="Placeholder"
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
 
-                  <div className="m-2">
-                    {/* Optional button or additional actions */}
-                    {/* SHOP NOW 按钮 */}
-                    <Link
-                      key={node.id}
-                      to={`/products/${node.handle}`}
-                      className="font-semibold text-blue-600 hover:underline truncate"
-                    >
-                      {node.vendor || 'Unknown Brand'}{' '}
-                      <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
-                        {node.title
-                          ? node.title.replace(
-                            new RegExp(`^${node.vendor}\\s*`),
-                            '',
-                          )
-                          : 'N/A'}
-                      </p>
-                    </Link>
-                    <p className="font-bold mb-4">
-                      $
-                      {Number(
-                        node.variants.edges[0]?.node.price.amount || 0,
-                      ).toFixed(2)}
+                <div className="m-2">
+                  <div className="font-semibold text-blue-600 hover:underline truncate">
+                    {node.vendor || 'Unknown Brand'}{' '}
+                    <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
+                      {node.title
+                        ? node.title.replace(
+                          new RegExp(`^${node.vendor}\\s*`),
+                          '',
+                        )
+                        : 'N/A'}
                     </p>
                   </div>
-                </a>
-              </div>
+                  <p className="font-bold mb-4">
+                    $
+                    {Number(
+                      node.variants.edges[0]?.node.price.amount || 0,
+                    ).toFixed(2)}
+                  </p>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -843,48 +859,46 @@ export default function Homepage() {
                 key={node.id}
                 className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
               >
-           
-                <div className="relative aspect-square">
-                  {node.images.edges[0] ? (
-                    <img
-                      src={node.images.edges[0].node.url} // 商品图片 URL
-                      alt={node.title}
-                      className="w-full h-full object-cover" // 确保图片填充整个容器
-                    />
-                  ) : (
-                    <img
-                      src="/api/placeholder/400/400" // 占位图片
-                      alt="Placeholder"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
+                <Link
+                  to={`/products/${node.handle}`}
+                  className="flex-none w-full rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+                >
+                  <div className="relative aspect-square">
+                    {node.images.edges[0] ? (
+                      <img
+                        src={node.images.edges[0].node.url} // 商品图片 URL
+                        alt={node.title}
+                        className="w-full h-full object-cover" // 确保图片填充整个容器
+                      />
+                    ) : (
+                      <img
+                        src="/api/placeholder/400/400" // 占位图片
+                        alt="Placeholder"
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
 
-                <div className="m-2">
-   
-   
-                  <Link
-                    key={node.id}
-                    to={`/products/${node.handle}`}
-                    className="font-semibold text-blue-600 hover:underline truncate"
-                  >
-                    {node.vendor || 'Unknown Brand'}{' '}
-                    <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
-                      {node.title
-                        ? node.title.replace(
-                          new RegExp(`^${node.vendor}\\s*`),
-                          '',
-                        )
-                        : 'N/A'}
+                  <div className="m-2">
+                    <div className="font-semibold text-blue-600 hover:underline truncate">
+                      {node.vendor || 'Unknown Brand'}{' '}
+                      <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
+                        {node.title
+                          ? node.title.replace(
+                            new RegExp(`^${node.vendor}\\s*`),
+                            '',
+                          )
+                          : 'N/A'}
+                      </p>
+                    </div>
+                    <p className="font-bold mb-4">
+                      $
+                      {Number(
+                        node.variants.edges[0]?.node.price.amount || 0,
+                      ).toFixed(2)}
                     </p>
-                  </Link>
-                  <p className="font-bold mb-4">
-                    $
-                    {Number(
-                      node.variants.edges[0]?.node.price.amount || 0,
-                    ).toFixed(2)}
-                  </p>
-                </div>
+                  </div>
+                </Link>
               </div>
             ))}
           </div>
@@ -1026,8 +1040,6 @@ export default function Homepage() {
           </div>
         </div>
 
-        {/* <div class="border-t my-4 mx-2 border-gray-300"></div> */}
-
 
       </div>
 
@@ -1111,7 +1123,7 @@ export default function Homepage() {
               <div className="flex-grow w-full h-full flex flex-col">
                 <div className="my-4 flex items-center space-x-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2v6" />
                   </svg>
                   <span className="text-lg font-semibold">Featured Videos</span>
                 </div>
@@ -1324,7 +1336,7 @@ export default function Homepage() {
           <div className="mt-10">
             <div className="flex items-center mb-4 space-x-2">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v6" />
               </svg>
               <span className="text-lg font-semibold">Shop By Category</span>
             </div>

@@ -104,7 +104,7 @@ const Women = (selectedVariant) => {
 
 
   const [isOpen, setIsOpen] = useState(false);
-  const brands = ['all brands','YSL','Bvlgari','Versace','Tiffany','Lattafa' ,'Burberry', 'GUCCI', 'Givenchy', 'Valentino', 'Viktor & Rolf', 'Chloe','Prada','Carolina Herrera'];
+  const brands = ['all brands', 'YSL', 'Bvlgari', 'Versace', 'Tiffany', 'Lattafa', 'Burberry', 'GUCCI', 'Givenchy', 'Valentino', 'Viktor & Rolf', 'Chloe', 'Prada', 'Carolina Herrera'];
   const tags = ['Minis'];
   const [selectedBrand, setSelectedBrand] = useState(urlBrand);
   const [selectedTag, setSelectedTag] = useState(urlTag);
@@ -162,18 +162,15 @@ const Women = (selectedVariant) => {
     ? womenProducts.filter(
       ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
     )
-    .sort((a, b) => b.node.totalInventory - a.node.totalInventory)
+      .sort((a, b) => b.node.totalInventory - a.node.totalInventory)
     : [];
 
   const filteredProductsbyTags = selectedTag
     ? womenProducts.filter(
       ({ node }) => node.tags && node.tags.includes(selectedTag)
     )
-    .sort((a, b) => b.node.totalInventory - a.node.totalInventory)
+      .sort((a, b) => b.node.totalInventory - a.node.totalInventory)
     : [];
-  console.log(selectedBrand)
-  console.log(selectedTag)
-  console.log(filteredProductsbyTags)
 
   return (
     <div>
@@ -234,12 +231,12 @@ const Women = (selectedVariant) => {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 p-4">
         {filteredProducts.length > 0 &&
           filteredProducts.map(({ node }) => (
-            <div
+            <Link
+              to={`/products/${node.handle}`}
               key={node.id}
               className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
             >
-              <a href={`/products/${node.handle}`}>
-                {/* Product card content remains the same */}
+              {/* Product card content remains the same */}
                 <div className="relative aspect-square">
                   {node.images.edges[0] ? (
                     <img
@@ -257,8 +254,7 @@ const Women = (selectedVariant) => {
                 </div>
 
                 <div className="p-3">
-                  <Link
-                    to={`/products/${node.handle}`}
+                  <div
                     className="block"
                   >
                     <div className="font-semibold text-black uppercase hover:underline truncate">
@@ -271,7 +267,7 @@ const Women = (selectedVariant) => {
                         ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
                         : 'N/A'}
                     </p>
-                  </Link>
+                  </div>
 
                   <div>
                     <p className="font-bold">
@@ -284,18 +280,17 @@ const Women = (selectedVariant) => {
                     </p>
                   </div>
                 </div>
-              </a>
-            </div>
+            </Link>
           ))
         }
         {filteredProductsbyTags.length > 0 &&
           filteredProductsbyTags.map(({ node }) => (
-            <div
+            <Link
+              to={`/products/${node.handle}`}
               key={node.id}
               className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
             >
-              <a href={`/products/${node.handle}`}>
-                {/* Product card content remains the same */}
+              {/* Product card content remains the same */}
                 <div className="relative aspect-square">
                   {node.images.edges[0] ? (
                     <img
@@ -313,8 +308,7 @@ const Women = (selectedVariant) => {
                 </div>
 
                 <div className="p-3">
-                  <Link
-                    to={`/products/${node.handle}`}
+                  <div
                     className="block"
                   >
                     <div className="font-semibold text-black uppercase hover:underline truncate">
@@ -326,8 +320,8 @@ const Women = (selectedVariant) => {
                       {node.title
                         ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
                         : 'N/A'}
-                    </p>
-                  </Link>
+                    </p>  
+                  </div>
 
                   <div>
                     <p className="font-bold">
@@ -340,8 +334,7 @@ const Women = (selectedVariant) => {
                     </p>
                   </div>
                 </div>
-              </a>
-            </div>
+            </Link>
           ))
         }
         {filteredProductsbyTags.length === 0 && filteredProducts.length == 0 && (urlBrand || urlTag) && (
@@ -351,58 +344,56 @@ const Women = (selectedVariant) => {
         )}
         {!urlBrand && !urlTag && (
           womenProducts.map(({ node }) => (
-            <div
+            <Link
+              to={`/products/${node.handle}`}
               key={node.id}
               className="rounded-lg overflow-hidden shadow-lg shadow-gray-300  hover:shadow-md transition-shadow duration-300"
             >
-              <a href={`/products/${node.handle}`}>
-                {/* Product card content remains the same */}
-                <div className="relative aspect-square">
-                  {node.images.edges[0] ? (
-                    <img
-                      src={node.images.edges[0].node.url}
-                      alt={node.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <img
-                      src="/api/placeholder/400/400"
-                      alt="Placeholder"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
+              {/* Product card content remains the same */}
+              <div className="relative aspect-square">
+                {node.images.edges[0] ? (
+                  <img
+                    src={node.images.edges[0].node.url}
+                    alt={node.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src="/api/placeholder/400/400"
+                    alt="Placeholder"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
 
-                <div className="p-3">
-                  <Link
-                    to={`/products/${node.handle}`}
-                    className="block"
-                  >
-                    <div className="font-semibold text-black uppercase hover:underline truncate">
-                      {node.vendor || 'Unknown Brand'}
-                    </div>
-                    <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
+              <div className="p-3">
+                <div
+                  className="block"
+                >
+                  <div className="font-semibold text-black uppercase hover:underline truncate">
+                    {node.vendor || 'Unknown Brand'}
+                  </div>
+                  <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
                     h-auto max-h-12
                     line-clamp-2">
-                      {node.title
-                        ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
-                        : 'N/A'}
-                    </p>
-                  </Link>
-
-                  <div>
-                    <p className="font-bold">
-                      ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                      {node.variants.edges[0]?.node.compareAtPrice && (
-                        <span className="ml-2 text-gray-500 line-through">
-                          ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
-                        </span>
-                      )}
-                    </p>
-                  </div>
+                    {node.title
+                      ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
+                      : 'N/A'}
+                  </p>
                 </div>
-              </a>
-            </div>
+
+                <div>
+                  <p className="font-bold">
+                    ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                    {node.variants.edges[0]?.node.compareAtPrice && (
+                      <span className="ml-2 text-gray-500 line-through">
+                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+            </Link>
           ))
         )}
       </div>
