@@ -20,24 +20,21 @@ export function PageLayout({
   children = null,
   footer,
   header,
-  isLoggedIn,
+  isLoggedInPromise,
   publicStoreDomain,
 }) {
   return (
     <Aside.Provider>
       <CartAside cart={cart} />
       <SearchAside />
-      <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} isLoggedIn={isLoggedIn}/>
-      {/* TODO: add header here */}
-      {/* {header && (
-        <Header
-          header={header}
-          cart={cart}
-          isLoggedIn={isLoggedIn}
-          publicStoreDomain={publicStoreDomain}
-        />
-      )} */}
-      <OldHeader header={header} cart={cart} isLoggedIn={isLoggedIn} publicStoreDomain={publicStoreDomain}/>
+      <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} isLoggedInPromise={isLoggedInPromise}/>
+      <Suspense fallback={<OldHeader header={header} cart={cart} isLoggedIn={false} publicStoreDomain={publicStoreDomain}/>}>
+        <Await resolve={isLoggedInPromise}>
+          {(isLoggedIn) => (
+            <OldHeader header={header} cart={cart} isLoggedIn={isLoggedIn} publicStoreDomain={publicStoreDomain}/>
+          )}
+        </Await>
+      </Suspense>
       <div className="border-b border-gray-200"></div>
       <main>{children}</main>
       {/* <Footer
@@ -151,7 +148,7 @@ function SearchAside() {
  *   publicStoreDomain: PageLayoutProps['publicStoreDomain'];
  * }}
  */
-function MobileMenuAside({ header, publicStoreDomain }) {
+function MobileMenuAside({ header, publicStoreDomain, isLoggedInPromise }) {
   return (
     header.menu &&
     header.shop.primaryDomain?.url && (
@@ -172,7 +169,7 @@ function MobileMenuAside({ header, publicStoreDomain }) {
  * @property {Promise<CartApiQueryFragment|null>} cart
  * @property {Promise<FooterQuery|null>} footer
  * @property {HeaderQuery} header
- * @property {Promise<boolean>} isLoggedIn
+ * @property {Promise<boolean>} isLoggedInPromise
  * @property {string} publicStoreDomain
  * @property {React.ReactNode} [children]
  */

@@ -1,7 +1,9 @@
+
 import {RemixServer} from '@remix-run/react';
 import isbot from 'isbot';
 import {renderToReadableStream} from 'react-dom/server';
 import {createContentSecurityPolicy} from '@shopify/hydrogen';
+
 
 /**
  * @param {Request} request
@@ -27,6 +29,9 @@ export default async function handleRequest(
       'wss://shad-set-oriole.ngrok-free.app:*',
     ],
   });
+
+
+
 
   const body = await renderToReadableStream(
     <NonceProvider>

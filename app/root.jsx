@@ -17,6 +17,15 @@ import tailwindCss from './styles/tailwind.css?url';
 import {PageLayout} from '~/components/PageLayout';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 
+export const meta = () => {
+  return [
+    { name: 'viewport', content: 'width=device-width,initial-scale=1' },
+    { charSet: 'utf-8' },
+    { title: 'OMG Beauty Box' },
+    { name: 'description', content: 'Your one-stop shop for luxury fragrances and beauty products' },
+  ];
+};
+
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
  * @type {ShouldRevalidateFunction}
@@ -57,18 +66,19 @@ export function links() {
  * @param {LoaderFunctionArgs} args
  */
 export async function loader(args) {
-  // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
+  const {storefront, customerAccount, cart, env} = args.context;
   
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  const {storefront, customerAccount, cart, env} = args.context;
-  const isLoggedIn = await customerAccount.isLoggedIn();
+  // Start fetching non-critical data without blocking time to first byte
+  const deferredPromises = loadDeferredData(args);
+  
   return defer({
-    ...deferredData,
     ...criticalData,
-    isLoggedIn,
+    cart: deferredPromises.cart,
+    footer: deferredPromises.footer,
+    isLoggedInPromise: deferredPromises.isLoggedInPromise,
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
     shop: getShopAnalytics({
       storefront,
@@ -78,7 +88,6 @@ export async function loader(args) {
       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
       withPrivacyBanner: false,
-      // localize the privacy banner
       country: args.context.storefront.i18n.country,
       language: args.context.storefront.i18n.language,
     },
@@ -148,7 +157,7 @@ function loadDeferredData({context}) {
 /**
  * @param {{children?: React.ReactNode}}
  */
-export function Layout({children}) {
+export default function Layout({children}) {
   const nonce = useNonce();
   /** @type {RootLoader} */
   const data = useRouteLoaderData('root');
@@ -156,51 +165,26 @@ export function Layout({children}) {
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
       </head>
+
       <body>
-        {data ? (
-          <Analytics.Provider
-            cart={data.cart}
-            shop={data.shop}
-            consent={data.consent}
-          >
-            <PageLayout {...data}>{children}</PageLayout>
-          </Analytics.Provider>
-        ) : (
-          children
-        )}
+        <Analytics.Provider
+          cart={data?.cart}
+          shop={data?.shop}
+          consent={data?.consent}
+        >
+          <PageLayout {...(data ?? {})}>
+            <Outlet />
+          </PageLayout>
+        </Analytics.Provider>
+
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
       </body>
     </html>
   );
-}
-
-export default function App() {
-  // const {isLoggedInPromise} = useLoaderData();
-  // return (
-  //   <html lang="en">
-  //     <body>
-  //       <header className="header">
-  //         <NavLink prefetch="intent" to="/account">
-  //           <Suspense fallback="Sign in">
-  //             <Await resolve={isLoggedInPromise} errorElement="Sign in">
-  //               {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
-  //             </Await>
-  //           </Suspense>
-  //         </NavLink>
-  //       </header>
-        
-        
-  //       <Outlet />
-  //     </body>
-  //   </html>
-  // );
-  return <Outlet />;
 }
 
 export function ErrorBoundary() {
@@ -216,15 +200,25 @@ export function ErrorBoundary() {
   }
 
   return (
-    <div className="route-error">
-      <h1>Oops</h1>
-      <h2>{errorStatus}</h2>
-      {errorMessage && (
-        <fieldset>
-          <pre>{errorMessage}</pre>
-        </fieldset>
-      )}
-    </div>
+    <html lang="en">
+      <head>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <div className="route-error">
+          <h1>Oops</h1>
+          <h2>{errorStatus}</h2>
+          {errorMessage && (
+            <fieldset>
+              <pre>{errorMessage}</pre>
+            </fieldset>
+          )}
+        </div>
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
   );
 }
 
