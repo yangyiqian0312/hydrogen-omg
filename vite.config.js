@@ -19,7 +19,10 @@ export default defineConfig({
       },
     }),
     tsconfigPaths(),
-  ],
+  ], 
+  define: {
+    'process.env': process.env
+  },
   build: {
     // Allow a strict Content-Security-Policy
     // withtout inlining assets as base64:

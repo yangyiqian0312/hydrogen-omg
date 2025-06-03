@@ -230,7 +230,7 @@ export default function OldHeader({
     },
     {
       id: 2,
-      message: "New Here? Subscribe for 20% Off"
+      message: "New Here? Subscribe for 20%Off with code OMG20"
     }
   ];
 

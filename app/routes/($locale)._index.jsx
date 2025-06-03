@@ -41,6 +41,8 @@ async function loadCriticalData({ context }) {
     context.storefront.query(FEATURED_COLLECTION_QUERY),
     // Add other queries here, so that they are loaded in parallel
     context.storefront.query(PROMOTING_PRODUCTS_QUERY),
+    context.storefront.query(PROMOTING_PRODUCTS_QUERY_WOMEN),
+    context.storefront.query(PROMOTING_PRODUCTS_QUERY_MEN),
     context.storefront.query(TRENDING_PRODUCTS_QUERY),
     context.storefront.query(ALL_PRODUCTS_QUERY),
   ]);
@@ -66,6 +68,12 @@ async function loadDeferredData({ context }) {
   //     return null;
   //   });
   try {
+    const promotingProducts_women = await context.storefront.query(
+      PROMOTING_PRODUCTS_QUERY_WOMEN,
+    );
+    const promotingProducts_men = await context.storefront.query(
+      PROMOTING_PRODUCTS_QUERY_MEN,
+    );
     const promotingProducts = await context.storefront.query(
       PROMOTING_PRODUCTS_QUERY,
     );
@@ -84,6 +92,8 @@ async function loadDeferredData({ context }) {
     console.log('Resolved Data in Loader:', promotingProducts);
     //console.log('Resolved Data in Loader:', trendingProducts);
     return {
+      promotingProducts_women: promotingProducts_women || null,
+      promotingProducts_men: promotingProducts_men || null,
       promotingProducts: promotingProducts || null,
       trendingProducts: trendingProducts || null,
       newProducts: newProducts || null,
@@ -126,6 +136,12 @@ export default function Homepage() {
   const promotingProducts = products.filter(({ node }) => {
     return node.tags && node.tags.includes('Promoting');
   });
+  const promotingProducts_women = products.filter(({ node }) => {
+    return node.tags && node.tags.includes('Women') && node.tags.includes('Promoting');
+  });
+  const promotingProducts_men = products.filter(({ node }) => {
+    return node.tags && node.tags.includes('men') && node.tags.includes('Promoting');
+  });
 
   console.log("Filtered promoting products:", promotingProducts);
 
@@ -133,7 +149,7 @@ export default function Homepage() {
     return node.tags && node.tags.includes('Trending');
   });
 
-  //console.log("Filtered trending products:", trendingProducts);
+  console.log("Filtered trending products:", trendingProducts);
 
   const newProducts = products.filter(({ node }) => {
     return node.tags && node.tags.includes('New Products');
@@ -365,6 +381,8 @@ export default function Homepage() {
   const mobileVideoRefs = useRef([]);
 
   const orderCarouselRef = useRef(null);
+  const orderCarouselRef_women = useRef(null);
+  const orderCarouselRef_men = useRef(null);
   useEffect(() => {
     setIsClient(true);
     if (orderCarouselRef.current) {
@@ -448,6 +466,40 @@ export default function Homepage() {
       });
     }
   };
+  const orderScrollLeft_women = () => {
+    if (orderCarouselRef_women.current) {
+      orderCarouselRef_women.current.scrollBy({
+        left: -320,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const orderScrollRight_women = () => {
+    if (orderCarouselRef_women.current) {
+      orderCarouselRef_women.current.scrollBy({
+        left: 320,
+        behavior: 'smooth'
+      });
+    }
+  };
+  const orderScrollLeft_men = () => {
+    if (orderCarouselRef_men.current) {
+      orderCarouselRef_men.current.scrollBy({
+        left: -320,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const orderScrollRight_men = () => {
+    if (orderCarouselRef_men.current) {
+      orderCarouselRef_men.current.scrollBy({
+        left: 320,
+        behavior: 'smooth'
+      });
+    }
+  };
   const mainScrollLeft = () => {
     if (mainCarouselRef.current) {
       mainCarouselRef.current.scrollBy({
@@ -495,7 +547,7 @@ export default function Homepage() {
           <img
             src="/assets/BANNER.png"
             alt="Banner"
-            className="w-full h-auto max-h-[400px] object-contain bg-red-300"
+            className="w-full h-auto max-h-[400px] object-contain bg-red-300 mt-2 md:mt-0"
           />
           <div
             onClick={() => setShowModal(true)}
@@ -546,7 +598,7 @@ export default function Homepage() {
         </button>
         <div
           ref={mainCarouselRef}
-          className="flex overflow-x-auto snap-x gap-4 hide-scrollbar scrollbar-hide"
+          className="flex overflow-x-auto snap-x md:gap-4 gap-2 hide-scrollbar scrollbar-hide"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
@@ -731,7 +783,210 @@ export default function Homepage() {
         {/* TODO: ADD SHOW MORE BUTTON */}
 
         <div className="border-t my-4 mx-2 border-gray-300"></div>
+        {/* Trending Now Section */}
+        <div>
+          <div className="flex items-center mt-4 mb-2 space-x-2">
+            <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-lg font-semibold align-middle">
+              Trending Now
+            </span>
+          </div>
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto snap-x snap-mandatory gap-2 p-4 hide-scrollbar scrollbar-hide"
+            style={{
+              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
+              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
+              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
+            }}
+          >
+            {' '}
+            {trendingProducts.map(({ node }, index) => (
+              <Link
+                key={node.id}
+                to={`/products/${node.handle}`}
+                className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+              >
+                <div className="relative aspect-square">
+                  {node.images.edges[0] ? (
+                    <img
+                      src={node.images.edges[0].node.url} // 商品图片 URL
+                      alt={node.title}
+                      className="w-full h-full object-cover" // 确保图片填充整个容器
+                    />
+                  ) : (
+                    <img
+                      src="/api/placeholder/400/400" // 占位图片
+                      alt="Placeholder"
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
 
+                <div className="m-2">
+                  <div className="font-semibold text-blue-600 hover:underline truncate">
+                    {node.vendor || 'Unknown Brand'}{' '}
+                    <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
+                      {node.title
+                        ? node.title.replace(
+                          new RegExp(`^${node.vendor}\\s*`),
+                          '',
+                        )
+                        : 'N/A'}
+                    </p>
+                  </div>
+                  <p className="font-bold mb-4">
+                    $
+                    {Number(
+                      node.variants.edges[0]?.node.price.amount || 0,
+                    ).toFixed(2)}
+                    {node.variants.edges[0]?.node.compareAtPrice.amount && (
+                      <span className="text-gray-500 line-through ml-2">
+                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+        {/* Trending Now Section */}
+        <div>
+          <div className="flex items-center mt-4 mb-2 space-x-2">
+            <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-lg font-semibold align-middle">
+              Trending Now Women
+            </span>
+          </div>
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto snap-x snap-mandatory gap-2 p-4 hide-scrollbar scrollbar-hide"
+            style={{
+              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
+              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
+              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
+            }}
+          >
+            {' '}
+            {promotingProducts_women.map(({ node }, index) => (
+              <Link
+                key={node.id}
+                to={`/products/${node.handle}`}
+                className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+              >
+                <div className="relative aspect-square">
+                  {node.images.edges[0] ? (
+                    <img
+                      src={node.images.edges[0].node.url} // 商品图片 URL
+                      alt={node.title}
+                      className="w-full h-full object-cover" // 确保图片填充整个容器
+                    />
+                  ) : (
+                    <img
+                      src="/api/placeholder/400/400" // 占位图片
+                      alt="Placeholder"
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+
+                <div className="m-2">
+                  <div className="font-semibold text-blue-600 hover:underline truncate">
+                    {node.vendor || 'Unknown Brand'}{' '}
+                    <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
+                      {node.title
+                        ? node.title.replace(
+                          new RegExp(`^${node.vendor}\\s*`),
+                          '',
+                        )
+                        : 'N/A'}
+                    </p>
+                  </div>
+                  <p className="font-bold mb-4">
+                    $
+                    {Number(
+                      node.variants.edges[0]?.node.price.amount || 0,
+                    ).toFixed(2)}
+                    {node.variants.edges[0]?.node.compareAtPrice.amount && (
+                      <span className="text-gray-500 line-through ml-2">
+                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+        {/* Trending Now Section */}
+        <div>
+          <div className="flex items-center mt-4 mb-2 space-x-2">
+            <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-lg font-semibold align-middle">
+              Trending Now Men
+            </span>
+          </div>
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto snap-x snap-mandatory gap-2 p-4 hide-scrollbar scrollbar-hide"
+            style={{
+              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
+              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
+              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
+            }}
+          >
+            {' '}
+            {promotingProducts_men.map(({ node }, index) => (
+              <Link
+                key={node.id}
+                to={`/products/${node.handle}`}
+                className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+              >
+                <div className="relative aspect-square">
+                  {node.images.edges[0] ? (
+                    <img
+                      src={node.images.edges[0].node.url} // 商品图片 URL
+                      alt={node.title}
+                      className="w-full h-full object-cover" // 确保图片填充整个容器
+                    />
+                  ) : (
+                    <img
+                      src="/api/placeholder/400/400" // 占位图片
+                      alt="Placeholder"
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+
+                <div className="m-2">
+                  <div className="font-semibold text-blue-600 hover:underline truncate">
+                    {node.vendor || 'Unknown Brand'}{' '}
+                    <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
+                      {node.title
+                        ? node.title.replace(
+                          new RegExp(`^${node.vendor}\\s*`),
+                          '',
+                        )
+                        : 'N/A'}
+                    </p>
+                  </div>
+                  <p className="font-bold mb-4">
+                    $
+                    {Number(
+                      node.variants.edges[0]?.node.price.amount || 0,
+                    ).toFixed(2)}
+                    {node.variants.edges[0]?.node.compareAtPrice.amount && (
+                      <span className="text-gray-500 line-through ml-2">
+                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
         {/* Video Section */}
         <div>
           <div
@@ -790,69 +1045,7 @@ export default function Homepage() {
 
         {/* <div class="border-t my-4 mx-2 border-gray-300"></div> */}
 
-        {/* Trending Now Section */}
-        <div>
-          <div className="flex items-center mt-4 mb-2 space-x-2">
-            <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span className="text-lg font-semibold align-middle">
-              Trending Now
-            </span>
-          </div>
-          <div
-            ref={carouselRef}
-            className="flex overflow-x-auto snap-x snap-mandatory gap-2 p-4 hide-scrollbar scrollbar-hide"
-            style={{
-              scrollbarWidth: 'none', // 隐藏滚动条（适用于 Firefox）
-              msOverflowStyle: 'none', // 隐藏滚动条（适用于 IE）
-              WebkitOverflowScrolling: 'touch', // 平滑滚动（适用于 iOS）
-            }}
-          >
-            {' '}
-            {trendingProducts.map(({ node }, index) => (
-              <Link
-                key={node.id}
-                to={`/products/${node.handle}`}
-                className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
-              >
-                <div className="relative aspect-square">
-                  {node.images.edges[0] ? (
-                    <img
-                      src={node.images.edges[0].node.url} // 商品图片 URL
-                      alt={node.title}
-                      className="w-full h-full object-cover" // 确保图片填充整个容器
-                    />
-                  ) : (
-                    <img
-                      src="/api/placeholder/400/400" // 占位图片
-                      alt="Placeholder"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
 
-                <div className="m-2">
-                  <div className="font-semibold text-blue-600 hover:underline truncate">
-                    {node.vendor || 'Unknown Brand'}{' '}
-                    <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
-                      {node.title
-                        ? node.title.replace(
-                          new RegExp(`^${node.vendor}\\s*`),
-                          '',
-                        )
-                        : 'N/A'}
-                    </p>
-                  </div>
-                  <p className="font-bold mb-4">
-                    $
-                    {Number(
-                      node.variants.edges[0]?.node.price.amount || 0,
-                    ).toFixed(2)}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
 
         {/* TODO: ADD SHOW MORE BUTTON */}
         {/* New Arrivals Section */}
@@ -1066,22 +1259,22 @@ export default function Homepage() {
       <div className="hidden sm:block w-full lg:mt-4 ">
         <div className="px-2 pb-8">
           {/* 内容部分 */}
-          <div className="flex gap-6 w-full max-h-[1400px]">
+          <div className="flex gap-6 w-full max-h-[2800px]">
             {/* 左侧列 */}
-            <div className="w-1/3 lg:w-1/4 grid grid-rows-2 gap-4 2xl:gap-8 max-h-[1400px] ">
+            <div className="w-1/3 lg:w-1/4 grid grid-rows-4 gap-4 2xl:gap-8 max-h-[2800px] ">
               {/* New Arrivals */}
               <div className="w-full h-full max-h-[600px] flex-grow flex flex-col">
-                <div className="w-full my-4 flex items-center space-x-2">
+                <div className="w-full my-4 flex items-center ">
                   <Gift className="w-5 h-5" />
                   <span className="text-lg font-semibold">New Arrivals</span>
                 </div>
-                <div className="bg-[#F7CAC9] rounded-lg p-6 h-full flex flex-col">
-                  <div className="flex flex-col justify-center items-center gap-4 flex-grow h-full w-full">
+                <div className="bg-[#F7CAC9] rounded-lg h-full flex flex-col">
+                  <div className="flex flex-col justify-center p-6 items-center gap-4 flex-grow h-full w-full">
                     <div className="relative  w-full rounded-lg overflow-hidden">
                       <img
                         src="/assets/category/new.jpg"
                         alt="New arrival product"
-                        className="w-full aspect-[2/3] object-cover mx-auto max-w-[300px] max-h-[600px] "
+                        className="w-full h-full object-cover mx-auto max-w-[300px] max-h-[600px] "
                       />
                       <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
                         20% OFF
@@ -1141,7 +1334,7 @@ export default function Homepage() {
             </div>
 
             {/* 右侧列 */}
-            <div className="w-2/3 lg:w-3/4 mx-auto grid grid-rows-2 gap-4 2xl:gap-8">
+            <div className="w-2/3 lg:w-3/4 mx-auto grid grid-rows-4 gap-4 2xl:gap-8">
               {/* Trending Now Section */}
               <div className="w-full h-full flex flex-col">
                 <div className="flex items-center my-2 lg:my-4">
@@ -1154,7 +1347,7 @@ export default function Homepage() {
                 <div className="relative w-full h-full">
                   <button
                     onClick={orderScrollLeft}
-                    className="hidden 2xl:hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                    className="hidden  sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
                     aria-label="Scroll left"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1163,15 +1356,15 @@ export default function Homepage() {
                   </button>
                   <div
                     ref={orderCarouselRef}
-                    className="flex w-full max-w-[1200px] overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                    className="flex w-full  overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
                     style={{
                       scrollbarWidth: 'none',
                       msOverflowStyle: 'none',
                       WebkitOverflowScrolling: 'touch',
                     }}
                   >
-                    {trendingProducts.slice(0, 4).map(({ node }, index) => (
-                      <div key={node.id} className="flex-none flex flex-col py-2 my-2 max-w-[300px] w-1/2 lg:w-1/3 xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    {trendingProducts.slice(0, 8).map(({ node }, index) => (
+                      <div key={node.id} className="flex-none flex flex-col py-2 my-2 max-w-[400px] w-1/2 lg:w-1/3 xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
                         <div className="flex justify-center">
                           <a href={`/products/${node.handle}`}>
                             {node.images.edges[0] ? (
@@ -1209,52 +1402,196 @@ export default function Homepage() {
                           </Link>
                           <div className="font-bold text-sm">
                             ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                            {node.variants.edges[0]?.node.compareAtPrice.amount && (
+                              <span className="text-gray-500 line-through ml-2">
+                                ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>
                     ))}
-                    {/* {orderedProducts.map(({ node }, index) => (
-                    <div
-                      key={node.id}
-                      className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300`}
-                    >
-                      <div className="relative aspect-square">
-                        <Link
-                          to={`/products/${node.handle}`}
-                          onClick={(e) => {
-                            if (!node?.handle) e.preventDefault();
-                          }}
-                        >
-                          <img
-                            src={`/assets/presentation/${index + 1}.jpg`}
-                            alt={node.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </Link>
-                      </div>
-                      <div className="p-6">
-                        <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
-                          {node.vendor || 'Unknown Brand'}
-                        </div>
-                        <p className="text-pink-600 font-bold mb-4">
-                          ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                        </p>
-                        <Link
-                          to={`/products/${node.handle}`}
-                          onClick={(e) => {
-                            if (!node?.handle) e.preventDefault();
-                          }}
-                          className="font-bold text-blue-600 hover:underline"
-                        >
-                          SHOP NOW ▸
-                        </Link>
-                      </div>
-                    </div>
-                  ))} */}
+                    
                   </div>
                   <button
                     onClick={orderScrollRight}
-                    className="hidden 2xl:hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                    className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                    aria-label="Scroll right"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              {/* Trending Now Women Section */}
+              <div className="w-full h-full flex flex-col">
+                <div className="flex items-center my-2 lg:my-4">
+                  <Clock className="w-5 h-5 mr-2" />
+                  <span className="text-lg font-semibold">
+                    Trending Now Women
+                  </span>
+                </div>
+
+                <div className="relative w-full h-full">
+                  <button
+                    onClick={orderScrollLeft_women}
+                    className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                    aria-label="Scroll left"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                  </button>
+                  <div
+                    ref={orderCarouselRef_women}
+                    className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                    style={{
+                      scrollbarWidth: 'none',
+                      msOverflowStyle: 'none',
+                      WebkitOverflowScrolling: 'touch',
+                    }}
+                  >
+                    {promotingProducts_women.slice(0, 8).map(({ node }, index) => (
+                      <div key={node.id} className="flex-none flex flex-col py-2 my-2 max-w-[400px] w-1/2 lg:w-1/3 xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div className="flex justify-center">
+                          <a href={`/products/${node.handle}`}>
+                            {node.images.edges[0] ? (
+                              <img
+                                src={node.images.edges[0].node.url}
+                                alt={node.title}
+                                className="h-full object-fill"
+                              />
+                            ) : (
+                              <img
+                                src="/api/placeholder/400/400"
+                                alt="Placeholder"
+                                className="h-full object-fill"
+                              />
+                            )}
+                          </a>
+                        </div>
+                        <div className="text-left h-full flex flex-col mx-2 border-t border-gray-200 pt-2">
+                          <Link
+                            key={node.id}
+                            to={`/products/${node.handle}`}
+                            className="font-semibold text-blue-600 hover:underline flex flex-col py-2"
+                          >
+                            <div className="font-bold text-xs uppercase mb-1">
+                              {node.vendor || 'Unknown Brand'}
+                            </div>
+                            <p className="text-xs font-normal mb-2 overflow-hidden text-ellipsis ">
+                              {node.title
+                                ? node.title.replace(
+                                  new RegExp(`^${node.vendor}\\s*`),
+                                  '',
+                                )
+                                : 'N/A'}
+                            </p>
+                          </Link>
+                          <div className="font-bold text-sm">
+                            ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                            {node.variants.edges[0]?.node.compareAtPrice.amount && (
+                              <span className="text-gray-500 line-through ml-2">
+                                ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={orderScrollRight_women}
+                    className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                    aria-label="Scroll right"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              {/* Trending Now Men Section */}
+              <div className="w-full h-full flex flex-col">
+                <div className="flex items-center my-2 lg:my-4">
+                  <Clock className="w-5 h-5 mr-2" />
+                  <span className="text-lg font-semibold">
+                    Trending Now Men
+                  </span>
+                </div>
+
+                <div className="relative w-full h-full">
+                  <button
+                    onClick={orderScrollLeft_men}
+                    className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                    aria-label="Scroll left"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                  </button>
+                  <div
+                    ref={orderCarouselRef_men}
+                    className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                    style={{
+                      scrollbarWidth: 'none',
+                      msOverflowStyle: 'none',
+                      WebkitOverflowScrolling: 'touch',
+                    }}
+                  >
+                    {promotingProducts_men.slice(0, 8).map(({ node }, index) => (
+                      <div key={node.id} className="flex-none flex flex-col py-2 my-2 max-w-[400px] w-1/2 lg:w-1/3 xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div className="flex justify-center">
+                          <a href={`/products/${node.handle}`}>
+                            {node.images.edges[0] ? (
+                              <img
+                                src={node.images.edges[0].node.url}
+                                alt={node.title}
+                                className="h-full object-fill"
+                              />
+                            ) : (
+                              <img
+                                src="/api/placeholder/400/400"
+                                alt="Placeholder"
+                                className="h-full object-fill"
+                              />
+                            )}
+                          </a>
+                        </div>
+                        <div className="text-left h-full flex flex-col mx-2 border-t border-gray-200 pt-2">
+                          <Link
+                            key={node.id}
+                            to={`/products/${node.handle}`}
+                            className="font-semibold text-blue-600 hover:underline flex flex-col py-2"
+                          >
+                            <div className="font-bold text-xs uppercase mb-1">
+                              {node.vendor || 'Unknown Brand'}
+                            </div>
+                            <p className="text-xs font-normal mb-2 overflow-hidden text-ellipsis ">
+                              {node.title
+                                ? node.title.replace(
+                                  new RegExp(`^${node.vendor}\\s*`),
+                                  '',
+                                )
+                                : 'N/A'}
+                            </p>
+                          </Link>
+                          <div className="font-bold text-sm">
+                            ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                            {node.variants.edges[0]?.node.compareAtPrice.amount && (
+                              <span className="text-gray-500 line-through ml-2">
+                                ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={orderScrollRight_men}
+                    className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
                     aria-label="Scroll right"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1279,7 +1616,7 @@ export default function Homepage() {
                 >
                   <button
                     onClick={videoScrollLeft}
-                    className="hidden 2xl:hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                    className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
                     aria-label="Scroll left"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1298,7 +1635,7 @@ export default function Homepage() {
                     {videoPaths.map((video, index) => (
                       <div
                         key={index}
-                        className="max-w-[300px] lg:w-1/3 xl:w-1/4 w-1/2 aspect-3/4 flex-none overflow-hidden rounded-lg snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
+                        className="max-w-[400px] lg:w-1/3 xl:w-1/4 w-1/2 aspect-3/4 flex-none overflow-hidden rounded-lg snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
                       >
                         <video
                           ref={el => desktopVideoRefs.current[index] = el}
@@ -1341,7 +1678,7 @@ export default function Homepage() {
                   {/* Right Arrow Button (Desktop only) */}
                   <button
                     onClick={videoScrollRight}
-                    className="hidden 2xl:hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                    className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
                     aria-label="Scroll right"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1735,6 +2072,10 @@ const ALL_PRODUCTS_QUERY = `
                     amount
                     currencyCode
                   }
+                  compareAtPrice {
+                    amount
+                    currencyCode
+                  }
                 }
               }
             }
@@ -1802,6 +2143,76 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
 const PROMOTING_PRODUCTS_QUERY = `#graphql
   query PromotingProducts {
     products(first: 10, query: "tag:Promoting") {
+      edges {
+        node {
+          id
+          title
+          handle
+          tags
+          vendor
+          descriptionHtml
+          images(first: 1) {
+            edges {
+              node {
+                url
+              }
+            }
+          }
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                title
+                price {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+const PROMOTING_PRODUCTS_QUERY_WOMEN = `#graphql
+  query PromotingProducts {
+    products(first: 10, query: "tag:Promoting Women") {
+      edges {
+        node {
+          id
+          title
+          handle
+          tags
+          vendor
+          descriptionHtml
+          images(first: 1) {
+            edges {
+              node {
+                url
+              }
+            }
+          }
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                title
+                price {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+const PROMOTING_PRODUCTS_QUERY_MEN = `#graphql
+  query PromotingProducts {
+    products(first: 10, query: "tag:Promoting men") {
       edges {
         node {
           id

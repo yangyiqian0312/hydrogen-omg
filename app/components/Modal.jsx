@@ -28,7 +28,6 @@ function Modal({ onClose }) {
     if (fetcher.data?.success) {
       const timer = setTimeout(() => {
         setMessage(null);
-        onClose();
       }, 2000);
       return () => clearTimeout(timer); // Cleanup
     }
@@ -54,7 +53,8 @@ function Modal({ onClose }) {
         ) : (
           <>
             <h1 className="text-2xl font-bold mb-2">OMG Beauty Box</h1>
-            <h2 className="text-xl font-bold mb-8">Subscribe and Enjoy 20% Off Your First Order!</h2>
+            <h2 className="text-xl font-bold mb-2">Subscribe and Enjoy 20% Off Your First Order!</h2>
+            <h2 className="font-bold mb-4">Code: OMG20</h2>
             <p className="mb-4">Subscribe to our newsletter to get the latest news and updates</p>
             <fetcher.Form onSubmit={handleSubmit} className="flex flex-col py-4 gap-2">
               <input
