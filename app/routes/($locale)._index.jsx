@@ -624,7 +624,7 @@ export default function Homepage() {
                     )}
                   </p>
                 </Link>
-                <div className="flex justify-end flex-none pr-4">
+                <div className="sm:flex sm:justify-end sm:flex-none sm:pr-4 py-2 sm:py-0">
                   <AddToCartButton
                     disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
                     onClick={() => {
@@ -806,7 +806,7 @@ export default function Homepage() {
               <Link
                 key={node.id}
                 to={`/products/${node.handle}`}
-                className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+                className="flex-none w-2/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
               >
                 <div className="relative aspect-square">
                   {node.images.edges[0] ? (
@@ -826,8 +826,8 @@ export default function Homepage() {
 
                 <div className="m-2">
                   <div className="font-semibold text-blue-600 hover:underline truncate">
-                    {node.vendor || 'Unknown Brand'}{' '}
-                    <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
+                    <span className="text-xs">{node.vendor || 'Unknown Brand'}</span>{' '}
+                    <p className="text-xs font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-16">
                       {node.title
                         ? node.title.replace(
                           new RegExp(`^${node.vendor}\\s*`),
@@ -847,6 +847,23 @@ export default function Homepage() {
                       </span>
                     )}
                   </p>
+                  <div className="py-2">
+                    <AddToCartButton
+                      disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
+                      onClick={() => {
+                        open('cart');
+                      }}
+                      lines={[
+                        {
+                          merchandiseId: node.variants.edges[0]?.node.id,
+                          quantity: 1,
+                          selectedVariant: node.selectedOrFirstAvailableVariant,
+                        },
+                      ]}
+                    >
+                      {node.selectedOrFirstAvailableVariant.availableForSale ? 'Add to Cart' : 'Sold out'}
+                    </AddToCartButton>
+                  </div>
                 </div>
               </Link>
             ))}
@@ -874,7 +891,7 @@ export default function Homepage() {
               <Link
                 key={node.id}
                 to={`/products/${node.handle}`}
-                className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+                className="flex-none w-2/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
               >
                 <div className="relative aspect-square">
                   {node.images.edges[0] ? (
@@ -895,7 +912,7 @@ export default function Homepage() {
                 <div className="m-2">
                   <div className="font-semibold text-blue-600 hover:underline truncate">
                     {node.vendor || 'Unknown Brand'}{' '}
-                    <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
+                    <p className="text-xs font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
                       {node.title
                         ? node.title.replace(
                           new RegExp(`^${node.vendor}\\s*`),
@@ -915,6 +932,23 @@ export default function Homepage() {
                       </span>
                     )}
                   </p>
+                  <div className="py-2">
+                    <AddToCartButton
+                      disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
+                      onClick={() => {
+                        open('cart');
+                      }}
+                      lines={[
+                        {
+                          merchandiseId: node.variants.edges[0]?.node.id,
+                          quantity: 1,
+                          selectedVariant: node.selectedOrFirstAvailableVariant,
+                        },
+                      ]}
+                    >
+                      {node.selectedOrFirstAvailableVariant.availableForSale ? 'Add to Cart' : 'Sold out'}
+                    </AddToCartButton>
+                  </div>
                 </div>
               </Link>
             ))}
@@ -942,7 +976,7 @@ export default function Homepage() {
               <Link
                 key={node.id}
                 to={`/products/${node.handle}`}
-                className="flex-none w-1/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+                className="flex-none w-2/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
               >
                 <div className="relative aspect-square">
                   {node.images.edges[0] ? (
@@ -963,7 +997,7 @@ export default function Homepage() {
                 <div className="m-2">
                   <div className="font-semibold text-blue-600 hover:underline truncate">
                     {node.vendor || 'Unknown Brand'}{' '}
-                    <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
+                    <p className="text-xs font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
                       {node.title
                         ? node.title.replace(
                           new RegExp(`^${node.vendor}\\s*`),
@@ -983,6 +1017,23 @@ export default function Homepage() {
                       </span>
                     )}
                   </p>
+                  <div className="py-2">
+                    <AddToCartButton
+                      disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
+                      onClick={() => {
+                        open('cart');
+                      }}
+                      lines={[
+                        {
+                          merchandiseId: node.variants.edges[0]?.node.id,
+                          quantity: 1,
+                          selectedVariant: node.selectedOrFirstAvailableVariant,
+                        },
+                      ]}
+                    >
+                      {node.selectedOrFirstAvailableVariant.availableForSale ? 'Add to Cart' : 'Sold out'}
+                    </AddToCartButton>
+                  </div>
                 </div>
               </Link>
             ))}
@@ -1638,10 +1689,10 @@ export default function Homepage() {
                             </div>
                             <div className="flex flex-col w-full justify-between relative">
                               <div className="text-xs font-semibold mb-2 flex flex-col gap-1 mx-4 2xl:text-md">
-                                <Link 
-                                to={`/products/${videoProducts[index].node.handle}`}
-                                className="flex flex-col">
-                                  <span className="text-sm font-bold">
+                                <Link
+                                  to={`/products/${videoProducts[index].node.handle}`}
+                                  className="flex flex-col">
+                                  <span className="text-sm font-semibold">
                                     {videoProducts[index].node.vendor}
                                   </span>
 
