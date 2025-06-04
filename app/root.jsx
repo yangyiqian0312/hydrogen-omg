@@ -166,6 +166,10 @@ export default function Layout({children}) {
     <html lang="en">
       <head>
         <Meta />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta charSet="utf-8" />
+        <title>OMG Beauty Box</title>
+        <meta name="description" content="Your one-stop shop for luxury fragrances and beauty products" />
         <Links />
       </head>
 

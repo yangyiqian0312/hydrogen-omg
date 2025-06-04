@@ -230,7 +230,7 @@ export default function OldHeader({
     },
     {
       id: 2,
-      message: "New Here? Subscribe for 20%Off with code OMG20"
+      message: "New Here? Subscribe for 20%Off with code OMGBEAUTY20"
     }
   ];
 
@@ -239,7 +239,7 @@ export default function OldHeader({
       setCurrentIndex((prevIndex) =>
         prevIndex === promos.length - 1 ? 0 : prevIndex + 1
       );
-    }, 3000); // Change message every 3 seconds
+    }, 2500); // Change message every 2.5 seconds
    
     return () => clearInterval(timer);
   }, []);
@@ -250,8 +250,8 @@ export default function OldHeader({
       {showModal && <Modal onClose={() => setShowModal(false)} />}
       
       {/* Announcement Bar */}
-      <div className="bg-black text-center py-2 relative overflow-hidden">
-        <div className="h-6"> 
+      <div className="bg-black text-center pb-4 pt-2 sm:py-2 relative overflow-hidden">
+        <div className="sm:h-6 h-8"> 
           <p
             className="text-white font-bold transition-all duration-1500 ease-in-out cursor-pointer"
             onClick={() => setShowModal(true)}

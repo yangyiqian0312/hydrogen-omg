@@ -4,7 +4,7 @@
  */
 
 @import 'tailwindcss';
-
+@import "flowbite/src/themes/default";
 @theme {
   --breakpoint-xs: 20rem;
   --breakpoint-2xl: 100rem;

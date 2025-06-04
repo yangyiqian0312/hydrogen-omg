@@ -6,7 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import { Heart, ChevronLeft, ChevronRight, Clock, Gift } from 'lucide-react';
 import OldHeader from '~/components/OldHeader';
-import Modal from '~/components/Modal'
+import Modal from '~/components/Modal';
+import TrendingProductCard from '~/components/TrendingProductCard';
+import { AddToCartButton } from '~/components/AddToCartButton';
+import { useAside } from '~/components/Aside';
 /**
  * @type {MetaFunction}
  */
@@ -37,19 +40,18 @@ export async function loader(args) {
  * @param {LoaderFunctionArgs}
  */
 async function loadCriticalData({ context }) {
-  const [{ collections }] = await Promise.all([
-    context.storefront.query(FEATURED_COLLECTION_QUERY),
-    // Add other queries here, so that they are loaded in parallel
-    context.storefront.query(PROMOTING_PRODUCTS_QUERY),
-    context.storefront.query(PROMOTING_PRODUCTS_QUERY_WOMEN),
-    context.storefront.query(PROMOTING_PRODUCTS_QUERY_MEN),
-    context.storefront.query(TRENDING_PRODUCTS_QUERY),
-    context.storefront.query(ALL_PRODUCTS_QUERY),
-  ]);
-  console.table('collections:', collections.nodes);
+  // const [{ collections }] = await Promise.all([
+  //   context.storefront.query(FEATURED_COLLECTION_QUERY),
+  //   // Add other queries here, so that they are loaded in parallel
+  //   // context.storefront.query(PROMOTING_PRODUCTS_QUERY),
+  //   // context.storefront.query(TRENDING_PRODUCTS_QUERY),
+  //   // context.storefront.query(ALL_PRODUCTS_QUERY),
+  // ]);
+  const collection = await context.storefront.query(FEATURED_COLLECTION_QUERY);
+  console.table('collections:', collection);
 
   return {
-    featuredCollection: collections.nodes[0],
+    featuredCollection: collection,
   };
 }
 
@@ -68,35 +70,24 @@ async function loadDeferredData({ context }) {
   //     return null;
   //   });
   try {
-    const promotingProducts_women = await context.storefront.query(
-      PROMOTING_PRODUCTS_QUERY_WOMEN,
-    );
-    const promotingProducts_men = await context.storefront.query(
-      PROMOTING_PRODUCTS_QUERY_MEN,
-    );
-    const promotingProducts = await context.storefront.query(
-      PROMOTING_PRODUCTS_QUERY,
-    );
-    const trendingProducts = await context.storefront.query(
-      TRENDING_PRODUCTS_QUERY,
-    );
-    const newProducts = await context.storefront.query(
-      NEW_PRODUCTS_QUERY,
-    );
+    // const promotingProducts = await context.storefront.query(
+    //   PROMOTING_PRODUCTS_QUERY,
+    // );
+    // const trendingProducts = await context.storefront.query(
+    //   TRENDING_PRODUCTS_QUERY,
+    // );
+    // const newProducts = await context.storefront.query(
+    //   NEW_PRODUCTS_QUERY,
+    // );
 
     const allProducts = await context.storefront.query(
       ALL_PRODUCTS_QUERY,
     );
 
     // Log the resolved data for debugging
-    console.log('Resolved Data in Loader:', promotingProducts);
+    // console.log('Resolved Data in Loader:', promotingProducts);
     //console.log('Resolved Data in Loader:', trendingProducts);
     return {
-      promotingProducts_women: promotingProducts_women || null,
-      promotingProducts_men: promotingProducts_men || null,
-      promotingProducts: promotingProducts || null,
-      trendingProducts: trendingProducts || null,
-      newProducts: newProducts || null,
       allProducts: allProducts || null,
     };
   } catch (error) {
@@ -119,6 +110,8 @@ export default function Homepage() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
+
+  const { open } = useAside();
 
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
@@ -371,6 +364,8 @@ export default function Homepage() {
   ];
 
 
+
+
   const [currentTestimonialPage, setCurrentTestimonialPage] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const testimonialCarouselRef = useRef(null);
@@ -383,6 +378,8 @@ export default function Homepage() {
   const orderCarouselRef = useRef(null);
   const orderCarouselRef_women = useRef(null);
   const orderCarouselRef_men = useRef(null);
+  const videoCarouselRef = useRef(null);
+
   useEffect(() => {
     setIsClient(true);
     if (orderCarouselRef.current) {
@@ -449,111 +446,92 @@ export default function Homepage() {
     return () => { window.removeEventListener('resize', handleResize); };
   }, [playingDesktopIndex, playingMobileIndex, isMobile]);
 
-  const orderScrollLeft = () => {
-    if (orderCarouselRef.current) {
-      orderCarouselRef.current.scrollBy({
+  const scrollLeft = (carouselRef) => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({
         left: -320,
         behavior: 'smooth'
       });
     }
   };
 
-  const orderScrollRight = () => {
-    if (orderCarouselRef.current) {
-      orderCarouselRef.current.scrollBy({
-        left: 320,
-        behavior: 'smooth'
-      });
-    }
-  };
-  const orderScrollLeft_women = () => {
-    if (orderCarouselRef_women.current) {
-      orderCarouselRef_women.current.scrollBy({
-        left: -320,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const orderScrollRight_women = () => {
-    if (orderCarouselRef_women.current) {
-      orderCarouselRef_women.current.scrollBy({
-        left: 320,
-        behavior: 'smooth'
-      });
-    }
-  };
-  const orderScrollLeft_men = () => {
-    if (orderCarouselRef_men.current) {
-      orderCarouselRef_men.current.scrollBy({
-        left: -320,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const orderScrollRight_men = () => {
-    if (orderCarouselRef_men.current) {
-      orderCarouselRef_men.current.scrollBy({
-        left: 320,
-        behavior: 'smooth'
-      });
-    }
-  };
-  const mainScrollLeft = () => {
-    if (mainCarouselRef.current) {
-      mainCarouselRef.current.scrollBy({
-        left: -320,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const mainScrollRight = () => {
-    if (mainCarouselRef.current) {
-      mainCarouselRef.current.scrollBy({
+  const scrollRight = (carouselRef) => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({
         left: 320,
         behavior: 'smooth'
       });
     }
   };
 
-
-  const videoCarouselRef = useRef(null);
-  const videoScrollLeft = () => {
-    if (videoCarouselRef.current) {
-      videoCarouselRef.current.scrollBy({
-        left: -320,
-        behavior: 'smooth'
-      });
-    }
-  };
-  const videoScrollRight = () => {
-    if (videoCarouselRef.current) {
-      videoCarouselRef.current.scrollBy({
-        left: 320,
-        behavior: 'smooth'
-      });
-    }
-  };
-
+  const banners = [
+    {
+      image: '/assets/BANNER.png',
+      link: '/account/subscribe',
+    },
+    {
+      image: '/assets/BANNER.png',
+      link: '/account/subscribe',
+    },
+    {
+      image: '/assets/BANNER.png',
+      link: '/account/subscribe',
+    },
+  ];
+  const [currentBanner, setCurrentBanner] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBanner((prev) => (prev + 1) % banners.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [banners.length]);
 
   return (
     <div className="home w-full">
       {showModal && <Modal onClose={() => setShowModal(false)} />}
       <div className="flex flex-col space-y-4 relative" >
-        {/* Main banner image */}
-        <div>
-          <img
-            src="/assets/BANNER.png"
-            alt="Banner"
-            className="w-full h-auto max-h-[400px] object-contain bg-red-300 mt-2 md:mt-0"
-          />
+        {/* Main banner carousel */}
+        <div className="relative w-full overflow-hidden max-h-[400px]">
+          <div
+            className="flex transition-transform duration-700 ease-in-out"
+            style={{
+              width: `${banners.length * 100}%`,
+              transform: `translateX(-${currentBanner * (100 / banners.length)}%)`,
+            }}
+          >
+            {banners.map((banner, index) => (
+              <a
+                key={index}
+                href={banner.link}
+                className="w-full flex-shrink-0"
+                tabIndex={currentBanner === index ? 0 : -1}
+                aria-hidden={currentBanner !== index}
+              >
+                <img
+                  src={banner.image}
+                  alt="Banner"
+                  className="w-full h-auto overflow-hidden max-h-[400px] object-contain bg-red-300 mt-2 md:mt-0"
+                />
+              </a>
+            ))}
+          </div>
+          {/* Dots navigation (optional, for UX) */}
+          <div className="absolute left-1/2 bottom-2 transform -translate-x-1/2 flex space-x-2 z-10">
+            {banners.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentBanner(i)}
+                className={`w-2 h-2 rounded-full ${i === currentBanner ? 'bg-black' : 'bg-gray-400'} transition-colors duration-300 ease-in-out`}
+                aria-label={`Go to banner ${i + 1}`}
+              />
+            ))}
+          </div>
           <div
             onClick={() => setShowModal(true)}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 block w-2/3 h-3/4 cursor-pointer"
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 block w-2/3 h-3/4 cursor-pointer z-20"
           />
         </div>
+
 
         {/* TikTok LIVE element positioned at the top right corner */}
         <div className="absolute inset-y-0 xl:right-10 xl:p-4 lg:right-4 lg:pb-3 max-w-sm hidden lg:flex flex-col justify-center items-center">
@@ -586,10 +564,10 @@ export default function Homepage() {
       </div>
 
 
-      <div className="relative">
+      <div className="relative h-full">
         <button
-          onClick={mainScrollLeft}
-          className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+          onClick={() => scrollLeft(mainCarouselRef)}
+          className="hidden sm:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
           aria-label="Scroll left"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -598,7 +576,7 @@ export default function Homepage() {
         </button>
         <div
           ref={mainCarouselRef}
-          className="flex overflow-x-auto snap-x md:gap-4 gap-2 hide-scrollbar scrollbar-hide"
+          className="flex h-full overflow-x-auto snap-x md:gap-4 gap-2 hide-scrollbar scrollbar-hide"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
@@ -608,7 +586,7 @@ export default function Homepage() {
           {orderedProducts.map(({ node }, index) => (
             <div
               key={node.id}
-              className={`flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
+              className={`flex flex-col justify-between h-auto flex-none 2xl:w-1/6 w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
             >
               <div className="relative aspect-square">
                 <Link
@@ -624,29 +602,52 @@ export default function Homepage() {
                   />
                 </Link>
               </div>
-              <div className="p-6">
-                <div className="text-sm font-medium text-black uppercase tracking-wider mb-2">
-                  {node.vendor || 'Unknown Brand'}
-                </div>
-                <p className="text-pink-600 font-bold mb-4">
-                  ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                </p>
+              <div className="p-4 lg:p-6 flex flex-col justify-between h-full">
                 <Link
                   to={`/products/${node.handle}`}
                   onClick={(e) => {
                     if (!node?.handle) e.preventDefault();
                   }}
-                  className="font-bold text-blue-600 hover:underline"
                 >
-                  SHOP NOW ▸
+                  <div className="text-md lg:text-lg font-medium text-black uppercase tracking-wider mb-2">
+                    {node.vendor || 'Unknown Brand'}
+                  </div>
+                  <div className="text-sm lg:text-base font-normal mb-2 text-wrap">
+                    {node.title}
+                  </div>
+                  <p className="text-pink-600 font-bold mb-4">
+                    ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                    {node.variants.edges[0]?.node.compareAtPrice.amount && (
+                      <span className="text-gray-500 line-through ml-2">
+                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
+                      </span>
+                    )}
+                  </p>
                 </Link>
+                <div className="flex justify-end flex-none pr-4">
+                  <AddToCartButton
+                    disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
+                    onClick={() => {
+                      open('cart');
+                    }}
+                    lines={[
+                      {
+                        merchandiseId: node.selectedOrFirstAvailableVariant.id,
+                        quantity: 1,
+                        selectedVariant: node.selectedOrFirstAvailableVariant,
+                      },
+                    ]}
+                  >
+                    {node.selectedOrFirstAvailableVariant.availableForSale ? 'Add to cart' : 'Sold out'}
+                  </AddToCartButton>
+                </div>
               </div>
             </div>
           ))}
         </div>
         <button
-          onClick={mainScrollRight}
-          className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+          onClick={() => scrollRight(mainCarouselRef)}
+          className="hidden sm:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
           aria-label="Scroll right"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -856,7 +857,7 @@ export default function Homepage() {
           <div className="flex items-center mt-4 mb-2 space-x-2">
             <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
             <span className="text-lg font-semibold align-middle">
-              Trending Now Women
+              Trending Women
             </span>
           </div>
           <div
@@ -924,7 +925,7 @@ export default function Homepage() {
           <div className="flex items-center mt-4 mb-2 space-x-2">
             <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
             <span className="text-lg font-semibold align-middle">
-              Trending Now Men
+              Trending Men
             </span>
           </div>
           <div
@@ -1259,18 +1260,18 @@ export default function Homepage() {
       <div className="hidden sm:block w-full lg:mt-4 ">
         <div className="px-2 pb-8">
           {/* 内容部分 */}
-          <div className="flex gap-6 w-full max-h-[2800px]">
+          <div className="flex gap-6 w-full">
             {/* 左侧列 */}
-            <div className="w-1/3 lg:w-1/4 grid grid-rows-4 gap-4 2xl:gap-8 max-h-[2800px] ">
+            <div className="w-1/2 md:w-1/3 lg:w-1/4 2xl:w-1/6 flex flex-col gap-4 2xl:gap-8 max-h-[2800px] min-w-0">
               {/* New Arrivals */}
-              <div className="w-full h-full max-h-[600px] flex-grow flex flex-col">
+              <div className="w-full h-full max-h-[800px] flex flex-col grow-0">
                 <div className="w-full my-4 flex items-center ">
                   <Gift className="w-5 h-5" />
                   <span className="text-lg font-semibold">New Arrivals</span>
                 </div>
                 <div className="bg-[#F7CAC9] rounded-lg h-full flex flex-col">
                   <div className="flex flex-col justify-center p-6 items-center gap-4 flex-grow h-full w-full">
-                    <div className="relative  w-full rounded-lg overflow-hidden">
+                    <div className="relative  w-full rounded-lg overflow-hidden flex-auto">
                       <img
                         src="/assets/category/new.jpg"
                         alt="New arrival product"
@@ -1280,20 +1281,20 @@ export default function Homepage() {
                         20% OFF
                       </div>
                     </div>
-                    <a
-                      href="/products/newarrivals"
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
+                        navigate('/products/newarrivals');
                       }}
-                      className="inline-block  bg-red-600 hover:bg-red-700 text-white py-3 px-6 my-4 rounded-md text-sm font-medium w-full mt-auto text-center"
+                      className="inline-block flex-initial bg-red-600 hover:bg-red-700 text-white py-3 px-6 my-4 rounded-md text-sm font-medium w-full mt-auto text-center"
                     >
                       Shop Now
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
               {/* TikTok Live Deal */}
-              <div className="w-full h-full max-h-[600px] flex flex-col">
+              <div className="w-full h-full max-h-[800px] flex flex-col grow-0">
                 <div className="w-full my-4 flex items-center space-x-2">
                   <Gift className="w-5 h-5" />
                   <span className="text-lg font-semibold">Special Offers</span>
@@ -1319,14 +1320,78 @@ export default function Homepage() {
 
                     </div>
                   </div>
-                  <a
-                    href="https://www.tiktok.com/@omgbeautyshop/live"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() =>
+                      window.open(
+                        'https://www.tiktok.com/@omgbeautyshop/live?enter_from_merge=others_homepage&enter_method=others_photo',
+                        '_blank',
+                        'noopener,noreferrer',
+                      )
+                    }
                     className="text-white bg-red-600 xl:w-64 xl:mx-auto hover:bg-red-700 px-6 py-3 mt-12 rounded-md text-sm font-medium w-full block"
                   >
                     Go To TikTok
-                  </a>
+                  </button>
+                </div>
+              </div>
+              {/* New Arrivals */}
+              <div className="w-full h-full max-h-[800px] flex flex-col grow-0">
+                <div className="w-full my-4 flex items-center ">
+                  <Gift className="w-5 h-5" />
+                  <span className="text-lg font-semibold">New Arrivals</span>
+                </div>
+                <div className="bg-[#F7CAC9] rounded-lg h-full flex flex-col">
+                  <div className="flex flex-col justify-center p-6 items-center gap-4 flex-grow h-full w-full">
+                    <div className="relative  w-full rounded-lg overflow-hidden flex-auto">
+                      <img
+                        src="/assets/category/new.jpg"
+                        alt="New arrival product"
+                        className="w-full h-full object-cover mx-auto max-w-[300px] max-h-[600px] "
+                      />
+                      <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
+                        20% OFF
+                      </div>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate('/products/newarrivals');
+                      }}
+                      className="inline-block flex-initial bg-red-600 hover:bg-red-700 text-white py-3 px-6 my-4 rounded-md text-sm font-medium w-full mt-auto text-center"
+                    >
+                      Shop Now
+                    </button>
+                  </div>
+                </div>
+              </div>
+              {/* New Arrivals */}
+              <div className="w-full h-full max-h-[800px] flex flex-col grow-0">
+                <div className="w-full my-4 flex items-center ">
+                  <Gift className="w-5 h-5" />
+                  <span className="text-lg font-semibold">New Arrivals</span>
+                </div>
+                <div className="bg-[#F7CAC9] rounded-lg h-full flex flex-col">
+                  <div className="flex flex-col justify-center p-6 items-center gap-4 flex-grow h-full w-full">
+                    <div className="relative  w-full rounded-lg overflow-hidden flex-auto">
+                      <img
+                        src="/assets/category/new.jpg"
+                        alt="New arrival product"
+                        className="w-full h-full object-cover mx-auto max-w-[300px] max-h-[600px] "
+                      />
+                      <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
+                        20% OFF
+                      </div>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate('/products/newarrivals');
+                      }}
+                      className="inline-block flex-initial bg-red-600 hover:bg-red-700 text-white py-3 px-6 my-4 rounded-md text-sm font-medium w-full mt-auto text-center"
+                    >
+                      Shop Now
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -1334,10 +1399,10 @@ export default function Homepage() {
             </div>
 
             {/* 右侧列 */}
-            <div className="w-2/3 lg:w-3/4 mx-auto grid grid-rows-4 gap-4 2xl:gap-8">
+            <div className="w-1/2 md:w-2/3 lg:w-3/4 2xl:w-5/6 mx-auto flex flex-col h-full">
               {/* Trending Now Section */}
-              <div className="w-full h-full flex flex-col">
-                <div className="flex items-center my-2 lg:my-4">
+              <div className="w-full h-full flex flex-col min-w-0">
+                <div className="w-full flex items-center my-2 lg:my-4">
                   <Clock className="w-5 h-5 mr-2" />
                   <span className="text-lg font-semibold">
                     Trending Now
@@ -1346,7 +1411,7 @@ export default function Homepage() {
 
                 <div className="relative w-full h-full">
                   <button
-                    onClick={orderScrollLeft}
+                    onClick={() => scrollLeft(orderCarouselRef)}
                     className="hidden  sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
                     aria-label="Scroll left"
                   >
@@ -1356,65 +1421,26 @@ export default function Homepage() {
                   </button>
                   <div
                     ref={orderCarouselRef}
-                    className="flex w-full  overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                    className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
                     style={{
                       scrollbarWidth: 'none',
                       msOverflowStyle: 'none',
                       WebkitOverflowScrolling: 'touch',
-                    }}
-                  >
-                    {trendingProducts.slice(0, 8).map(({ node }, index) => (
-                      <div key={node.id} className="flex-none flex flex-col py-2 my-2 max-w-[400px] w-1/2 lg:w-1/3 xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
-                        <div className="flex justify-center">
-                          <a href={`/products/${node.handle}`}>
-                            {node.images.edges[0] ? (
-                              <img
-                                src={node.images.edges[0].node.url}
-                                alt={node.title}
-                                className="h-full object-fill"
-                              />
-                            ) : (
-                              <img
-                                src="/api/placeholder/400/400"
-                                alt="Placeholder"
-                                className="h-full object-fill"
-                              />
-                            )}
-                          </a>
-                        </div>
-                        <div className="text-left h-full flex flex-col mx-2 border-t border-gray-200 pt-2">
-                          <Link
-                            key={node.id}
-                            to={`/products/${node.handle}`}
-                            className="font-semibold text-blue-600 hover:underline flex flex-col py-2"
-                          >
-                            <div className="font-bold text-xs uppercase mb-1">
-                              {node.vendor || 'Unknown Brand'}
-                            </div>
-                            <p className="text-xs font-normal mb-2 overflow-hidden text-ellipsis ">
-                              {node.title
-                                ? node.title.replace(
-                                  new RegExp(`^${node.vendor}\\s*`),
-                                  '',
-                                )
-                                : 'N/A'}
-                            </p>
-                          </Link>
-                          <div className="font-bold text-sm">
-                            ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                            {node.variants.edges[0]?.node.compareAtPrice.amount && (
-                              <span className="text-gray-500 line-through ml-2">
-                                ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
-                              </span>
-                            )}
-                          </div>
-                        </div>
+                    }}>
+                    {trendingProducts.slice(0, 8).map(({ node }) => (
+                      <div
+                        key={node.id}
+                        className="flex-none py-2 my-2 max-w-[400px] w-60 md:w-72 lg:w-1/3 xl:w-1/4 2xl:w-1/5 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <TrendingProductCard
+                          {...node}
+                          className="flex flex-col w-full h-full overflow-hidden"
+                        />
                       </div>
                     ))}
-                    
+
                   </div>
                   <button
-                    onClick={orderScrollRight}
+                    onClick={() => scrollRight(orderCarouselRef)}
                     className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
                     aria-label="Scroll right"
                   >
@@ -1425,17 +1451,17 @@ export default function Homepage() {
                 </div>
               </div>
               {/* Trending Now Women Section */}
-              <div className="w-full h-full flex flex-col">
-                <div className="flex items-center my-2 lg:my-4">
+              <div className="w-full h-full flex flex-col min-w-0">
+                <div className="w-full flex items-center my-2 lg:my-4">
                   <Clock className="w-5 h-5 mr-2" />
                   <span className="text-lg font-semibold">
-                    Trending Now Women
+                    Trending Women
                   </span>
                 </div>
 
                 <div className="relative w-full h-full">
                   <button
-                    onClick={orderScrollLeft_women}
+                    onClick={() => scrollLeft(orderCarouselRef_women)}
                     className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
                     aria-label="Scroll left"
                   >
@@ -1452,57 +1478,19 @@ export default function Homepage() {
                       WebkitOverflowScrolling: 'touch',
                     }}
                   >
-                    {promotingProducts_women.slice(0, 8).map(({ node }, index) => (
-                      <div key={node.id} className="flex-none flex flex-col py-2 my-2 max-w-[400px] w-1/2 lg:w-1/3 xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
-                        <div className="flex justify-center">
-                          <a href={`/products/${node.handle}`}>
-                            {node.images.edges[0] ? (
-                              <img
-                                src={node.images.edges[0].node.url}
-                                alt={node.title}
-                                className="h-full object-fill"
-                              />
-                            ) : (
-                              <img
-                                src="/api/placeholder/400/400"
-                                alt="Placeholder"
-                                className="h-full object-fill"
-                              />
-                            )}
-                          </a>
-                        </div>
-                        <div className="text-left h-full flex flex-col mx-2 border-t border-gray-200 pt-2">
-                          <Link
-                            key={node.id}
-                            to={`/products/${node.handle}`}
-                            className="font-semibold text-blue-600 hover:underline flex flex-col py-2"
-                          >
-                            <div className="font-bold text-xs uppercase mb-1">
-                              {node.vendor || 'Unknown Brand'}
-                            </div>
-                            <p className="text-xs font-normal mb-2 overflow-hidden text-ellipsis ">
-                              {node.title
-                                ? node.title.replace(
-                                  new RegExp(`^${node.vendor}\\s*`),
-                                  '',
-                                )
-                                : 'N/A'}
-                            </p>
-                          </Link>
-                          <div className="font-bold text-sm">
-                            ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                            {node.variants.edges[0]?.node.compareAtPrice.amount && (
-                              <span className="text-gray-500 line-through ml-2">
-                                ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
-                              </span>
-                            )}
-                          </div>
-                        </div>
+                    {promotingProducts_women.slice(0, 8).map(({ node }) => (
+                      <div
+                        key={node.id}
+                        className="flex-none py-2 my-2 max-w-[400px] w-60 md:w-72 lg:w-1/3 xl:w-1/4 2xl:w-1/5 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <TrendingProductCard
+                          {...node}
+                          className="flex flex-col w-full h-full"
+                        />
                       </div>
                     ))}
                   </div>
                   <button
-                    onClick={orderScrollRight_women}
+                    onClick={() => scrollRight(orderCarouselRef_women)}
                     className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
                     aria-label="Scroll right"
                   >
@@ -1513,17 +1501,17 @@ export default function Homepage() {
                 </div>
               </div>
               {/* Trending Now Men Section */}
-              <div className="w-full h-full flex flex-col">
-                <div className="flex items-center my-2 lg:my-4">
+              <div className="w-full h-full flex flex-col min-w-0">
+                <div className="w-full flex items-center my-2 lg:my-4">
                   <Clock className="w-5 h-5 mr-2" />
                   <span className="text-lg font-semibold">
-                    Trending Now Men
+                    Trending Men
                   </span>
                 </div>
 
                 <div className="relative w-full h-full">
                   <button
-                    onClick={orderScrollLeft_men}
+                    onClick={() => scrollLeft(orderCarouselRef_men)}
                     className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
                     aria-label="Scroll left"
                   >
@@ -1540,57 +1528,19 @@ export default function Homepage() {
                       WebkitOverflowScrolling: 'touch',
                     }}
                   >
-                    {promotingProducts_men.slice(0, 8).map(({ node }, index) => (
-                      <div key={node.id} className="flex-none flex flex-col py-2 my-2 max-w-[400px] w-1/2 lg:w-1/3 xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
-                        <div className="flex justify-center">
-                          <a href={`/products/${node.handle}`}>
-                            {node.images.edges[0] ? (
-                              <img
-                                src={node.images.edges[0].node.url}
-                                alt={node.title}
-                                className="h-full object-fill"
-                              />
-                            ) : (
-                              <img
-                                src="/api/placeholder/400/400"
-                                alt="Placeholder"
-                                className="h-full object-fill"
-                              />
-                            )}
-                          </a>
-                        </div>
-                        <div className="text-left h-full flex flex-col mx-2 border-t border-gray-200 pt-2">
-                          <Link
-                            key={node.id}
-                            to={`/products/${node.handle}`}
-                            className="font-semibold text-blue-600 hover:underline flex flex-col py-2"
-                          >
-                            <div className="font-bold text-xs uppercase mb-1">
-                              {node.vendor || 'Unknown Brand'}
-                            </div>
-                            <p className="text-xs font-normal mb-2 overflow-hidden text-ellipsis ">
-                              {node.title
-                                ? node.title.replace(
-                                  new RegExp(`^${node.vendor}\\s*`),
-                                  '',
-                                )
-                                : 'N/A'}
-                            </p>
-                          </Link>
-                          <div className="font-bold text-sm">
-                            ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                            {node.variants.edges[0]?.node.compareAtPrice.amount && (
-                              <span className="text-gray-500 line-through ml-2">
-                                ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
-                              </span>
-                            )}
-                          </div>
-                        </div>
+                    {promotingProducts_men.slice(0, 8).map(({ node }) => (
+                      <div
+                        key={node.id}
+                        className="flex-none py-2 my-2 max-w-[400px] w-64 md:w-80 lg:w-1/3 xl:w-1/4 2xl:w-1/5 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <TrendingProductCard
+                          {...node}
+                          className="flex flex-col w-full h-full"
+                        />
                       </div>
                     ))}
                   </div>
                   <button
-                    onClick={orderScrollRight_men}
+                    onClick={() => scrollRight(orderCarouselRef_men)}
                     className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
                     aria-label="Scroll right"
                   >
@@ -1602,8 +1552,8 @@ export default function Homepage() {
               </div>
 
               {/* 视频轮播 */}
-              <div className="flex-grow w-full h-full flex flex-col">
-                <div className="my-4 flex items-center space-x-2">
+              <div className="w-full h-full flex flex-col min-w-0 flex-grow">
+                <div className="w-full my-4 flex items-center space-x-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2v6" />
                   </svg>
@@ -1615,7 +1565,7 @@ export default function Homepage() {
 
                 >
                   <button
-                    onClick={videoScrollLeft}
+                    onClick={() => scrollLeft(videoCarouselRef)}
                     className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
                     aria-label="Scroll left"
                   >
@@ -1625,7 +1575,7 @@ export default function Homepage() {
                   </button>
                   <div
                     ref={videoCarouselRef}
-                    className="flex overflow-x-auto h-full snap-x gap-4 hide-scrollbar scrollbar-hide"
+                    className="flex w-full overflow-x-auto h-full snap-x gap-4 hide-scrollbar scrollbar-hide"
                     style={{
                       msOverflowStyle: 'none',
                       WebkitOverflowScrolling: 'touch',
@@ -1635,49 +1585,107 @@ export default function Homepage() {
                     {videoPaths.map((video, index) => (
                       <div
                         key={index}
-                        className="max-w-[400px] lg:w-1/3 xl:w-1/4 w-1/2 aspect-3/4 flex-none overflow-hidden rounded-lg snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
+                        className="max-w-[600px] h-full lg:w-1/3 w-1/2 flex-none rounded-lg snap-start hover:shadow-md transition-shadow duration-300 relative flex flex-col"
                       >
-                        <video
-                          ref={el => desktopVideoRefs.current[index] = el}
-                          src={video}
-                          className="w-full h-full object-cover"
-                          controls={playingDesktopIndex === index}
-                          controlsList="nodownload nofullscreen noplaybackrate"
-                          muted={false}
-                          loop={false}
-                          disablePictureInPicture
-                          playsInline
-                          onPause={() => {
-                            if (playingDesktopIndex === index) setPlayingDesktopIndex(null);
-                          }}
-                          style={{ background: "#000" }}
-                        />
-                        {playingDesktopIndex !== index && (
-                          <button
-                            className="absolute inset-0 text-5xl text-white bg-black/40 hover:bg-black/60 transition"
-                            style={{ pointerEvents: "auto" }}
-                            onClick={() => { setPlayingDesktopIndex(index) }}
-                            aria-label="Play video"
-                          >
-                            ▶
-                          </button>
-                        )}
+                        <div className=" h-auto shadow-lg shadow-gray-300">
+                          <video
+                            ref={el => desktopVideoRefs.current[index] = el}
+                            src={video}
+                            className="w-full h-full object-cover max-h-[600px] max-w-[400px] mx-auto"
+                            controls={playingDesktopIndex === index}
+                            controlsList="nodownload nofullscreen noplaybackrate"
+                            muted={false}
+                            loop={false}
+                            disablePictureInPicture
+                            playsInline
+                            onPause={() => {
+                              if (playingDesktopIndex === index) setPlayingDesktopIndex(null);
+                            }}
+                            style={{ background: "#000" }}
+                          />
+                          {playingDesktopIndex !== index && (
+                            <button
+                              className="absolute bottom-1/2 md:bottom-0 inset-0 text-5xl text-white bg-black/40 hover:bg-black/60 transition"
+                              style={{ pointerEvents: "auto" }}
+                              onClick={() => { setPlayingDesktopIndex(index) }}
+                              aria-label="Play video"
+                            >
+                              ▶
+                            </button>
+                          )}
 
-                        {/* Shop Now Button */}
-                        {videoProducts[index] && (
-                          <Link
-                            to={`/products/${videoProducts[index].node.handle}`}
-                            className="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
-                          >
-                            Shop Now
-                          </Link>
-                        )}
+                          {/* Shop Now Button */}
+                          {videoProducts[index] && (
+                            <Link
+                              to={`/products/${videoProducts[index].node.handle}`}
+                              className="absolute md:bottom-1/3 bottom-1/2 left-1/2 transform -translate-x-1/2 bg-white text-black md:px-4 px-2 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
+                            >
+                              Shop Now
+                            </Link>
+                          )}
+                        </div>
+                        {videoProducts[index] &&
+                          <div className="flex flex-col md:flex-row justify-between flex-none pr-4 z-10 bg-white pt-4 w-full">
+                            <div className="w-auto h-40 xl:h-60 xl:w-60">
+                              <Link
+                                to={`/products/${videoProducts[index].node.handle}`}
+                                className="w-full h-full">
+                                <img
+                                  src={videoProducts[index].node.images.edges[0].node.url}
+                                  alt={videoProducts[index].node.title}
+                                  className="w-full h-full object-cover border border-gray-200 rounded-lg" />
+                              </Link>
+                            </div>
+                            <div className="flex flex-col w-full justify-between relative">
+                              <div className="text-xs font-semibold mb-2 flex flex-col gap-1 mx-4 2xl:text-md">
+                                <Link 
+                                to={`/products/${videoProducts[index].node.handle}`}
+                                className="flex flex-col">
+                                  <span className="text-sm font-bold">
+                                    {videoProducts[index].node.vendor}
+                                  </span>
+
+                                  <span className="lg:flex hidden text-xs font-semibold 2xl:text-lg">
+                                    {videoProducts[index].node.title}
+                                  </span>
+                                  <span className="font-bold text-red-600">
+                                    ${videoProducts[index].node.selectedOrFirstAvailableVariant.price.amount}
+                                  </span>
+                                  {videoProducts[index].node.selectedOrFirstAvailableVariant.compareAtPrice && (
+                                    <span className="text-gray-500 line-through">
+                                      ${Number(videoProducts[index].node.selectedOrFirstAvailableVariant.compareAtPrice.amount).toFixed(2)}
+                                    </span>
+                                  )}
+                                </Link>
+                              </div>
+                              <div className="flex-none place-self-end md:absolute bottom-2">
+                                <AddToCartButton
+                                  disabled={!videoProducts[index].node.selectedOrFirstAvailableVariant.availableForSale}
+                                  onClick={() => {
+                                    open('cart');
+                                  }}
+                                  lines={[
+                                    {
+                                      merchandiseId: videoProducts[index].node.selectedOrFirstAvailableVariant.id,
+                                      quantity: 1,
+                                      selectedVariant: videoProducts[index].node.selectedOrFirstAvailableVariant,
+                                    },
+                                  ]}
+                                >
+                                  {videoProducts[index].node.selectedOrFirstAvailableVariant.availableForSale ? 'Add to cart' : 'Sold out'}
+                                </AddToCartButton>
+                              </div>
+                            </div>
+
+
+                          </div>
+                        }
                       </div>
                     ))}
                   </div>
                   {/* Right Arrow Button (Desktop only) */}
                   <button
-                    onClick={videoScrollRight}
+                    onClick={() => scrollRight(videoCarouselRef)}
                     className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
                     aria-label="Scroll right"
                   >
@@ -1704,13 +1712,13 @@ export default function Homepage() {
             </div>
 
             {/* 电脑版网格布局 */}
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-4 gap-4 2xl:gap-6">
               {/* Women Category */}
               <div className="rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 relative">
                 <img
                   src="/assets/category/women.png"
                   alt="Women's Fragrances"
-                  className="w-full h-auto object-contain"
+                  className="w-full h-auto object-contain border-t border-l border-gray-400"
                 />
                 <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/70 to-transparent">
                   <h3 className="text-white font-semibold text-2xl mb-2">Women</h3>
@@ -1729,7 +1737,7 @@ export default function Homepage() {
                 <img
                   src="/assets/category/men.png"
                   alt="Men's Fragrances"
-                  className="w-full h-auto object-contain"
+                  className="w-full h-auto object-contain border-t border-l border-gray-400"
                 />
                 <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/70 to-transparent">
                   <h3 className="text-white font-semibold text-2xl mb-2">Men</h3>
@@ -1748,7 +1756,7 @@ export default function Homepage() {
                 <img
                   src="/assets/category/sales.png"
                   alt="Special Sales"
-                  className="w-full h-auto object-contain"
+                  className="w-full h-auto object-contain border-t border-l border-gray-400"
                 />
                 <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/70 to-transparent">
                   <h3 className="text-white font-semibold text-2xl mb-2">Deals & Offers</h3>
@@ -1767,7 +1775,7 @@ export default function Homepage() {
                 <img
                   src="/assets/category/gift.png"
                   alt="Gift Sets"
-                  className="w-full h-auto object-contain"
+                  className="w-full h-auto object-contain border-t border-l border-gray-400"
                 />
                 <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/70 to-transparent">
                   <h3 className="text-white font-semibold text-2xl mb-2">Gift Sets</h3>
@@ -1938,7 +1946,9 @@ export default function Homepage() {
                             fill="currentColor"
                             viewBox="0 0 20 20"
                           >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            <path
+                              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                            />
                           </svg>
                         ))}
                       </div>
@@ -2043,7 +2053,33 @@ function RecommendedProducts({ products }) {
 
 
 const ALL_PRODUCTS_QUERY = `
-  query MenProducts {
+ fragment ProductVariant on ProductVariant {
+    availableForSale
+    compareAtPrice {
+      amount
+      currencyCode
+    }
+    id
+    price {
+      amount
+      currencyCode
+    }
+    product {
+      title
+      handle
+    }
+    selectedOptions {
+      name
+      value
+    }
+    sku
+    title
+    unitPrice {
+      amount
+      currencyCode
+    }
+  }
+  query AllProducts {
     collection(id: "gid://shopify/Collection/285176168553") {
       title
       id
@@ -2063,15 +2099,21 @@ const ALL_PRODUCTS_QUERY = `
                 }  
               } 
             }
+            selectedOrFirstAvailableVariant {
+              ...ProductVariant
+            }
             variants(first: 10) {
               edges {
                 node {
                   id
+                  availableForSale
+                  currentlyNotInStock
                   title
                   price {
                     amount
                     currencyCode
                   }
+                  
                   compareAtPrice {
                     amount
                     currencyCode
@@ -2141,6 +2183,32 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
 `;
 
 const PROMOTING_PRODUCTS_QUERY = `#graphql
+fragment ProductVariant on ProductVariant {
+    availableForSale
+    compareAtPrice {
+      amount
+      currencyCode
+    }
+    id
+    price {
+      amount
+      currencyCode
+    }
+    product {
+      title
+      handle
+    }
+    selectedOptions {
+      name
+      value
+    }
+    sku
+    title
+    unitPrice {
+      amount
+      currencyCode
+    }
+  }
   query PromotingProducts {
     products(first: 10, query: "tag:Promoting") {
       edges {
@@ -2158,75 +2226,8 @@ const PROMOTING_PRODUCTS_QUERY = `#graphql
               }
             }
           }
-          variants(first: 10) {
-            edges {
-              node {
-                id
-                title
-                price {
-                  amount
-                  currencyCode
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-const PROMOTING_PRODUCTS_QUERY_WOMEN = `#graphql
-  query PromotingProducts {
-    products(first: 10, query: "tag:Promoting Women") {
-      edges {
-        node {
-          id
-          title
-          handle
-          tags
-          vendor
-          descriptionHtml
-          images(first: 1) {
-            edges {
-              node {
-                url
-              }
-            }
-          }
-          variants(first: 10) {
-            edges {
-              node {
-                id
-                title
-                price {
-                  amount
-                  currencyCode
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-const PROMOTING_PRODUCTS_QUERY_MEN = `#graphql
-  query PromotingProducts {
-    products(first: 10, query: "tag:Promoting men") {
-      edges {
-        node {
-          id
-          title
-          handle
-          tags
-          vendor
-          descriptionHtml
-          images(first: 1) {
-            edges {
-              node {
-                url
-              }
-            }
+          selectedOrFirstAvailableVariant {
+            ...ProductVariant
           }
           variants(first: 10) {
             edges {
@@ -2246,7 +2247,34 @@ const PROMOTING_PRODUCTS_QUERY_MEN = `#graphql
   }
 `;
 
+
 const TRENDING_PRODUCTS_QUERY = `#graphql
+fragment ProductVariant on ProductVariant {
+    availableForSale
+    compareAtPrice {
+      amount
+      currencyCode
+    }
+    id
+    price {
+      amount
+      currencyCode
+    }
+    product {
+      title
+      handle
+    }
+    selectedOptions {
+      name
+      value
+    }
+    sku
+    title
+    unitPrice {
+      amount
+      currencyCode
+    }
+  }
   query TrendingProducts {
     products(first: 10, query: "tag:Trending") {
       edges {
@@ -2263,6 +2291,9 @@ const TRENDING_PRODUCTS_QUERY = `#graphql
                 url
               }
             }
+          }
+          selectedOrFirstAvailableVariant {
+            ...ProductVariant
           }
           variants(first: 10) {
             edges {
@@ -2283,7 +2314,33 @@ const TRENDING_PRODUCTS_QUERY = `#graphql
 `;
 
 const NEW_PRODUCTS_QUERY = `#graphql
-  query TrendingProducts {
+fragment ProductVariant on ProductVariant {
+    availableForSale
+    compareAtPrice {
+      amount
+      currencyCode
+    }
+    id
+    price {
+      amount
+      currencyCode
+    }
+    product {
+      title
+      handle
+    }
+    selectedOptions {
+      name
+      value
+    }
+    sku
+    title
+    unitPrice {
+      amount
+      currencyCode
+    }
+  }
+  query NewProducts {
     products(first: 10, query: "tag:New Product") {
       edges {
         node {
@@ -2299,6 +2356,9 @@ const NEW_PRODUCTS_QUERY = `#graphql
                 url
               }
             }
+          }
+          selectedOrFirstAvailableVariant {
+            ...ProductVariant
           }
           variants(first: 10) {
             edges {
@@ -2318,40 +2378,6 @@ const NEW_PRODUCTS_QUERY = `#graphql
   }
 `;
 
-// const ALL_PRODUCTS_QUERY = `
-// query AllProduct {
-//   products(first: 250, after: null) {
-//     edges {
-//       node {
-//         id
-//         title
-//         handle
-//         description
-//         priceRange {
-//           minVariantPrice {
-//             amount
-//             currencyCode
-//           }
-//         }
-//         images(first: 1) {
-//           edges {
-//             node {
-//               id
-//               url
-//               altText
-//             }
-//           }
-//         }
-//       }
-//       cursor
-//     }
-//     pageInfo {
-//       hasNextPage
-//     }
-//   }
-// }
-
-// `;
 
 /** @typedef {import('@shopify/remix-oxygen').LoaderFunctionArgs} LoaderFunctionArgs */
 /** @template T @typedef {import('@remix-run/react').MetaFunction<T>} MetaFunction */
