@@ -586,7 +586,7 @@ export default function Homepage() {
           {orderedProducts.map(({ node }, index) => (
             <div
               key={node.id}
-              className={`flex flex-col justify-between h-auto flex-none 2xl:w-1/6 w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
+              className={`flex flex-col justify-between h-auto flex-none 2xl:w-1/5 w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
             >
               <div className="relative aspect-square">
                 <Link
@@ -721,7 +721,7 @@ export default function Homepage() {
                   <img
                     src="/assets/category/new.jpg"
                     alt="New arrival product"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover pt-2"
                   />
                   <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
                     20% OFF
@@ -749,7 +749,36 @@ export default function Homepage() {
               </div>
             </div>
           </div>
-
+          {/* Category for Her 卡片 */}
+          <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-[#F7CAC9] hover:shadow-md transition-shadow duration-300">
+            <div className="rounded-xl p-2">
+              <h3 className="font-medium text-lg">Category for Her</h3>
+              <img
+                    src="/assets/Category for Her.png"
+                    alt="Category for Her product"
+                    className="w-full h-full object-contain cursor-pointer pt-2"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate('/products/women');
+                    }}
+                  />
+            </div>
+          </div>
+          {/* Category for Him 卡片 */}
+          <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-[#F7CAC9] hover:shadow-md transition-shadow duration-300">
+            <div className="rounded-xl p-2">
+              <h3 className="font-medium text-lg">Category for Him</h3>
+              <img
+                    src="/assets/Category for Him.png"
+                    alt="Category for Him product"
+                    className="w-full h-full object-contain cursor-pointer pt-2"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate('/products/men');
+                    }}
+                  />
+            </div>
+          </div>
           {/* Sale Products 卡片 */}
           {/* <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300">
             <div className="rounded-xl p-6 text-center">
@@ -1313,7 +1342,7 @@ export default function Homepage() {
           {/* 内容部分 */}
           <div className="flex gap-6 w-full">
             {/* 左侧列 */}
-            <div className="w-1/2 md:w-1/3 lg:w-1/4 2xl:w-1/6 flex flex-col gap-4 2xl:gap-8 max-h-[2800px] min-w-0">
+            <div className="w-1/2 md:w-1/3 lg:w-1/4 2xl:w-1/5 flex flex-col gap-4 2xl:gap-8 max-h-[2800px] min-w-0">
               {/* New Arrivals */}
               <div className="w-full h-full max-h-[800px] flex flex-col grow-0">
                 <div className="w-full my-4 flex items-center ">
@@ -1344,8 +1373,48 @@ export default function Homepage() {
                   </div>
                 </div>
               </div>
-              {/* TikTok Live Deal */}
+              {/* Category for Her*/}
               <div className="w-full h-full max-h-[800px] flex flex-col grow-0">
+                <div className="w-full my-4 flex items-center ">
+                  <Gift className="w-5 h-5" />
+                  <span className="text-lg font-semibold">Category for Her</span>
+                </div>
+                <div className="bg-[#F7CAC9] rounded-lg h-full flex flex-col">
+                  <img
+                    src="/assets/Category for Her.png"
+                    alt="Category for Her product"
+                    className="w-full h-full object-contain mx-auto cursor-pointer px-2"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate('/products/women');
+                    }}
+                  />
+                </div>
+              </div>
+              {/* Category for Him*/}
+              <div className="w-full h-full max-h-[800px] flex flex-col grow-0">
+                <div className="w-full my-4 flex items-center ">
+                  <Gift className="w-5 h-5" />
+                  <span className="text-lg font-semibold">Category for Him</span>
+                </div>
+                <div className="bg-[#c9e5f7] rounded-lg h-full flex flex-col">
+                  <img
+                    src="/assets/Category for Him.png"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                          navigate('/products/men');
+                        }}
+                        alt="Category for Him product"
+                        className="w-full h-full object-contain mx-auto cursor-pointer px-2"
+                      />
+                      {/* <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
+                        20% OFF
+                      </div> */}
+                    
+                </div>
+              </div>
+              {/* TikTok Live Deal */}
+              <div className="w-full h-full max-h-[800px] flex flex-col grow">
                 <div className="w-full my-4 flex items-center space-x-2">
                   <Gift className="w-5 h-5" />
                   <span className="text-lg font-semibold">Special Offers</span>
@@ -1385,72 +1454,12 @@ export default function Homepage() {
                   </button>
                 </div>
               </div>
-              {/* New Arrivals */}
-              <div className="w-full h-full max-h-[800px] flex flex-col grow-0">
-                <div className="w-full my-4 flex items-center ">
-                  <Gift className="w-5 h-5" />
-                  <span className="text-lg font-semibold">New Arrivals</span>
-                </div>
-                <div className="bg-[#F7CAC9] rounded-lg h-full flex flex-col">
-                  <div className="flex flex-col justify-center p-6 items-center gap-4 flex-grow h-full w-full">
-                    <div className="relative  w-full rounded-lg overflow-hidden flex-auto">
-                      <img
-                        src="/assets/category/new.jpg"
-                        alt="New arrival product"
-                        className="w-full h-full object-cover mx-auto max-w-[300px] max-h-[600px] "
-                      />
-                      <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
-                        20% OFF
-                      </div>
-                    </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate('/products/newarrivals');
-                      }}
-                      className="inline-block flex-initial bg-red-600 hover:bg-red-700 text-white py-3 px-6 my-4 rounded-md text-sm font-medium w-full mt-auto text-center"
-                    >
-                      Shop Now
-                    </button>
-                  </div>
-                </div>
-              </div>
-              {/* New Arrivals */}
-              <div className="w-full h-full max-h-[800px] flex flex-col grow-0">
-                <div className="w-full my-4 flex items-center ">
-                  <Gift className="w-5 h-5" />
-                  <span className="text-lg font-semibold">New Arrivals</span>
-                </div>
-                <div className="bg-[#F7CAC9] rounded-lg h-full flex flex-col">
-                  <div className="flex flex-col justify-center p-6 items-center gap-4 flex-grow h-full w-full">
-                    <div className="relative  w-full rounded-lg overflow-hidden flex-auto">
-                      <img
-                        src="/assets/category/new.jpg"
-                        alt="New arrival product"
-                        className="w-full h-full object-cover mx-auto max-w-[300px] max-h-[600px] "
-                      />
-                      <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
-                        20% OFF
-                      </div>
-                    </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate('/products/newarrivals');
-                      }}
-                      className="inline-block flex-initial bg-red-600 hover:bg-red-700 text-white py-3 px-6 my-4 rounded-md text-sm font-medium w-full mt-auto text-center"
-                    >
-                      Shop Now
-                    </button>
-                  </div>
-                </div>
-              </div>
 
 
             </div>
 
             {/* 右侧列 */}
-            <div className="w-1/2 md:w-2/3 lg:w-3/4 2xl:w-5/6 mx-auto flex flex-col h-full">
+            <div className="w-1/2 md:w-2/3 lg:w-3/4 2xl:w-4/5 mx-auto flex flex-col h-full">
               {/* Trending Now Section */}
               <div className="w-full h-full flex flex-col min-w-0">
                 <div className="w-full flex items-center my-2 lg:my-4">
@@ -1676,7 +1685,7 @@ export default function Homepage() {
                           )}
                         </div>
                         {videoProducts[index] &&
-                          <div className="flex flex-col md:flex-row justify-between flex-none pr-4 z-10 bg-white pt-4 w-full">
+                          <div className="flex flex-col md:flex-row justify-between flex-none pr-4 z-10 bg-white py-2 w-full">
                             <div className="w-auto h-40 xl:h-60 xl:w-60">
                               <Link
                                 to={`/products/${videoProducts[index].node.handle}`}
@@ -1687,26 +1696,28 @@ export default function Homepage() {
                                   className="w-full h-full object-cover border border-gray-200 rounded-lg" />
                               </Link>
                             </div>
-                            <div className="flex flex-col w-full justify-between relative">
-                              <div className="text-xs font-semibold mb-2 flex flex-col gap-1 mx-4 2xl:text-md">
+                            <div className="flex flex-col w-full justify-between relative ">
+                              <div className="text-xs font-semibold mb-2 flex flex-col gap-1 lg:mx-2 2xl:text-md">
                                 <Link
                                   to={`/products/${videoProducts[index].node.handle}`}
                                   className="flex flex-col">
-                                  <span className="text-sm font-semibold">
+                                  <span className="text-sm font-semibold 2xl:text-xl">
                                     {videoProducts[index].node.vendor}
                                   </span>
 
-                                  <span className="lg:flex hidden text-xs font-semibold 2xl:text-lg">
+                                  <span className="xl:flex hidden text-xs font-semibold 2xl:text-lg/6 text-gray-700">
                                     {videoProducts[index].node.title}
                                   </span>
-                                  <span className="font-bold text-red-600">
-                                    ${videoProducts[index].node.selectedOrFirstAvailableVariant.price.amount}
-                                  </span>
-                                  {videoProducts[index].node.selectedOrFirstAvailableVariant.compareAtPrice && (
-                                    <span className="text-gray-500 line-through">
-                                      ${Number(videoProducts[index].node.selectedOrFirstAvailableVariant.compareAtPrice.amount).toFixed(2)}
+                                  <div className="flex flex-col xl:flex-row xl:gap-2 md:pt-2 xl:pt-4 xl:text-lg">
+                                    <span className="font-bold text-red-600">
+                                      ${videoProducts[index].node.selectedOrFirstAvailableVariant.price.amount}
                                     </span>
-                                  )}
+                                    {videoProducts[index].node.selectedOrFirstAvailableVariant.compareAtPrice && (
+                                      <span className="text-gray-500 line-through">
+                                        ${Number(videoProducts[index].node.selectedOrFirstAvailableVariant.compareAtPrice.amount).toFixed(2)}
+                                      </span>
+                                    )}
+                                  </div>
                                 </Link>
                               </div>
                               <div className="flex-none place-self-end md:absolute bottom-2">
