@@ -584,7 +584,7 @@ export default function Homepage() {
           }}
         >
           {orderedProducts.map(({ node }, index) => (
-            <div
+            node.selectedOrFirstAvailableVariant.availableForSale && (<div
               key={node.id}
               className={`flex flex-col justify-between h-auto flex-none 2xl:w-1/5 w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
             >
@@ -642,7 +642,7 @@ export default function Homepage() {
                   </AddToCartButton>
                 </div>
               </div>
-            </div>
+            </div>)
           ))}
         </div>
         <button
@@ -754,14 +754,14 @@ export default function Homepage() {
             <div className="rounded-xl p-2">
               <h3 className="font-medium text-lg">Category for Her</h3>
               <img
-                    src="/assets/Category for Her.png"
-                    alt="Category for Her product"
-                    className="w-full h-full object-contain cursor-pointer pt-2"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate('/products/women');
-                    }}
-                  />
+                src="/assets/Category for Her.png"
+                alt="Category for Her product"
+                className="w-full h-full object-contain cursor-pointer pt-2"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate('/products/women');
+                }}
+              />
             </div>
           </div>
           {/* Category for Him 卡片 */}
@@ -769,14 +769,14 @@ export default function Homepage() {
             <div className="rounded-xl p-2">
               <h3 className="font-medium text-lg">Category for Him</h3>
               <img
-                    src="/assets/Category for Him.png"
-                    alt="Category for Him product"
-                    className="w-full h-full object-contain cursor-pointer pt-2"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate('/products/men');
-                    }}
-                  />
+                src="/assets/Category for Him.png"
+                alt="Category for Him product"
+                className="w-full h-full object-contain cursor-pointer pt-2"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate('/products/men');
+                }}
+              />
             </div>
           </div>
           {/* Sale Products 卡片 */}
@@ -832,7 +832,7 @@ export default function Homepage() {
           >
             {' '}
             {trendingProducts.map(({ node }, index) => (
-              <Link
+              node.selectedOrFirstAvailableVariant.availableForSale && (<Link
                 key={node.id}
                 to={`/products/${node.handle}`}
                 className="flex-none w-2/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
@@ -894,11 +894,11 @@ export default function Homepage() {
                     </AddToCartButton>
                   </div>
                 </div>
-              </Link>
+              </Link>)
             ))}
           </div>
         </div>
-        {/* Trending Now Section */}
+        {/* Trending Now Women Mobile Section */}
         <div>
           <div className="flex items-center mt-4 mb-2 space-x-2">
             <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -917,7 +917,7 @@ export default function Homepage() {
           >
             {' '}
             {promotingProducts_women.map(({ node }, index) => (
-              <Link
+              node.selectedOrFirstAvailableVariant.availableForSale && (<Link
                 key={node.id}
                 to={`/products/${node.handle}`}
                 className="flex-none w-2/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
@@ -979,11 +979,11 @@ export default function Homepage() {
                     </AddToCartButton>
                   </div>
                 </div>
-              </Link>
+              </Link>)
             ))}
           </div>
         </div>
-        {/* Trending Now Section */}
+        {/* Trending Now Men Mobile Section */}
         <div>
           <div className="flex items-center mt-4 mb-2 space-x-2">
             <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -1002,7 +1002,7 @@ export default function Homepage() {
           >
             {' '}
             {promotingProducts_men.map(({ node }, index) => (
-              <Link
+              node.selectedOrFirstAvailableVariant.availableForSale && (<Link
                 key={node.id}
                 to={`/products/${node.handle}`}
                 className="flex-none w-2/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
@@ -1064,7 +1064,7 @@ export default function Homepage() {
                     </AddToCartButton>
                   </div>
                 </div>
-              </Link>
+              </Link>)
             ))}
           </div>
         </div>
@@ -1340,427 +1340,439 @@ export default function Homepage() {
       <div className="hidden sm:block w-full lg:mt-4 h-auto">
         <div className="px-2 pb-8">
           {/* 内容部分 */}
-          <div className="flex gap-6 w-full">
-            {/* 左侧列 */}
-            <div className="w-1/2 md:w-1/3 lg:w-1/4 2xl:w-1/5 flex flex-col gap-4 2xl:gap-8 max-h-[2800px] min-w-0">
-              {/* New Arrivals */}
-              <div className="w-full h-full max-h-[800px] flex flex-col grow-0">
-                <div className="w-full my-4 flex items-center ">
-                  <Gift className="w-5 h-5" />
-                  <span className="text-lg font-semibold">New Arrivals</span>
-                </div>
-                <div className="bg-[#F7CAC9] rounded-lg h-full flex flex-col">
-                  <div className="flex flex-col justify-center p-6 items-center gap-4 flex-grow h-full w-full">
-                    <div className="relative  w-full rounded-lg overflow-hidden flex-auto">
-                      <img
-                        src="/assets/category/new.jpg"
-                        alt="New arrival product"
-                        className="w-full h-full object-cover mx-auto max-w-[300px] max-h-[600px] "
-                      />
-                      <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
-                        20% OFF
+          {/* 内容部分 - 使用 grid 布局确保行高一致 */}
+          <div className="grid grid-rows-9 gap-6 w-full">
+            {/* 第一行 - New Arrivals & Trending Now */}
+            <div className="grid grid-cols-9 row-span-2 gap-6 w-full">
+              {/* 左侧列 */}
+              <div className="xl:col-span-2 col-span-3">
+                <div className="w-full h-full flex flex-col">
+                  <div className="w-full my-4 flex items-center">
+                    <Gift className="w-5 h-5" />
+                    <span className="text-lg font-semibold">New Arrivals</span>
+                  </div>
+                  <div className="bg-[#F7CAC9] rounded-lg h-full flex flex-col">
+                    <div className="flex flex-col justify-center p-6 items-center gap-4 flex-grow h-full w-full">
+                      <div className="relative w-full rounded-lg overflow-hidden flex-auto">
+                        <img
+                          src="/assets/category/new.jpg"
+                          alt="New arrival product"
+                          className="w-full h-full object-cover mx-auto max-w-[300px] max-h-[600px]"
+                        />
+                        <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
+                          20% OFF
+                        </div>
                       </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate('/products/newarrivals');
+                        }}
+                        className="inline-block flex-initial bg-red-600 hover:bg-red-700 text-white py-3 px-6 my-4 rounded-md text-sm font-medium w-full mt-auto text-center"
+                      >
+                        Shop Now
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 右侧列 */}
+              <div className="xl:col-span-7 col-span-6">
+                <div className="w-full h-full flex flex-col">
+                  <div className="w-full flex items-center my-2 lg:my-4">
+                    <Clock className="w-5 h-5 mr-2" />
+                    <span className="text-lg font-semibold">Trending Now</span>
+                  </div>
+                  <div className="relative w-full h-full">
+                    <button
+                      onClick={() => scrollLeft(orderCarouselRef)}
+                      className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                      aria-label="Scroll left"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M15 18l-6-6 6-6" />
+                      </svg>
+                    </button>
+                    <div
+                      ref={orderCarouselRef}
+                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                      style={{
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
+                        WebkitOverflowScrolling: 'touch',
+                      }}
+                    >
+                      {trendingProducts.slice(0, 8).map(({ node }) => (
+                        node.selectedOrFirstAvailableVariant.availableForSale && (
+                          <div
+                            key={node.id}
+                            className="flex-none py-2 my-2 max-w-[400px] h-auto w-60 md:w-1/3 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
+                          >
+                            <TrendingProductCard
+                              {...node}
+                              className="flex flex-col w-full h-full overflow-hidden"
+                            />
+                          </div>
+                        )
+                      ))}
                     </div>
                     <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate('/products/newarrivals');
-                      }}
-                      className="inline-block flex-initial bg-red-600 hover:bg-red-700 text-white py-3 px-6 my-4 rounded-md text-sm font-medium w-full mt-auto text-center"
+                      onClick={() => scrollRight(orderCarouselRef)}
+                      className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                      aria-label="Scroll right"
                     >
-                      Shop Now
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 18l6-6-6-6" />
+                      </svg>
                     </button>
                   </div>
                 </div>
               </div>
-              {/* Category for Her*/}
-              <div className="w-full h-full max-h-[800px] flex flex-col grow-0">
-                <div className="w-full my-4 flex items-center ">
-                  <Gift className="w-5 h-5" />
-                  <span className="text-lg font-semibold">Category for Her</span>
-                </div>
-                <div className="bg-[#F7CAC9] rounded-lg h-full flex flex-col">
-                  <img
-                    src="/assets/Category for Her.png"
-                    alt="Category for Her product"
-                    className="w-full h-full object-contain mx-auto cursor-pointer px-2"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate('/products/women');
-                    }}
-                  />
-                </div>
-              </div>
-              {/* Category for Him*/}
-              <div className="w-full h-full max-h-[800px] flex flex-col grow-0">
-                <div className="w-full my-4 flex items-center ">
-                  <Gift className="w-5 h-5" />
-                  <span className="text-lg font-semibold">Category for Him</span>
-                </div>
-                <div className="bg-[#c9e5f7] rounded-lg h-full flex flex-col">
-                  <img
-                    src="/assets/Category for Him.png"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                          navigate('/products/men');
-                        }}
-                        alt="Category for Him product"
-                        className="w-full h-full object-contain mx-auto cursor-pointer px-2"
-                      />
-                      {/* <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
-                        20% OFF
-                      </div> */}
-                    
-                </div>
-              </div>
-              {/* TikTok Live Deal */}
-              <div className="w-full h-full max-h-[800px] flex flex-col grow">
-                <div className="w-full my-4 flex items-center space-x-2">
-                  <Gift className="w-5 h-5" />
-                  <span className="text-lg font-semibold">Special Offers</span>
-                </div>
-                <div className="h-full bg-pink-50 rounded-lg p-6 text-center flex flex-col xl:gap-4">
-                  <h3 className="text-lg font-medium mb-8">
-                    Exclusive Deal On TikTok LIVE
-                  </h3>
-                  <div className="relative w-32 h-32 xl:w-40 xl:h-40 mx-auto ">
-                    <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
-                    <div className="relative w-full h-full rounded-full overflow-hidden">
-                      <a
-                        href="https://www.tiktok.com/@omgbeautyshop/live"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img
-                          src="/assets/logo/omgbeautybox.png"
-                          alt="OMG Beauty Box"
-                          className="w-full h-full object-cover"
-                        />
-                      </a>
-
-                    </div>
-                  </div>
-                  <button
-                    onClick={() =>
-                      window.open(
-                        'https://www.tiktok.com/@omgbeautyshop/live?enter_from_merge=others_homepage&enter_method=others_photo',
-                        '_blank',
-                        'noopener,noreferrer',
-                      )
-                    }
-                    className="text-white bg-red-600 xl:w-64 xl:mx-auto hover:bg-red-700 px-6 py-3 mt-12 rounded-md text-sm font-medium w-full block"
-                  >
-                    Go To TikTok
-                  </button>
-                </div>
-              </div>
-
-
             </div>
 
-            {/* 右侧列 */}
-            <div className="w-1/2 md:w-2/3 lg:w-3/4 2xl:w-4/5 mx-auto flex flex-col h-full">
-              {/* Trending Now Section */}
-              <div className="w-full h-full flex flex-col min-w-0">
-                <div className="w-full flex items-center my-2 lg:my-4">
-                  <Clock className="w-5 h-5 mr-2" />
-                  <span className="text-lg font-semibold">
-                    Trending Now
-                  </span>
-                </div>
-
-                <div className="relative w-full h-full">
-                  <button
-                    onClick={() => scrollLeft(orderCarouselRef)}
-                    className="hidden  sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
-                    aria-label="Scroll left"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M15 18l-6-6 6-6" />
-                    </svg>
-                  </button>
-                  <div
-                    ref={orderCarouselRef}
-                    className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
-                    style={{
-                      scrollbarWidth: 'none',
-                      msOverflowStyle: 'none',
-                      WebkitOverflowScrolling: 'touch',
-                    }}>
-                    {trendingProducts.slice(0, 8).map(({ node }) => (
-                      <div
-                        key={node.id}
-                        className="flex-none py-2 my-2 max-w-[400px] h-auto w-60 md:w-72 lg:w-1/3 xl:w-1/4 2xl:w-1/5 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
-                        <TrendingProductCard
-                          {...node}
-                          className="flex flex-col w-full h-full overflow-hidden"
-                        />
-                      </div>
-                    ))}
-
+            {/* 第二行 - Category for Her & Trending Women */}
+            <div className="grid grid-cols-9 row-span-2 gap-6 w-full">
+              {/* 左侧列 */}
+              <div className="xl:col-span-2 col-span-3">
+                <div className="w-full h-full flex flex-col">
+                  <div className="w-full my-4 flex items-center">
+                    <Gift className="w-5 h-5" />
+                    <span className="text-lg font-semibold">Category for Her</span>
                   </div>
-                  <button
-                    onClick={() => scrollRight(orderCarouselRef)}
-                    className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
-                    aria-label="Scroll right"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M9 18l6-6-6-6" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              {/* Trending Now Women Section */}
-              <div className="w-full h-full flex flex-col min-w-0">
-                <div className="w-full flex items-center my-2 lg:my-4">
-                  <Clock className="w-5 h-5 mr-2" />
-                  <span className="text-lg font-semibold">
-                    Trending Women
-                  </span>
-                </div>
-
-                <div className="relative w-full h-full">
-                  <button
-                    onClick={() => scrollLeft(orderCarouselRef_women)}
-                    className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
-                    aria-label="Scroll left"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M15 18l-6-6 6-6" />
-                    </svg>
-                  </button>
-                  <div
-                    ref={orderCarouselRef_women}
-                    className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
-                    style={{
-                      scrollbarWidth: 'none',
-                      msOverflowStyle: 'none',
-                      WebkitOverflowScrolling: 'touch',
-                    }}
-                  >
-                    {promotingProducts_women.slice(0, 8).map(({ node }) => (
-                      <div
-                        key={node.id}
-                        className="flex-none py-2 my-2 max-w-[400px] h-auto w-60 md:w-72 lg:w-1/3 xl:w-1/4 2xl:w-1/5 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
-                        <TrendingProductCard
-                          {...node}
-                          className="flex flex-col w-full h-full"
-                        />
-                      </div>
-                    ))}
+                  <div className="bg-[#F7CAC9] rounded-lg h-full flex flex-col">
+                    <img
+                      src="/assets/Category for Her.png"
+                      alt="Category for Her product"
+                      className="w-full h-full object-contain mx-auto cursor-pointer px-2"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate('/products/women');
+                      }}
+                    />
                   </div>
-                  <button
-                    onClick={() => scrollRight(orderCarouselRef_women)}
-                    className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
-                    aria-label="Scroll right"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M9 18l6-6-6-6" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              {/* Trending Now Men Section */}
-              <div className="w-full h-full flex flex-col min-w-0">
-                <div className="w-full flex items-center my-2 lg:my-4">
-                  <Clock className="w-5 h-5 mr-2" />
-                  <span className="text-lg font-semibold">
-                    Trending Men
-                  </span>
-                </div>
-
-                <div className="relative w-full h-full">
-                  <button
-                    onClick={() => scrollLeft(orderCarouselRef_men)}
-                    className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
-                    aria-label="Scroll left"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M15 18l-6-6 6-6" />
-                    </svg>
-                  </button>
-                  <div
-                    ref={orderCarouselRef_men}
-                    className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
-                    style={{
-                      scrollbarWidth: 'none',
-                      msOverflowStyle: 'none',
-                      WebkitOverflowScrolling: 'touch',
-                    }}
-                  >
-                    {promotingProducts_men.slice(0, 8).map(({ node }) => (
-                      <div
-                        key={node.id}
-                        className="flex-none py-2 my-2 max-w-[400px] h-auto w-64 md:w-80 lg:w-1/3 xl:w-1/4 2xl:w-1/5 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
-                        <TrendingProductCard
-                          {...node}
-                          className="flex flex-col w-full h-full"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  <button
-                    onClick={() => scrollRight(orderCarouselRef_men)}
-                    className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
-                    aria-label="Scroll right"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M9 18l6-6-6-6" />
-                    </svg>
-                  </button>
                 </div>
               </div>
 
-              {/* 视频轮播 */}
-              <div className="w-full h-full flex flex-col min-w-0 flex-grow">
-                <div className="w-full my-4 flex items-center space-x-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2v6" />
-                  </svg>
-                  <span className="text-lg font-semibold">Featured Videos</span>
+              {/* 右侧列 */}
+              <div className="xl:col-span-7 col-span-6">
+                <div className="w-full h-full flex flex-col">
+                  <div className="w-full flex items-center my-2 lg:my-4">
+                    <Clock className="w-5 h-5 mr-2" />
+                    <span className="text-lg font-semibold">Trending Women</span>
+                  </div>
+                  <div className="relative w-full h-full">
+                    <button
+                      onClick={() => scrollLeft(orderCarouselRef_women)}
+                      className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                      aria-label="Scroll left"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M15 18l-6-6 6-6" />
+                      </svg>
+                    </button>
+                    <div
+                      ref={orderCarouselRef_women}
+                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                      style={{
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
+                        WebkitOverflowScrolling: 'touch',
+                      }}
+                    >
+                      {promotingProducts_women.slice(0, 8).map(({ node }) => (
+                        node.selectedOrFirstAvailableVariant.availableForSale && (
+                          <div
+                            key={node.id}
+                            className="flex-none py-2 my-2 max-w-[400px] h-auto w-60 md:w-1/3 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
+                          >
+                            <TrendingProductCard
+                              {...node}
+                              className="flex flex-col w-full h-full"
+                            />
+                          </div>
+                        )
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => scrollRight(orderCarouselRef_women)}
+                      className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                      aria-label="Scroll right"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 18l6-6-6-6" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
+              </div>
+            </div>
 
-                <div
-                  className="relative w-full h-full"
+            {/* 第三行 - Category for Him & Trending Men */}
+            <div className="grid grid-cols-9 row-span-2 gap-6 w-full">
+              {/* 左侧列 */}
+              <div className="xl:col-span-2 col-span-3">
+                <div className="w-full h-full flex flex-col">
+                  <div className="w-full my-4 flex items-center">
+                    <Gift className="w-5 h-5" />
+                    <span className="text-lg font-semibold">Category for Him</span>
+                  </div>
+                  <div className="bg-[#c9e5f7] rounded-lg h-full flex flex-col">
+                    <img
+                      src="/assets/Category for Him.png"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate('/products/men');
+                      }}
+                      alt="Category for Him product"
+                      className="w-full h-full object-contain mx-auto cursor-pointer px-2"
+                    />
+                  </div>
+                </div>
+              </div>
 
-                >
-                  <button
-                    onClick={() => scrollLeft(videoCarouselRef)}
-                    className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
-                    aria-label="Scroll left"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M15 18l-6-6 6-6" />
-                    </svg>
-                  </button>
-                  <div
-                    ref={videoCarouselRef}
-                    className="flex w-full overflow-x-auto h-full snap-x gap-4 hide-scrollbar scrollbar-hide"
-                    style={{
-                      msOverflowStyle: 'none',
-                      WebkitOverflowScrolling: 'touch',
-                      scrollbarWidth: 'none',
-                    }}
-                  >
-                    {videoPaths.map((video, index) => (
-                      <div
-                        key={index}
-                        className="max-w-[600px] h-full lg:w-1/3 w-1/2 flex-none rounded-lg snap-start hover:shadow-md transition-shadow duration-300 relative flex flex-col"
-                      >
-                        <div className=" h-auto shadow-lg shadow-gray-300">
-                          <video
-                            ref={el => desktopVideoRefs.current[index] = el}
-                            src={video}
-                            className="w-full h-full object-cover max-h-[600px] max-w-[400px] mx-auto"
-                            controls={playingDesktopIndex === index}
-                            controlsList="nodownload nofullscreen noplaybackrate"
-                            muted={false}
-                            loop={false}
-                            disablePictureInPicture
-                            playsInline
-                            onPause={() => {
-                              if (playingDesktopIndex === index) setPlayingDesktopIndex(null);
-                            }}
-                            style={{ background: "#000" }}
+              {/* 右侧列 */}
+              <div className="xl:col-span-7 col-span-6">
+                <div className="w-full h-full flex flex-col">
+                  <div className="w-full flex items-center my-2 lg:my-4">
+                    <Clock className="w-5 h-5 mr-2" />
+                    <span className="text-lg font-semibold">Trending Men</span>
+                  </div>
+                  <div className="relative w-full h-full">
+                    <button
+                      onClick={() => scrollLeft(orderCarouselRef_men)}
+                      className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                      aria-label="Scroll left"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M15 18l-6-6 6-6" />
+                      </svg>
+                    </button>
+                    <div
+                      ref={orderCarouselRef_men}
+                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                      style={{
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
+                        WebkitOverflowScrolling: 'touch',
+                      }}
+                    >
+                      {promotingProducts_men.slice(0, 8).map(({ node }) => (
+                        node.selectedOrFirstAvailableVariant.availableForSale && (
+                          <div
+                            key={node.id}
+                            className="flex-none py-2 my-2 max-w-[400px] h-auto w-64 md:w-1/3 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
+                          >
+                            <TrendingProductCard
+                              {...node}
+                              className="flex flex-col w-full h-full"
+                            />
+                          </div>
+                        )
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => scrollRight(orderCarouselRef_men)}
+                      className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                      aria-label="Scroll right"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 18l6-6-6-6" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 第四行 - Special Offers & Featured Videos */}
+            <div className="grid grid-cols-9 row-span-3 gap-6 w-full">
+              {/* 左侧列 */}
+              <div className="xl:col-span-2 col-span-3">
+                <div className="w-full h-full flex flex-col">
+                  <div className="w-full my-4 flex items-center space-x-2">
+                    <Gift className="w-5 h-5" />
+                    <span className="text-lg font-semibold">Special Offers</span>
+                  </div>
+                  <div className="h-full bg-pink-50 rounded-lg p-6 text-center flex flex-col xl:gap-4">
+                    <h3 className="text-lg font-medium mb-8">
+                      Exclusive Deal On TikTok LIVE
+                    </h3>
+                    <div className="relative w-32 h-32 xl:w-40 xl:h-40 mx-auto">
+                      <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
+                      <div className="relative w-full h-full rounded-full overflow-hidden">
+                        <a
+                          href="https://www.tiktok.com/@omgbeautyshop/live"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img
+                            src="/assets/logo/omgbeautybox.png"
+                            alt="OMG Beauty Box"
+                            className="w-full h-full object-cover"
                           />
-                          {playingDesktopIndex !== index && (
-                            <button
-                              className="absolute bottom-1/2 md:bottom-0 inset-0 text-5xl text-white bg-black/40 hover:bg-black/60 transition"
-                              style={{ pointerEvents: "auto" }}
-                              onClick={() => { setPlayingDesktopIndex(index) }}
-                              aria-label="Play video"
-                            >
-                              ▶
-                            </button>
-                          )}
+                        </a>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() =>
+                        window.open(
+                          'https://www.tiktok.com/@omgbeautyshop/live?enter_from_merge=others_homepage&enter_method=others_photo',
+                          '_blank',
+                          'noopener,noreferrer',
+                        )
+                      }
+                      className="text-white bg-red-600 xl:w-40 xl:mx-auto hover:bg-red-700 px-6 py-3 mt-12 rounded-md text-sm font-medium w-full block"
+                    >
+                      Go To TikTok
+                    </button>
+                  </div>
+                </div>
+              </div>
 
-                          {/* Shop Now Button */}
-                          {videoProducts[index] && (
-                            <Link
-                              to={`/products/${videoProducts[index].node.handle}`}
-                              className="absolute md:bottom-1/3 bottom-1/2 left-1/2 transform -translate-x-1/2 bg-white text-black md:px-4 px-2 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
-                            >
-                              Shop Now
-                            </Link>
-                          )}
-                        </div>
-                        {videoProducts[index] &&
-                          <div className="flex flex-col md:flex-row justify-between flex-none pr-4 z-10 bg-white py-2 w-full">
-                            <div className="w-auto h-40 xl:h-60 xl:w-60">
+              {/* 右侧列 */}
+              <div className="xl:col-span-7 col-span-6">
+                <div className="w-full h-full flex flex-col">
+                  <div className="w-full my-4 flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2v6" />
+                    </svg>
+                    <span className="text-lg font-semibold">Featured Videos</span>
+                  </div>
+                  <div className="relative w-full h-full">
+                    <button
+                      onClick={() => scrollLeft(videoCarouselRef)}
+                      className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                      aria-label="Scroll left"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M15 18l-6-6 6-6" />
+                      </svg>
+                    </button>
+                    <div
+                      ref={videoCarouselRef}
+                      className="flex w-full overflow-x-auto h-full snap-x gap-4 hide-scrollbar scrollbar-hide"
+                      style={{
+                        msOverflowStyle: 'none',
+                        WebkitOverflowScrolling: 'touch',
+                        scrollbarWidth: 'none',
+                      }}
+                    >
+                      {videoPaths.map((video, index) => (
+                        <div
+                          key={index}
+                          className="max-w-[600px] h-full lg:w-1/3 w-1/2 flex-none rounded-lg snap-start hover:shadow-md transition-shadow duration-300 relative flex flex-col"
+                        >
+                          <div className="h-full shadow-lg shadow-gray-300">
+                            <video
+                              ref={el => desktopVideoRefs.current[index] = el}
+                              src={video}
+                              className="w-full h-full object-cover mx-auto max-h-[800px]"
+                              controls={playingDesktopIndex === index}
+                              controlsList="nodownload nofullscreen noplaybackrate"
+                              muted={false}
+                              loop={false}
+                              disablePictureInPicture
+                              playsInline
+                              onPause={() => {
+                                if (playingDesktopIndex === index) setPlayingDesktopIndex(null);
+                              }}
+                              style={{ background: "#000" }}
+                            />
+                            {playingDesktopIndex !== index && (
+                              <button
+                                className="absolute bottom-1/2 md:bottom-0 inset-0 text-5xl text-white bg-black/40 hover:bg-black/60 transition"
+                                style={{ pointerEvents: "auto" }}
+                                onClick={() => { setPlayingDesktopIndex(index) }}
+                                aria-label="Play video"
+                              >
+                                ▶
+                              </button>
+                            )}
+                            {/* Shop Now Button */}
+                            {videoProducts[index] && (
                               <Link
                                 to={`/products/${videoProducts[index].node.handle}`}
-                                className="w-full h-full">
-                                <img
-                                  src={videoProducts[index].node.images.edges[0].node.url}
-                                  alt={videoProducts[index].node.title}
-                                  className="w-full h-full object-cover border border-gray-200 rounded-lg" />
+                                className="absolute md:bottom-1/3 bottom-1/2 left-1/2 transform -translate-x-1/2 bg-white text-black md:px-4 px-2 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200 shadow-md"
+                              >
+                                Shop Now
                               </Link>
-                            </div>
-                            <div className="flex flex-col w-full justify-between relative ">
-                              <div className="text-xs font-semibold mb-2 flex flex-col gap-1 lg:mx-2 2xl:text-md">
+                            )}
+                          </div>
+                          {videoProducts[index] && (
+                            <div className="flex flex-col md:flex-row justify-between flex-none pr-4 z-10 bg-white py-2 w-full">
+                              <div className="w-auto h-40 xl:h-60 xl:w-60">
                                 <Link
                                   to={`/products/${videoProducts[index].node.handle}`}
-                                  className="flex flex-col">
-                                  <span className="text-sm font-semibold 2xl:text-xl">
-                                    {videoProducts[index].node.vendor}
-                                  </span>
-
-                                  <span className="xl:flex hidden text-xs font-semibold 2xl:text-lg/6 text-gray-700">
-                                    {videoProducts[index].node.title}
-                                  </span>
-                                  <div className="flex flex-col xl:flex-row xl:gap-2 md:pt-2 xl:pt-4 xl:text-lg">
-                                    <span className="font-bold text-red-600">
-                                      ${videoProducts[index].node.selectedOrFirstAvailableVariant.price.amount}
-                                    </span>
-                                    {videoProducts[index].node.selectedOrFirstAvailableVariant.compareAtPrice && (
-                                      <span className="text-gray-500 line-through">
-                                        ${Number(videoProducts[index].node.selectedOrFirstAvailableVariant.compareAtPrice.amount).toFixed(2)}
-                                      </span>
-                                    )}
-                                  </div>
+                                  className="w-full h-full"
+                                >
+                                  <img
+                                    src={videoProducts[index].node.images.edges[0].node.url}
+                                    alt={videoProducts[index].node.title}
+                                    className="w-full h-full object-cover border border-gray-200 rounded-lg"
+                                  />
                                 </Link>
                               </div>
-                              <div className="flex-none place-self-end md:absolute bottom-2">
-                                <AddToCartButton
-                                  disabled={!videoProducts[index].node.selectedOrFirstAvailableVariant.availableForSale}
-                                  onClick={() => {
-                                    open('cart');
-                                  }}
-                                  lines={[
-                                    {
-                                      merchandiseId: videoProducts[index].node.selectedOrFirstAvailableVariant.id,
-                                      quantity: 1,
-                                      selectedVariant: videoProducts[index].node.selectedOrFirstAvailableVariant,
-                                    },
-                                  ]}
-                                >
-                                  {videoProducts[index].node.selectedOrFirstAvailableVariant.availableForSale ? 'Add to cart' : 'Sold out'}
-                                </AddToCartButton>
+                              <div className="flex flex-col w-full justify-between relative">
+                                <div className="text-xs font-semibold mb-2 flex flex-col gap-1 lg:mx-2 2xl:text-md">
+                                  <Link
+                                    to={`/products/${videoProducts[index].node.handle}`}
+                                    className="flex flex-col"
+                                  >
+                                    <span className="text-sm font-semibold 2xl:text-xl">
+                                      {videoProducts[index].node.vendor}
+                                    </span>
+                                    <span className="xl:flex hidden text-xs font-semibold 2xl:text-lg/6 text-gray-700">
+                                      {videoProducts[index].node.title}
+                                    </span>
+                                    <div className="flex flex-col xl:flex-row xl:gap-2 md:pt-2 xl:pt-4 xl:text-lg">
+                                      <span className="font-bold text-red-600">
+                                        ${videoProducts[index].node.selectedOrFirstAvailableVariant.price.amount}
+                                      </span>
+                                      {videoProducts[index].node.selectedOrFirstAvailableVariant.compareAtPrice && (
+                                        <span className="text-gray-500 line-through">
+                                          ${Number(videoProducts[index].node.selectedOrFirstAvailableVariant.compareAtPrice.amount).toFixed(2)}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </Link>
+                                </div>
+                                <div className="flex-none place-self-end md:absolute bottom-2">
+                                  <AddToCartButton
+                                    disabled={!videoProducts[index].node.selectedOrFirstAvailableVariant.availableForSale}
+                                    onClick={() => {
+                                      open('cart');
+                                    }}
+                                    lines={[
+                                      {
+                                        merchandiseId: videoProducts[index].node.selectedOrFirstAvailableVariant.id,
+                                        quantity: 1,
+                                        selectedVariant: videoProducts[index].node.selectedOrFirstAvailableVariant,
+                                      },
+                                    ]}
+                                  >
+                                    {videoProducts[index].node.selectedOrFirstAvailableVariant.availableForSale ? 'Add to cart' : 'Sold out'}
+                                  </AddToCartButton>
+                                </div>
                               </div>
                             </div>
-
-
-                          </div>
-                        }
-                      </div>
-                    ))}
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    {/* Right Arrow Button (Desktop only) */}
+                    <button
+                      onClick={() => scrollRight(videoCarouselRef)}
+                      className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                      aria-label="Scroll right"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 18l6-6-6-6" />
+                      </svg>
+                    </button>
                   </div>
-                  {/* Right Arrow Button (Desktop only) */}
-                  <button
-                    onClick={() => scrollRight(videoCarouselRef)}
-                    className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
-                    aria-label="Scroll right"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M9 18l6-6-6-6" />
-                    </svg>
-                  </button>
                 </div>
               </div>
-
-
-
-
             </div>
           </div>
 
@@ -1855,8 +1867,6 @@ export default function Homepage() {
         </div>
       </div>
 
-
-      {/* <div class="border-t my-4 mx-2 border-gray-300"></div> */}
 
       {/* Customer Reviews Heading - with padding only on desktop */}
       <div className="flex items-center mt-4 mb-2 space-x-2 md:px-4">
@@ -2045,7 +2055,7 @@ export default function Homepage() {
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 }
 
