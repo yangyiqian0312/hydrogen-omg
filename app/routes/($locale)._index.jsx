@@ -586,7 +586,7 @@ export default function Homepage() {
           {orderedProducts.map(({ node }, index) => (
             node.selectedOrFirstAvailableVariant.availableForSale && (<div
               key={node.id}
-              className={`flex flex-col justify-between h-auto flex-none 2xl:w-1/5 w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
+              className={`flex flex-col justify-between h-auto flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
             >
               <div className="relative aspect-square">
                 <Link
@@ -1357,7 +1357,7 @@ export default function Homepage() {
                         <img
                           src="/assets/category/new.jpg"
                           alt="New arrival product"
-                          className="w-full h-full object-cover mx-auto max-w-[300px] max-h-[600px]"
+                          className="w-full h-full object-cover mx-auto max-w-[300px] max-h-[300px]"
                         />
                         <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
                           20% OFF
@@ -1396,7 +1396,7 @@ export default function Homepage() {
                     </button>
                     <div
                       ref={orderCarouselRef}
-                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                      className="flex w-full overflow-x-auto h-auto snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
                       style={{
                         scrollbarWidth: 'none',
                         msOverflowStyle: 'none',
@@ -1407,11 +1407,11 @@ export default function Homepage() {
                         node.selectedOrFirstAvailableVariant.availableForSale && (
                           <div
                             key={node.id}
-                            className="flex-none py-2 my-2 max-w-[400px] h-auto w-60 md:w-1/3 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
+                            className="flex-none py-2 my-2 max-w-[300px] h-full w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
                           >
                             <TrendingProductCard
                               {...node}
-                              className="flex flex-col w-full h-full overflow-hidden"
+                              className="flex flex-col w-full h-auto overflow-hidden"
                             />
                           </div>
                         )
@@ -1473,7 +1473,7 @@ export default function Homepage() {
                     </button>
                     <div
                       ref={orderCarouselRef_women}
-                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                      className="flex w-full overflow-x-auto h-auto snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
                       style={{
                         scrollbarWidth: 'none',
                         msOverflowStyle: 'none',
@@ -1484,11 +1484,11 @@ export default function Homepage() {
                         node.selectedOrFirstAvailableVariant.availableForSale && (
                           <div
                             key={node.id}
-                            className="flex-none py-2 my-2 max-w-[400px] h-auto w-60 md:w-1/3 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
+                            className="flex-none py-2 my-2 max-w-[300px] h-full w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
                           >
                             <TrendingProductCard
                               {...node}
-                              className="flex flex-col w-full h-full"
+                              className="flex flex-col w-full h-auto overflow-hidden"
                             />
                           </div>
                         )
@@ -1525,7 +1525,7 @@ export default function Homepage() {
                         navigate('/products/men');
                       }}
                       alt="Category for Him product"
-                      className="w-full h-full object-contain mx-auto cursor-pointer px-2"
+                      className="w-full h-full object-contain cursor-pointer px-2"
                     />
                   </div>
                 </div>
@@ -1550,7 +1550,7 @@ export default function Homepage() {
                     </button>
                     <div
                       ref={orderCarouselRef_men}
-                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                      className="flex w-full overflow-x-auto h-auto snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
                       style={{
                         scrollbarWidth: 'none',
                         msOverflowStyle: 'none',
@@ -1561,11 +1561,11 @@ export default function Homepage() {
                         node.selectedOrFirstAvailableVariant.availableForSale && (
                           <div
                             key={node.id}
-                            className="flex-none py-2 my-2 max-w-[400px] h-auto w-64 md:w-1/3 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
+                            className="flex-none py-2 my-2 max-w-[300px] h-auto w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
                           >
                             <TrendingProductCard
                               {...node}
-                              className="flex flex-col w-full h-full"
+                              className="flex flex-col w-full h-auto overflow-hidden"
                             />
                           </div>
                         )
@@ -1661,13 +1661,13 @@ export default function Homepage() {
                       {videoPaths.map((video, index) => (
                         <div
                           key={index}
-                          className="max-w-[600px] h-full lg:w-1/3 w-1/2 flex-none rounded-lg snap-start hover:shadow-md transition-shadow duration-300 relative flex flex-col"
+                          className="max-w-[360px] h-full lg:w-1/3 w-1/2 flex-none rounded-lg snap-start hover:shadow-md transition-shadow duration-300 relative flex flex-col"
                         >
                           <div className="h-full shadow-lg shadow-gray-300">
                             <video
                               ref={el => desktopVideoRefs.current[index] = el}
                               src={video}
-                              className="w-full h-full object-cover mx-auto max-h-[800px]"
+                              className="w-full h-full my-auto object-cover mx-auto"
                               controls={playingDesktopIndex === index}
                               controlsList="nodownload nofullscreen noplaybackrate"
                               muted={false}
@@ -1722,7 +1722,7 @@ export default function Homepage() {
                                     <span className="text-sm font-semibold 2xl:text-xl">
                                       {videoProducts[index].node.vendor}
                                     </span>
-                                    <span className="xl:flex hidden text-xs font-semibold 2xl:text-lg/6 text-gray-700">
+                                    <span className="xl:flex hidden text-xs font-semibold 2xl:text-md/6 text-gray-700">
                                       {videoProducts[index].node.title}
                                     </span>
                                     <div className="flex flex-col xl:flex-row xl:gap-2 md:pt-2 xl:pt-4 xl:text-lg">

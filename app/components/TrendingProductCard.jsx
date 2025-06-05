@@ -22,7 +22,7 @@ export function TrendingProductCard({ id, handle, title, vendor, selectedOrFirst
 
     return (
         <div className={className}>
-            <div className="w-full flex justify-center">
+            <div className="w-full h-full flex justify-center flex-none ">
                 <a href={`/products/${handle}`}>
                     <img
                         src={imageUrl}
@@ -31,7 +31,7 @@ export function TrendingProductCard({ id, handle, title, vendor, selectedOrFirst
                     />
                 </a>
             </div>
-            <div className="w-full text-left h-full flex flex-col gap-0 justify-between px-2 border-t border-gray-200 pt-2">
+            <div className="w-full h-full text-left flex-grow flex flex-col gap-0 justify-between px-2 border-t border-gray-200 pt-2">
                 <Link
                     to={`/products/${handle}`}
                     className="w-full font-semibold text-blue-600 hover:underline flex flex-col py-2 h-full flex-grow"
@@ -54,11 +54,11 @@ export function TrendingProductCard({ id, handle, title, vendor, selectedOrFirst
                         ))}
                         <span >5.0</span>
                       </div>
-                    <p className="text-xs font-normal mb-2 text-wrap p-4">
+                    <p className="text-xs font-normal mb-2 text-wrap p-4 h-24 overflow-hidden">
                         {displayTitle}
                     </p>
                 </Link>
-                <div className="flex justify-between py-2 gap-4">
+                <div className="flex justify-between py-2 md:gap-4">
                     <div className="font-bold text-sm flex-none pt-2">
                         ${price}
                         {compareAtPrice && (
@@ -67,7 +67,7 @@ export function TrendingProductCard({ id, handle, title, vendor, selectedOrFirst
                             </span>
                         )}
                     </div>
-                    <div className="flex justify-end flex-none pr-4">
+                    <div className="flex justify-end flex-none md:pr-4">
                         <AddToCartButton
                             disabled={!selectedOrFirstAvailableVariant.availableForSale}
                             onClick={() => {
