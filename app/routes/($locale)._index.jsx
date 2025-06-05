@@ -1357,7 +1357,7 @@ export default function Homepage() {
                         <img
                           src="/assets/category/new.jpg"
                           alt="New arrival product"
-                          className="w-full h-full object-cover mx-auto max-w-[300px] max-h-[300px]"
+                          className="w-full h-full object-cover mx-auto"
                         />
                         <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
                           20% OFF
