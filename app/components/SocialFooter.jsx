@@ -2,8 +2,10 @@ import React from 'react';
 import { Link } from '@remix-run/react';
 import { Instagram, Twitter, Youtube } from 'lucide-react';
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 const SocialFooter = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
   const links = [
     {
       title: 'Privacy Policy',
@@ -58,9 +60,12 @@ const SocialFooter = () => {
             ))}
             <div
               className="group relative px-4 py-3 rounded-lg hover:bg-gray-50 transition-all duration-200"
-              onClick={() => setIsModalOpen(true)}
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate('/contactus');
+              }}
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between cursor-pointer">
                 <span className="text-sm font-medium text-gray-600 group-hover:text-gray-900 group-hover:underline transition-colors duration-200">
                   Contact Us
                 </span>
