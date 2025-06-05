@@ -1337,7 +1337,7 @@ export default function Homepage() {
       </div>
 
       {/* 桌面版布局 */}
-      <div className="hidden sm:block w-full lg:mt-4 ">
+      <div className="hidden sm:block w-full lg:mt-4 h-auto">
         <div className="px-2 pb-8">
           {/* 内容部分 */}
           <div className="flex gap-6 w-full">
@@ -1490,7 +1490,7 @@ export default function Homepage() {
                     {trendingProducts.slice(0, 8).map(({ node }) => (
                       <div
                         key={node.id}
-                        className="flex-none py-2 my-2 max-w-[400px] w-60 md:w-72 lg:w-1/3 xl:w-1/4 2xl:w-1/5 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        className="flex-none py-2 my-2 max-w-[400px] h-auto w-60 md:w-72 lg:w-1/3 xl:w-1/4 2xl:w-1/5 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
                         <TrendingProductCard
                           {...node}
                           className="flex flex-col w-full h-full overflow-hidden"
@@ -1541,7 +1541,7 @@ export default function Homepage() {
                     {promotingProducts_women.slice(0, 8).map(({ node }) => (
                       <div
                         key={node.id}
-                        className="flex-none py-2 my-2 max-w-[400px] w-60 md:w-72 lg:w-1/3 xl:w-1/4 2xl:w-1/5 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        className="flex-none py-2 my-2 max-w-[400px] h-auto w-60 md:w-72 lg:w-1/3 xl:w-1/4 2xl:w-1/5 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
                         <TrendingProductCard
                           {...node}
                           className="flex flex-col w-full h-full"
@@ -1591,7 +1591,7 @@ export default function Homepage() {
                     {promotingProducts_men.slice(0, 8).map(({ node }) => (
                       <div
                         key={node.id}
-                        className="flex-none py-2 my-2 max-w-[400px] w-64 md:w-80 lg:w-1/3 xl:w-1/4 2xl:w-1/5 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        className="flex-none py-2 my-2 max-w-[400px] h-auto w-64 md:w-80 lg:w-1/3 xl:w-1/4 2xl:w-1/5 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300">
                         <TrendingProductCard
                           {...node}
                           className="flex flex-col w-full h-full"

@@ -27,7 +27,7 @@ export function TrendingProductCard({ id, handle, title, vendor, selectedOrFirst
                     <img
                         src={imageUrl}
                         alt={title}
-                        className="h-full object-fill"
+                        className="h-full w-full object-cover"
                     />
                 </a>
             </div>
