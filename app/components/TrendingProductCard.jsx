@@ -54,7 +54,7 @@ export function TrendingProductCard({ id, handle, title, vendor, selectedOrFirst
                         ))}
                         <span >5.0</span>
                       </div>
-                    <p className="text-xs font-normal mb-2 text-wrap p-4 h-24 overflow-hidden">
+                    <p className="text-xs font-normal mb-2 p-4 h-24 w-full text-ellipsis">
                         {displayTitle}
                     </p>
                 </Link>
@@ -67,7 +67,7 @@ export function TrendingProductCard({ id, handle, title, vendor, selectedOrFirst
                             </span>
                         )}
                     </div>
-                    <div className="flex justify-end flex-none md:pr-4">
+                    <div className="flex justify-end flex-none pr-4">
                         <AddToCartButton
                             disabled={!selectedOrFirstAvailableVariant.availableForSale}
                             onClick={() => {
