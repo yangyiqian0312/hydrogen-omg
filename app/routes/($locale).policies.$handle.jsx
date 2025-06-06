@@ -45,7 +45,7 @@ export default function Policy() {
   const {policy} = useLoaderData();
 
   return (
-    <div className="policy">
+    <div className="policy p-8">
       {/* <br />
       <br />
       <div>

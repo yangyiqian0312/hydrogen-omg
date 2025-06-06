@@ -3,13 +3,14 @@ import { Link } from '@remix-run/react';
 import { Instagram, Twitter, Youtube } from 'lucide-react';
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-const SocialFooter = () => {
+const SocialFooter = ({isLoggedIn}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   // Add this state near the top of your component with other state declarations
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [isLinksOpen, setIsLinksOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const navigate = useNavigate();
+
   const links = [
     {
       title: 'Privacy Policy',
@@ -28,7 +29,7 @@ const SocialFooter = () => {
       to: 'policies/terms-of-service'
     }
   ];
-  const accountLinks = [
+  const accountLinks = isLoggedIn ? [
     {
       title: 'My Account',
       to: 'account/profile'
@@ -36,6 +37,19 @@ const SocialFooter = () => {
     {
       title: 'My Orders',
       to: 'account/orders'
+    },
+    {
+      title: 'My Shopping Cart',
+      to: 'cart'
+    },
+  ] : [
+    {
+      title: 'My Account',
+      to: 'account/signup'
+    },
+    {
+      title: 'My Shopping Cart',
+      to: 'cart'
     },
   ];
   const shopLinks = [

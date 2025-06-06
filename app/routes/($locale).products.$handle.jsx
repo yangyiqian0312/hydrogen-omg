@@ -238,7 +238,7 @@ export default function Product() {
 
   return (
     <div className="mx-auto px-4 py-4 flex flex-col xl:flex-row xl:justify-center xl:gap-8 xl:py-8 h-full">
-      <div className="flex gap-6 w-auto h-full ">
+      <div className="flex gap-6 w-auto h-full justify-center  ">
         {/* Thumbnails on the left */}
         <div className="flex flex-col gap-4 w-20 lg:w-28 2xl:w-36">
           {product.images.edges.map((image, index) => (
@@ -260,7 +260,7 @@ export default function Product() {
         </div>
 
         {/* Main Image on the right */}
-        <div className="max-w-[800px] w-full">
+        <div className="xl:max-w-[800px] max-w-[600px] w-full">
           <div className="relative aspect-square w-full rounded-xl overflow-hidden border border-gray-100 lg:shadow-md hover:shadow-lg transition-shadow duration-300">
             <img
               src={product.images.edges[selectedImage]?.node?.url}
