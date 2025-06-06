@@ -367,7 +367,7 @@ export default function Product() {
                     {sections.map((section, index) => (
                       <div key={index} className="border-b border-gray-200">
                         <button
-                          onClick={() => setActiveSection(activeSection === index ? null : index)}
+                          onMouseOver={() => setActiveSection(activeSection === index ? null : index)}
                           className="w-full flex justify-between items-center py-2 text-left focus:outline-none"
                         >
                           <h3 className="text-base font-medium text-gray-900">
