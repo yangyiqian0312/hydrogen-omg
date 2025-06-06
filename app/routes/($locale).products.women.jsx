@@ -237,7 +237,7 @@ const Women = (selectedVariant) => {
               className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
             >
               {/* Product card content remains the same */}
-                <div className="relative aspect-square">
+                <div className="relative aspect-square p-2">
                   {node.images.edges[0] ? (
                     <img
                       src={node.images.edges[0].node.url}
@@ -291,7 +291,7 @@ const Women = (selectedVariant) => {
               className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
             >
               {/* Product card content remains the same */}
-                <div className="relative aspect-square">
+                <div className="relative aspect-square p-2">
                   {node.images.edges[0] ? (
                     <img
                       src={node.images.edges[0].node.url}
@@ -350,7 +350,7 @@ const Women = (selectedVariant) => {
               className="rounded-lg overflow-hidden shadow-lg shadow-gray-300  hover:shadow-md transition-shadow duration-300"
             >
               {/* Product card content remains the same */}
-              <div className="relative aspect-square">
+              <div className="relative aspect-square p-2">
                 {node.images.edges[0] ? (
                   <img
                     src={node.images.edges[0].node.url}

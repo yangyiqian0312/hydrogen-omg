@@ -154,7 +154,7 @@ const Newarrivals = (selectedVariant) => {
               to={`/products/${node.handle}`}
               className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
             >
-              <div className="relative aspect-square">
+              <div className="relative aspect-square p-2">
                   {node.images.edges[0] ? (
                     <img
                       src={node.images.edges[0].node.url}
