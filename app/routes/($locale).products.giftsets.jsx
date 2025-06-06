@@ -204,13 +204,13 @@ const Giftsets = (selectedVariant) => {
                     <img
                       src={node.images.edges[0].node.url}
                       alt={node.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                   ) : (
                     <img
                       src="/api/placeholder/400/400"
                       alt="Placeholder"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                   )}
                 </div>

@@ -236,10 +236,10 @@ export default function Product() {
   // );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col lg:flex-row lg:gap-8 lg:py-8">
-      <div className="flex gap-6 lg:w-3/5">
+    <div className="mx-auto px-4 py-4 flex flex-col lg:flex-row lg:justify-center lg:gap-8 lg:py-8">
+      <div className="flex gap-6 w-auto ">
         {/* Thumbnails on the left */}
-        <div className="flex flex-col gap-4 w-20 lg:w-28">
+        <div className="flex flex-col gap-4 w-20 lg:w-28 2xl:w-36">
           {product.images.edges.map((image, index) => (
             <button
               key={index}
@@ -259,12 +259,12 @@ export default function Product() {
         </div>
 
         {/* Main Image on the right */}
-        <div className="flex-1">
-          <div className="relative aspect-square rounded-xl overflow-hidden border border-gray-100 lg:shadow-md hover:shadow-lg transition-shadow duration-300">
+        <div className="max-w-[800px] w-full">
+          <div className="relative aspect-square w-full rounded-xl overflow-hidden border border-gray-100 lg:shadow-md hover:shadow-lg transition-shadow duration-300">
             <img
               src={product.images.edges[selectedImage]?.node?.url}
               alt={product.images.edges[selectedImage]?.node?.altText || `Product main view`}
-              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105 xl:p-8 p-2"
             />
           </div>
         </div>
