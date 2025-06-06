@@ -112,6 +112,7 @@ export default function Product() {
   // console.log(productOptions);
 
   const [selectedImage, setSelectedImage] = useState(0);
+  const [activeSection, setActiveSection] = useState(null);
 
   // const DesktopLayout = () => (
   //   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col">
@@ -236,8 +237,8 @@ export default function Product() {
   // );
 
   return (
-    <div className="mx-auto px-4 py-4 flex flex-col lg:flex-row lg:justify-center lg:gap-8 lg:py-8">
-      <div className="flex gap-6 w-auto ">
+    <div className="mx-auto px-4 py-4 flex flex-col xl:flex-row xl:justify-center xl:gap-8 xl:py-8 h-full">
+      <div className="flex gap-6 w-auto h-full ">
         {/* Thumbnails on the left */}
         <div className="flex flex-col gap-4 w-20 lg:w-28 2xl:w-36">
           {product.images.edges.map((image, index) => (
@@ -245,8 +246,8 @@ export default function Product() {
               key={index}
               onClick={() => setSelectedImage(index)}
               className={`rounded-lg overflow-hidden border-2 transition-all duration-200 transform hover:scale-105 ${selectedImage === index
-                  ? 'border-black ring-2 ring-gray-200 shadow-md'
-                  : 'border-transparent'
+                ? 'border-black ring-2 ring-gray-200 shadow-md'
+                : 'border-transparent'
                 } hover:border-gray-300`}
             >
               <img
@@ -271,21 +272,21 @@ export default function Product() {
       </div>
 
       {/* Product Info - right side on desktop */}
-      <div className="mt-4 space-y-3 lg:mt-0 lg:w-2/5 lg:pl-4">
-        <div>
+      <div className="mt-4 space-y-1 xl:mt-0 xl:w-2/5 xl:pl-4 h-full flex flex-col flex-none">
+        <div className="h-auto">
           <h2 className="text-10px text-gray-500 lg:text-sm">{product.vendor}</h2>
           <h2 className="text-14px font-medium mt-1 lg:text-xl lg:font-semibold">{product.title}</h2>
           <p className="text-10px text-gray-600 mt-1 lg:text-sm">{product.category}</p>
         </div>
 
-        <div className="flex flex-col gap-2 lg:mt-6">
+        <div className="flex flex-col gap-2 w-full flex-none">
           <div className="flex items-center gap-2">
             <ProductPrice
               price={selectedVariant?.price}
               compareAtPrice={selectedVariant?.compareAtPrice}
             />
           </div>
-          <div className="pt-2 lg:pt-4">
+          <div className="pt-2 lg:pt-4 w-full">
             <ProductForm
               productOptions={productOptions}
               selectedVariant={selectedVariant}
@@ -293,7 +294,7 @@ export default function Product() {
           </div>
         </div>
 
-        <div className="border rounded-lg p-4 space-y-4 bg-white lg:mt-6 lg:shadow-sm">
+        <div className="border rounded-lg p-4 space-y-4 bg-white lg:mt-6 lg:shadow-sm flex-none">
           <div className="flex items-center gap-3">
             <Truck className="w-5 h-5" />
             <div>
@@ -305,15 +306,120 @@ export default function Product() {
           </div>
         </div>
 
-        <div className="space-y-3 pt-6 lg:pt-8 lg:border-t lg:mt-8">
+        <div className="space-y-4 pt-6 lg:pt-8 lg:border-t lg:mt-8 flex-grow 2xl:max-h-[calc(100vh-20rem)] 2xl:overflow-hidden">
           <h3 className="text-base font-medium lg:text-lg">Product Details</h3>
           <div className="space-y-2 text-xs text-gray-600 lg:text-sm">
             <div className="mt-2">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: product.descriptionHtml,
-                }}
-              />
+              {typeof window !== 'undefined' ? (() => {
+                try {
+                  const parser = new DOMParser();
+                  const doc = parser.parseFromString(product.descriptionHtml, 'text/html');
+                  const body = doc.body;
+                  const sections = [];
+                  let currentSection = null;
+
+                  // Process all child nodes of the body
+                  Array.from(body.childNodes).forEach(node => {
+                    if (node.nodeType === 1) { // Only process element nodes
+                      // Check if it's a heading or a paragraph with strong text
+                      if (/^H[1-6]$/i.test(node.nodeName) ||
+                        (node.nodeName === 'P' && node.querySelector('strong'))) {
+
+                        // If there's a current section, add it to sections
+                        if (currentSection) {
+                          sections.push(currentSection);
+                        }
+
+                        // Extract the strong text if it's a paragraph
+                        let heading = node.textContent;
+                        let content = [];
+
+                        if (node.nodeName === 'P') {
+                          const strongElement = node.querySelector('strong');
+                          if (strongElement) {
+                            heading = strongElement.textContent;
+                            // Remove the strong element to avoid duplication
+                            strongElement.remove();
+                            // Add the remaining content
+                            content.push(node.innerHTML);
+                          }
+                        }
+
+                        // Start a new section
+                        currentSection = {
+                          heading: heading,
+                          content: content
+                        };
+                      } else if (currentSection) {
+                        // Add content to current section
+                        currentSection.content.push(node.outerHTML || node.textContent);
+                      }
+                    }
+                  });
+
+                  // Add the last section if it exists
+                  if (currentSection) {
+                    sections.push(currentSection);
+                  }
+
+                  return (
+                    <div className="space-y-3">
+                    {sections.map((section, index) => (
+                      <div key={index} className="border-b border-gray-200">
+                        <button
+                          onClick={() => setActiveSection(activeSection === index ? null : index)}
+                          className="w-full flex justify-between items-center py-2 text-left focus:outline-none"
+                        >
+                          <h3 className="text-base font-medium text-gray-900">
+                            {section.heading}
+                          </h3>
+                          <svg
+                            className={`w-5 h-5 text-gray-500 transform transition-transform ${
+                              activeSection === index ? 'rotate-180' : ''
+                            }`}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </button>
+                        <div
+                          className={`overflow-y-auto transition-all duration-300 ${
+                            activeSection === index ? 'h-36' : 'h-0'
+                          }`}
+                        >
+                          <div
+                            className="pb-4 text-gray-800 text-md lg:text-lg"
+                            dangerouslySetInnerHTML={{ __html: section.content.join('') }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  );
+                } catch (error) {
+                  console.error('Error parsing description:', error);
+                  // Fallback to simple HTML rendering if parsing fails
+                  return (
+                    <div
+                      className="text-gray-700 space-y-2"
+                      dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+                    />
+                  );
+                }
+              })() : (
+                // Server-side fallback
+                <div
+                  className="text-gray-700 space-y-2"
+                  dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+                />
+              )}
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ import {Money} from '@shopify/hydrogen';
  * }}
  */
 export function ProductPrice({price, compareAtPrice}) {
+  const discount = compareAtPrice ? ((compareAtPrice.amount - price.amount) / compareAtPrice.amount) * 100 : 0;
   return (
     <div className="product-price">
       {compareAtPrice ? (
@@ -15,6 +16,7 @@ export function ProductPrice({price, compareAtPrice}) {
           <s>
             <Money data={compareAtPrice} />
           </s>
+          <span className="ml-2 text-red-500 font-semibold">{discount.toFixed(0)}% OFF</span>
         </div>
       ) : price ? (
         <Money data={price} />

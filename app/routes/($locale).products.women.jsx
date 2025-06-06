@@ -156,7 +156,7 @@ const Women = (selectedVariant) => {
   // Filter for products with "Women" tag with extra logging
   const womenProducts = products
     .filter(({ node }) => node.tags && node.tags.includes('Women'))
-    .sort((a, b) => b.node.totalInventory - a.node.totalInventory);
+    .sort((a, b) => {if(a.node.vendor === b.node.vendor) return a.node.title.localeCompare(b.node.title); else return a.node.vendor.localeCompare(b.node.vendor)});
 
   const filteredProducts = selectedBrand
     ? womenProducts.filter(
