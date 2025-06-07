@@ -152,25 +152,25 @@ const Newarrivals = (selectedVariant) => {
             <Link
               key={node.id}
               to={`/products/${node.handle}`}
-              className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+              className="rounded-lg flex flex-col overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
             >
-              <div className="relative aspect-square p-2">
+              <div className="relative aspect-square p-1">
                   {node.images.edges[0] ? (
                     <img
                       src={node.images.edges[0].node.url}
                       alt={node.title}
-                      className="w-full h-full object-contain"
+                      className="w-full aspect-square object-contain"
                     />
                   ) : (
                     <img
                       src="/api/placeholder/400/400"
                       alt="Placeholder"
-                      className="w-full h-full object-contain"
+                      className="w-full aspect-square object-contain"
                     />
                   )}
                 </div>
 
-                <div className="p-3">
+                <div className="p-3 flex flex-col h-full justify-between">
                   <div className="font-semibold text-black uppercase hover:underline truncate">
                       {node.vendor || 'Unknown Brand'}
                     </div>
@@ -182,7 +182,7 @@ const Newarrivals = (selectedVariant) => {
                         : 'N/A'}
                     </p>
 
-                  <div>
+                  <div className='pt-1'>
                     <p className="font-bold">
                       ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
                       {node.variants.edges[0]?.node.compareAtPrice && (

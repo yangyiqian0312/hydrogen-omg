@@ -234,26 +234,26 @@ const Women = (selectedVariant) => {
             <Link
               to={`/products/${node.handle}`}
               key={node.id}
-              className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+              className="rounded-lg flex flex-col overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
             >
               {/* Product card content remains the same */}
-                <div className="relative aspect-square p-2">
+                <div className="relative aspect-square p-1">
                   {node.images.edges[0] ? (
                     <img
                       src={node.images.edges[0].node.url}
                       alt={node.title}
-                      className="w-full h-full object-contain"
+                      className="w-full aspect-square object-contain"
                     />
                   ) : (
                     <img
                       src="/api/placeholder/400/400"
                       alt="Placeholder"
-                      className="w-full h-full object-contain"
+                      className="w-full aspect-square object-contain"
                     />
                   )}
                 </div>
 
-                <div className="p-3">
+                <div className="p-3 flex flex-col h-full justify-between">
                   <div
                     className="block"
                   >
@@ -269,7 +269,7 @@ const Women = (selectedVariant) => {
                     </p>
                   </div>
 
-                  <div>
+                  <div className='pt-1'>
                     <p className="font-bold">
                       ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
                       {node.variants.edges[0]?.node.compareAtPrice && (
@@ -288,26 +288,26 @@ const Women = (selectedVariant) => {
             <Link
               to={`/products/${node.handle}`}
               key={node.id}
-              className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+              className="rounded-lg flex flex-col overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
             >
               {/* Product card content remains the same */}
-                <div className="relative aspect-square p-2">
+                <div className="relative aspect-square p-1">
                   {node.images.edges[0] ? (
                     <img
                       src={node.images.edges[0].node.url}
                       alt={node.title}
-                      className="w-full h-full object-contain"
+                      className="w-full aspect-square object-contain"
                     />
                   ) : (
                     <img
                       src="/api/placeholder/400/400"
                       alt="Placeholder"
-                      className="w-full h-full object-contain"
+                      className="w-full aspect-square object-contain"
                     />
                   )}
                 </div>
 
-                <div className="p-3">
+                <div className="p-3 flex flex-col h-full justify-between">
                   <div
                     className="block"
                   >
@@ -347,26 +347,26 @@ const Women = (selectedVariant) => {
             <Link
               to={`/products/${node.handle}`}
               key={node.id}
-              className="rounded-lg overflow-hidden shadow-lg shadow-gray-300  hover:shadow-md transition-shadow duration-300"
+              className="rounded-lg flex flex-col overflow-hidden shadow-lg shadow-gray-300  hover:shadow-md transition-shadow duration-300"
             >
               {/* Product card content remains the same */}
-              <div className="relative aspect-square p-2">
+              <div className="relative aspect-square p-1">
                 {node.images.edges[0] ? (
                   <img
                     src={node.images.edges[0].node.url}
                     alt={node.title}
-                    className="w-full h-full object-contain"
+                    className="w-full aspect-square object-contain"
                   />
                 ) : (
                   <img
                     src="/api/placeholder/400/400"
                     alt="Placeholder"
-                    className="w-full h-full object-contain"
+                    className="w-full aspect-square object-contain"
                   />
                 )}
               </div>
 
-              <div className="p-3">
+              <div className="p-3 flex flex-col h-full justify-between">
                 <div
                   className="block"
                 >
@@ -382,7 +382,7 @@ const Women = (selectedVariant) => {
                   </p>
                 </div>
 
-                <div>
+                <div className='pt-1'>
                   <p className="font-bold">
                     ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
                     {node.variants.edges[0]?.node.compareAtPrice && (
