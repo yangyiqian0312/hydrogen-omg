@@ -1501,7 +1501,7 @@ export default function Homepage() {
                   <div className="relative w-full h-full">
                     <button
                       onClick={() => scrollLeft(orderCarouselRef_women)}
-                      className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                      className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
                       aria-label="Scroll left"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1533,7 +1533,7 @@ export default function Homepage() {
                     </div>
                     <button
                       onClick={() => scrollRight(orderCarouselRef_women)}
-                      className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                      className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
                       aria-label="Scroll right"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1578,7 +1578,7 @@ export default function Homepage() {
                   <div className="relative w-full h-full">
                     <button
                       onClick={() => scrollLeft(orderCarouselRef_men)}
-                      className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                      className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
                       aria-label="Scroll left"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1610,7 +1610,7 @@ export default function Homepage() {
                     </div>
                     <button
                       onClick={() => scrollRight(orderCarouselRef_men)}
-                      className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                      className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
                       aria-label="Scroll right"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1679,7 +1679,7 @@ export default function Homepage() {
                   <div className="relative w-full h-full">
                     <button
                       onClick={() => scrollLeft(videoCarouselRef)}
-                      className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                      className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
                       aria-label="Scroll left"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1737,7 +1737,7 @@ export default function Homepage() {
                             )}
                           </div>
                           {videoProducts[index] && (
-                            <div className="flex flex-col md:flex-row justify-between flex-none pr-4 z-10 bg-white py-2 w-full">
+                            <div className="flex flex-col md:flex-row justify-between flex-none pr-4 z-5 bg-white py-2 w-full">
                               <div className="w-auto h-36 xl:h-60 xl:w-64">
                                 <Link
                                   to={`/products/${videoProducts[index].node.handle}`}
@@ -1800,7 +1800,7 @@ export default function Homepage() {
                     {/* Right Arrow Button (Desktop only) */}
                     <button
                       onClick={() => scrollRight(videoCarouselRef)}
-                      className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                      className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
                       aria-label="Scroll right"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1985,7 +1985,7 @@ export default function Homepage() {
             <>
               <button
                 onClick={() => setCurrentTestimonialPage(prev => Math.max(0, prev - 1))}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 p-2 rounded-full bg-white shadow-md hover:shadow-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed -ml-3 transition-shadow"
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 z-5 p-2 rounded-full bg-white shadow-md hover:shadow-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed -ml-3 transition-shadow"
                 disabled={currentTestimonialPage === 0}
                 aria-label="Previous testimonials"
               >
@@ -1996,7 +1996,7 @@ export default function Homepage() {
 
               <button
                 onClick={() => setCurrentTestimonialPage(prev => Math.min(Math.ceil(testimonials.length / 3) - 1, prev + 1))}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 p-2 rounded-full bg-white shadow-md hover:shadow-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed -mr-3 transition-shadow"
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 z-5 p-2 rounded-full bg-white shadow-md hover:shadow-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed -mr-3 transition-shadow"
                 disabled={currentTestimonialPage === Math.ceil(testimonials.length / 3) - 1}
                 aria-label="Next testimonials"
               >

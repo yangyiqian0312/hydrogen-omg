@@ -49,13 +49,13 @@ export function Aside({ children, heading, type }) {
   return (
     <div
       aria-modal
-      className={`overlay ${expanded ? 'expanded' : ''}`}
+      className={`overlay ${expanded ? 'expanded' : ''} z-50`}
       role="dialog"
     >
       {/* <button className="text-3xl" onClick={close} /> */}
       <aside>
-        <div className="flex justify-between items-center md:mt-36 mt-24">
-          <h3 className="text-center text-2xl font-serif text-gray-800 w-full">{heading}</h3>
+        <div className="flex justify-between items-center md:mt-32 mt-24">
+          <h3 className="text-center text-2xl font-serif text-gray-800 w-full pb-2">{heading}</h3>
           <button className="text-3xl" onClick={close} aria-label="Close">
             {"×"}
           </button>
