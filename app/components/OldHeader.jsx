@@ -245,7 +245,7 @@ export default function OldHeader({
   }, []);
 
   return (
-    <div>
+    <div className="fixed w-full top-0 z-10">
       {/* Modal */}
       {showModal && <Modal onClose={() => setShowModal(false)} />}
       

@@ -54,13 +54,13 @@ export function Aside({ children, heading, type }) {
     >
       {/* <button className="text-3xl" onClick={close} /> */}
       <aside>
-        <header className="flex justify-between items-center">
+        <div className="flex justify-between items-center md:mt-36 mt-24">
           <h3 className="text-center text-2xl font-serif text-gray-800 w-full">{heading}</h3>
           <button className="text-3xl" onClick={close} aria-label="Close">
             {"×"}
           </button>
-        </header>
-        <main>{children}</main>
+        </div>
+        <main className="h-full">{children}</main>
       </aside>
     </div>
 

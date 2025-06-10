@@ -21,7 +21,8 @@ export function CartLineItem({ layout, line }) {
   const { close } = useAside();
 
   return (
-    <li key={id} className="cart-line flex items-center space-x-4 p-4 border-b border-gray-200 hover:bg-gray-50 transition-all duration-200 ease-in-out">
+    <li key={id}
+      className="cart-line flex items-center overflow-hidden space-x-5 p-4 border-b border-gray-200 hover:bg-gray-50 transition-all duration-200 ease-in-out">
       {image && (
         <Image
           alt={title}
@@ -49,7 +50,7 @@ export function CartLineItem({ layout, line }) {
             {product.title}
           </p>
         </Link>
-        <CartLineQuantity line={line} />
+        <CartLineQuantity line={line} layout={layout} />
       </div>
     </li>
   );
@@ -61,50 +62,54 @@ export function CartLineItem({ layout, line }) {
  * hasn't yet responded that it was successfully added to the cart.
  * @param {{line: CartLine}}
  */
-function CartLineQuantity({ line }) {
+function CartLineQuantity({ line, layout }) {
   if (!line || typeof line?.quantity === 'undefined') return null;
   const { id: lineId, quantity, isOptimistic } = line;
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
   const nextQuantity = Number((quantity + 1).toFixed(0));
 
   return (
-    <div className="flex items-center space-x-2">
-      <CartLineUpdateButton lines={[{ id: lineId, quantity: prevQuantity }]}>
-        <button
-          aria-label="Decrease quantity"
-          disabled={quantity <= 1 || !!isOptimistic}
-          name="decrease-quantity"
-          value={prevQuantity}
-          className="flex items-center justify-center w-8 h-8 bg-gray-200 text-gray-700 rounded-full disabled:bg-gray-300 disabled:text-gray-500 hover:bg-gray-300 transition-all duration-200 ease-in-out"
-        >
-          <span>&#8722;</span>
-        </button>
-      </CartLineUpdateButton>
+    <div className={`${layout === 'page' ? 'flex' : 'flex-col justify-between'} pt-2 items-center w-full`}>
+      <div className="flex items-center space-x-2">
+        <CartLineUpdateButton lines={[{ id: lineId, quantity: prevQuantity }]}>
+          <button
+            aria-label="Decrease quantity"
+            disabled={quantity <= 1 || !!isOptimistic}
+            name="decrease-quantity"
+            value={prevQuantity}
+            className="flex items-center justify-center w-8 h-8 bg-gray-200 text-gray-700 rounded-full disabled:bg-gray-300 disabled:text-gray-500 hover:bg-gray-300 transition-all duration-200 ease-in-out"
+          >
+            <span>&#8722;</span>
+          </button>
+        </CartLineUpdateButton>
 
-      <span className="inline-flex items-center justify-center px-2.5 py-0.5 text-sm font-medium bg-gray-100 text-gray-700 rounded-full">
-    {quantity}
-  </span>
+        <span className="inline-flex items-center justify-center px-2.5 py-0.5 text-sm font-medium bg-gray-100 text-gray-700 rounded-full">
+          {quantity}
+        </span>
 
-      <CartLineUpdateButton lines={[{ id: lineId, quantity: nextQuantity }]}>
-        <button
-          aria-label="Increase quantity"
-          name="increase-quantity"
-          value={nextQuantity}
-          disabled={!!isOptimistic}
-          className="flex items-center justify-center w-8 h-8 bg-gray-200 text-gray-700 rounded-full disabled:bg-gray-300 disabled:text-gray-500 hover:bg-gray-300 transition-all duration-200 ease-in-out"
-        >
-          <span>&#43;</span>
-        </button>
-      </CartLineUpdateButton>
-
-      <ProductPrice price={line?.cost?.totalAmount} />
+        <CartLineUpdateButton lines={[{ id: lineId, quantity: nextQuantity }]}>
+          <button
+            aria-label="Increase quantity"
+            name="increase-quantity"
+            value={nextQuantity}
+            disabled={!!isOptimistic}
+            className="flex items-center justify-center w-8 h-8 bg-gray-200 text-gray-700 rounded-full disabled:bg-gray-300 disabled:text-gray-500 hover:bg-gray-300 transition-all duration-200 ease-in-out"
+          >
+            <span>&#43;</span>
+          </button>
+        </CartLineUpdateButton>
+        <ProductPrice price={line?.cost?.totalAmount} layout={layout} />
+      </div>
+      
 
       {/* Remove Item Button */}
-      <CartLineRemoveButton
-        lineIds={[lineId]}
-        disabled={!!isOptimistic}
-        className="text-pink-600  transition-all duration-200"
-      />
+      <div className={`w-full flex ${layout === 'page' ? 'pl-4' : 'justify-end'} pr-4`}>
+        <CartLineRemoveButton
+          lineIds={[lineId]}
+          disabled={!!isOptimistic}
+          className="text-pink-600  transition-all duration-200"
+        />
+      </div>
     </div>
   );
 }
@@ -118,7 +123,7 @@ function CartLineQuantity({ line }) {
  *   disabled: boolean;
  * }}
  */
-function CartLineRemoveButton({ lineIds, disabled }) {
+function CartLineRemoveButton({ lineIds, disabled, layout }) {
   return (
     <CartForm
       route="/cart"

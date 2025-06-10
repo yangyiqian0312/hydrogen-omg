@@ -4,8 +4,7 @@ import { Heart, Filter, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { useLoaderData } from '@remix-run/react';
-import { AddToCartButton } from '~/components/AddToCartButton';
-
+import GalleryProductCard from '~/components/GalleryProductCard';
 
 /**
  * @param {{
@@ -87,7 +86,6 @@ const Giftsets = (selectedVariant) => {
   const [isOpen, setIsOpen] = useState(false);
   const brands = ['Versace', 'Burberry', 'Gucci ', 'Valentino ', 'YSL', 'Viktor&Rolf'];
   const [selectedBrand, setSelectedBrand] = useState(null);
-
 
   const data = useLoaderData();
 
@@ -172,115 +170,13 @@ const Giftsets = (selectedVariant) => {
           </select>
         </div>
       </div>
-      {/* <div className="flex items-center">
-        <div className="relative flex gap-2 items-center p-2">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-2 px-6 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200"
-          >
-            <Filter size={18} className="text-gray-600" />
-            <span className="font-medium">
-              {selectedBrand || 'Shop by brand'}
-            </span>
-            <ChevronDown
-              size={16}
-              className={`text-gray-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-            />
-          </button>
 
-          {isOpen && (
-            <div className="absolute top-full left-4 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-              <button
-                onClick={() => {
-                  setSelectedBrand(null);
-                  setIsOpen(false);
-                }}
-                className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200"
-              >
-                All Brands
-              </button>
-              {brands.map((brand) => (
-                <button
-                  key={brand}
-                  onClick={() => {
-                    setSelectedBrand(brand);
-                    setIsOpen(false);
-                  }}
-                  className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200"
-                >
-                  {brand}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      </div> */}
 
       {/* Updated grid - 2 columns on mobile, 4 columns on desktop with increased spacing */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 p-4">
         {sortedProducts.length > 0 ? (
           sortedProducts.map(({ node }) => (
-            <Link
-              key={node.id}
-              to={`/products/${node.handle}`}
-              className="rounded-lg h-full flex flex-col overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
-            >
-              <div className="relative aspect-square p-2 w-full h-auto">
-                {node.images.edges[0] ? (
-                  <img
-                    src={node.images.edges[0].node.url}
-                    alt={node.title}
-                    className="w-full h-full object-contain"
-                  />
-                ) : (
-                  <img
-                    src="/api/placeholder/400/400"
-                    alt="Placeholder"
-                    className="w-full h-full object-contain"
-                  />
-                )}
-              </div>
-
-              <div className="p-3 flex flex-col justify-between h-full">
-                <div className="font-semibold text-black uppercase hover:underline truncate">
-                  {node.vendor || 'Unknown Brand'}
-                </div>
-                <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden max-h-12
-                line-clamp-2">
-                  {node.abbrTitle?.value
-                    ? node.abbrTitle.value
-                    : node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')}
-                </p>
-
-                <div>
-                  <p className={`font-bold ${node.selectedOrFirstAvailableVariant.compareAtPrice ? 'text-red-500' : ''}`}>
-                    ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                    {node.variants.edges[0]?.node.compareAtPrice && (
-                      <span className="ml-2 text-gray-500 line-through">
-                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
-                      </span>
-                    )}
-                  </p>
-                  <div className="2xl:flex 2xl:justify-end 2xl:flex-none 2xl:pr-4 py-4 2xl:py-0">
-                    <AddToCartButton
-                      disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
-                      onClick={() => {
-                        open('cart');
-                      }}
-                      lines={[
-                        {
-                          merchandiseId: node.selectedOrFirstAvailableVariant.id,
-                          quantity: 1,
-                          selectedVariant: node.selectedOrFirstAvailableVariant,
-                        },
-                      ]}
-                    >
-                      {node.selectedOrFirstAvailableVariant.availableForSale ? 'Add to cart' : 'Sold out'}
-                    </AddToCartButton>
-                  </div>
-                </div>
-              </div>
-            </Link>
+            <GalleryProductCard key={node.id} node={node} />
           ))
         ) : (
           <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">

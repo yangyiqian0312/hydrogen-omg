@@ -19,14 +19,14 @@ export function CartMain({layout, cart: originalCart, isLoggedIn}) {
   const withDiscount =
     cart &&
     Boolean(cart?.discountCodes?.filter((code) => code.applicable)?.length);
-  const className = `cart-main ${withDiscount ? 'with-discount' : ''}`;
+  const className = ` ${layout === 'page' ? 'cart-main' : 'cart-main h-full'} ${withDiscount ? 'with-discount' : ''}`;
   const cartHasItems = cart?.totalQuantity > 0;
   return (
     <div className={className}>
       <CartEmpty hidden={linesCount} layout={layout} />
-      <div className="cart-details">
-        <div aria-labelledby="cart-lines">
-          <ul>
+      <div className="cart-details flex flex-col h-full">
+        <div aria-labelledby="cart-lines" className="flex-1 min-h-0 h-1/2 overflow-hidden">
+          <ul className={`${layout === 'page' ? 'h-auto' : 'h-[calc(100%-26rem)] overflow-y-auto'}`}>
             {(cart?.lines?.nodes ?? []).map((line) => (
               <CartLineItem key={line.id} line={line} layout={layout} />
             ))}

@@ -3,9 +3,8 @@ import React from 'react';
 import { Heart, Filter, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useRef, useState, useEffect, useMemo } from 'react';
-
 import { useLoaderData } from '@remix-run/react';
-import { AddToCartButton } from '~/components/AddToCartButton';
+import GalleryProductCard from '~/components/GalleryProductCard';
 
 import { useSearchParams } from '@remix-run/react';
 
@@ -84,7 +83,6 @@ async function loadDeferredData({ context }) {
 
 
 const Men = (selectedVariant) => {
-
   const [searchParams] = useSearchParams();
   const urlBrand = searchParams.get('brand');
 
@@ -98,6 +96,8 @@ const Men = (selectedVariant) => {
   useEffect(() => {
     if (urlBrand) {
       setSelectedBrand(urlBrand);
+    } else {
+      setSelectedBrand(null);
     }
   }, [urlBrand]);
 
@@ -105,8 +105,6 @@ const Men = (selectedVariant) => {
   const data = useLoaderData();
 
   const products = data.menProducts?.collection?.products?.edges || [];
-  console.log("Products before filtering:", products);
-
 
   // Filter for products with "men" tag with extra logging
   const menProducts = useMemo(() => {
@@ -115,7 +113,7 @@ const Men = (selectedVariant) => {
       .sort((a, b) => b.node.totalInventory - a.node.totalInventory);
   }, [products]);
 
-  console.log("Filtered men products:", menProducts);
+
 
 
   const filteredProducts = useMemo(() => {
@@ -127,35 +125,23 @@ const Men = (selectedVariant) => {
       : menProducts;
   }, [menProducts, selectedBrand]);
 
+  const [sortedProducts, setSortedProducts] = useState(filteredProducts);
 
-  // const carouselRef = useRef(null);
-
-  // const scroll = (direction) => {
-  //   if (!carouselRef.current) return;
-
-  //   const scrollAmount = 320; // Width of one card
-  //   const currentScroll = carouselRef.current.scrollLeft;
-
-  //   if (direction === 'left') {
-  //     carouselRef.current.scrollTo({
-  //       left: currentScroll - scrollAmount,
-  //       behavior: 'smooth',
-  //     });
-  //   } else {
-  //     carouselRef.current.scrollTo({
-  //       left: currentScroll + scrollAmount,
-  //       behavior: 'smooth',
-  //     });
-  //   }
-  // };
- const [sortedProducts, setSortedProducts] = useState(filteredProducts);
-
-  // Update sortedProducts when filteredProducts changes
   useEffect(() => {
     setSortedProducts(filteredProducts);
-  }, [filteredProducts]);
+    console.log("filtered men products:", filteredProducts);
+  }, [selectedBrand]);
+
+  const [sortOption, setSortOption] = useState('');
+  // // Update sortedProducts when filteredProducts changes
+  // useEffect(() => {
+  //   setSortedProducts(filteredProducts);
+  //   setSortOption('');
+  //   console.log("Sorted products:", sortedProducts);
+  // }, [filteredProducts]);
 
   const handleSortChange = (sortOption) => {
+    setSortOption(sortOption);
     if (sortOption === 'price-asc') {
       setSortedProducts([...filteredProducts].sort((a, b) =>
         a.node.variants.edges[0].node.price.amount - b.node.variants.edges[0].node.price.amount
@@ -182,238 +168,20 @@ const Men = (selectedVariant) => {
         </div>
         <div className="flex items-center gap-2">
           <p className="text-sm font-medium text-gray-500">Sort by:</p>
-          <select onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-2 md:px-4 py-1">
-            <option value="" selected>Default</option>
+          <select value={sortOption} onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-2 md:px-4 py-1">
+            <option value="">Default</option>
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
             <option value="new">Newest</option>
           </select>
         </div>
       </div>
-      {/* <div className="flex items-center">
-        <div className="relative flex gap-2 items-center p-2">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-2 px-6 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200"
-          >
-            <Filter size={18} className="text-gray-600" />
-            <span className="font-medium">
-              {selectedBrand || 'Shop by brand'}
-            </span>
-            <ChevronDown
-              size={16}
-              className={`text-gray-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''
-                }`}
-            />
-          </button>
-
-          {isOpen && (
-            <div className="absolute top-full left-4 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-              <button
-                onClick={() => {
-                  setSelectedBrand(null);
-                  setIsOpen(false);
-                }}
-                className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200"
-              >
-                All Brands
-              </button>
-              {brands.map((brand) => (
-                <button
-                  key={brand}
-                  onClick={() => {
-                    setSelectedBrand(brand);
-                    setIsOpen(false);
-                  }}
-                  className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200"
-                >
-                  {brand}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4 p-4">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map(({ node }) => (
-            <div
-              key={node.id}
-              className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
-            >
-              <div className="relative aspect-square">
-                {node.images.edges[0] ? (
-                  <img
-                    src={node.images.edges[0].node.url}
-                    alt={node.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <img
-                    src="/api/placeholder/400/400"
-                    alt="Placeholder"
-                    className="w-full h-full object-cover"
-                  />
-                )}
-              </div>
-
-              <div className="m-2">
-                <Link
-                  to={`/products/${node.handle}`}
-                  className="font-semibold text-blue-600 hover:underline truncate"
-                >
-                  {node.vendor || 'Unknown Brand'}
-                  <p className="text-sm font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
-                    {node.title
-                      ? node.title
-                        .replace(new RegExp(`^${node.vendor}\\s*`), '')
-                        // .slice(0, -5)
-                      : 'N/A'}
-                  </p>
-                </Link>
-
-                <div>
-                  <p className="font-bold mb-4">
-                    ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                    {node.variants.edges[0]?.node.compareAtPrice && (
-                      <span className="ml-2 text-gray-500 line-through">
-                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
-                      </span>
-                    )}
-                  </p>
-                </div>
-
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="col-span-2 text-center py-8 text-gray-500">
-            No products found for {selectedBrand}
-          </div>
-        )}
-      </div> */}
-
-
-      <div className="flex items-center">
-        {/* <div className="relative">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-gray-100 to-gray-50 hover:from-gray-200 hover:to-gray-100 rounded-full shadow-sm border border-gray-200 transition-all duration-200"
-          >
-            <span className="font-medium text-gray-700">
-              {selectedBrand || 'Shop by brand'}
-            </span>
-            <ChevronDown
-              size={16}
-              className={`text-gray-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-            />
-          </button>
-
-          {isOpen && (
-            <div className="absolute top-full left-4 mt-2 w-52 bg-white rounded-lg shadow-lg py-2 z-50 border border-gray-100">
-              <div className="px-4 py-1 mb-1 text-xs font-medium text-gray-500 uppercase tracking-wide border-b border-gray-100">
-                Brands
-              </div>
-              <button
-                onClick={() => {
-                  setSelectedBrand(null);
-                  setIsOpen(false);
-                }}
-                className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between"
-              >
-                <span className="font-medium">All Brands</span>
-                {selectedBrand === null && <div className="w-2 h-2 rounded-full bg-green-500"></div>}
-              </button>
-              {brands.map((brand) => (
-                <button
-                  key={brand}
-                  onClick={() => {
-                    setSelectedBrand(brand);
-                    setIsOpen(false);
-                  }}
-                  className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between"
-                >
-                  <span>{brand}</span>
-                  {selectedBrand === brand && <div className="w-2 h-2 rounded-full bg-green-500"></div>}
-                </button>
-              ))}
-            </div>
-          )}
-        </div> */}
-      </div>
 
       {/* Updated grid - 2 columns on mobile, 4 columns on desktop with increased spacing */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 p-4">
         {sortedProducts.length > 0 ? (
           sortedProducts.map(({ node }) => (
-            <Link
-              key={node.id}
-              to={`/products/${node.handle}`}
-              className="rounded-lg flex flex-col overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
-            >
-              <div className="relative aspect-square p-1">
-                {node.images.edges[0] ? (
-                  <img
-                    src={node.images.edges[0].node.url}
-                    alt={node.title}
-                    className="w-full aspect-square object-contain"
-                  />
-                ) : (
-                  <img
-                    src="/api/placeholder/400/400"
-                    alt="Placeholder"
-                    className="w-full aspect-square object-contain"
-                  />
-                )}
-              </div>
-
-              <div className="p-3 flex flex-col h-full justify-between">
-                <div
-                  className="block"
-                >
-                  <div className="font-semibold text-black uppercase hover:underline truncate">
-                    {node.vendor || 'Unknown Brand'}
-                  </div>
-                  <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
-              h-auto max-h-12
-              line-clamp-2">
-                    {node.abbrTitle
-                      ? node.abbrTitle.value
-                      : node.title.replace(new RegExp(`^${node.vendor}\s*`), '')}
-                  </p>
-                </div>
-
-                <div className='pt-1'>
-                  <p className={`font-bold ${node.variants.edges[0]?.node.compareAtPrice ? 'text-red-500' : ''}`}>
-                    ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                    {node.variants.edges[0]?.node.compareAtPrice && (
-                      <span className="ml-2 text-gray-500 line-through">
-                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
-                      </span>
-                    )}
-                  </p>
-                  <div className="2xl:flex 2xl:justify-end 2xl:flex-none 2xl:pr-4 py-2 2xl:py-0">
-                    <AddToCartButton
-                      disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
-                      onClick={() => {
-                        open('cart');
-                      }}
-                      lines={[
-                        {
-                          merchandiseId: node.selectedOrFirstAvailableVariant.id,
-                          quantity: 1,
-                          selectedVariant: node.selectedOrFirstAvailableVariant,
-                        },
-                      ]}
-                    >
-                      {node.selectedOrFirstAvailableVariant.availableForSale ? 'Add to cart' : 'Sold out'}
-                    </AddToCartButton>
-                  </div>
-                </div>
-              </div>
-
-            </Link>
+            <GalleryProductCard key={node.id} node={node} />
           ))
         ) : (
           <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">
