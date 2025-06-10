@@ -3,6 +3,8 @@ import { Link } from '@remix-run/react';
 import { Instagram, Twitter, Youtube } from 'lucide-react';
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+
+
 const SocialFooter = ({isLoggedIn}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   // Add this state near the top of your component with other state declarations

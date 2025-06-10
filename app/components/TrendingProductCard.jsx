@@ -13,16 +13,16 @@ import { useAside } from './Aside';
  *   className?: string;
  * }} props
  */
-export function TrendingProductCard({ id, handle, title, vendor, selectedOrFirstAvailableVariant, images, variants, className = '' }) {
+export function TrendingProductCard({ id, handle, abbrTitle,title, vendor, selectedOrFirstAvailableVariant, images, variants, className = '' }) {
     const { open } = useAside();
     const price = Number(selectedOrFirstAvailableVariant.price.amount || 0).toFixed(2);
     const compareAtPrice = selectedOrFirstAvailableVariant.compareAtPrice?.amount;
     const imageUrl = images.edges[0]?.node.url || '/api/placeholder/400/400';
-    const displayTitle = title ? title.replace(new RegExp(`^${vendor}\\s*`), '') : 'N/A';
+    const displayTitle = abbrTitle?.value ? abbrTitle.value : title ? title.replace(new RegExp(`^${vendor}\\s*`), '') : 'N/A';
 
     return (
         <div className={className}>
-            <div className="w-full h-full flex justify-center flex-none ">
+            <div className="w-full h-full flex justify-center flex-none aspect-square ">
                 <a href={`/products/${handle}`}>
                     <img
                         src={imageUrl}
@@ -58,8 +58,8 @@ export function TrendingProductCard({ id, handle, title, vendor, selectedOrFirst
                         {displayTitle}
                     </p>
                 </Link>
-                <div className="flex justify-between py-2 md:gap-4">
-                    <div className="font-bold text-sm flex-none pt-2">
+                <div className="flex justify-between py-2 gap-4 flex-col md:flex-row w-full">
+                    <div className={`font-bold text-sm flex-none pt-2 ${compareAtPrice ? 'text-red-600' : ''}`}>
                         ${price}
                         {compareAtPrice && (
                             <span className="text-gray-500 line-through ml-2">
@@ -67,7 +67,7 @@ export function TrendingProductCard({ id, handle, title, vendor, selectedOrFirst
                             </span>
                         )}
                     </div>
-                    <div className="flex justify-end flex-none pr-4">
+                    <div className="flex md:justify-end justify-center md:flex-none pr-4">
                         <AddToCartButton
                             disabled={!selectedOrFirstAvailableVariant.availableForSale}
                             onClick={() => {

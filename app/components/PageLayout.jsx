@@ -27,11 +27,11 @@ export function PageLayout({
     <Aside.Provider>
       <CartAside cart={cart} />
       <SearchAside />
-      <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} isLoggedInPromise={isLoggedInPromise}/>
-      <Suspense fallback={<OldHeader header={header} cart={cart} isLoggedIn={false} publicStoreDomain={publicStoreDomain}/>}>
+      <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} isLoggedInPromise={isLoggedInPromise} />
+      <Suspense fallback={<OldHeader header={header} cart={cart} isLoggedIn={false} publicStoreDomain={publicStoreDomain} />}>
         <Await resolve={isLoggedInPromise}>
           {(isLoggedIn) => (
-            <OldHeader header={header} cart={cart} isLoggedIn={isLoggedIn} publicStoreDomain={publicStoreDomain}/>
+            <OldHeader header={header} cart={cart} isLoggedIn={isLoggedIn} publicStoreDomain={publicStoreDomain} />
           )}
         </Await>
       </Suspense>
@@ -47,7 +47,13 @@ export function PageLayout({
         header={header}
         publicStoreDomain={publicStoreDomain}
       /> */}
-      <SocialFooter />
+      <Suspense fallback={<SocialFooter isLoggedIn={false} />}>
+        <Await resolve={isLoggedInPromise}>
+          {(isLoggedIn) => (
+            <SocialFooter isLoggedIn={isLoggedIn} />
+          )}
+        </Await>
+      </Suspense>
     </Aside.Provider>
   );
 }

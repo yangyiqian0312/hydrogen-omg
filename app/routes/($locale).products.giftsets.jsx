@@ -2,7 +2,7 @@ import { defer } from '@shopify/remix-oxygen';
 import React from 'react';
 import { Heart, Filter, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 import { useLoaderData } from '@remix-run/react';
 import { AddToCartButton } from '~/components/AddToCartButton';
 
@@ -33,8 +33,6 @@ async function loadCriticalData({ context }) {
   const [{ collections }] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
     // Add other queries here, so that they are loaded in parallel
-    context.storefront.query(PROMOTING_PRODUCTS_QUERY),
-    context.storefront.query(TRENDING_PRODUCTS_QUERY),
     context.storefront.query(GIFT_PRODUCTS_QUERY),
     // context.storefront.query(VENDOR_PRODUCTS_QUERY),
   ]);
@@ -60,24 +58,15 @@ async function loadDeferredData({ context }) {
   //     return null;
   //   });
   try {
-    const promotingProducts = await context.storefront.query(
-      PROMOTING_PRODUCTS_QUERY,
-    );
-    const trendingProducts = await context.storefront.query(
-      TRENDING_PRODUCTS_QUERY,
-    );
     const giftProducts = await context.storefront.query(
       GIFT_PRODUCTS_QUERY,
     );
+
     // const vendorProducts = await context.storefront.query(
     //   VENDOR_PRODUCTS_QUERY,
     // );
     // Log the resolved data for debugging
-    console.log('Resolved Data in Loader:', promotingProducts);
-    console.log('Resolved Data in Loader:', trendingProducts);
     return {
-      promotingProducts: promotingProducts || null,
-      trendingProducts: trendingProducts || null,
       giftProducts: giftProducts || null,
       // vendorProducts: vendorProducts || null,
     };
@@ -107,18 +96,18 @@ const Giftsets = (selectedVariant) => {
 
 
   // Filter for products with "men" tag with extra logging
-  const giftProducts = products.filter(({ node }) => {
+  const giftProducts = useMemo(() => products.filter(({ node }) => {
     return node.tags && node.tags.includes('Gift Sets') || node.tags && node.tags.includes('Minis');
-  }).sort((a, b) => b.node.totalInventory - a.node.totalInventory);
+  }).sort((a, b) => b.node.totalInventory - a.node.totalInventory), [products]);
 
-  console.log("Filtered men products:", giftProducts);
+  console.log("Filtered gift set products:", giftProducts);
 
 
-  const filteredProducts = selectedBrand
+  const filteredProducts = useMemo(() => selectedBrand
     ? giftProducts.filter(
       ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
     ).sort((a, b) => b.node.totalInventory - a.node.totalInventory)
-    : giftProducts;
+    : giftProducts, [giftProducts, selectedBrand]);
 
 
 
@@ -142,10 +131,47 @@ const Giftsets = (selectedVariant) => {
       });
     }
   };
+  const [sortedProducts, setSortedProducts] = useState(filteredProducts);
 
+  // Update sortedProducts when filteredProducts changes
+  useEffect(() => {
+    setSortedProducts(filteredProducts);
+  }, [filteredProducts]);
+
+  const handleSortChange = (sortOption) => {
+    if (sortOption === 'price-asc') {
+      setSortedProducts([...filteredProducts].sort((a, b) =>
+        a.node.variants.edges[0].node.price.amount - b.node.variants.edges[0].node.price.amount
+      ));
+    } else if (sortOption === 'price-desc') {
+      setSortedProducts([...filteredProducts].sort((a, b) =>
+        b.node.variants.edges[0].node.price.amount - a.node.variants.edges[0].node.price.amount
+      ));
+    } else if (sortOption === 'new') {
+      setSortedProducts([...filteredProducts].sort((a, b) =>
+        b.node.createdAt.localeCompare(a.node.createdAt)
+      ));
+    } else {
+      setSortedProducts(filteredProducts);
+    }
+  };
 
   return (
-    <div>
+    <div className="flex flex-col md:gap-2">
+      <div className="flex justify-between md:p-4 pt-2 px-2 md:flex-row flex-col gap-2">
+        <div className="flex items-center gap-2">
+          <p className="text-sm font-medium text-gray-500">Showing {sortedProducts.length} products</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <p className="text-sm font-medium text-gray-500">Sort by:</p>
+          <select onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1">
+            <option value="" selected>Default</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="new">Newest</option>
+          </select>
+        </div>
+      </div>
       {/* <div className="flex items-center">
         <div className="relative flex gap-2 items-center p-2">
           <button
@@ -192,53 +218,69 @@ const Giftsets = (selectedVariant) => {
 
       {/* Updated grid - 2 columns on mobile, 4 columns on desktop with increased spacing */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 p-4">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map(({ node }) => (
+        {sortedProducts.length > 0 ? (
+          sortedProducts.map(({ node }) => (
             <Link
               key={node.id}
               to={`/products/${node.handle}`}
-              className="rounded-lg overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+              className="rounded-lg h-full flex flex-col overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
             >
-              <div className="relative aspect-square p-2">
-                  {node.images.edges[0] ? (
-                    <img
-                      src={node.images.edges[0].node.url}
-                      alt={node.title}
-                      className="w-full h-full object-contain"
-                    />
-                  ) : (
-                    <img
-                      src="/api/placeholder/400/400"
-                      alt="Placeholder"
-                      className="w-full h-full object-contain"
-                    />
-                  )}
+              <div className="relative aspect-square p-2 w-full h-auto">
+                {node.images.edges[0] ? (
+                  <img
+                    src={node.images.edges[0].node.url}
+                    alt={node.title}
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <img
+                    src="/api/placeholder/400/400"
+                    alt="Placeholder"
+                    className="w-full h-full object-contain"
+                  />
+                )}
+              </div>
+
+              <div className="p-3 flex flex-col justify-between h-full">
+                <div className="font-semibold text-black uppercase hover:underline truncate">
+                  {node.vendor || 'Unknown Brand'}
                 </div>
-
-                <div className="p-3">
-                  <div className="font-semibold text-black uppercase hover:underline truncate">
-                      {node.vendor || 'Unknown Brand'}
-                    </div>
-                    <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
-                h-auto max-h-12
+                <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden max-h-12
                 line-clamp-2">
-                      {node.title
-                        ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
-                        : 'N/A'}
-                    </p>
+                  {node.abbrTitle?.value
+                    ? node.abbrTitle.value
+                    : node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')}
+                </p>
 
-                  <div>
-                    <p className="font-bold">
-                      ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                      {node.variants.edges[0]?.node.compareAtPrice && (
-                        <span className="ml-2 text-gray-500 line-through">
-                          ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
-                        </span>
-                      )}
-                    </p>
+                <div>
+                  <p className={`font-bold ${node.selectedOrFirstAvailableVariant.compareAtPrice ? 'text-red-500' : ''}`}>
+                    ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
+                    {node.variants.edges[0]?.node.compareAtPrice && (
+                      <span className="ml-2 text-gray-500 line-through">
+                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
+                      </span>
+                    )}
+                  </p>
+                  <div className="2xl:flex 2xl:justify-end 2xl:flex-none 2xl:pr-4 py-4 2xl:py-0">
+                    <AddToCartButton
+                      disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
+                      onClick={() => {
+                        open('cart');
+                      }}
+                      lines={[
+                        {
+                          merchandiseId: node.selectedOrFirstAvailableVariant.id,
+                          quantity: 1,
+                          selectedVariant: node.selectedOrFirstAvailableVariant,
+                        },
+                      ]}
+                    >
+                      {node.selectedOrFirstAvailableVariant.availableForSale ? 'Add to cart' : 'Sold out'}
+                    </AddToCartButton>
                   </div>
                 </div>
-              </Link>
+              </div>
+            </Link>
           ))
         ) : (
           <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">
@@ -255,6 +297,32 @@ const Giftsets = (selectedVariant) => {
 export default Giftsets;
 
 const GIFT_PRODUCTS_QUERY = `#graphql
+fragment ProductVariant on ProductVariant {
+    availableForSale
+    compareAtPrice {
+      amount
+      currencyCode
+    }
+    id
+    price {
+      amount
+      currencyCode
+    }
+    product {
+      title
+      handle
+    }
+    selectedOptions {
+      name
+      value
+    }
+    sku
+    title
+    unitPrice {
+      amount
+      currencyCode
+    }
+  }  
   query GiftProducts {
     collection(id: "gid://shopify/Collection/285176168553") {
       title
@@ -275,6 +343,16 @@ const GIFT_PRODUCTS_QUERY = `#graphql
                   url
                 }  
               } 
+            }
+            abbrTitle: metafield(namespace: "custom", key: "abbrtitle") {
+              id
+              namespace
+              key
+              value
+            }
+            createdAt
+            selectedOrFirstAvailableVariant {
+              ...ProductVariant
             }
             variants(first: 10) {
               edges {
@@ -303,6 +381,12 @@ const FEATURED_COLLECTION_QUERY = `#graphql
   fragment FeaturedCollection on Collection {
     id
     title
+    abbrTitle: metafield(namespace: "custom", key: "abbrtitle") {
+              id
+              namespace
+              key
+              value
+            }
     image {
       id
       url
@@ -317,109 +401,6 @@ const FEATURED_COLLECTION_QUERY = `#graphql
     collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...FeaturedCollection
-      }
-    }
-  }
-`;
-
-const RECOMMENDED_PRODUCTS_QUERY = `#graphql
-  fragment RecommendedProduct on Product {
-    id
-    title
-    handle
-    priceRange {
-      minVariantPrice {
-        amount
-        currencyCode
-      }
-    }
-    images(first: 1) {
-      nodes {
-        id
-        url
-        altText
-        width
-        height
-      }
-    }
-  }
-  query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
-      nodes {
-        ...RecommendedProduct
-      }
-    }
-  }
-`;
-
-const PROMOTING_PRODUCTS_QUERY = `#graphql
-  query PromotingProducts {
-    products(first: 10, query: "tag:Promoting") {
-      edges {
-        node {
-          id
-          title
-          handle
-          tags
-          vendor
-          descriptionHtml
-          images(first: 1) {
-            edges {
-              node {
-                url
-              }
-            }
-          }
-          variants(first: 10) {
-            edges {
-              node {
-                id
-                title
-                price {
-                  amount
-                  currencyCode
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-const TRENDING_PRODUCTS_QUERY = `#graphql
-  query TrendingProducts {
-    products(first: 10, query: "tag:Trending") {
-      edges {
-        node {
-          id
-          title
-          handle
-          tags
-          vendor
-          descriptionHtml
-          images(first: 1) {
-            edges {
-              node {
-                url
-              }
-            }
-          }
-          variants(first: 10) {
-            edges {
-              node {
-                id
-                title
-                price {
-                  amount
-                  currencyCode
-                }
-              }
-            }
-          }
-        }
       }
     }
   }

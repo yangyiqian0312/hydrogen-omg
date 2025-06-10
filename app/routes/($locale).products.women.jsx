@@ -2,7 +2,7 @@ import { defer } from '@shopify/remix-oxygen';
 import React from 'react';
 import { Heart, Filter, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react'; // Add useMemo import
 
 import { useLoaderData } from '@remix-run/react';
 import { AddToCartButton } from '~/components/AddToCartButton';
@@ -35,8 +35,6 @@ async function loadCriticalData({ context }) {
   const [{ collections }] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
     // Add other queries here, so that they are loaded in parallel
-    context.storefront.query(PROMOTING_PRODUCTS_QUERY),
-    context.storefront.query(TRENDING_PRODUCTS_QUERY),
     context.storefront.query(WOMEN_PRODUCTS_QUERY),
     // context.storefront.query(VENDOR_PRODUCTS_QUERY),
   ]);
@@ -62,12 +60,7 @@ async function loadDeferredData({ context }) {
   //     return null;
   //   });
   try {
-    const promotingProducts = await context.storefront.query(
-      PROMOTING_PRODUCTS_QUERY,
-    );
-    const trendingProducts = await context.storefront.query(
-      TRENDING_PRODUCTS_QUERY,
-    );
+
     const womenProducts = await context.storefront.query(
       WOMEN_PRODUCTS_QUERY,
     );
@@ -75,11 +68,8 @@ async function loadDeferredData({ context }) {
     //   VENDOR_PRODUCTS_QUERY,
     // );
     // Log the resolved data for debugging
-    console.log('Resolved Data in Loader:', promotingProducts);
-    console.log('Resolved Data in Loader:', trendingProducts);
+    console.log('Resolved Data in Loader:', womenProducts);
     return {
-      promotingProducts: promotingProducts || null,
-      trendingProducts: trendingProducts || null,
       womenProducts: womenProducts || null,
       // vendorProducts: vendorProducts || null,
     };
@@ -102,13 +92,11 @@ const Women = (selectedVariant) => {
   const urlBrand = searchParams.get('brand');
   const urlTag = searchParams.get('tag');
 
-
   const [isOpen, setIsOpen] = useState(false);
   const brands = ['all brands', 'YSL', 'Bvlgari', 'Versace', 'Tiffany', 'Lattafa', 'Burberry', 'GUCCI', 'Givenchy', 'Valentino', 'Viktor & Rolf', 'Chloe', 'Prada', 'Carolina Herrera'];
   const tags = ['Minis'];
   const [selectedBrand, setSelectedBrand] = useState(urlBrand);
   const [selectedTag, setSelectedTag] = useState(urlTag);
-
 
   // Set selected brand from URL when component mounts or URL changes
   useEffect(() => {
@@ -124,57 +112,65 @@ const Women = (selectedVariant) => {
     }
   }, [urlBrand, urlTag]);
 
-
   const data = useLoaderData();
-
-  // const carouselRef = useRef(null);
-
-  // const scroll = (direction) => {
-  //   if (!carouselRef.current) return;
-
-  //   const scrollAmount = 320; // Width of one card
-  //   const currentScroll = carouselRef.current.scrollLeft;
-
-  //   if (direction === 'left') {
-  //     carouselRef.current.scrollTo({
-  //       left: currentScroll - scrollAmount,
-  //       behavior: 'smooth',
-  //     });
-  //   } else {
-  //     carouselRef.current.scrollTo({
-  //       left: currentScroll + scrollAmount,
-  //       behavior: 'smooth',
-  //     });
-  //   }
-  // };
-
-
-
 
   const products = data.womenProducts?.collection?.products?.edges || [];
 
-  // Filter for products with "Women" tag with extra logging
-  const womenProducts = products
-    .filter(({ node }) => node.tags && node.tags.includes('Women'))
-    .sort((a, b) => {if(a.node.vendor === b.node.vendor) return a.node.title.localeCompare(b.node.title); else return a.node.vendor.localeCompare(b.node.vendor)});
+  // Memoize womenProducts to prevent recalculation on every render
+  const womenProducts = useMemo(() => {
+    return products
+      .filter(({ node }) => node.tags && node.tags.includes('Women'))
+      .sort((a, b) => { 
+        if (a.node.vendor === b.node.vendor) 
+          return a.node.title.localeCompare(b.node.title); 
+        else 
+          return a.node.vendor.localeCompare(b.node.vendor) 
+      });
+  }, [products]);
 
-  const filteredProducts = selectedBrand
-    ? womenProducts.filter(
-      ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
-    )
-      .sort((a, b) => b.node.totalInventory - a.node.totalInventory)
-    : [];
+  // Memoize filteredProducts to prevent recalculation on every render
+  const filteredProducts = useMemo(() => {
+    if (selectedBrand) {
+      return womenProducts
+        .filter(({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase())
+        .sort((a, b) => b.node.totalInventory - a.node.totalInventory);
+    } else if (selectedTag) {
+      return womenProducts
+        .filter(({ node }) => node.tags && node.tags.includes(selectedTag))
+        .sort((a, b) => b.node.totalInventory - a.node.totalInventory);
+    } else {
+      return womenProducts;
+    }
+  }, [womenProducts, selectedBrand, selectedTag]);
 
-  const filteredProductsbyTags = selectedTag
-    ? womenProducts.filter(
-      ({ node }) => node.tags && node.tags.includes(selectedTag)
-    )
-      .sort((a, b) => b.node.totalInventory - a.node.totalInventory)
-    : [];
+  const [sortedProducts, setSortedProducts] = useState(filteredProducts);
+
+  // Update sortedProducts when filteredProducts changes
+  useEffect(() => {
+    setSortedProducts(filteredProducts);
+  }, [filteredProducts]);
+
+  const handleSortChange = (sortOption) => {
+    if (sortOption === 'price-asc') {
+      setSortedProducts([...filteredProducts].sort((a, b) =>
+        a.node.variants.edges[0].node.price.amount - b.node.variants.edges[0].node.price.amount
+      ));
+    } else if (sortOption === 'price-desc') {
+      setSortedProducts([...filteredProducts].sort((a, b) =>
+        b.node.variants.edges[0].node.price.amount - a.node.variants.edges[0].node.price.amount
+      ));
+    } else if (sortOption === 'new') {
+      setSortedProducts([...filteredProducts].sort((a, b) =>
+        b.node.createdAt.localeCompare(a.node.createdAt)
+      ));
+    } else {
+      setSortedProducts(filteredProducts);
+    }
+  };
 
   return (
-    <div>
-      <div className="flex items-center">
+    <div className="flex flex-col md:gap-2">
+      <div className="flex items-center hidden">
         <div className="relative">
           {/* <button
               onClick={() => setIsOpen(!isOpen)}
@@ -226,128 +222,28 @@ const Women = (selectedVariant) => {
             )} */}
         </div>
       </div>
-
+      <div className="flex justify-between md:p-4 pt-2 px-2 md:flex-row flex-col gap-2">
+        <div className="flex items-center gap-2">
+          <p className="text-sm font-medium text-gray-500">Showing {sortedProducts.length} products</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <p className="text-sm font-medium text-gray-500">Sort by:</p>
+          <select onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1">
+            <option value="" selected>Default</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="new">Newest</option>
+          </select>
+        </div>
+      </div>
       {/* Products grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 p-4">
-        {filteredProducts.length > 0 &&
-          filteredProducts.map(({ node }) => (
+        {sortedProducts.length > 0 &&
+          sortedProducts.map(({ node }) => (
             <Link
               to={`/products/${node.handle}`}
               key={node.id}
               className="rounded-lg flex flex-col overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
-            >
-              {/* Product card content remains the same */}
-                <div className="relative aspect-square p-1">
-                  {node.images.edges[0] ? (
-                    <img
-                      src={node.images.edges[0].node.url}
-                      alt={node.title}
-                      className="w-full aspect-square object-contain"
-                    />
-                  ) : (
-                    <img
-                      src="/api/placeholder/400/400"
-                      alt="Placeholder"
-                      className="w-full aspect-square object-contain"
-                    />
-                  )}
-                </div>
-
-                <div className="p-3 flex flex-col h-full justify-between">
-                  <div
-                    className="block"
-                  >
-                    <div className="font-semibold text-black uppercase hover:underline truncate">
-                      {node.vendor || 'Unknown Brand'}
-                    </div>
-                    <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
-                    h-auto max-h-12
-                    line-clamp-2">
-                      {node.title
-                        ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
-                        : 'N/A'}
-                    </p>
-                  </div>
-
-                  <div className='pt-1'>
-                    <p className="font-bold">
-                      ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                      {node.variants.edges[0]?.node.compareAtPrice && (
-                        <span className="ml-2 text-gray-500 line-through">
-                          ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
-                        </span>
-                      )}
-                    </p>
-                  </div>
-                </div>
-            </Link>
-          ))
-        }
-        {filteredProductsbyTags.length > 0 &&
-          filteredProductsbyTags.map(({ node }) => (
-            <Link
-              to={`/products/${node.handle}`}
-              key={node.id}
-              className="rounded-lg flex flex-col overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
-            >
-              {/* Product card content remains the same */}
-                <div className="relative aspect-square p-1">
-                  {node.images.edges[0] ? (
-                    <img
-                      src={node.images.edges[0].node.url}
-                      alt={node.title}
-                      className="w-full aspect-square object-contain"
-                    />
-                  ) : (
-                    <img
-                      src="/api/placeholder/400/400"
-                      alt="Placeholder"
-                      className="w-full aspect-square object-contain"
-                    />
-                  )}
-                </div>
-
-                <div className="p-3 flex flex-col h-full justify-between">
-                  <div
-                    className="block"
-                  >
-                    <div className="font-semibold text-black uppercase hover:underline truncate">
-                      {node.vendor || 'Unknown Brand'}
-                    </div>
-                    <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
-                    h-auto max-h-12
-                    line-clamp-2">
-                      {node.title
-                        ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
-                        : 'N/A'}
-                    </p>  
-                  </div>
-
-                  <div>
-                    <p className="font-bold">
-                      ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                      {node.variants.edges[0]?.node.compareAtPrice && (
-                        <span className="ml-2 text-gray-500 line-through">
-                          ${Number(node.variants.edges[0]?.node.compareAtPrice.amount || 0).toFixed(2)}
-                        </span>
-                      )}
-                    </p>
-                  </div>
-                </div>
-            </Link>
-          ))
-        }
-        {filteredProductsbyTags.length === 0 && filteredProducts.length == 0 && (urlBrand || urlTag) && (
-          <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">
-            No products found for {selectedTag || selectedBrand}
-          </div>
-        )}
-        {!urlBrand && !urlTag && (
-          womenProducts.map(({ node }) => (
-            <Link
-              to={`/products/${node.handle}`}
-              key={node.id}
-              className="rounded-lg flex flex-col overflow-hidden shadow-lg shadow-gray-300  hover:shadow-md transition-shadow duration-300"
             >
               {/* Product card content remains the same */}
               <div className="relative aspect-square p-1">
@@ -376,14 +272,14 @@ const Women = (selectedVariant) => {
                   <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
                     h-auto max-h-12
                     line-clamp-2">
-                    {node.title
-                      ? node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')
-                      : 'N/A'}
+                    {node.abbrTitle?.value
+                      ? node.abbrTitle.value
+                      : node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')}
                   </p>
                 </div>
 
                 <div className='pt-1'>
-                  <p className="font-bold">
+                  <p className={`font-bold ${node.variants.edges[0]?.node.compareAtPrice ? 'text-red-500' : ''}`}>
                     ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
                     {node.variants.edges[0]?.node.compareAtPrice && (
                       <span className="ml-2 text-gray-500 line-through">
@@ -391,11 +287,35 @@ const Women = (selectedVariant) => {
                       </span>
                     )}
                   </p>
+                  <div className="2xl:flex 2xl:justify-end 2xl:flex-none 2xl:pr-4 py-2 2xl:py-0">
+                    <AddToCartButton
+                      disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
+                      onClick={() => {
+                        open('cart');
+                      }}
+                      lines={[
+                        {
+                          merchandiseId: node.selectedOrFirstAvailableVariant.id,
+                          quantity: 1,
+                          selectedVariant: node.selectedOrFirstAvailableVariant,
+                        },
+                      ]}
+                    >
+                      {node.selectedOrFirstAvailableVariant.availableForSale ? 'Add to cart' : 'Sold out'}
+                    </AddToCartButton>
+                  </div>
                 </div>
               </div>
             </Link>
           ))
+        }
+
+        {sortedProducts.length == 0 && (
+          <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">
+            No products found for {selectedBrand ? selectedBrand : 'Women Collection'}
+          </div>
         )}
+
       </div>
     </div>
   );
@@ -440,6 +360,32 @@ export default Women;
 // `;
 
 const WOMEN_PRODUCTS_QUERY = `#graphql
+fragment ProductVariant on ProductVariant {
+    availableForSale
+    compareAtPrice {
+      amount
+      currencyCode
+    }
+    id
+    price {
+      amount
+      currencyCode
+    }
+    product {
+      title
+      handle
+    }
+    selectedOptions {
+      name
+      value
+    }
+    sku
+    title
+    unitPrice {
+      amount
+      currencyCode
+    }
+  }  
   query WomenProducts {
     collection(id: "gid://shopify/Collection/285176168553") {
       title
@@ -460,6 +406,16 @@ const WOMEN_PRODUCTS_QUERY = `#graphql
                   url
                 }  
               } 
+            }
+            abbrTitle: metafield(namespace: "custom", key: "abbrtitle") {
+              id
+              namespace
+              key
+              value
+            }
+            createdAt
+            selectedOrFirstAvailableVariant {
+              ...ProductVariant
             }
             variants(first: 10) {
               edges {
@@ -488,6 +444,12 @@ const FEATURED_COLLECTION_QUERY = `#graphql
   fragment FeaturedCollection on Collection {
     id
     title
+    abbrTitle: metafield(namespace: "custom", key: "abbrtitle") {
+              id
+              namespace
+              key
+              value
+            }
     image {
       id
       url
@@ -507,108 +469,6 @@ const FEATURED_COLLECTION_QUERY = `#graphql
   }
 `;
 
-const RECOMMENDED_PRODUCTS_QUERY = `#graphql
-  fragment RecommendedProduct on Product {
-    id
-    title
-    handle
-    priceRange {
-      minVariantPrice {
-        amount
-        currencyCode
-      }
-    }
-    images(first: 1) {
-      nodes {
-        id
-        url
-        altText
-        width
-        height
-      }
-    }
-  }
-  query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
-      nodes {
-        ...RecommendedProduct
-      }
-    }
-  }
-`;
-
-const PROMOTING_PRODUCTS_QUERY = `#graphql
-  query PromotingProducts {
-    products(first: 10, query: "tag:Promoting") {
-      edges {
-        node {
-          id
-          title
-          handle
-          tags
-          vendor
-          descriptionHtml
-          images(first: 1) {
-            edges {
-              node {
-                url
-              }
-            }
-          }
-          variants(first: 10) {
-            edges {
-              node {
-                id
-                title
-                price {
-                  amount
-                  currencyCode
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-const TRENDING_PRODUCTS_QUERY = `#graphql
-  query TrendingProducts {
-    products(first: 10, query: "tag:Trending") {
-      edges {
-        node {
-          id
-          title
-          handle
-          tags
-          vendor
-          descriptionHtml
-          images(first: 1) {
-            edges {
-              node {
-                url
-              }
-            }
-          }
-          variants(first: 10) {
-            edges {
-              node {
-                id
-                title
-                price {
-                  amount
-                  currencyCode
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 
 // const VENDOR_PRODUCTS_QUERY = `#graphql
 //   query VendorProducts {

@@ -153,8 +153,32 @@ export default function Homepage() {
   const videoProducts = products.filter(({ node }) => {
     return node.tags && node.tags.includes('Video');
   });
+  
+  // Extract video paths from Shopify Video products
+  const videoPaths = () => {
+    const paths = [];
+    for (const product of videoProducts) {
+      for(const media of product.node.media.edges) {
+        if(media.node.mediaContentType === 'VIDEO') {
+          paths.push(media.node);
+        }
+      }
+    }
+    return paths;
+  }
 
-  // console.log("Filtered video products:", videoProducts);
+  // Get Shopify direct CDN video URL
+  const getShopifyDirectVideoUrl = (videoSources) => {
+    // Find the MP4 source
+    const mp4Source = videoSources?.find(source => source.mimeType === 'video/mp4');
+    if (!mp4Source) return null;
+    
+    // Extract video ID and create direct URL
+    const match = mp4Source.url.match(/\/([a-f0-9]{32})\//);
+    if (!match) return null;
+    
+    return `https://cdn.shopify.com/videos/c/o/v/${match[1]}.mp4`;
+  };
 
   const testimonials = [
     {
@@ -354,17 +378,6 @@ export default function Homepage() {
     'bg-[#F6EDDF]'
   ]; // 展示图背景颜色
 
-  const videoPaths = [
-    '/assets/video/1.mp4',
-    '/assets/video/2.mp4',
-    '/assets/video/3.mp4',
-    '/assets/video/4.mp4',
-    // '/assets/video/5.mp4',
-    // 添加更多视频路径
-  ];
-
-
-
 
   const [currentTestimonialPage, setCurrentTestimonialPage] = useState(0);
   const [showModal, setShowModal] = useState(false);
@@ -486,6 +499,7 @@ export default function Homepage() {
     return () => clearInterval(interval);
   }, [banners.length]);
 
+  const [videoUrl, setVideoUrl] = useState({index: null, url: null});
   return (
     <div className="home w-full">
       {showModal && <Modal onClose={() => setShowModal(false)} />}
@@ -588,18 +602,35 @@ export default function Homepage() {
               key={node.id}
               className={`flex flex-col justify-between h-auto flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
             >
-              <div className="relative aspect-square">
+              <div className={`flex-none h-auto w-full ${videoUrl?.index === index && videoUrl?.url ? 'aspect-[2/3]' : 'aspect-[2/3]'}`}>
                 <Link
                   to={`/products/${node.handle}`}
                   onClick={(e) => {
                     if (!node?.handle) e.preventDefault();
                   }}
+                  onMouseOver={() => {
+                    for(const media of node.media.edges) {
+                      if(media.node.mediaContentType === 'VIDEO') {
+                        const videoUrl = getShopifyDirectVideoUrl(media.node.sources);
+                        setVideoUrl({index, url: videoUrl});
+                      }
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    setVideoUrl({index: null, url: null});
+                  }}
+                  className="w-full h-full"
                 >
-                  <img
-                    src={`/assets/presentation/${index + 1}.jpg`}
-                    alt={node.title}
-                    className="w-full h-full object-cover lazy"
-                  />
+                    {videoUrl?.index === index && videoUrl?.url && (
+                      <video src={videoUrl.url} autoPlay loop className="w-full aspect-[2/3] pt-2 h-full object-contain" />
+                    )}
+
+                    <img
+                      src={`/assets/presentation/${index + 1}.jpg`}
+                      alt={node.title}
+                      className={`${videoUrl?.index === index && videoUrl?.url ? 'hidden' : ''} w-full h-full object-cover lazy`}
+                    />
+
                 </Link>
               </div>
               <div className="p-4 lg:p-6 flex flex-col justify-between h-full">
@@ -613,7 +644,7 @@ export default function Homepage() {
                     {node.vendor || 'Unknown Brand'}
                   </div>
                   <div className="text-sm lg:text-base font-normal mb-2 text-wrap">
-                    {node.title}
+                    {node.abbrTitle?.value || node.title.replace(new RegExp(`^${node.vendor}\s*`), '')}
                   </div>
                   <p className="text-pink-600 font-bold mb-4">
                     ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
@@ -857,12 +888,14 @@ export default function Homepage() {
                   <div className="font-semibold text-blue-600 hover:underline truncate">
                     <span className="text-xs">{node.vendor || 'Unknown Brand'}</span>{' '}
                     <p className="text-xs font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-16">
-                      {node.title
-                        ? node.title.replace(
-                          new RegExp(`^${node.vendor}\\s*`),
-                          '',
-                        )
-                        : 'N/A'}
+                      {node.abbrTitle?.value
+                        ? node.abbrTitle.value
+                        : node.title
+                          ? node.title.replace(
+                            new RegExp(`^${node.vendor}\\s*`),
+                            '',
+                          )
+                          : 'N/A'}
                     </p>
                   </div>
                   <p className="font-bold mb-4">
@@ -942,12 +975,14 @@ export default function Homepage() {
                   <div className="font-semibold text-blue-600 hover:underline truncate">
                     {node.vendor || 'Unknown Brand'}{' '}
                     <p className="text-xs font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
-                      {node.title
-                        ? node.title.replace(
-                          new RegExp(`^${node.vendor}\\s*`),
-                          '',
-                        )
-                        : 'N/A'}
+                      {node.abbrTitle?.value
+                        ? node.abbrTitle.value
+                        : node.title
+                          ? node.title.replace(
+                            new RegExp(`^${node.vendor}\\s*`),
+                            '',
+                          )
+                          : 'N/A'}
                     </p>
                   </div>
                   <p className="font-bold mb-4">
@@ -1027,12 +1062,14 @@ export default function Homepage() {
                   <div className="font-semibold text-blue-600 hover:underline truncate">
                     {node.vendor || 'Unknown Brand'}{' '}
                     <p className="text-xs font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
-                      {node.title
-                        ? node.title.replace(
-                          new RegExp(`^${node.vendor}\\s*`),
-                          '',
-                        )
-                        : 'N/A'}
+                      {node.abbrTitle?.value
+                        ? node.abbrTitle.value
+                        : node.title
+                          ? node.title.replace(
+                            new RegExp(`^${node.vendor}\\s*`),
+                            '',
+                          )
+                          : 'N/A'}
                     </p>
                   </div>
                   <p className="font-bold mb-4">
@@ -1079,14 +1116,14 @@ export default function Homepage() {
               WebkitOverflowScrolling: 'touch',
             }}
           >
-            {videoPaths.map((video, index) => (
+            {videoPaths().map((video, index) => (
               <div
                 key={index}
                 className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300 relative"
               >
                 <video
                   ref={el => mobileVideoRefs.current[index] = el}
-                  src={video}
+                  src={getShopifyDirectVideoUrl(video.sources)}
                   className="w-full h-full object-cover"
                   controls={playingMobileIndex === index}
                   controlsList="nodownload nofullscreen noplaybackrate"
@@ -1658,7 +1695,7 @@ export default function Homepage() {
                         scrollbarWidth: 'none',
                       }}
                     >
-                      {videoPaths.map((video, index) => (
+                      {videoPaths().map((video, index) => (
                         <div
                           key={index}
                           className="max-w-[360px] h-full lg:w-1/3 w-1/2 flex-none rounded-lg snap-start hover:shadow-md transition-shadow duration-300 relative flex flex-col"
@@ -1666,7 +1703,7 @@ export default function Homepage() {
                           <div className="h-full shadow-lg shadow-gray-300">
                             <video
                               ref={el => desktopVideoRefs.current[index] = el}
-                              src={video}
+                              src={getShopifyDirectVideoUrl(video.sources)}
                               className="w-full h-full my-auto object-cover mx-auto"
                               controls={playingDesktopIndex === index}
                               controlsList="nodownload nofullscreen noplaybackrate"
@@ -1701,7 +1738,7 @@ export default function Homepage() {
                           </div>
                           {videoProducts[index] && (
                             <div className="flex flex-col md:flex-row justify-between flex-none pr-4 z-10 bg-white py-2 w-full">
-                              <div className="w-auto h-40 xl:h-60 xl:w-60">
+                              <div className="w-auto h-36 xl:h-60 xl:w-64">
                                 <Link
                                   to={`/products/${videoProducts[index].node.handle}`}
                                   className="w-full h-full"
@@ -1709,7 +1746,7 @@ export default function Homepage() {
                                   <img
                                     src={videoProducts[index].node.images.edges[0].node.url}
                                     alt={videoProducts[index].node.title}
-                                    className="w-full h-full object-cover border border-gray-200 rounded-lg"
+                                    className="w-full aspect-square object-cover border border-gray-200 rounded-lg"
                                   />
                                 </Link>
                               </div>
@@ -1723,7 +1760,7 @@ export default function Homepage() {
                                       {videoProducts[index].node.vendor}
                                     </span>
                                     <span className="xl:flex hidden text-xs font-semibold 2xl:text-md/6 text-gray-700">
-                                      {videoProducts[index].node.title}
+                                      {videoProducts[index].node.abbrTitle?.value || videoProducts[index].node.title.replace(new RegExp(`^${videoProducts[index].node.vendor}\s*`), '')}
                                     </span>
                                     <div className="flex flex-col xl:flex-row xl:gap-2 md:pt-2 xl:pt-4 xl:text-lg">
                                       <span className="font-bold text-red-600">
@@ -2107,7 +2144,7 @@ function RecommendedProducts({ products }) {
                       aspectRatio="1/1"
                       sizes="(min-width: 45em) 20vw, 50vw"
                     />
-                    <h4>{product.title}</h4>
+                    <h4>{product.abbrTitle?.value || product.title.replace(new RegExp(`^${product.vendor}\s*`), '')}</h4>
                     <small>
                       <Money data={product.priceRange.minVariantPrice} />
                     </small>
@@ -2132,6 +2169,7 @@ const ALL_PRODUCTS_QUERY = `
       currencyCode
     }
     id
+    
     price {
       amount
       currencyCode
@@ -2146,6 +2184,7 @@ const ALL_PRODUCTS_QUERY = `
     }
     sku
     title
+    
     unitPrice {
       amount
       currencyCode
@@ -2173,6 +2212,29 @@ const ALL_PRODUCTS_QUERY = `
             }
             selectedOrFirstAvailableVariant {
               ...ProductVariant
+            }
+            abbrTitle: metafield(namespace: "custom", key: "abbrtitle") {
+              id
+              namespace
+              key
+              value
+            }
+            media(first: 10) {
+              edges {
+                node {
+                  id
+                  mediaContentType
+                  ... on Video {
+                    sources {
+                      url
+                      mimeType
+                    }
+                    previewImage {
+                      url
+                    }
+                  }
+                }
+              }
             }
             variants(first: 10) {
               edges {
@@ -2204,6 +2266,12 @@ const FEATURED_COLLECTION_QUERY = `#graphql
   fragment FeaturedCollection on Collection {
     id
     title
+    abbrTitle: metafield(namespace: "custom", key: "abbrtitle") {
+              id
+              namespace
+              key
+              value
+            }
     image {
       id
       url

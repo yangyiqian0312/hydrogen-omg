@@ -48,7 +48,7 @@ function Modal({ onClose }) {
         {fetcher.data?.success ? (
           <div className="text-center p-8">
             <h2 className="text-2xl font-bold mb-4">Thank you for subscribing!</h2>
-            <p className="text-gray-600 mb-4">You'll receive your discount code shortly.</p>
+            <p className="text-gray-600 mb-4">Enjoy your 20% Off with code: <br /> <span className="font-bold">OMGBEAUTY20</span></p>
           </div>
         ) : (
           <>
