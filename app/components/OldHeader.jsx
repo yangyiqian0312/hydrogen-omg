@@ -284,7 +284,7 @@ export default function OldHeader({
 
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Link to="/" className="text-xl lg:text-2xl font-bold h-16 w-full">
+              <Link to="/" className="text-xl lg:text-2xl font-bold h-16 w-full max-w-[200px]">
                 <img src={logo} alt="OMG Beauty Box" className="h-16 w-full object-contain" />
               </Link>
             </div>

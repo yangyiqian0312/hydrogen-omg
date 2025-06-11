@@ -483,7 +483,7 @@ export default function Homepage() {
       link: '/account/subscribe',
     },
     {
-      image: '/assets/BANNER.png',
+      image: '/assets/banner.jpg',
       link: '/account/subscribe',
     },
     {
@@ -495,7 +495,7 @@ export default function Homepage() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentBanner((prev) => (prev + 1) % banners.length);
-    }, 4000);
+    }, 5000);
     return () => clearInterval(interval);
   }, [banners.length]);
 
@@ -524,7 +524,7 @@ export default function Homepage() {
                 <img
                   src={banner.image}
                   alt="Banner"
-                  className="w-full h-auto overflow-hidden max-h-[400px] object-contain bg-red-300 mt-2 md:mt-0"
+                  className="w-full h-full overflow-hidden max-h-[400px] object-fill bg-red-300 mt-2 md:mt-0"
                 />
               </a>
             ))}
@@ -542,7 +542,7 @@ export default function Homepage() {
           </div>
           <div
             onClick={() => setShowModal(true)}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 block w-2/3 h-3/4 cursor-pointer z-20"
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 block w-2/3 h-3/4 cursor-pointer z-5"
           />
         </div>
 
@@ -622,7 +622,7 @@ export default function Homepage() {
                   className="w-full h-full"
                 >
                     {videoUrl?.index === index && videoUrl?.url && (
-                      <video src={videoUrl.url} autoPlay loop className="w-full aspect-[2/3] pt-2 h-full object-contain" />
+                      <video src={videoUrl.url} autoPlay loop  className="w-full aspect-[2/3] pt-2 h-full object-contain" />
                     )}
 
                     <img

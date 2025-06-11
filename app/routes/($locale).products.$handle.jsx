@@ -217,7 +217,6 @@ export default function Product() {
                   onError={(e) => console.error('Video error:', e)}
                   onLoadStart={() => console.log('Video loading started')}
                   autoPlay
-                  muted
                   loop
                   className="w-full h-full object-contain transition-transform duration-700 hover:scale-105 xl:p-8 p-2"
                 />
