@@ -145,13 +145,17 @@ const Women = (selectedVariant) => {
   }, [womenProducts, selectedBrand, selectedTag]);
 
   const [sortedProducts, setSortedProducts] = useState(filteredProducts);
+  const [sortOption, setSortOption] = useState('');
 
   // Update sortedProducts when filteredProducts changes
   useEffect(() => {
     setSortedProducts(filteredProducts);
-  }, [filteredProducts]);
+    setSortOption('');
+  }, [selectedBrand, selectedTag]);
+
 
   const handleSortChange = (sortOption) => {
+    setSortOption(sortOption);
     if (sortOption === 'price-asc') {
       setSortedProducts([...filteredProducts].sort((a, b) =>
         a.node.variants.edges[0].node.price.amount - b.node.variants.edges[0].node.price.amount
@@ -168,6 +172,7 @@ const Women = (selectedVariant) => {
       setSortedProducts(filteredProducts);
     }
   };
+
 
   return (
     <div className="flex flex-col md:gap-2">
@@ -229,8 +234,8 @@ const Women = (selectedVariant) => {
         </div>
         <div className="flex items-center gap-2">
           <p className="text-sm font-medium text-gray-500">Sort by:</p>
-          <select onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1">
-            <option value="" selected>Default</option>
+          <select value={sortOption} onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1">
+            <option value="">Default</option>
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
             <option value="new">Newest</option>

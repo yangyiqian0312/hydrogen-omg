@@ -428,7 +428,7 @@ export function FeaturedProductsCarousel() {
             {/* Navigation Buttons */}
             <button
               onClick={prevSlide}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-full px-4 flex items-center justify-center"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-5 h-full px-4 flex items-center justify-center"
               aria-label="Previous slide"
             >
               <ChevronLeft className="w-8 h-8 text-gray-400 hover:text-gray-600" />
@@ -436,7 +436,7 @@ export function FeaturedProductsCarousel() {
 
             <button
               onClick={nextSlide}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-full px-4 flex items-center justify-center"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-5 h-full px-4 flex items-center justify-center"
               aria-label="Next slide"
             >
               <ChevronRight className="w-8 h-8 text-gray-400 hover:text-gray-600" />

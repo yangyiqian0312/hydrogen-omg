@@ -5,6 +5,7 @@ import { useAside } from '~/components/Aside';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, User, Search, Menu, X, ChevronDown } from 'lucide-react';
 import Modal from '~/components/Modal';
+import logo from '~/assets/logo.png';
 /**
  * @param {Pick<HeaderProps, 'isLoggedIn' | 'cart'>}
  */
@@ -268,7 +269,7 @@ export default function OldHeader({
       {/* Navigation */}
       <nav className="bg-white">
         <div className="max-w-full mx-auto px-2 md:px-4 xl:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-20">
             {/* Mobile Menu Button */}
             <button
               className="lg:hidden"
@@ -283,8 +284,8 @@ export default function OldHeader({
 
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Link to="/" className="text-xl lg:text-2xl font-bold">
-                OMG BEAUTY BOX
+              <Link to="/" className="text-xl lg:text-2xl font-bold h-16 w-full">
+                <img src={logo} alt="OMG Beauty Box" className="h-16 w-full object-contain" />
               </Link>
             </div>
 

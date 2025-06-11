@@ -65,7 +65,7 @@ const SocialFooter = ({isLoggedIn}) => {
     },
     {
       title: 'Gift Sets',
-      to: 'products/giftset'
+      to: 'products/giftsets'
     },
     {
       title: 'New Arrivals',

@@ -126,13 +126,14 @@ const Men = (selectedVariant) => {
   }, [menProducts, selectedBrand]);
 
   const [sortedProducts, setSortedProducts] = useState(filteredProducts);
-
+  const [sortOption, setSortOption] = useState('');
   useEffect(() => {
     setSortedProducts(filteredProducts);
+    setSortOption('');
     console.log("filtered men products:", filteredProducts);
   }, [selectedBrand]);
 
-  const [sortOption, setSortOption] = useState('');
+  
   // // Update sortedProducts when filteredProducts changes
   // useEffect(() => {
   //   setSortedProducts(filteredProducts);

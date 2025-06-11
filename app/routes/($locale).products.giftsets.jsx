@@ -90,8 +90,6 @@ const Giftsets = (selectedVariant) => {
   const data = useLoaderData();
 
   const products = data.giftProducts?.collection?.products?.edges || [];
-  console.log("Products before filtering:", products);
-
 
   // Filter for products with "men" tag with extra logging
   const giftProducts = useMemo(() => products.filter(({ node }) => {
@@ -130,13 +128,16 @@ const Giftsets = (selectedVariant) => {
     }
   };
   const [sortedProducts, setSortedProducts] = useState(filteredProducts);
+  const [sortOption, setSortOption] = useState('');
 
   // Update sortedProducts when filteredProducts changes
   useEffect(() => {
     setSortedProducts(filteredProducts);
-  }, [filteredProducts]);
+    setSortOption('');
+  }, [selectedBrand]);
 
   const handleSortChange = (sortOption) => {
+    setSortOption(sortOption);
     if (sortOption === 'price-asc') {
       setSortedProducts([...filteredProducts].sort((a, b) =>
         a.node.variants.edges[0].node.price.amount - b.node.variants.edges[0].node.price.amount
@@ -162,8 +163,8 @@ const Giftsets = (selectedVariant) => {
         </div>
         <div className="flex items-center gap-2">
           <p className="text-sm font-medium text-gray-500">Sort by:</p>
-          <select onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1">
-            <option value="" selected>Default</option>
+          <select value={sortOption} onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1">
+            <option value="">Default</option>
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
             <option value="new">Newest</option>
