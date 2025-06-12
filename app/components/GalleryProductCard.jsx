@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { AddToCartButton } from '~/components/AddToCartButton';
 export default function GalleryProductCard({ node }) {
     const { open } = useAside();
+    const compareAtPrice = node.variants.edges[0]?.node.compareAtPrice? Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2): null;
+    const price= Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2);
+    const discount = node.variants.edges[0]?.node.compareAtPrice?  ((compareAtPrice - price) / compareAtPrice) * 100 : 0;
     
     return (
         <div
@@ -26,6 +29,7 @@ export default function GalleryProductCard({ node }) {
                         className="w-full aspect-square object-contain"
                     />
                 )}
+                { discount !=0 &&<span className="ml-2 mt-2 absolute top-0 left-0 text-red-500 font-semibold bg-pink-100 px-4  rounded">{discount.toFixed(0)}% OFF</span>}
             </Link>
 
             <div className="p-3 flex flex-col h-full justify-between">

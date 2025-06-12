@@ -153,13 +153,13 @@ export default function Homepage() {
   const videoProducts = products.filter(({ node }) => {
     return node.tags && node.tags.includes('Video');
   });
-  
+
   // Extract video paths from Shopify Video products
   const videoPaths = () => {
     const paths = [];
     for (const product of videoProducts) {
-      for(const media of product.node.media.edges) {
-        if(media.node.mediaContentType === 'VIDEO') {
+      for (const media of product.node.media.edges) {
+        if (media.node.mediaContentType === 'VIDEO') {
           paths.push(media.node);
         }
       }
@@ -172,11 +172,11 @@ export default function Homepage() {
     // Find the MP4 source
     const mp4Source = videoSources?.find(source => source.mimeType === 'video/mp4');
     if (!mp4Source) return null;
-    
+
     // Extract video ID and create direct URL
     const match = mp4Source.url.match(/\/([a-f0-9]{32})\//);
     if (!match) return null;
-    
+
     return `https://cdn.shopify.com/videos/c/o/v/${match[1]}.mp4`;
   };
 
@@ -499,7 +499,7 @@ export default function Homepage() {
     return () => clearInterval(interval);
   }, [banners.length]);
 
-  const [videoUrl, setVideoUrl] = useState({index: null, url: null});
+  const [videoUrl, setVideoUrl] = useState({ index: null, url: null });
   return (
     <div className="home w-full">
       {showModal && <Modal onClose={() => setShowModal(false)} />}
@@ -609,53 +609,60 @@ export default function Homepage() {
                     if (!node?.handle) e.preventDefault();
                   }}
                   onMouseOver={() => {
-                    for(const media of node.media.edges) {
-                      if(media.node.mediaContentType === 'VIDEO') {
+                    for (const media of node.media.edges) {
+                      if (media.node.mediaContentType === 'VIDEO') {
                         const videoUrl = getShopifyDirectVideoUrl(media.node.sources);
-                        setVideoUrl({index, url: videoUrl});
+                        setVideoUrl({ index, url: videoUrl });
                       }
                     }
                   }}
                   onMouseLeave={() => {
-                    setVideoUrl({index: null, url: null});
+                    setVideoUrl({ index: null, url: null });
                   }}
                   className="w-full h-full"
                 >
-                    {videoUrl?.index === index && videoUrl?.url && (
-                      <video src={videoUrl.url} autoPlay loop  className="w-full aspect-[2/3] pt-2 h-full object-contain" />
-                    )}
+                  {videoUrl?.index === index && videoUrl?.url && (
+                    <video src={videoUrl.url} autoPlay loop className="w-full aspect-[2/3] pt-2 h-full object-contain" />
+                  )}
 
-                    <img
-                      src={`/assets/presentation/${index + 1}.jpg`}
-                      alt={node.title}
-                      className={`${videoUrl?.index === index && videoUrl?.url ? 'hidden' : ''} w-full h-full object-cover lazy`}
-                    />
+                  <img
+                    src={`/assets/presentation/${index + 1}.jpg`}
+                    alt={node.title}
+                    className={`${videoUrl?.index === index && videoUrl?.url ? 'hidden' : ''} w-full h-full object-cover lazy`}
+                  />
 
                 </Link>
               </div>
-              <div className="p-4 lg:p-6 flex flex-col justify-between h-full">
+              <div className="relative p-4 lg:p-6 flex flex-col gap-4 justify-between h-full">
                 <Link
                   to={`/products/${node.handle}`}
                   onClick={(e) => {
                     if (!node?.handle) e.preventDefault();
                   }}
+                  className='h-full'
                 >
                   <div className="text-md lg:text-lg font-medium text-black uppercase tracking-wider mb-2">
                     {node.vendor || 'Unknown Brand'}
                   </div>
-                  <div className="text-sm lg:text-base font-normal mb-2 text-wrap">
+                  <div className="text-sm lg:text-base font-normal mb-2 text-wrap h-10">
                     {node.abbrTitle?.value || node.title.replace(new RegExp(`^${node.vendor}\s*`), '')}
                   </div>
-                  <p className="text-pink-600 font-bold mb-4">
+                  <div className="text-pink-600 font-bold md:pb-4 pb-2">
                     ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
                     {node.variants.edges[0]?.node.compareAtPrice.amount && (
                       <span className="text-gray-500 line-through ml-2">
                         ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
                       </span>
                     )}
-                  </p>
+                    
+                  </div>
+                  {node.variants.edges[0]?.node.compareAtPrice.amount && (
+                      <span className="mb-2 w-auto text-red-500 font-semibold bg-pink-100 px-4 rounded">
+                        {((Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2) - Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)) / Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2) * 100).toFixed(0)}% OFF
+                      </span>
+                    )}
                 </Link>
-                <div className="sm:flex sm:justify-end sm:flex-none sm:pr-4 py-2 sm:py-0">
+                <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 2xl:px-8 sm:flex sm:justify-end sm:flex-none sm:pr-4 py-2 sm:py-0">
                   <AddToCartButton
                     disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
                     onClick={() => {
@@ -863,71 +870,17 @@ export default function Homepage() {
           >
             {' '}
             {trendingProducts.map(({ node }, index) => (
-              node.selectedOrFirstAvailableVariant.availableForSale && (<Link
-                key={node.id}
-                to={`/products/${node.handle}`}
-                className="flex-none w-2/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
-              >
-                <div className="relative aspect-square">
-                  {node.images.edges[0] ? (
-                    <img
-                      src={node.images.edges[0].node.url} // 商品图片 URL
-                      alt={node.title}
-                      className="w-full h-full object-cover" // 确保图片填充整个容器
-                    />
-                  ) : (
-                    <img
-                      src="/api/placeholder/400/400" // 占位图片
-                      alt="Placeholder"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
+              node.selectedOrFirstAvailableVariant.availableForSale && (
+                <div
+                  key={node.id}
+                  className="flex-none w-2/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+                >
+                  <TrendingProductCard
+                    {...node}
+                    className="flex flex-col w-full h-auto overflow-hidden"
+                  />
                 </div>
-
-                <div className="m-2">
-                  <div className="font-semibold text-blue-600 hover:underline truncate">
-                    <span className="text-xs">{node.vendor || 'Unknown Brand'}</span>{' '}
-                    <p className="text-xs font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-16">
-                      {node.abbrTitle?.value
-                        ? node.abbrTitle.value
-                        : node.title
-                          ? node.title.replace(
-                            new RegExp(`^${node.vendor}\\s*`),
-                            '',
-                          )
-                          : 'N/A'}
-                    </p>
-                  </div>
-                  <p className="font-bold mb-4">
-                    $
-                    {Number(
-                      node.variants.edges[0]?.node.price.amount || 0,
-                    ).toFixed(2)}
-                    {node.variants.edges[0]?.node.compareAtPrice.amount && (
-                      <span className="text-gray-500 line-through ml-2">
-                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
-                      </span>
-                    )}
-                  </p>
-                  <div className="py-2">
-                    <AddToCartButton
-                      disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
-                      onClick={() => {
-                        open('cart');
-                      }}
-                      lines={[
-                        {
-                          merchandiseId: node.variants.edges[0]?.node.id,
-                          quantity: 1,
-                          selectedVariant: node.selectedOrFirstAvailableVariant,
-                        },
-                      ]}
-                    >
-                      {node.selectedOrFirstAvailableVariant.availableForSale ? 'Add to Cart' : 'Sold out'}
-                    </AddToCartButton>
-                  </div>
-                </div>
-              </Link>)
+              )
             ))}
           </div>
         </div>
@@ -950,71 +903,17 @@ export default function Homepage() {
           >
             {' '}
             {promotingProducts_women.map(({ node }, index) => (
-              node.selectedOrFirstAvailableVariant.availableForSale && (<Link
-                key={node.id}
-                to={`/products/${node.handle}`}
-                className="flex-none w-2/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
-              >
-                <div className="relative aspect-square">
-                  {node.images.edges[0] ? (
-                    <img
-                      src={node.images.edges[0].node.url} // 商品图片 URL
-                      alt={node.title}
-                      className="w-full h-full object-cover" // 确保图片填充整个容器
-                    />
-                  ) : (
-                    <img
-                      src="/api/placeholder/400/400" // 占位图片
-                      alt="Placeholder"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
+              node.selectedOrFirstAvailableVariant.availableForSale && (
+                <div
+                  key={node.id}
+                  className="flex-none w-2/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+                >
+                  <TrendingProductCard
+                    {...node}
+                    className="flex flex-col w-full h-auto overflow-hidden"
+                  />
                 </div>
-
-                <div className="m-2">
-                  <div className="font-semibold text-blue-600 hover:underline truncate">
-                    {node.vendor || 'Unknown Brand'}{' '}
-                    <p className="text-xs font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
-                      {node.abbrTitle?.value
-                        ? node.abbrTitle.value
-                        : node.title
-                          ? node.title.replace(
-                            new RegExp(`^${node.vendor}\\s*`),
-                            '',
-                          )
-                          : 'N/A'}
-                    </p>
-                  </div>
-                  <p className="font-bold mb-4">
-                    $
-                    {Number(
-                      node.variants.edges[0]?.node.price.amount || 0,
-                    ).toFixed(2)}
-                    {node.variants.edges[0]?.node.compareAtPrice.amount && (
-                      <span className="text-gray-500 line-through ml-2">
-                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
-                      </span>
-                    )}
-                  </p>
-                  <div className="py-2">
-                    <AddToCartButton
-                      disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
-                      onClick={() => {
-                        open('cart');
-                      }}
-                      lines={[
-                        {
-                          merchandiseId: node.variants.edges[0]?.node.id,
-                          quantity: 1,
-                          selectedVariant: node.selectedOrFirstAvailableVariant,
-                        },
-                      ]}
-                    >
-                      {node.selectedOrFirstAvailableVariant.availableForSale ? 'Add to Cart' : 'Sold out'}
-                    </AddToCartButton>
-                  </div>
-                </div>
-              </Link>)
+              )
             ))}
           </div>
         </div>
@@ -1037,71 +936,17 @@ export default function Homepage() {
           >
             {' '}
             {promotingProducts_men.map(({ node }, index) => (
-              node.selectedOrFirstAvailableVariant.availableForSale && (<Link
-                key={node.id}
-                to={`/products/${node.handle}`}
-                className="flex-none w-2/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
-              >
-                <div className="relative aspect-square">
-                  {node.images.edges[0] ? (
-                    <img
-                      src={node.images.edges[0].node.url} // 商品图片 URL
-                      alt={node.title}
-                      className="w-full h-full object-cover" // 确保图片填充整个容器
-                    />
-                  ) : (
-                    <img
-                      src="/api/placeholder/400/400" // 占位图片
-                      alt="Placeholder"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
+              node.selectedOrFirstAvailableVariant.availableForSale && (
+                <div
+                  key={node.id}
+                  className="flex-none w-2/3 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+                >
+                  <TrendingProductCard
+                    {...node}
+                    className="flex flex-col w-full h-auto overflow-hidden"
+                  />
                 </div>
-
-                <div className="m-2">
-                  <div className="font-semibold text-blue-600 hover:underline truncate">
-                    {node.vendor || 'Unknown Brand'}{' '}
-                    <p className="text-xs font-normal mb-4 overflow-hidden text-ellipsis whitespace-normal break-words h-12">
-                      {node.abbrTitle?.value
-                        ? node.abbrTitle.value
-                        : node.title
-                          ? node.title.replace(
-                            new RegExp(`^${node.vendor}\\s*`),
-                            '',
-                          )
-                          : 'N/A'}
-                    </p>
-                  </div>
-                  <p className="font-bold mb-4">
-                    $
-                    {Number(
-                      node.variants.edges[0]?.node.price.amount || 0,
-                    ).toFixed(2)}
-                    {node.variants.edges[0]?.node.compareAtPrice.amount && (
-                      <span className="text-gray-500 line-through ml-2">
-                        ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
-                      </span>
-                    )}
-                  </p>
-                  <div className="py-2">
-                    <AddToCartButton
-                      disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
-                      onClick={() => {
-                        open('cart');
-                      }}
-                      lines={[
-                        {
-                          merchandiseId: node.variants.edges[0]?.node.id,
-                          quantity: 1,
-                          selectedVariant: node.selectedOrFirstAvailableVariant,
-                        },
-                      ]}
-                    >
-                      {node.selectedOrFirstAvailableVariant.availableForSale ? 'Add to Cart' : 'Sold out'}
-                    </AddToCartButton>
-                  </div>
-                </div>
-              </Link>)
+              )
             ))}
           </div>
         </div>

@@ -16,13 +16,14 @@ import { useAside } from './Aside';
 export function TrendingProductCard({ id, handle, abbrTitle,title, vendor, selectedOrFirstAvailableVariant, images, variants, className = '' }) {
     const { open } = useAside();
     const price = Number(selectedOrFirstAvailableVariant.price.amount || 0).toFixed(2);
-    const compareAtPrice = selectedOrFirstAvailableVariant.compareAtPrice?.amount;
+    const compareAtPrice = Number(selectedOrFirstAvailableVariant.compareAtPrice?.amount).toFixed(2);
+    const discount = selectedOrFirstAvailableVariant.compareAtPrice ? ((compareAtPrice - price) / compareAtPrice) * 100 : 0;
     const imageUrl = images.edges[0]?.node.url || '/api/placeholder/400/400';
     const displayTitle = abbrTitle?.value ? abbrTitle.value : title ? title.replace(new RegExp(`^${vendor}\\s*`), '') : 'N/A';
 
     return (
         <div className={className}>
-            <div className="w-full h-full flex justify-center flex-none aspect-square ">
+            <div className="w-full h-full flex justify-center flex-none aspect-square relative">
                 <a href={`/products/${handle}`}>
                     <img
                         src={imageUrl}
@@ -30,6 +31,7 @@ export function TrendingProductCard({ id, handle, abbrTitle,title, vendor, selec
                         className="h-full w-full object-cover"
                     />
                 </a>
+                { discount &&<span className="ml-2 mt-2 absolute top-0 left-0 text-red-500 font-semibold bg-pink-100 px-4  rounded">{discount.toFixed(0)}% OFF</span>}
             </div>
             <div className="w-full h-full text-left flex-grow flex flex-col gap-0 justify-between px-2 border-t border-gray-200 pt-2">
                 <Link
@@ -54,7 +56,7 @@ export function TrendingProductCard({ id, handle, abbrTitle,title, vendor, selec
                         ))}
                         <span >5.0</span>
                       </div>
-                    <p className="text-xs font-normal mb-2 p-4 h-24 w-full text-ellipsis">
+                    <p className="text-xs font-normal mb-2 p-4 h-12 md:h-20 w-full text-ellipsis">
                         {displayTitle}
                     </p>
                 </Link>
