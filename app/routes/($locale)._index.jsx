@@ -70,23 +70,12 @@ async function loadDeferredData({ context }) {
   //     return null;
   //   });
   try {
-    // const promotingProducts = await context.storefront.query(
-    //   PROMOTING_PRODUCTS_QUERY,
-    // );
-    // const trendingProducts = await context.storefront.query(
-    //   TRENDING_PRODUCTS_QUERY,
-    // );
-    // const newProducts = await context.storefront.query(
-    //   NEW_PRODUCTS_QUERY,
-    // );
 
     const allProducts = await context.storefront.query(
       ALL_PRODUCTS_QUERY,
     );
 
     // Log the resolved data for debugging
-    // console.log('Resolved Data in Loader:', promotingProducts);
-    //console.log('Resolved Data in Loader:', trendingProducts);
     return {
       allProducts: allProducts || null,
     };
@@ -136,13 +125,10 @@ export default function Homepage() {
     return node.tags && node.tags.includes('men') && node.tags.includes('Promoting');
   });
 
-  console.log("Filtered promoting products:", promotingProducts);
-
   const trendingProducts = products.filter(({ node }) => {
     return node.tags && node.tags.includes('Trending');
   });
 
-  console.log("Filtered trending products:", trendingProducts);
 
   const newProducts = products.filter(({ node }) => {
     return node.tags && node.tags.includes('New Products');
@@ -644,7 +630,7 @@ export default function Homepage() {
                   <div className="text-md lg:text-lg font-medium text-black uppercase tracking-wider mb-2">
                     {node.vendor || 'Unknown Brand'}
                   </div>
-                  <div className="text-sm lg:text-base font-normal mb-2 text-wrap h-10">
+                  <div className="text-sm lg:text-base font-normal mb-2 text-wrap h-12 md:h-10">
                     {node.abbrTitle?.value || node.title.replace(new RegExp(`^${node.vendor}\s*`), '')}
                   </div>
                   <div className="text-pink-600 font-bold md:pb-4 pb-2">
@@ -657,12 +643,12 @@ export default function Homepage() {
                     
                   </div>
                   {node.variants.edges[0]?.node.compareAtPrice.amount && (
-                      <span className="mb-2 w-auto text-red-500 font-semibold bg-pink-100 px-4 rounded">
+                      <span className="mb-2 w-auto text-red-500 font-semibold bg-pink-100 px-2 sm:px-4 rounded">
                         {((Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2) - Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)) / Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2) * 100).toFixed(0)}% OFF
                       </span>
                     )}
                 </Link>
-                <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 2xl:px-8 sm:flex sm:justify-end sm:flex-none sm:pr-4 py-2 sm:py-0">
+                <div className="absolute bottom-0 right-0 md:bottom-2 md:right-2 lg:bottom-4 lg:right-4 2xl:px-8 sm:flex sm:justify-end sm:flex-none sm:pr-4 p-1 sm:py-0">
                   <AddToCartButton
                     disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
                     onClick={() => {
@@ -2131,233 +2117,6 @@ const FEATURED_COLLECTION_QUERY = `#graphql
     collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...FeaturedCollection
-      }
-    }
-  }
-`;
-
-const RECOMMENDED_PRODUCTS_QUERY = `#graphql
-  fragment RecommendedProduct on Product {
-    id
-    title
-    handle
-    priceRange {
-      minVariantPrice {
-        amount
-        currencyCode
-      }
-    }
-    images(first: 1) {
-      nodes {
-        id
-        url
-        altText
-        width
-        height
-      }
-    }
-  }
-  query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
-      nodes {
-        ...RecommendedProduct
-      }
-    }
-  }
-`;
-
-const PROMOTING_PRODUCTS_QUERY = `#graphql
-fragment ProductVariant on ProductVariant {
-    availableForSale
-    compareAtPrice {
-      amount
-      currencyCode
-    }
-    id
-    price {
-      amount
-      currencyCode
-    }
-    product {
-      title
-      handle
-    }
-    selectedOptions {
-      name
-      value
-    }
-    sku
-    title
-    unitPrice {
-      amount
-      currencyCode
-    }
-  }
-  query PromotingProducts {
-    products(first: 10, query: "tag:Promoting") {
-      edges {
-        node {
-          id
-          title
-          handle
-          tags
-          vendor
-          descriptionHtml
-          images(first: 1) {
-            edges {
-              node {
-                url
-              }
-            }
-          }
-          selectedOrFirstAvailableVariant {
-            ...ProductVariant
-          }
-          variants(first: 10) {
-            edges {
-              node {
-                id
-                title
-                price {
-                  amount
-                  currencyCode
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-
-const TRENDING_PRODUCTS_QUERY = `#graphql
-fragment ProductVariant on ProductVariant {
-    availableForSale
-    compareAtPrice {
-      amount
-      currencyCode
-    }
-    id
-    price {
-      amount
-      currencyCode
-    }
-    product {
-      title
-      handle
-    }
-    selectedOptions {
-      name
-      value
-    }
-    sku
-    title
-    unitPrice {
-      amount
-      currencyCode
-    }
-  }
-  query TrendingProducts {
-    products(first: 10, query: "tag:Trending") {
-      edges {
-        node {
-          id
-          title
-          handle
-          tags
-          vendor
-          descriptionHtml
-          images(first: 1) {
-            edges {
-              node {
-                url
-              }
-            }
-          }
-          selectedOrFirstAvailableVariant {
-            ...ProductVariant
-          }
-          variants(first: 10) {
-            edges {
-              node {
-                id
-                title
-                price {
-                  amount
-                  currencyCode
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-const NEW_PRODUCTS_QUERY = `#graphql
-fragment ProductVariant on ProductVariant {
-    availableForSale
-    compareAtPrice {
-      amount
-      currencyCode
-    }
-    id
-    price {
-      amount
-      currencyCode
-    }
-    product {
-      title
-      handle
-    }
-    selectedOptions {
-      name
-      value
-    }
-    sku
-    title
-    unitPrice {
-      amount
-      currencyCode
-    }
-  }
-  query NewProducts {
-    products(first: 10, query: "tag:New Product") {
-      edges {
-        node {
-          id
-          title
-          handle
-          tags
-          vendor
-          descriptionHtml
-          images(first: 1) {
-            edges {
-              node {
-                url
-              }
-            }
-          }
-          selectedOrFirstAvailableVariant {
-            ...ProductVariant
-          }
-          variants(first: 10) {
-            edges {
-              node {
-                id
-                title
-                price {
-                  amount
-                  currencyCode
-                }
-              }
-            }
-          }
-        }
       }
     }
   }

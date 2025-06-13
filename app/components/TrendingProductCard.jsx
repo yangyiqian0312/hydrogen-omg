@@ -9,11 +9,11 @@ import { useAside } from './Aside';
  *   title: string;
  *   vendor?: string;
  *   images: {edges: Array<{node: {url: string}}>};
- *   variants: {edges: Array<{node: {price: {amount: string}; compareAtPrice?: {amount: string}}>}>};
+ *   selectedOrFirstAvailableVariant: {node: {price: {amount: string}; compareAtPrice?: {amount: string}}>};
  *   className?: string;
  * }} props
  */
-export function TrendingProductCard({ id, handle, abbrTitle,title, vendor, selectedOrFirstAvailableVariant, images, variants, className = '' }) {
+export function TrendingProductCard({ id, handle, abbrTitle,title, vendor, selectedOrFirstAvailableVariant, images, className = '' }) {
     const { open } = useAside();
     const price = Number(selectedOrFirstAvailableVariant.price.amount || 0).toFixed(2);
     const compareAtPrice = Number(selectedOrFirstAvailableVariant.compareAtPrice?.amount).toFixed(2);
