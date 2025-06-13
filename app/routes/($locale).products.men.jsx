@@ -110,7 +110,12 @@ const Men = (selectedVariant) => {
   const menProducts = useMemo(() => {
     return products
       .filter(({ node }) => node.tags && node.tags.includes('men'))
-      .sort((a, b) => b.node.totalInventory - a.node.totalInventory);
+      .sort((a, b) => { 
+        if (a.node.vendor === b.node.vendor) 
+          return a.node.title.localeCompare(b.node.title); 
+        else 
+          return a.node.vendor.localeCompare(b.node.vendor) 
+      });
   }, [products]);
 
 
@@ -121,7 +126,6 @@ const Men = (selectedVariant) => {
       ? menProducts.filter(
         ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
       )
-        .sort((a, b) => b.node.totalInventory - a.node.totalInventory)
       : menProducts;
   }, [menProducts, selectedBrand]);
 
@@ -271,7 +275,6 @@ query MenProducts {
             title
             handle
             tags
-            totalInventory
             vendor
             descriptionHtml
             images(first: 6) {

@@ -95,7 +95,12 @@ const Newarrivals = (selectedVariant) => {
   const newProducts = useMemo(() => {
     return products.filter(({ node }) => {
       return node.tags && node.tags.includes('New Product');
-    }).sort((a, b) => b.node.totalInventory - a.node.totalInventory);
+    }).sort((a, b) => { 
+      if (a.node.vendor === b.node.vendor) 
+        return a.node.title.localeCompare(b.node.title); 
+      else 
+        return a.node.vendor.localeCompare(b.node.vendor) 
+    });
   }, [products]);
 
   console.log("Filtered new products:", newProducts);
@@ -105,7 +110,7 @@ const Newarrivals = (selectedVariant) => {
     return selectedBrand
       ? newProducts.filter(
         ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
-      ).sort((a, b) => b.node.totalInventory - a.node.totalInventory)
+      )
       : newProducts;
   }, [newProducts, selectedBrand]);
 
@@ -233,7 +238,6 @@ fragment ProductVariant on ProductVariant {
             handle
             tags
             vendor
-            totalInventory
             descriptionHtml
             images(first: 6) {
               edges {

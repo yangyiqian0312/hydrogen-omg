@@ -134,11 +134,9 @@ const Women = (selectedVariant) => {
     if (selectedBrand) {
       return womenProducts
         .filter(({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase())
-        .sort((a, b) => b.node.totalInventory - a.node.totalInventory);
     } else if (selectedTag) {
       return womenProducts
         .filter(({ node }) => node.tags && node.tags.includes(selectedTag))
-        .sort((a, b) => b.node.totalInventory - a.node.totalInventory);
     } else {
       return womenProducts;
     }
@@ -338,7 +336,6 @@ fragment ProductVariant on ProductVariant {
             handle
             tags
             vendor
-            totalInventory
             descriptionHtml
             images(first: 6) {
               edges {

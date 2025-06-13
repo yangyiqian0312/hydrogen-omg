@@ -94,7 +94,12 @@ const Giftsets = (selectedVariant) => {
   // Filter for products with "men" tag with extra logging
   const giftProducts = useMemo(() => products.filter(({ node }) => {
     return node.tags && node.tags.includes('Gift Sets') || node.tags && node.tags.includes('Minis');
-  }).sort((a, b) => b.node.totalInventory - a.node.totalInventory), [products]);
+  }).sort((a, b) => { 
+    if (a.node.vendor === b.node.vendor) 
+      return a.node.title.localeCompare(b.node.title); 
+    else 
+      return a.node.vendor.localeCompare(b.node.vendor) 
+  }), [products]);
 
   console.log("Filtered gift set products:", giftProducts);
 
@@ -102,7 +107,7 @@ const Giftsets = (selectedVariant) => {
   const filteredProducts = useMemo(() => selectedBrand
     ? giftProducts.filter(
       ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
-    ).sort((a, b) => b.node.totalInventory - a.node.totalInventory)
+    )
     : giftProducts, [giftProducts, selectedBrand]);
 
 
@@ -231,7 +236,6 @@ fragment ProductVariant on ProductVariant {
             title
             handle
             tags
-            totalInventory
             vendor
             descriptionHtml
             images(first: 6) {
