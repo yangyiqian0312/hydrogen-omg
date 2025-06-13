@@ -17,7 +17,7 @@ export function TrendingProductCard({ id, handle, abbrTitle,title, vendor, selec
     const { open } = useAside();
     const price = Number(selectedOrFirstAvailableVariant.price.amount || 0).toFixed(2);
     const compareAtPrice = Number(selectedOrFirstAvailableVariant.compareAtPrice?.amount).toFixed(2);
-    const discount = selectedOrFirstAvailableVariant.compareAtPrice ? ((compareAtPrice - price) / compareAtPrice) * 100 : 0;
+    const discount = selectedOrFirstAvailableVariant.compareAtPrice && ((compareAtPrice - price) / compareAtPrice) * 100;
     const imageUrl = images.edges[0]?.node.url || '/api/placeholder/400/400';
     const displayTitle = abbrTitle?.value ? abbrTitle.value : title ? title.replace(new RegExp(`^${vendor}\\s*`), '') : 'N/A';
 
@@ -31,7 +31,7 @@ export function TrendingProductCard({ id, handle, abbrTitle,title, vendor, selec
                         className="h-full w-full object-cover"
                     />
                 </a>
-                { discount &&<span className="ml-2 mt-2 absolute top-0 left-0 text-red-500 font-semibold bg-pink-100 px-4  rounded">{discount.toFixed(0)}% OFF</span>}
+                { discount && discount > 0 &&<span className="ml-2 mt-2 absolute top-0 left-0 text-red-500 font-semibold bg-pink-100 px-4  rounded">{discount.toFixed(0)}% OFF</span>}
             </div>
             <div className="w-full h-full text-left flex-grow flex flex-col gap-0 justify-between px-2 border-t border-gray-200 pt-2">
                 <Link

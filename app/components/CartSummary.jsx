@@ -8,14 +8,14 @@ import {useRef} from 'react';
  */
 export function CartSummary({cart, layout, isLoggedIn}) {
   const className =
-    layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
+    layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside flex flex-col';
   
   return (
     <div
       aria-labelledby="cart-summary"
       className={`${className}  p-2 rounded-lg border-none`}
     >
-      <dl className="cart-total space-y-3">
+      <div className="cart-total space-y-3 flex gap-2 sm:flex-col sm:gap-0">
         <dt className="text-lg font-medium text-gray-500">Total</dt>
         <dd className="text-xl font-semibold text-gray-900">
           {cart.cost?.subtotalAmount?.amount ? (
@@ -24,7 +24,7 @@ export function CartSummary({cart, layout, isLoggedIn}) {
             '-'
           )}
         </dd>
-      </dl>
+      </div>
 
       <div className="mt-4">
         <CartCheckoutActions 
@@ -46,7 +46,7 @@ function CartCheckoutActions({checkoutUrl, isLoggedIn}) {
   // const finalCheckoutUrl = `${checkoutUrl}?logged_in=${loggedInParam}`;
   // console.log(finalCheckoutUrl)
   return (
-    <div className="mb-10">
+    <div className="mb-2 sm:mb-10">
       <a
         href={checkoutUrl}
         className='inline-block bg-pink-200 text-white py-2 px-6 rounded-lg font-bold text-center transition duration-300'

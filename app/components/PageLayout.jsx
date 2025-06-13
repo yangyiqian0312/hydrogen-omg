@@ -79,33 +79,33 @@ function SearchAside() {
   const queriesDatalistId = useId();
   return (
     <Aside type="search" heading="SEARCH">
-      <div className="predictive-search">
-        <br />
-        <SearchFormPredictive>
-          {({ fetchResults, goToSearch, inputRef }) => (
-            <>
-              <input
-                name="q"
-                onChange={fetchResults}
-                onFocus={fetchResults}
-                placeholder="Search"
-                ref={inputRef}
-                type="search"
-                list={queriesDatalistId}
-              />
-              &nbsp;
-              <button
-                onClick={goToSearch}
-                className="px-4 py-2 bg-pink-300 text-white rounded hover:bg-blue-600"
-              >
-                Search
-              </button>
-            </>
-          )}
-        </SearchFormPredictive>
-
+      <div className="predictive-search w-full px-2 h-full flex flex-col">
+        <div className="flex">
+          <SearchFormPredictive>
+            {({ fetchResults, goToSearch, inputRef }) => (
+              <>
+                <input
+                  name="q"
+                  onChange={fetchResults}
+                  onFocus={fetchResults}
+                  placeholder="Search"
+                  ref={inputRef}
+                  type="search"
+                  list={queriesDatalistId}
+                />
+                &nbsp;
+                <button
+                  onClick={goToSearch}
+                  className="px-4 py-2 bg-pink-300 text-white rounded hover:bg-blue-600"
+                >
+                  Search
+                </button>
+              </>
+            )}
+          </SearchFormPredictive>
+        </div>
         <SearchResultsPredictive>
-          {({ items, total, term, state, closeSearch }) => {
+          {({ items, total, term, state, closeSearch, layout }) => {
             const { products, queries } = items;
 
             if (state === 'loading' && term.current) {
@@ -121,7 +121,7 @@ function SearchAside() {
             }
 
             return (
-              <div className="p-4">
+              <div className={`p-4 ${layout === 'page' ? 'h-auto' : 'h-2/3 sm:h-full flex flex-col'}`}>
                 <SearchResultsPredictive.Products
                   products={products}
                   closeSearch={closeSearch}

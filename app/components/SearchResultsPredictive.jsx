@@ -166,13 +166,13 @@ function SearchResultsPredictivePages({term, pages, closeSearch}) {
 /**
  * @param {PartialPredictiveSearchResult<'products'>}
  */
-function SearchResultsPredictiveProducts({term, products, closeSearch}) {
+function SearchResultsPredictiveProducts({term, layout, products, closeSearch}) {
   if (!products.length) return null;
 
   return (
-    <div className="predictive-search-result" key="products">
+    <div className="predictive-search-result w-full px-2 h-full flex flex-col" key="products">
       <h5>Products</h5>
-      <ul>
+      <ul className="h-full overflow-y-auto">
         {products.map((product) => {
           const productUrl = urlWithTrackingParams({
             baseUrl: `/products/${product.handle}`,

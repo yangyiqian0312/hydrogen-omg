@@ -229,34 +229,32 @@ button.reset:hover:not(:has(> *)) {
 */
 .cart-main {
 
-  overflow-y: auto;
-  width: auto;
+  width: 100%;
 }
 
 .cart-main.with-discount {
 }
 
 .cart-line {
+  width: 100%;
   display: flex;
-  padding: 0.75rem 0;
 }
 
 .cart-line img {
-  height: 100%;
   display: block;
   margin-right: 0.75rem;
 }
 
 .cart-summary-page {
-  position: relative;
+
 }
 
 .cart-summary-aside {
   background: white;
   border-top: 1px solid var(--color-dark);
-  bottom: 0;
+  /* bottom: 0; */
   padding-top: 0.75rem;
-  position: absolute;
+  /* position: absolute; */
   width: calc(var(--aside-width) - 40px);
 }
 
@@ -280,18 +278,17 @@ button.reset:hover:not(:has(> *)) {
 * --------------------------------------------------
 */
 .predictive-search {
-  height: calc(100vh - var(--header-height) - 40px);
+
   overflow-y: auto;
 }
 
 .predictive-search-form {
   background: var(--color-light);
-  position: sticky;
-  top: 0;
+
 }
 
 .predictive-search-result {
-  margin-bottom: 2rem;
+
 }
 
 .predictive-search-result h5 {

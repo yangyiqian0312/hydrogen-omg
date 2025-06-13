@@ -22,7 +22,7 @@ export function CartLineItem({ layout, line }) {
 
   return (
     <li key={id}
-      className="cart-line flex items-center overflow-hidden space-x-5 p-4 border-b border-gray-200 hover:bg-gray-50 transition-all duration-200 ease-in-out">
+      className="cart-line h-auto flex p-4 border-b border-gray-200 hover:bg-gray-50 transition-all duration-200 ease-in-out">
       {image && (
         <Image
           alt={title}
@@ -31,11 +31,11 @@ export function CartLineItem({ layout, line }) {
           height={100}
           loading="lazy"
           width={100}
-          className="rounded-lg shadow-sm"
+          className="rounded-lg shadow-sm aspect-square w-16 h-16"
         />
       )}
 
-      <div className="flex-1">
+      <div className="px-2 h-full w-full">
         <Link
           prefetch="intent"
           to={lineItemUrl}
@@ -44,11 +44,11 @@ export function CartLineItem({ layout, line }) {
               close();
             }
           }}
-          className="text-lg font-semibold text-gray-800 hover:text-pink-600 transition-colors duration-200 ease-in-out"
+          className="text-base font-semibold text-gray-800 hover:text-pink-600 transition-colors duration-200 ease-in-out"
         >
-          <p className=" tracking-wide leading-relaxed">
+
             {product.title}
-          </p>
+
         </Link>
         <CartLineQuantity line={line} layout={layout} />
       </div>
@@ -69,7 +69,7 @@ function CartLineQuantity({ line, layout }) {
   const nextQuantity = Number((quantity + 1).toFixed(0));
 
   return (
-    <div className={`${layout === 'page' ? 'flex' : 'flex-col justify-between'} pt-2 items-center w-full`}>
+    <div className={`${layout === 'page' ? 'flex flex-col gap-2 md:flex-row' : 'flex-col justify-between'} pt-2 flex flex-col md:flex-row md:items-center w-full`}>
       <div className="flex items-center space-x-2">
         <CartLineUpdateButton lines={[{ id: lineId, quantity: prevQuantity }]}>
           <button
@@ -103,7 +103,7 @@ function CartLineQuantity({ line, layout }) {
       
 
       {/* Remove Item Button */}
-      <div className={`w-full flex ${layout === 'page' ? 'pl-4' : 'justify-end'} pr-4`}>
+      <div className={`w-full flex ${layout === 'page' ? 'pl-4' : 'justify-end'} px-2`}>
         <CartLineRemoveButton
           lineIds={[lineId]}
           disabled={!!isOptimistic}

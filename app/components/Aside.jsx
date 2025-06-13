@@ -53,14 +53,14 @@ export function Aside({ children, heading, type }) {
       role="dialog"
     >
       {/* <button className="text-3xl" onClick={close} /> */}
-      <aside>
-        <div className="flex justify-between items-center md:mt-32 mt-24">
-          <h3 className="text-center text-2xl font-serif text-gray-800 w-full pb-2">{heading}</h3>
-          <button className="text-3xl" onClick={close} aria-label="Close">
+      <aside className="h-2/3 pt-32 flex-col flex">
+        <div className="flex justify-between items-center pt-2">
+          <div className="text-center text-2xl font-serif text-gray-800 w-full sm:py-2">{heading}</div>
+          <button className="text-3xl pr-2" onClick={close} aria-label="Close">
             {"×"}
           </button>
         </div>
-        <main className="h-full">{children}</main>
+        <main className="h-full px-2 w-full">{children}</main>
       </aside>
     </div>
 
