@@ -3,6 +3,7 @@ import React from 'react';
 import { Heart, Filter, ChevronDown } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect, useMemo } from 'react';
+import { useSearchParams } from '@remix-run/react';
 import { useLoaderData } from '@remix-run/react';
 import GalleryProductCard from '~/components/GalleryProductCard';
 
@@ -84,7 +85,10 @@ async function loadDeferredData({ context }) {
 
 const Giftsets = (selectedVariant) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedBrand, setSelectedBrand] = useState("all brands");
+  const [searchParams] = useSearchParams();
+  const urlBrand = searchParams.get('brand');
+  const [selectedBrand, setSelectedBrand] = useState(urlBrand || "all brands");
+
   const navigate = useNavigate();
   const data = useLoaderData();
 
@@ -95,19 +99,19 @@ const Giftsets = (selectedVariant) => {
     .filter(({ node }) => {
       return node.tags && node.tags.includes('Gift Sets') || node.tags && node.tags.includes('Minis');
     })
-    .sort((a, b) => { 
-      if (a.node.vendor === b.node.vendor) 
-        return a.node.title.localeCompare(b.node.title); 
-      else 
-        return a.node.vendor.localeCompare(b.node.vendor) 
+    .sort((a, b) => {
+      if (a.node.vendor === b.node.vendor)
+        return a.node.title.localeCompare(b.node.title);
+      else
+        return a.node.vendor.localeCompare(b.node.vendor)
     })
     .sort((a, b) => {
       return b.node.selectedOrFirstAvailableVariant.availableForSale - a.node.selectedOrFirstAvailableVariant.availableForSale;
     })
-  , [products]);
+    , [products]);
 
   const brands = useMemo(() => {
-    const vendors = [...new Set(giftProducts.map(({ node }) => node.vendor))].sort();
+    const vendors = [...new Set(giftProducts.map(({ node }) => node.vendor[0] + node.vendor.slice(1).toLowerCase()))].sort();
     return ['all brands', ...vendors];
   }, [giftProducts]);
 
@@ -147,9 +151,12 @@ const Giftsets = (selectedVariant) => {
 
   // Update sortedProducts when filteredProducts changes
   useEffect(() => {
+    if (urlBrand != selectedBrand) {
+      setSelectedBrand(urlBrand || "all brands");
+    }
     setSortedProducts(filteredProducts);
     setSortOption('');
-  }, [selectedBrand]);
+  }, [selectedBrand, urlBrand]);
 
   const handleSortChange = (sortOption) => {
     setSortOption(sortOption);
@@ -177,7 +184,7 @@ const Giftsets = (selectedVariant) => {
       navigate("/products/giftsets");
     } else {
       setSelectedBrand(brand);
-      navigate("/products/giftsets?brand=" + brand);
+      navigate("/products/giftsets?brand=" + encodeURIComponent(brand));
     }
   };
 
@@ -187,22 +194,24 @@ const Giftsets = (selectedVariant) => {
         <div className="flex items-center gap-2">
           <p className="text-sm font-medium text-gray-500">Showing {sortedProducts.length} products</p>
         </div>
-        <div className="flex items-center gap-2">
-          <p className="text-sm font-medium text-gray-500">Sort by:</p>
-          <select value={sortOption} onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1">
-            <option value="">Default</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="new">Newest</option>
-          </select>
-        </div>
-        <div className="flex lg:hidden items-center gap-2">
-          <p className="text-sm font-medium text-gray-500">Select Brand:</p>
-          {brands.length > 0 && <select value={selectedBrand} onChange={(e) => handleBrandChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1">
-            {brands.map((brand) => (
-              <option key={brand} value={brand}>{brand}</option>
-            ))}
-          </select>}
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-medium text-gray-500">Sort by:</p>
+            <select value={sortOption} onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1">
+              <option value="">Default</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="new">Newest</option>
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-medium text-gray-500">Select Brand:</p>
+            {brands.length > 0 && <select value={selectedBrand} onChange={(e) => handleBrandChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1">
+              {brands.map((brand) => (
+                <option key={brand} value={brand}>{brand}</option>
+              ))}
+            </select>}
+          </div>
         </div>
       </div>
 

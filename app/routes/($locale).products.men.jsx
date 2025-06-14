@@ -177,7 +177,7 @@ const Men = (selectedVariant) => {
       navigate("/products/men");
     } else {
       setSelectedBrand(brand);
-      navigate("/products/men?brand=" + brand);
+      navigate("/products/men?brand=" + encodeURIComponent(brand));
     }
   };
 

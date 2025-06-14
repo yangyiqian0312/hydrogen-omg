@@ -186,7 +186,7 @@ const Women = (selectedVariant) => {
       navigate("/products/women");
     } else {
       setSelectedBrand(brand);
-      navigate("/products/women?brand=" + brand);
+      navigate("/products/women?brand=" + encodeURIComponent(brand));
     }
   };
 
