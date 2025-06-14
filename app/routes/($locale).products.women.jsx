@@ -1,7 +1,7 @@
 import { defer } from '@shopify/remix-oxygen';
 import React from 'react';
 import { Heart, Filter, ChevronDown } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect, useMemo } from 'react'; // Add useMemo import
 
 import { useLoaderData } from '@remix-run/react';
@@ -96,15 +96,16 @@ const Women = (selectedVariant) => {
   const [isOpen, setIsOpen] = useState(false);
   const brands = ['all brands', 'YSL', 'Bvlgari', 'Versace', 'Tiffany', 'Lattafa', 'Burberry', 'GUCCI', 'Givenchy', 'Valentino', 'Viktor & Rolf', 'Chloe', 'Prada', 'Carolina Herrera'];
   const tags = ['Minis'];
-  const [selectedBrand, setSelectedBrand] = useState(urlBrand);
+  const [selectedBrand, setSelectedBrand] = useState(urlBrand || "all brands");
   const [selectedTag, setSelectedTag] = useState(urlTag);
+  const navigate = useNavigate();
 
   // Set selected brand from URL when component mounts or URL changes
   useEffect(() => {
     if (urlBrand) {
       setSelectedBrand(urlBrand);
     } else {
-      setSelectedBrand(null);
+      setSelectedBrand("all brands");
     }
     if (urlTag) {
       setSelectedTag(urlTag);
@@ -126,12 +127,19 @@ const Women = (selectedVariant) => {
           return a.node.title.localeCompare(b.node.title); 
         else 
           return a.node.vendor.localeCompare(b.node.vendor) 
-      });
+      })
+      .sort((a, b) => {
+        return b.node.selectedOrFirstAvailableVariant.availableForSale - a.node.selectedOrFirstAvailableVariant.availableForSale;
+      })
+      
   }, [products]);
 
   // Memoize filteredProducts to prevent recalculation on every render
   const filteredProducts = useMemo(() => {
     if (selectedBrand) {
+      if (selectedBrand === 'all brands') {
+        return womenProducts;
+      }
       return womenProducts
         .filter(({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase())
     } else if (selectedTag) {
@@ -171,6 +179,16 @@ const Women = (selectedVariant) => {
     }
   };
 
+  const handleBrandChange = (brand) => {
+    // navigate to /products/women?brand={brand}
+    if (brand === 'all brands') {
+      setSelectedBrand("all brands");
+      navigate("/products/women");
+    } else {
+      setSelectedBrand(brand);
+      navigate("/products/women?brand=" + brand);
+    }
+  };
 
   return (
     <div className="flex flex-col md:gap-2">
@@ -237,6 +255,14 @@ const Women = (selectedVariant) => {
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
             <option value="new">Newest</option>
+          </select>
+        </div>
+        <div className="flex lg:hidden items-center gap-2">
+          <p className="text-sm font-medium text-gray-500">Select Brand:</p>
+          <select value={selectedBrand} onChange={(e) => handleBrandChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1">
+            {brands.length > 0 && brands.map((brand) => (
+              <option key={brand} value={brand}>{brand}</option>
+            ))}
           </select>
         </div>
       </div>

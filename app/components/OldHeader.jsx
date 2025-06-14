@@ -10,7 +10,7 @@ import logo from '~/assets/logo.png';
  * @param {Pick<HeaderProps, 'isLoggedIn' | 'cart'>}
  */
 function HeaderCtas({ isLoggedIn, cart }) {
-  
+
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
@@ -69,7 +69,7 @@ function CartBadge({ count }) {
           shop,
           url: window.location.href || '',
         });
-        navigate('/cart'); 
+        navigate('/cart');
       }}
       className="flex items-center space-x-2 text-gray-800 hover:text-gray-600"
     >
@@ -118,7 +118,7 @@ function NavDropdown({ title, items, path }) {
         className="flex items-center text-gray-800 hover:text-gray-600 font-medium no-underline transition-colors duration-200 px-3 py-2 rounded-md"
       >
         {title}
-        {items.length>0 && 
+        {items.length > 0 &&
           <ChevronDown
             className={`h-4 w-4 ml-1 transition-transform duration-300 ease-in-out ${isHovered ? 'rotate-180 text-blue-600' : ''
               }`}
@@ -127,7 +127,7 @@ function NavDropdown({ title, items, path }) {
       </Link>
 
       {/* Dropdown menu with animation */}
-      {items.length>0 && <div
+      {items.length > 0 && <div
         className={`absolute left-0 mt-1 w-56 bg-white border border-gray-100 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out transform origin-top ${isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
           }`}
       >
@@ -159,7 +159,7 @@ export default function OldHeader({
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  
+
   const navigate = useNavigate();
   const isLoggedInPromise = useAsyncValue();
 
@@ -179,7 +179,7 @@ export default function OldHeader({
 
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+
 
   // Brand lists
   const womenBrands = [
@@ -218,11 +218,11 @@ export default function OldHeader({
 
   ];
 
-  const giftSetItems = [ ];
+  const giftSetItems = [];
 
-  const newArrivalItems = [ ];
+  const newArrivalItems = [];
 
-  const dealsItems = [ ];
+  const dealsItems = [];
 
   const promos = [
     {
@@ -241,7 +241,7 @@ export default function OldHeader({
         prevIndex === promos.length - 1 ? 0 : prevIndex + 1
       );
     }, 2500); // Change message every 2.5 seconds
-   
+
     return () => clearInterval(timer);
   }, []);
 
@@ -249,10 +249,10 @@ export default function OldHeader({
     <div className="fixed w-full top-0 z-10">
       {/* Modal */}
       {showModal && <Modal onClose={() => setShowModal(false)} />}
-      
+
       {/* Announcement Bar */}
       <div className="bg-black text-center pb-4 pt-2 sm:py-2 relative overflow-hidden">
-        <div className="sm:h-6 h-8"> 
+        <div className="sm:h-6 h-8">
           <p
             className="text-white font-bold transition-all duration-1500 ease-in-out cursor-pointer"
             onClick={() => setShowModal(true)}
@@ -358,27 +358,35 @@ export default function OldHeader({
                 <Link
                   to="/products/men"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   Men
                 </Link>
                 <Link
-                  to="products/women"
+                  to="/products/women"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   Women
                 </Link>
                 <Link
-                  to="products/giftsets"
+                  to="/products/giftsets"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   Gift Sets
                 </Link>
-                <Link to="/products/newarrivals" className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50">
+                <Link
+                  to="/products/newarrivals"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
+                  onClick={() => setIsMenuOpen(false)}
+                >
                   New Arrivals
                 </Link>
                 <Link
                   to="/products/sales"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   Deals & Offers
                 </Link>

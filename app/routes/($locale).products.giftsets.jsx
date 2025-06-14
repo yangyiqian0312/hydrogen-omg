@@ -1,7 +1,7 @@
 import { defer } from '@shopify/remix-oxygen';
 import React from 'react';
 import { Heart, Filter, ChevronDown } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { useLoaderData } from '@remix-run/react';
 import GalleryProductCard from '~/components/GalleryProductCard';
@@ -84,27 +84,37 @@ async function loadDeferredData({ context }) {
 
 const Giftsets = (selectedVariant) => {
   const [isOpen, setIsOpen] = useState(false);
-  const brands = ['Versace', 'Burberry', 'Gucci ', 'Valentino ', 'YSL', 'Viktor&Rolf'];
-  const [selectedBrand, setSelectedBrand] = useState(null);
-
+  const [selectedBrand, setSelectedBrand] = useState("all brands");
+  const navigate = useNavigate();
   const data = useLoaderData();
 
   const products = data.giftProducts?.collection?.products?.edges || [];
 
   // Filter for products with "men" tag with extra logging
-  const giftProducts = useMemo(() => products.filter(({ node }) => {
-    return node.tags && node.tags.includes('Gift Sets') || node.tags && node.tags.includes('Minis');
-  }).sort((a, b) => { 
-    if (a.node.vendor === b.node.vendor) 
-      return a.node.title.localeCompare(b.node.title); 
-    else 
-      return a.node.vendor.localeCompare(b.node.vendor) 
-  }), [products]);
+  const giftProducts = useMemo(() => products
+    .filter(({ node }) => {
+      return node.tags && node.tags.includes('Gift Sets') || node.tags && node.tags.includes('Minis');
+    })
+    .sort((a, b) => { 
+      if (a.node.vendor === b.node.vendor) 
+        return a.node.title.localeCompare(b.node.title); 
+      else 
+        return a.node.vendor.localeCompare(b.node.vendor) 
+    })
+    .sort((a, b) => {
+      return b.node.selectedOrFirstAvailableVariant.availableForSale - a.node.selectedOrFirstAvailableVariant.availableForSale;
+    })
+  , [products]);
+
+  const brands = useMemo(() => {
+    const vendors = [...new Set(giftProducts.map(({ node }) => node.vendor))].sort();
+    return ['all brands', ...vendors];
+  }, [giftProducts]);
 
   console.log("Filtered gift set products:", giftProducts);
 
 
-  const filteredProducts = useMemo(() => selectedBrand
+  const filteredProducts = useMemo(() => selectedBrand && selectedBrand !== "all brands"
     ? giftProducts.filter(
       ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
     )
@@ -160,6 +170,17 @@ const Giftsets = (selectedVariant) => {
     }
   };
 
+  const handleBrandChange = (brand) => {
+    // navigate to /products/women?brand={brand}
+    if (brand === 'all brands') {
+      setSelectedBrand("all brands");
+      navigate("/products/giftsets");
+    } else {
+      setSelectedBrand(brand);
+      navigate("/products/giftsets?brand=" + brand);
+    }
+  };
+
   return (
     <div className="flex flex-col md:gap-2">
       <div className="flex justify-between md:p-4 pt-2 px-2 md:flex-row flex-col gap-2">
@@ -174,6 +195,14 @@ const Giftsets = (selectedVariant) => {
             <option value="price-desc">Price: High to Low</option>
             <option value="new">Newest</option>
           </select>
+        </div>
+        <div className="flex lg:hidden items-center gap-2">
+          <p className="text-sm font-medium text-gray-500">Select Brand:</p>
+          {brands.length > 0 && <select value={selectedBrand} onChange={(e) => handleBrandChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1">
+            {brands.map((brand) => (
+              <option key={brand} value={brand}>{brand}</option>
+            ))}
+          </select>}
         </div>
       </div>
 
