@@ -1648,7 +1648,7 @@ export default function Homepage() {
                                   <img
                                     src={videoProducts[index].node.images.edges[0].node.url}
                                     alt={videoProducts[index].node.title}
-                                    className="w-full aspect-square object-cover border border-gray-200 rounded-lg"
+                                    className="w-auto h-full aspect-square object-cover border border-gray-200 rounded-lg"
                                   />
                                 </Link>
                               </div>
