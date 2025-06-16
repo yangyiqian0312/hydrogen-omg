@@ -469,11 +469,11 @@ export default function Homepage() {
       link: '/account/subscribe',
     },
     {
-      image: '/assets/banner.jpg',
+      image: '/assets/Banner 2.png',
       link: '/account/subscribe',
     },
     {
-      image: '/assets/BANNER.png',
+      image: '/assets/Banner 3.png',
       link: '/account/subscribe',
     },
   ];
@@ -640,13 +640,13 @@ export default function Homepage() {
                         ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
                       </span>
                     )}
-                    
+
                   </div>
                   {node.variants.edges[0]?.node.compareAtPrice.amount && (
-                      <span className="mb-2 w-auto text-red-500 font-semibold bg-pink-100 px-2 sm:px-4 rounded">
-                        {((Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2) - Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)) / Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2) * 100).toFixed(0)}% OFF
-                      </span>
-                    )}
+                    <span className="mb-2 w-auto text-red-500 font-semibold bg-pink-100 px-2 sm:px-4 rounded">
+                      {((Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2) - Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)) / Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2) * 100).toFixed(0)}% OFF
+                    </span>
+                  )}
                 </Link>
                 <div className="absolute bottom-0 right-0 md:bottom-2 md:right-2 lg:bottom-4 lg:right-4 2xl:px-8 sm:flex sm:justify-end sm:flex-none sm:pr-4 p-1 sm:py-0">
                   <AddToCartButton
@@ -774,35 +774,72 @@ export default function Homepage() {
             </div>
           </div>
           {/* Category for Her 卡片 */}
-          <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-[#F7CAC9] hover:shadow-md transition-shadow duration-300">
-            <div className="rounded-xl p-2">
-              <h3 className="font-medium text-lg">Category for Her</h3>
-              <img
-                src="/assets/Category for Her.png"
-                alt="Category for Her product"
-                className="w-full h-full object-contain cursor-pointer pt-2"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate('/products/women');
-                }}
-              />
+          <div
+            className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-cover bg-center cursor-pointer hover:shadow-md transition-shadow duration-300"
+            style={{ backgroundImage: "url('/assets/Category for Her.png')" }}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate('/products/women');
+            }}
+          >
+            <div className='py-10 px-1 w-full h-full flex flex-col justify-center gap-1'>
+              <div className="text-center text-md font-bold text-pink-700"
+                style={{ fontFamily: 'forma-djr-micro, sans-serif', fontStyle: 'normal', fontWeight: '700' }}>
+                HER SIGNATURE SCENTS
+              </div>
+              <div
+                className="text-center text-xs pb-2 text-balance"
+                style={{ fontFamily: 'forma-djr-micro, sans-serif', fontStyle: 'normal', fontWeight: '500' }}>
+                From everyday elegance to unforgettable nights.
+                Discover timeless scents made for her moments.
+              </div>
+              <div className="text-center pb-2">
+                <button
+                  className="inline-block text-sm bg-transparent text-pink-700 py-1 px-2 rounded-xl border-2 border-pink-700 cursor-pointer hover:bg-pink-700 hover:text-pink-200 transition-colors duration-300"
+                  style={{ fontFamily: 'aw-conqueror-didot, serif', fontStyle: 'normal', fontWeight: '500' }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/products/women');
+                  }}>
+                  Shop Now For Her
+                </button>
+              </div>
             </div>
           </div>
           {/* Category for Him 卡片 */}
-          <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-[#F7CAC9] hover:shadow-md transition-shadow duration-300">
-            <div className="rounded-xl p-2">
-              <h3 className="font-medium text-lg">Category for Him</h3>
-              <img
-                src="/assets/Category for Him.png"
-                alt="Category for Him product"
-                className="w-full h-full object-contain cursor-pointer pt-2"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate('/products/men');
-                }}
-              />
+          <div
+            className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-cover bg-center cursor-pointer hover:shadow-md transition-shadow duration-300"
+            style={{ backgroundImage: "url('/assets/Category for Him.png')" }}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate('/products/men');
+            }}
+          >
+            <div className='py-10 px-1 w-full h-full flex flex-col justify-center gap-1'>
+              <div className="text-center text-md font-bold text-slate-700"
+                style={{ fontFamily: 'forma-djr-micro, sans-serif', fontStyle: 'normal', fontWeight: '700' }}>
+                HIS SIGNATURE SCENTS
+              </div>
+              <div
+                className="text-center text-xs pb-2 text-balance"
+                style={{ fontFamily: 'forma-djr-micro, sans-serif', fontStyle: 'normal', fontWeight: '500' }}>
+                 Confidence, character, and timeless appeal.
+                 Explore classic and bold fragrances curated for him.
+              </div>
+              <div className="text-center pb-2">
+                <button
+                  className="inline-block text-sm bg-transparent text-slate-700 py-1 px-2 rounded-xl border-2 border-slate-700 cursor-pointer hover:bg-slate-700 hover:text-slate-200 transition-colors duration-300"
+                  style={{ fontFamily: 'aw-conqueror-didot, serif', fontStyle: 'normal', fontWeight: '500' }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/products/men');
+                  }}>
+                  Shop Now For Him
+                </button>
+              </div>
             </div>
           </div>
+
           {/* Sale Products 卡片 */}
           {/* <div className="flex-none w-60 h-80 rounded-lg overflow-hidden snap-start shadow-lg shadow-gray-300 bg-white hover:shadow-md transition-shadow duration-300">
             <div className="rounded-xl p-6 text-center">
@@ -1213,7 +1250,7 @@ export default function Homepage() {
             {/* 第一行 - New Arrivals & Trending Now */}
             <div className="grid grid-cols-9 row-span-2 gap-6 w-full">
               {/* 左侧列 */}
-              <div className="xl:col-span-2 col-span-3">
+              <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
                   <div className="w-full my-4 flex items-center">
                     <Gift className="w-5 h-5" />
@@ -1246,7 +1283,7 @@ export default function Homepage() {
               </div>
 
               {/* 右侧列 */}
-              <div className="xl:col-span-7 col-span-6">
+              <div className="2xl:col-span-7 lg:col-span-6 md:col-span-6 col-span-5">
                 <div className="w-full h-full flex flex-col">
                   <div className="w-full flex items-center my-2 lg:my-4">
                     <Clock className="w-5 h-5 mr-2" />
@@ -1275,11 +1312,11 @@ export default function Homepage() {
                         node.selectedOrFirstAvailableVariant.availableForSale && (
                           <div
                             key={node.id}
-                            className="flex-none py-2 my-2 max-w-[300px] h-full w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
+                            className="flex-none py-2 my-2 h-full w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
                           >
                             <TrendingProductCard
                               {...node}
-                              className="flex flex-col w-full h-auto overflow-hidden"
+                              className="flex flex-col max-w-[450px] w-full h-auto overflow-hidden"
                             />
                           </div>
                         )
@@ -1302,28 +1339,45 @@ export default function Homepage() {
             {/* 第二行 - Category for Her & Trending Women */}
             <div className="grid grid-cols-9 row-span-2 gap-6 w-full">
               {/* 左侧列 */}
-              <div className="xl:col-span-2 col-span-3">
+              <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
                   <div className="w-full my-4 flex items-center">
                     <Gift className="w-5 h-5" />
                     <span className="text-lg font-semibold">Category for Her</span>
                   </div>
-                  <div className="bg-[#F7CAC9] rounded-lg h-full flex flex-col">
-                    <img
-                      src="/assets/Category for Her.png"
-                      alt="Category for Her product"
-                      className="w-full h-full object-contain mx-auto cursor-pointer px-2"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate('/products/women');
-                      }}
-                    />
+                  <div
+                    style={{ backgroundImage: "url('/assets/Category for Her.png')" }}
+                    className="bg-cover bg-center mb-4 bg-no-repeat rounded-lg w-full h-full flex flex-col"
+                  >
+                    <div className='py-12 px-2 w-full h-full flex flex-col justify-center gap-2'>
+                      <div className="text-center text-3xl xl:text-4xl font-bold text-pink-700"
+                        style={{ fontFamily: 'forma-djr-micro, sans-serif', fontStyle: 'normal', fontWeight: '700' }}>
+                        HER SIGNATURE SCENTS
+                      </div>
+                      <div
+                        className="text-center text-sm xl:text-base pb-2 lg:pb-4 xl:pb-6 2xl:pb-8"
+                        style={{ fontFamily: 'forma-djr-micro, sans-serif', fontStyle: 'normal', fontWeight: '700' }}>
+                        From everyday elegance to unforgettable nights.<br />
+                        Discover timeless scents made for her moments.
+                      </div>
+                      <div className="text-center">
+                        <button
+                          className="inline-block text-lg bg-transparent text-pink-700 py-1 px-4 md:px-6 xl:px-8 rounded-xl border-2 border-pink-700 cursor-pointer hover:bg-pink-700 hover:text-pink-200 transition-colors duration-300"
+                          style={{ fontFamily: 'aw-conqueror-didot, serif', fontStyle: 'normal', fontWeight: '500' }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate('/products/women');
+                          }}>
+                          Shop Now For Her
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* 右侧列 */}
-              <div className="xl:col-span-7 col-span-6">
+              <div className="2xl:col-span-7 lg:col-span-6 md:col-span-6 col-span-5">
                 <div className="w-full h-full flex flex-col">
                   <div className="w-full flex items-center my-2 lg:my-4">
                     <Clock className="w-5 h-5 mr-2" />
@@ -1352,7 +1406,7 @@ export default function Homepage() {
                         node.selectedOrFirstAvailableVariant.availableForSale && (
                           <div
                             key={node.id}
-                            className="flex-none py-2 my-2 max-w-[300px] h-full w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
+                            className="flex-none py-2 my-2 max-w-[450px] h-full w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
                           >
                             <TrendingProductCard
                               {...node}
@@ -1379,28 +1433,45 @@ export default function Homepage() {
             {/* 第三行 - Category for Him & Trending Men */}
             <div className="grid grid-cols-9 row-span-2 gap-6 w-full">
               {/* 左侧列 */}
-              <div className="xl:col-span-2 col-span-3">
+              <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
                   <div className="w-full my-4 flex items-center">
                     <Gift className="w-5 h-5" />
                     <span className="text-lg font-semibold">Category for Him</span>
                   </div>
-                  <div className="bg-[#c9e5f7] rounded-lg h-full flex flex-col">
-                    <img
-                      src="/assets/Category for Him.png"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate('/products/men');
-                      }}
-                      alt="Category for Him product"
-                      className="w-full h-full object-contain cursor-pointer px-2"
-                    />
+                  <div
+                    style={{ backgroundImage: "url('/assets/Category for Him.png')" }}
+                    className="bg-cover bg-center mb-4 bg-no-repeat rounded-lg w-full h-full flex flex-col"
+                  >
+                    <div className='py-12 px-2 w-full h-full flex flex-col justify-center gap-2 2xl:gap-4'>
+                      <div className="text-center text-3xl xl:text-4xl font-bold text-sky-800"
+                        style={{ fontFamily: 'forma-djr-micro, sans-serif', fontStyle: 'normal', fontWeight: '700' }}>
+                        HIS SIGNATURE SCENTS
+                      </div>
+                      <div
+                        className="text-center text-sm xl:text-base pb-2 lg:pb-4 xl:pb-6 2xl:pb-8"
+                        style={{ fontFamily: 'forma-djr-micro, sans-serif', fontStyle: 'normal', fontWeight: '700' }}>
+                        Confidence, character, and timeless appeal.<br />
+                        Explore classic and bold fragrances curated for him.
+                      </div>
+                      <div className="text-center">
+                        <button
+                          className="inline-block text-lg bg-transparent text-sky-800 py-1 px-4 md:px-6 xl:px-8 rounded-xl border-2 border-sky-800 cursor-pointer hover:bg-sky-800 hover:text-sky-200 transition-colors duration-300"
+                          style={{ fontFamily: 'aw-conqueror-didot, serif', fontStyle: 'normal', fontWeight: '500' }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate('/products/men');
+                          }}>
+                          Shop Now For Him
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* 右侧列 */}
-              <div className="xl:col-span-7 col-span-6">
+              <div className="2xl:col-span-7 lg:col-span-6 md:col-span-6 col-span-5">
                 <div className="w-full h-full flex flex-col">
                   <div className="w-full flex items-center my-2 lg:my-4">
                     <Clock className="w-5 h-5 mr-2" />
@@ -1429,7 +1500,7 @@ export default function Homepage() {
                         node.selectedOrFirstAvailableVariant.availableForSale && (
                           <div
                             key={node.id}
-                            className="flex-none py-2 my-2 max-w-[300px] h-auto w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
+                            className="flex-none py-2 my-2 max-w-[450px] h-auto w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
                           >
                             <TrendingProductCard
                               {...node}
@@ -1456,7 +1527,7 @@ export default function Homepage() {
             {/* 第四行 - Special Offers & Featured Videos */}
             <div className="grid grid-cols-9 row-span-3 gap-6 w-full">
               {/* 左侧列 */}
-              <div className="xl:col-span-2 col-span-3">
+              <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
                   <div className="w-full my-4 flex items-center space-x-2">
                     <Gift className="w-5 h-5" />
@@ -1499,7 +1570,7 @@ export default function Homepage() {
               </div>
 
               {/* 右侧列 */}
-              <div className="xl:col-span-7 col-span-6">
+              <div className="2xl:col-span-7 lg:col-span-6 md:col-span-6 col-span-5">
                 <div className="w-full h-full flex flex-col">
                   <div className="w-full my-4 flex items-center space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1529,7 +1600,7 @@ export default function Homepage() {
                       {videoPaths().map((video, index) => (
                         <div
                           key={index}
-                          className="max-w-[360px] h-full lg:w-1/3 w-1/2 flex-none rounded-lg snap-start hover:shadow-md transition-shadow duration-300 relative flex flex-col"
+                          className="max-w-[600px] h-full xl:w-1/3 w-1/2 flex-none rounded-lg snap-start hover:shadow-md transition-shadow duration-300 relative flex flex-col"
                         >
                           <div className="h-full shadow-lg shadow-gray-300">
                             <video
