@@ -143,12 +143,15 @@ export default function Homepage() {
   // Extract video paths from Shopify Video products
   const videoPaths = () => {
     const paths = [];
+    let index = 0;
     for (const product of videoProducts) {
       for (const media of product.node.media.edges) {
-        if (media.node.mediaContentType === 'VIDEO') {
-          paths.push(media.node);
+        if (media.node.mediaContentType === 'VIDEO' ) {
+          paths[index] = media.node;
+          break;
         }
       }
+      index++;
     }
     return paths;
   }
