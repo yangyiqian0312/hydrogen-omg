@@ -1301,7 +1301,7 @@ export default function Homepage() {
                     </button>
                     <div
                       ref={orderCarouselRef}
-                      className="flex w-full overflow-x-auto h-auto snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
                       style={{
                         scrollbarWidth: 'none',
                         msOverflowStyle: 'none',
@@ -1312,7 +1312,7 @@ export default function Homepage() {
                         node.selectedOrFirstAvailableVariant.availableForSale && (
                           <div
                             key={node.id}
-                            className="flex-none py-2 my-2 h-full w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
+                            className="flex-none py-2 my-2 h-auto w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
                           >
                             <TrendingProductCard
                               {...node}
@@ -1347,7 +1347,7 @@ export default function Homepage() {
                   </div>
                   <div
                     style={{ backgroundImage: "url('/assets/Category for Her.png')" }}
-                    className="bg-cover bg-center mb-4 bg-no-repeat rounded-lg w-full h-full flex flex-col"
+                    className="bg-cover bg-center mb-2 bg-no-repeat rounded-lg w-full h-full flex flex-col"
                   >
                     <div className='py-12 px-2 w-full h-full flex flex-col justify-center gap-2'>
                       <div className="text-center text-3xl xl:text-4xl font-bold text-pink-700"
@@ -1395,7 +1395,7 @@ export default function Homepage() {
                     </button>
                     <div
                       ref={orderCarouselRef_women}
-                      className="flex w-full overflow-x-auto h-auto snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
                       style={{
                         scrollbarWidth: 'none',
                         msOverflowStyle: 'none',
@@ -1406,7 +1406,7 @@ export default function Homepage() {
                         node.selectedOrFirstAvailableVariant.availableForSale && (
                           <div
                             key={node.id}
-                            className="flex-none py-2 my-2 max-w-[450px] h-full w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
+                            className="flex-none py-2 my-2 max-w-[450px] h-auto w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
                           >
                             <TrendingProductCard
                               {...node}
@@ -1441,7 +1441,7 @@ export default function Homepage() {
                   </div>
                   <div
                     style={{ backgroundImage: "url('/assets/Category for Him.png')" }}
-                    className="bg-cover bg-center mb-4 bg-no-repeat rounded-lg w-full h-full flex flex-col"
+                    className="bg-cover bg-center mb-2 shadow-sky-800/50 shadow-lg  bg-no-repeat rounded-lg w-full h-full flex flex-col"
                   >
                     <div className='py-12 px-2 w-full h-full flex flex-col justify-center gap-2 2xl:gap-4'>
                       <div className="text-center text-3xl xl:text-4xl font-bold text-sky-800"
@@ -1489,7 +1489,7 @@ export default function Homepage() {
                     </button>
                     <div
                       ref={orderCarouselRef_men}
-                      className="flex w-full overflow-x-auto h-auto snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
                       style={{
                         scrollbarWidth: 'none',
                         msOverflowStyle: 'none',
