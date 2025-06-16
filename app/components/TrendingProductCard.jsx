@@ -38,7 +38,7 @@ export function TrendingProductCard({ id, handle, abbrTitle,title, vendor, selec
                     to={`/products/${handle}`}
                     className="w-full font-semibold text-blue-600 hover:underline flex flex-col py-2 h-full flex-grow"
                 >
-                    <div className="font-bold text-xs uppercase mb-1">
+                    <div className="font-bold text-xs uppercase mb-1 2xl:text-lg 2xl:font-semibold">
                         {vendor || 'Unknown Brand'}
                     </div>
                     <div className="flex gap-1 mb-2">
@@ -56,12 +56,12 @@ export function TrendingProductCard({ id, handle, abbrTitle,title, vendor, selec
                         ))}
                         <span >5.0</span>
                       </div>
-                    <p className="text-xs font-normal mb-2 p-4 h-12 md:h-20 w-full text-ellipsis">
+                    <div className="text-xs font-normal mb-2 h-12 md:h-20 xl:h-24 2xl:text-lg w-full text-ellipsis">
                         {displayTitle}
-                    </p>
+                    </div>
                 </Link>
                 <div className="flex justify-between py-2 gap-4 flex-col md:flex-row w-full">
-                    <div className={`font-bold text-sm flex-none pt-2 ${compareAtPrice ? 'text-red-600' : ''}`}>
+                    <div className={`font-bold text-sm 2xl:text-lg flex-none pt-2 ${compareAtPrice ? 'text-red-600' : ''}`}>
                         ${price}
                         {compareAtPrice && (
                             <span className="text-gray-500 line-through ml-2">
