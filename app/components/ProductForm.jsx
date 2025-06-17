@@ -67,16 +67,16 @@ export function ProductForm({ productOptions, selectedVariant }) {
                       type="button"
                       key={option.name + name}
                       className={`
-    relative p-3 rounded-lg transition-all duration-200
-    flex flex-col items-center justify-center
-    w-[calc(50%-0.5rem)] h-10 cursor-pointer
-    ${exists && !selected ? 'hover:border-gray-300 hover:bg-gray-50' : ''}
-    ${selected
+                        relative p-3 rounded-lg transition-all duration-200
+                        flex flex-col items-center justify-center
+                        w-[calc(50%-0.5rem)] h-10 cursor-pointer
+                        ${exists && !selected ? 'hover:border-gray-300 hover:bg-gray-50' : ''}
+                        ${selected
                           ? 'border-2 border-black bg-gray-50'
                           : 'border border-gray-200'
                         }
-    ${!available || !exists ? 'opacity-40 cursor-not-allowed' : 'opacity-100'}
-  `}
+                        ${!available || !exists ? 'opacity-40 cursor-not-allowed' : 'opacity-100'}
+                      `}
                       disabled={!exists || !available}
                       onClick={() => {
                         if (!selected && exists) {

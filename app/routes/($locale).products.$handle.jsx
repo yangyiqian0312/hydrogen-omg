@@ -190,6 +190,7 @@ export default function Product() {
                   : 'border-transparent'
                   } hover:border-gray-300`}
               >
+                <div className="w-full h-full flex items-center justify-center absolute bottom-0 inset-0 text-xl text-white bg-black/30 hover:bg-black/60 transition">▶</div>
                 <img
                   src={video.node.previewImage?.url}
                   alt={video.node.altText || `Product view ${index + 1}`}
@@ -201,12 +202,12 @@ export default function Product() {
 
           {/* Main Image on the right */}
           <div className="xl:max-w-[800px] max-w-[600px] w-full">
-            <div className={`relative ${selectedMedia >= images.length ? 'aspect-[2/3]' : 'aspect-square'} max-h-[1000px] w-full rounded-xl overflow-hidden border border-gray-100 lg:shadow-md hover:shadow-lg transition-shadow duration-300`}>
+            <div className={`relative ${selectedMedia >= images.length ? 'aspect-[2/3]' : 'aspect-square'} max-h-[900px] w-full rounded-xl overflow-hidden border border-gray-100 lg:shadow-md hover:shadow-lg transition-shadow duration-300`}>
               {images[selectedMedia]? (
                 <img
                   src={images[selectedMedia]?.node?.image?.url}
                   alt={images[selectedMedia]?.node?.image?.altText || `Product main view`}
-                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105 xl:p-8 p-2"
+                  className="w-full h-full max-w-[700px] object-cover transition-transform duration-700 hover:scale-105 xl:p-8 p-2"
                 />
               ) : (
                 <video
