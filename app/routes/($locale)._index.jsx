@@ -468,15 +468,15 @@ export default function Homepage() {
 
   const banners = [
     {
-      image: '/assets/BANNER.png',
+      image: '/assets/Banners/Banner 1.png',
       link: '/account/subscribe',
     },
     {
-      image: '/assets/Banner 2.png',
+      image: '/assets/Banners/Banner 2.png',
       link: '/account/subscribe',
     },
     {
-      image: '/assets/Banner 3.png',
+      image: '/assets/Banners/Banner 3.png',
       link: '/account/subscribe',
     },
   ];
