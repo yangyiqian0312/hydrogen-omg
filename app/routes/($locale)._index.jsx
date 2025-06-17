@@ -1249,9 +1249,9 @@ export default function Homepage() {
         <div className="px-2 pb-8">
           {/* 内容部分 */}
           {/* 内容部分 - 使用 grid 布局确保行高一致 */}
-          <div className="grid grid-rows-9 gap-6 w-full">
+          <div className="grid xl:grid-rows-17 grid-rows-9 gap-6 w-full">
             {/* 第一行 - New Arrivals & Trending Now */}
-            <div className="grid grid-cols-9 row-span-2 gap-6 w-full">
+            <div className="grid grid-cols-9 xl:row-span-4 row-span-2 gap-6 w-full">
               {/* 左侧列 */}
               <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
@@ -1340,7 +1340,7 @@ export default function Homepage() {
             </div>
 
             {/* 第二行 - Category for Her & Trending Women */}
-            <div className="grid grid-cols-9 row-span-2 gap-6 w-full">
+            <div className="grid grid-cols-9 xl:row-span-4 row-span-2 gap-6 w-full">
               {/* 左侧列 */}
               <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
@@ -1434,7 +1434,7 @@ export default function Homepage() {
             </div>
 
             {/* 第三行 - Category for Him & Trending Men */}
-            <div className="grid grid-cols-9 row-span-2 gap-6 w-full">
+            <div className="grid grid-cols-9 xl:row-span-4 row-span-2 gap-6 w-full">
               {/* 左侧列 */}
               <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
@@ -1528,7 +1528,7 @@ export default function Homepage() {
             </div>
 
             {/* 第四行 - Special Offers & Featured Videos */}
-            <div className="grid grid-cols-9 row-span-3 gap-6 w-full">
+            <div className="grid grid-cols-9 xl:row-span-5 row-span-3 gap-6 w-full">
               {/* 左侧列 */}
               <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
@@ -1573,7 +1573,7 @@ export default function Homepage() {
               </div>
 
               {/* 右侧列 */}
-              <div className="2xl:col-span-7 lg:col-span-6 md:col-span-6 col-span-5">
+              <div className="2xl:col-span-7 lg:col-span-6 md:col-span-6 col-span-4">
                 <div className="w-full h-full flex flex-col">
                   <div className="w-full my-4 flex items-center space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1581,7 +1581,7 @@ export default function Homepage() {
                     </svg>
                     <span className="text-lg font-semibold">Featured Videos</span>
                   </div>
-                  <div className="relative w-full h-full">
+                  <div className="relative w-full h-auto">
                     <button
                       onClick={() => scrollLeft(videoCarouselRef)}
                       className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
@@ -1603,13 +1603,13 @@ export default function Homepage() {
                       {videoPaths().map((video, index) => (
                         <div
                           key={index}
-                          className="max-w-[600px] h-full xl:w-1/3 w-1/2 flex-none rounded-lg snap-start hover:shadow-md transition-shadow duration-300 relative flex flex-col"
+                          className="max-w-[600px] h-auto 2xl:w-1/3 xl:w-1/2 w-2/3 flex-none rounded-lg snap-start hover:shadow-md transition-shadow duration-300 relative flex flex-col"
                         >
-                          <div className="h-full shadow-lg shadow-gray-300">
+                          <div className="h-auto shadow-lg shadow-gray-300">
                             <video
                               ref={el => desktopVideoRefs.current[index] = el}
                               src={getShopifyDirectVideoUrl(video.sources)}
-                              className="w-full h-full my-auto object-cover mx-auto"
+                              className="w-full h-auto aspect-[3/4] my-auto object-cover mx-auto"
                               controls={playingDesktopIndex === index}
                               controlsList="nodownload nofullscreen noplaybackrate"
                               muted={false}
@@ -1643,10 +1643,10 @@ export default function Homepage() {
                           </div>
                           {videoProducts[index] && (
                             <div className="flex flex-col md:flex-row justify-between flex-none pr-4 z-5 bg-white py-2 w-full">
-                              <div className="w-auto h-36 xl:h-60 xl:w-64">
+                              <div className="h-40 aspect-square">
                                 <Link
                                   to={`/products/${videoProducts[index].node.handle}`}
-                                  className="w-full h-full"
+                                  className="h-full"
                                 >
                                   <img
                                     src={videoProducts[index].node.images.edges[0].node.url}
@@ -1664,7 +1664,7 @@ export default function Homepage() {
                                     <span className="text-sm font-semibold 2xl:text-xl">
                                       {videoProducts[index].node.vendor}
                                     </span>
-                                    <span className="xl:flex hidden text-xs font-semibold 2xl:text-md/6 text-gray-700">
+                                    <span className="xl:flex hidden text-md font-semibold 2xl:text-lg/6 text-gray-700">
                                       {videoProducts[index].node.abbrTitle?.value || videoProducts[index].node.title.replace(new RegExp(`^${videoProducts[index].node.vendor}\s*`), '')}
                                     </span>
                                     <div className="flex flex-col xl:flex-row xl:gap-2 md:pt-2 xl:pt-4 xl:text-lg">
