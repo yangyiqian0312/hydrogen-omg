@@ -202,7 +202,7 @@ export default function Product() {
 
           {/* Main Image on the right */}
           <div className="xl:max-w-[800px] max-w-[600px] w-full">
-            <div className={`relative ${selectedMedia >= images.length ? 'aspect-[2/3]' : 'aspect-square'} max-h-[900px] w-full rounded-xl overflow-hidden border border-gray-100 lg:shadow-md hover:shadow-lg transition-shadow duration-300`}>
+            <div className={`relative ${selectedMedia >= images.length ? 'aspect-[3/4]' : 'aspect-square'} max-h-[800px] w-full rounded-xl overflow-hidden border border-gray-100 lg:shadow-md hover:shadow-lg transition-shadow duration-300`}>
               {images[selectedMedia]? (
                 <img
                   src={images[selectedMedia]?.node?.image?.url}
@@ -219,7 +219,7 @@ export default function Product() {
                   onLoadStart={() => console.log('Video loading started')}
                   autoPlay
                   loop
-                  className="w-full h-full object-contain transition-transform duration-700 hover:scale-105 xl:p-8 p-2"
+                  className="w-full h-full object-contain transition-transform duration-700 xl:p-8 p-2"
                 />
               )}
             </div>
