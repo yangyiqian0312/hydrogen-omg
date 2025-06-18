@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useFetcher } from '@remix-run/react';
-
+import logo from '~/assets/logo.png';
 function Modal({ onClose }) {
   const [message, setMessage] = useState(null);
   const fetcher = useFetcher();
@@ -47,28 +47,39 @@ function Modal({ onClose }) {
 
         {fetcher.data?.success ? (
           <div className="text-center p-8">
+            <div className="mb-4">
+              <img 
+              src={logo} 
+              alt="" 
+              className="w-24 h-24 object-contain"/>
+            </div>
             <h2 className="text-2xl font-bold mb-4">Thank you for subscribing!</h2>
             <p className="text-gray-600 mb-4">Enjoy your 20% Off with code: <br /> <span className="font-bold">OMGBEAUTY20</span></p>
           </div>
         ) : (
           <>
-            <h1 className="text-2xl font-bold mb-2">OMG Beauty Box</h1>
+            <div className="mb-4 flex justify-center">
+              <img 
+              src={logo} 
+              alt="" 
+              className="w-24 h-24 object-contain"/>
+            </div>
             <h2 className="text-xl font-bold mb-2">Subscribe and Enjoy 20% Off Your First Order!</h2>
             <h2 className="font-bold mb-4">Code: OMGBEAUTY20</h2>
             <p className="mb-4">Subscribe to our newsletter to get the latest news and updates</p>
-            <fetcher.Form onSubmit={handleSubmit} className="flex flex-col py-4 gap-2">
+            <fetcher.Form onSubmit={handleSubmit} className="flex flex-col py-4 gap-2 items-center w-full justify-center">
               <input
                 name="email"
                 type="email"
                 placeholder="Email"
                 required
-                className="border rounded p-2"
+                className="border rounded p-2 w-full "
                 disabled={isSubmitting}
               />
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-black text-white p-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="bg-black text-white p-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed w-full"
               >
                 {isSubmitting ? 'Subscribing...' : 'Subscribe'}
               </button>

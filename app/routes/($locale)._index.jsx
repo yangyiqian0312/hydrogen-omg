@@ -1249,9 +1249,9 @@ export default function Homepage() {
         <div className="px-2 pb-8">
           {/* 内容部分 */}
           {/* 内容部分 - 使用 grid 布局确保行高一致 */}
-          <div className="grid xl:grid-rows-17 grid-rows-9 gap-6 w-full">
+          <div className="grid 2xl:grid-rows-17 md:h-auto md:grid-rows-22  grid-rows-9 gap-6 w-full">
             {/* 第一行 - New Arrivals & Trending Now */}
-            <div className="grid grid-cols-9 xl:row-span-4 row-span-2 gap-6 w-full">
+            <div className="grid grid-cols-9 2xl:row-span-4 md:row-span-5 row-span-2 gap-6 w-full">
               {/* 左侧列 */}
               <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
@@ -1340,7 +1340,7 @@ export default function Homepage() {
             </div>
 
             {/* 第二行 - Category for Her & Trending Women */}
-            <div className="grid grid-cols-9 xl:row-span-4 row-span-2 gap-6 w-full">
+            <div className="grid grid-cols-9 2xl:row-span-4 md:row-span-5 row-span-2 gap-6 w-full">
               {/* 左侧列 */}
               <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
@@ -1352,7 +1352,7 @@ export default function Homepage() {
                     style={{ backgroundImage: "url('/assets/Category for Her.png')" }}
                     className="bg-cover bg-center mb-2 bg-no-repeat rounded-lg w-full h-full flex flex-col"
                   >
-                    <div className='py-12 px-2 w-full h-full flex flex-col justify-center gap-2'>
+                    <div className='py-12 px-2 w-full h-full flex flex-col justify-center gap-2 2xl:gap-4 '>
                       <div className="text-center text-3xl xl:text-4xl font-bold text-pink-700"
                         style={{ fontFamily: 'forma-djr-micro, sans-serif', fontStyle: 'normal', fontWeight: '700' }}>
                         HER SIGNATURE SCENTS
@@ -1434,7 +1434,7 @@ export default function Homepage() {
             </div>
 
             {/* 第三行 - Category for Him & Trending Men */}
-            <div className="grid grid-cols-9 xl:row-span-4 row-span-2 gap-6 w-full">
+            <div className="grid grid-cols-9 2xl:row-span-4 md:row-span-5 row-span-2 gap-6 w-full">
               {/* 左侧列 */}
               <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
@@ -1528,7 +1528,7 @@ export default function Homepage() {
             </div>
 
             {/* 第四行 - Special Offers & Featured Videos */}
-            <div className="grid grid-cols-9 xl:row-span-5 row-span-3 gap-6 w-full">
+            <div className="grid grid-cols-9 2xl:row-span-5 md:row-span-7 row-span-3 gap-6 w-full">
               {/* 左侧列 */}
               <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
@@ -1603,7 +1603,7 @@ export default function Homepage() {
                       {videoPaths().map((video, index) => (
                         <div
                           key={index}
-                          className="max-w-[600px] h-auto 2xl:w-1/3 xl:w-1/2 w-2/3 flex-none rounded-lg snap-start hover:shadow-md transition-shadow duration-300 relative flex flex-col"
+                          className="max-w-[600px] h-auto 2xl:w-1/3 4xl:w-1/4 xl:w-1/2 w-2/3 flex-none rounded-lg snap-start hover:shadow-md transition-shadow duration-300 relative flex flex-col"
                         >
                           <div className="h-auto shadow-lg shadow-gray-300">
                             <video

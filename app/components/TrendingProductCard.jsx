@@ -56,7 +56,7 @@ export function TrendingProductCard({ id, handle, abbrTitle,title, vendor, selec
                         ))}
                         <span >5.0</span>
                       </div>
-                    <div className="text-xs font-normal mb-2 h-12 md:h-16 xl:h-18 2xl:text-lg md:text-base w-full text-ellipsis">
+                    <div className="text-xs font-normal mb-2 h-12 xl:h-18 2xl:text-lg md:text-base w-full text-ellipsis">
                         {displayTitle}
                     </div>
                 </Link>
