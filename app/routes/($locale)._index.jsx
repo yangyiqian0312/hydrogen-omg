@@ -1612,6 +1612,7 @@ export default function Homepage() {
                               className="w-full h-auto aspect-[3/4] my-auto object-cover mx-auto"
                               controls={playingDesktopIndex === index}
                               controlsList="nodownload nofullscreen noplaybackrate"
+                              aspectRatio="3/4"
                               muted={false}
                               loop={false}
                               disablePictureInPicture
