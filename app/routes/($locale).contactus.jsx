@@ -25,14 +25,14 @@ export default function ContactUs() {
         link.setAttribute("href", href);
     };
     return (
-        <div>
-            <h1>Contact Us</h1>
+        <div className="flex flex-col items-center">
+            <div className="text-5xl font-bold py-8" >Contact Us</div>
             <span className="2xl:text-[24px] text-[18px] md:text-[20px] text-gray-800">
                 Have questions or need assistance? We're here to help!<br />
                 Fill out the form below and we'll get back to you in 48 hours on business days.<br /><br />
                 Our Email: <a href={`mailto:${customerServiceEmail}`}>{customerServiceEmail}</a>
             </span>
-            <div className="contact-page max-w-md mx-auto my-8 space-y-6 p-6 border rounded-xl shadow">
+            <div className="contact-page max-w-md mx-auto my-8 space-y-6 w-full p-6 border rounded-xl shadow">
 
                 <div className="form-group">
                     <label htmlFor="firstName">First Name</label>
