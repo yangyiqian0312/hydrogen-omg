@@ -503,9 +503,8 @@ export default function Homepage() {
             }}
           >
             {banners.map((banner, index) => (
-              <a
+              <div
                 key={index}
-                href={banner.link}
                 className="w-full flex-shrink-0"
                 tabIndex={currentBanner === index ? 0 : -1}
                 aria-hidden={currentBanner !== index}
@@ -515,7 +514,7 @@ export default function Homepage() {
                   alt="Banner"
                   className="w-full h-full overflow-hidden max-h-[400px] object-fill bg-red-300 mt-2 md:mt-0"
                 />
-              </a>
+              </div>
             ))}
           </div>
           {/* Dots navigation (optional, for UX) */}

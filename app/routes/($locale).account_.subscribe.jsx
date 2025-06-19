@@ -21,7 +21,9 @@ const CUSTOMER_CREATE_MUTATION = `
     }
   }
 `;
-
+export function loader() {
+    return null; 
+}
 export const action = async ({ request, context }) => {
     const client = createAdminApiClient({
         storeDomain: context.env.PUBLIC_STORE_DOMAIN,
@@ -228,3 +230,6 @@ export const action = async ({ request, context }) => {
         );
     }
 };
+export default function Subscribe() {
+    return <Modal onClose={() => {}} />;
+}
