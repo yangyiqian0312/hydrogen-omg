@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useFetcher } from '@remix-run/react';
 import logo from '~/assets/logo.png';
 import popup from '~/assets/popup.png';
-import { P } from 'dist/client/assets/ProductPrice-BR53bk8M';
+
 function Modal({ onClose }) {
   const [message, setMessage] = useState(null);
   const fetcher = useFetcher();
