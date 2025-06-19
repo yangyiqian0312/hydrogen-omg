@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useFetcher } from '@remix-run/react';
 import logo from '~/assets/logo.png';
 import popup from '~/assets/popup.png';
+import { P } from 'dist/client/assets/ProductPrice-BR53bk8M';
 function Modal({ onClose }) {
   const [message, setMessage] = useState(null);
   const fetcher = useFetcher();
@@ -66,9 +67,21 @@ function Modal({ onClose }) {
                 alt="" 
                 className="w-24 h-24 object-contain"/>
               </div>
-              <div className="sm:text-3xl text-xl font-semibold font-serif mb-2 text-center">Enjoy</div>
-              <div className="sm:text-4xl text-2xl font-bold mb-2 oldstyle-nums font-serif text-center">20% Off</div>
-              <div className="sm:text-3xl text-xl font-semibold font-serif mb-2 text-center">Your First Order!</div>
+              <div 
+                className="sm:text-3xl text-xl font-semibold font-serif mb-2 text-center"
+                style={{ fontFamily: 'montserrat, sans-serif', fontStyle: 'normal', fontWeight: '700' }}>
+                Enjoy
+              </div>
+              <div 
+                className="sm:text-5xl text-4xl mb-2 text-center"
+                style={{ fontFamily: 'forma-djr-micro, sans-serif', fontStyle: 'normal', fontWeight: '500' }}>
+                20% Off
+              </div>
+              <div 
+                className="sm:text-3xl text-xl font-semibold font-serif mb-2 text-center"
+                style={{ fontFamily: 'montserrat, sans-serif', fontStyle: 'normal', fontWeight: '700' }}>
+                Your First Order!
+              </div>
               <fetcher.Form onSubmit={handleSubmit} className="flex flex-col py-4 gap-2 items-center w-full justify-center">
                 <input
                   name="email"
