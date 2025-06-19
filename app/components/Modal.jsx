@@ -61,14 +61,14 @@ function Modal({ onClose }) {
             </div>
           ) : (
             <div className="sm:w-1/2 w-full h-full p-4">
-              <div className="sm:mb-4 mb-2 flex justify-center">
+              <div className="sm:mb-4 flex justify-center">
                 <img 
                 src={logo} 
                 alt="" 
                 className="w-24 h-24 object-contain"/>
               </div>
               <div 
-                className="sm:text-3xl text-xl font-semibold font-serif mb-2 text-center"
+                className="sm:text-3xl text-2xl font-semibold font-serif mb-2 text-center"
                 style={{ fontFamily: 'montserrat, sans-serif', fontStyle: 'normal', fontWeight: '700' }}>
                 Enjoy
               </div>
@@ -78,7 +78,7 @@ function Modal({ onClose }) {
                 20% Off
               </div>
               <div 
-                className="sm:text-3xl text-xl font-semibold font-serif mb-2 text-center"
+                className="sm:text-3xl text-2xl font-semibold font-serif sm:mb-2 text-center"
                 style={{ fontFamily: 'montserrat, sans-serif', fontStyle: 'normal', fontWeight: '700' }}>
                 Your First Order!
               </div>
