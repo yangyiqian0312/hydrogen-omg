@@ -1,5 +1,6 @@
 import { json} from '@shopify/remix-oxygen';
 import {createAdminApiClient} from '@shopify/admin-api-client';
+import Modal from '~/components/Modal';
 /**
  * Reusable mutation for both sign-up and subscription
  * https://github.com/Shopify/shopify-app-js/tree/main/packages/api-clients/admin-api-client#readme
@@ -231,5 +232,6 @@ export const action = async ({ request, context }) => {
     }
 };
 export default function Subscribe() {
-    return <div>Subscribe</div>;
+    const [showModal, setShowModal] = useState(false);
+    return <Modal onClose={() => setShowModal(false)} />;
 }
