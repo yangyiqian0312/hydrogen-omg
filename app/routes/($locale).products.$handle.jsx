@@ -95,9 +95,9 @@ export default function Product() {
   /** @type {LoaderReturnData} */
   const { product, recommendedProducts } = useLoaderData();
 
-  console.log(product);
+  // console.log(product);
 
-  console.log("recommendedProducts", recommendedProducts);
+  // console.log("recommendedProducts", recommendedProducts);
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
