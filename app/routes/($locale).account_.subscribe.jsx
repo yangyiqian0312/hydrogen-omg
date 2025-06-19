@@ -231,5 +231,5 @@ export const action = async ({ request, context }) => {
     }
 };
 export default function Subscribe() {
-    return <Modal onClose={() => {}} />;
+    return <div>Subscribe</div>;
 }
