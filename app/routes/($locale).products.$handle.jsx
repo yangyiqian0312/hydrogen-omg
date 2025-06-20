@@ -166,7 +166,7 @@ export default function Product() {
       <div className="mx-auto px-4 py-4 flex flex-col lg:flex-row lg:justify-center lg:gap-8 lg:py-8 h-full">
         <div className="flex gap-6 w-auto h-full justify-center">
           {/* Thumbnails on the left */}
-          <div className="relative w-20 lg:w-28 2xl:w-36  h-60 xs:h-[calc(100vh-300px)] lg:h-[calc(100vh-250px)]">
+          <div className="relative w-20 lg:w-28 2xl:w-36  h-64 sm:h-[calc(100vh-300px)] lg:h-[calc(100vh-250px)]">
             <div className="flex flex-col lg:gap-4 gap-1 w-full h-full overflow-y-auto">
               {images.map((image, index) => (
                 <button
