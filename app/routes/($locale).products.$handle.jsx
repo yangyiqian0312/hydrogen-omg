@@ -121,6 +121,8 @@ export default function Product() {
 
   const [selectedMedia, setSelectedMedia] = useState(0);
   const [activeSection, setActiveSection] = useState(null);
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => { setIsClient(true); }, []);
   const orderCarouselRef = useRef(null);
 
   const scrollLeft = (carouselRef) => {
@@ -151,59 +153,61 @@ export default function Product() {
     // Find the MP4 source
     const mp4Source = videoSources?.find(source => source.mimeType === 'video/mp4');
     if (!mp4Source) return null;
-    
+
     // Extract video ID and create direct URL
     const match = mp4Source.url.match(/\/([a-f0-9]{32})\//);
     if (!match) return null;
-    
+
     return `https://cdn.shopify.com/videos/c/o/v/${match[1]}.mp4`;
   };
 
   return (
     <div className="w-full flex flex-col">
-      <div className="mx-auto px-4 py-4 flex flex-col xl:flex-row xl:justify-center xl:gap-8 xl:py-8 h-full">
-        <div className="flex gap-6 w-auto h-full justify-center  ">
+      <div className="mx-auto px-4 py-4 flex flex-col lg:flex-row lg:justify-center lg:gap-8 lg:py-8 h-full">
+        <div className="flex gap-6 w-auto h-full justify-center">
           {/* Thumbnails on the left */}
-          <div className="flex flex-col gap-4 w-20 lg:w-28 2xl:w-36">
-            {images.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedMedia(index)}
-                className={`rounded-lg overflow-hidden border-2 transition-all duration-200 transform hover:scale-105 ${selectedMedia === index
-                  ? 'border-black ring-2 ring-gray-200 shadow-md'
-                  : 'border-transparent'
-                  } hover:border-gray-300`}
-              >
-                <img
-                  src={image.node.image?.url}
-                  alt={image.node.image?.altText || `Product view ${index + 1}`}
-                  className="w-full aspect-square object-cover"
-                />
-              </button>
-            ))}
-            {videos.map((video, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedMedia(images.length + index)}
-                className={`rounded-lg overflow-hidden border-2 transition-all duration-200 transform hover:scale-105 ${selectedMedia === images.length + index
-                  ? 'border-black ring-2 ring-gray-200 shadow-md'
-                  : 'border-transparent'
-                  } hover:border-gray-300`}
-              >
-                <div className="w-full h-full flex items-center justify-center absolute bottom-0 inset-0 text-xl text-white bg-black/30 hover:bg-black/60 transition">▶</div>
-                <img
-                  src={video.node.previewImage?.url}
-                  alt={video.node.altText || `Product view ${index + 1}`}
-                  className="w-full aspect-square object-cover"
-                />
-              </button>
-            ))}
+          <div className="relative w-20 lg:w-28 2xl:w-36  h-60 xs:h-[calc(100vh-300px)] lg:h-[calc(100vh-250px)]">
+            <div className="flex flex-col lg:gap-4 gap-1 w-full h-full overflow-y-auto">
+              {images.map((image, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedMedia(index)}
+                  className={`flex-none rounded-lg overflow-hidden border-2 transition-all duration-200 transform hover:scale-105 aspect-[1/1] w-full h-auto ${selectedMedia === index
+                    ? 'border-black ring-2 ring-gray-200 shadow-md'
+                    : 'border-transparent'
+                    } hover:border-gray-300`}
+                >
+                  <img
+                    src={image.node.image?.url}
+                    alt={image.node.image?.altText || `Product view ${index + 1}`}
+                    className="w-full h-full aspect-[1/1]  object-cover"
+                  />
+                </button>
+              ))}
+              {videos.map((video, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedMedia(images.length + index)}
+                  className={`flex-none rounded-lg overflow-hidden border-2 transition-all duration-200 transform hover:scale-105 aspect-square w-full h-auto ${selectedMedia === images.length + index
+                    ? 'border-black ring-2 ring-gray-200 shadow-md'
+                    : 'border-transparent'
+                    } hover:border-gray-300`}
+                >
+                  <div className="w-full h-full flex items-center justify-center absolute bottom-0 inset-0 text-xl text-white bg-black/30 hover:bg-black/60 transition">▶</div>
+                  <img
+                    src={video.node.previewImage?.url}
+                    alt={video.node.altText || `Product view ${index + 1}`}
+                    className="w-full aspect-square object-cover"
+                  />
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Main Image on the right */}
-          <div className="xl:max-w-[800px] max-w-[600px] w-full">
+          <div className="lg:max-w-[calc(100vh-250px)] max-w-[calc(100vh-300px)] w-full">
             <div className={`relative ${selectedMedia >= images.length ? 'aspect-[3/4]' : 'aspect-square'} max-h-[800px] w-full rounded-xl overflow-hidden border border-gray-100 lg:shadow-md hover:shadow-lg transition-shadow duration-300`}>
-              {images[selectedMedia]? (
+              {images[selectedMedia] ? (
                 <img
                   src={images[selectedMedia]?.node?.image?.url}
                   alt={images[selectedMedia]?.node?.image?.altText || `Product main view`}
@@ -227,7 +231,7 @@ export default function Product() {
         </div>
 
         {/* Product Info - right side on desktop */}
-        <div className="mt-4 space-y-1 xl:mt-0 xl:w-2/5 xl:pl-4 h-full flex flex-col flex-none">
+        <div className="mt-4 space-y-1 lg:mt-0 lg:w-2/5 lg:pl-4 h-full flex flex-col flex-none">
           <div className="h-auto">
             <h2 className="text-10px text-gray-500 lg:text-sm">{product.vendor}</h2>
             <h2 className="text-14px font-medium mt-1 lg:text-xl lg:font-semibold">{product.title}</h2>
@@ -265,7 +269,7 @@ export default function Product() {
             <h3 className="text-base font-medium lg:text-lg">Product Details</h3>
             <div className="space-y-2 text-xs text-gray-600 lg:text-sm">
               <div className="mt-2">
-                {typeof window !== 'undefined' ? (() => {
+                {isClient ? (() => {
                   try {
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(product.descriptionHtml, 'text/html');
