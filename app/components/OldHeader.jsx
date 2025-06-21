@@ -71,10 +71,27 @@ function CartBadge({ count }) {
         });
         navigate('/cart');
       }}
-      className="flex items-center space-x-2 text-gray-800 hover:text-gray-600"
+      className="flex items-center md:space-x-2 text-gray-800 hover:text-gray-600"
     >
-      <ShoppingCart className="h-6 w-6" />
-      <span>{count === null ? '\u00A0' : count}</span>
+      <ShoppingCart className="hidden md:block h-6 w-6" />
+      <span className={`hidden ${count === 0 ? 'hidden' : 'md:block'}`}>{count === null ? '\u00A0' : count}</span>
+      <div className="relative md:hidden">
+        <svg
+          name="DS-Icon DS-Cart mui-latin-u81msc"
+          focusable="false"
+          color="#000"
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          width="32"
+          height="32"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+        >
+          <path fill="currentColor" fill-rule="evenodd" d="M12 3a3.836 3.836 0 0 0-3.844 3.828v1.345H5.143A1.14 1.14 0 0 0 4 9.31v10.552A1.14 1.14 0 0 0 5.143 21h13.714A1.14 1.14 0 0 0 20 19.862V9.31a1.14 1.14 0 0 0-1.143-1.137h-3.012V6.828A3.836 3.836 0 0 0 12 3m2.39 6.62v1.346c0 .4.326.724.727.724a.726.726 0 0 0 .728-.724V9.62h2.7v9.93H5.456v-9.93h2.701v1.345c0 .4.326.724.728.724a.726.726 0 0 0 .727-.724V9.62zm0-1.447V6.828c0-1.314-1.07-2.38-2.39-2.38a2.385 2.385 0 0 0-2.39 2.38v1.345z" clip-rule="evenodd">
+          </path>
+        </svg>
+        <span className={`absolute bottom-0 right-0 ${count === 0 ? 'hidden': 'bg-red-500'} text-white text-xs rounded-full w-4 h-4 flex items-center justify-center`}>{count === null ? '\u00A0' : count}</span>
+      </div>
     </a>
   );
 }
@@ -271,16 +288,18 @@ export default function OldHeader({
         <div className="max-w-full mx-auto px-2 md:px-4 xl:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Mobile Menu Button */}
-            <button
-              className="lg:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
+            <div className="lg:hidden flex items-center w-1/3">
+              <button
+                className=""
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                {isMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
+            </div>
 
             {/* Logo */}
             <div className="max-w-[300px]">
@@ -330,7 +349,7 @@ export default function OldHeader({
             </div>
 
             {/* Utility Icons */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center justify-end lg:w-auto w-1/3 gap-1">
               {/* <button className="text-gray-800 hover:text-gray-600">
                 <Search className="h-6 w-6" />
               </button> */}

@@ -172,8 +172,8 @@ export default function Product() {
                 <button
                   key={index}
                   onClick={() => setSelectedMedia(index)}
-                  className={`flex-none rounded-lg overflow-hidden border-2 transition-all duration-200 transform hover:scale-105 aspect-[1/1] w-full h-auto ${selectedMedia === index
-                    ? 'border-black ring-2 ring-gray-200 shadow-md'
+                  className={`flex-none rounded-lg overflow-hidden border-2 hover:scale-105 aspect-[1/1] w-full h-auto ${selectedMedia === index
+                    ? 'border-black border-2 ring-gray-200 shadow-md'
                     : 'border-transparent'
                     } hover:border-gray-300`}
                 >
@@ -188,8 +188,8 @@ export default function Product() {
                 <button
                   key={index}
                   onClick={() => setSelectedMedia(images.length + index)}
-                  className={`flex-none rounded-lg overflow-hidden border-2 transition-all duration-200 transform hover:scale-105 aspect-square w-full h-auto ${selectedMedia === images.length + index
-                    ? 'border-black ring-2 ring-gray-200 shadow-md'
+                  className={`flex-none rounded-lg overflow-hidden border-2 transform hover:scale-105 aspect-square w-full h-auto ${selectedMedia === images.length + index
+                    ? 'border-black border-2 ring-gray-200 shadow-md'
                     : 'border-transparent'
                     } hover:border-gray-300`}
                 >

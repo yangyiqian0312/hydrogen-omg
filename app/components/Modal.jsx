@@ -73,8 +73,8 @@ function Modal({ onClose }) {
                 Enjoy
               </div>
               <div 
-                className="sm:text-5xl text-4xl mb-2 text-center"
-                style={{ fontFamily: 'forma-djr-micro, sans-serif', fontStyle: 'normal', fontWeight: '500' }}>
+                className="sm:text-6xl text-5xl mb-2 text-center"
+                style={{ fontFamily: 'forma-djr-micro, sans-serif', fontStyle: 'bold', fontWeight: '900' }}>
                 20% Off
               </div>
               <div 
