@@ -32,7 +32,7 @@ export default function GalleryProductCard({ node }) {
                 { discount !=0 &&<span className="ml-2 mt-2 absolute top-0 left-0 text-red-500 font-semibold bg-pink-100 px-2 sm:px-4 text-xs rounded">{discount.toFixed(0)}% OFF</span>}
             </Link>
 
-            <div className="p-3 flex flex-col h-full justify-between">
+            <div className="sm:p-3 px-2 flex flex-col h-full justify-between">
                 <Link
                     to={`/products/${node.handle}`}
                     className="block"
@@ -40,7 +40,7 @@ export default function GalleryProductCard({ node }) {
                     <div className="sm:text-md text-sm font-semibold text-black uppercase hover:underline truncate">
                         {node.vendor || 'Unknown Brand'}
                     </div>
-                    <div className="sm:text-md text-sm  font-normal mb-2 text-gray-800 overflow-hidden 
+                    <div className="sm:text-md text-sm  font-normal sm:mb-2 mb-1 text-gray-800 overflow-hidden 
                     h-auto max-h-12
                     line-clamp-2">
                         {node.abbrTitle?.value
