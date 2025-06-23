@@ -588,7 +588,7 @@ export default function Homepage() {
           {orderedProducts.map(({ node }, index) => (
             node.selectedOrFirstAvailableVariant.availableForSale && (<div
               key={node.id}
-              className={`flex flex-col justify-between h-auto flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/4 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
+              className={`flex flex-col justify-between h-auto flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/5 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
             >
               <div className={`flex-none h-auto w-full ${videoUrl?.index === index && videoUrl?.url ? 'aspect-[2/3]' : 'aspect-[2/3]'}`}>
                 <Link
@@ -632,7 +632,7 @@ export default function Homepage() {
                   <div className="text-md lg:text-lg font-medium text-black uppercase tracking-wider mb-2">
                     {node.vendor || 'Unknown Brand'}
                   </div>
-                  <div className="text-sm lg:text-base font-normal mb-2 text-wrap h-12 md:h-10">
+                  <div className="text-sm lg:text-md font-normal mb-2 text-wrap h-12 md:h-10">
                     {node.abbrTitle?.value || node.title.replace(new RegExp(`^${node.vendor}\s*`), '')}
                   </div>
                   <div className="text-pink-600 font-bold md:pb-4 pb-2">
