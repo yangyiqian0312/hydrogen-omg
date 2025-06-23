@@ -106,7 +106,7 @@ const Newarrivals = (selectedVariant) => {
   }, [products]);
 
   const brands = useMemo(() => {
-    const vendors = [...new Set(newProducts.map(({ node }) => node.vendor[0]+node.vendor.slice(1).toLowerCase()))].sort();
+    const vendors = [...new Set(newProducts.map(({ node }) => node.vendor[0] + node.vendor.slice(1).toLowerCase()))].sort();
     return ['all brands', ...vendors];
   }, [newProducts]);
 
@@ -148,12 +148,12 @@ const Newarrivals = (selectedVariant) => {
 
   // Update sortedProducts when filteredProducts changes
   useEffect(() => {
-    if(urlBrand!=selectedBrand){
-        setSelectedBrand(urlBrand||"all brands");
+    if (urlBrand != selectedBrand) {
+      setSelectedBrand(urlBrand || "all brands");
     }
     setSortedProducts(filteredProducts);
     setSortOption('');
-  }, [urlBrand,selectedBrand]);
+  }, [urlBrand, selectedBrand]);
 
   const handleSortChange = (sortOption) => {
     setSortOption(sortOption);
@@ -190,27 +190,27 @@ const Newarrivals = (selectedVariant) => {
         <div className="flex items-center gap-2">
           <p className="text-sm font-medium text-gray-500">Showing {sortedProducts.length} products</p>
         </div>
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2">
-            <p className="text-sm font-medium text-gray-500">Sort by:</p>
-            <select value={sortOption} onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-2 md:px-4 py-1">
-              <option value="">Default</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-              <option value="new">Newest</option>
-            </select>
-          </div>
-          <div className="flex items-center gap-2">
-            <p className="text-sm font-medium text-gray-500">Select Brand:</p>
-            {brands.length > 0 && <select value={selectedBrand} onChange={(e) => handleBrandChange(e.target.value)} className="border border-gray-200 rounded-md px-2 md:px-4 py-1">
-              {brands.map((brand) => (
-                <option key={brand} value={brand}>{brand}</option>
-              ))}
-            </select>}
-          </div>
+
+        <div className="flex items-center gap-2">
+          <p className="text-sm font-medium text-gray-500">Sort by:</p>
+          <select value={sortOption} onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-2 md:px-4 py-1">
+            <option value="">Default</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="new">Newest</option>
+          </select>
         </div>
+        <div className="flex items-center gap-2">
+          <p className="text-sm font-medium text-gray-500">Select Brand:</p>
+          {brands.length > 0 && <select value={selectedBrand} onChange={(e) => handleBrandChange(e.target.value)} className="border border-gray-200 rounded-md px-2 md:px-4 py-1">
+            {brands.map((brand) => (
+              <option key={brand} value={brand}>{brand}</option>
+            ))}
+          </select>}
+        </div>
+
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 p-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-6 pt-1 sm:p-4">
         {sortedProducts.length > 0 ? (
           sortedProducts.map(({ node }) => (
             <GalleryProductCard key={node.id} node={node} />

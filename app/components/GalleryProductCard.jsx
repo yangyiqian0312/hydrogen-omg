@@ -20,16 +20,16 @@ export default function GalleryProductCard({ node }) {
                     <img
                         src={node.images.edges[0].node.url}
                         alt={node.title}
-                        className="w-full aspect-square object-contain"
+                        className="w-full aspect-square object-contain shadow-sm"
                     />
                 ) : (
                     <img
                         src="/api/placeholder/400/400"
                         alt="Placeholder"
-                        className="w-full aspect-square object-contain"
+                        className="w-full aspect-square object-contain shadow-sm"
                     />
                 )}
-                { discount !=0 &&<span className="ml-2 mt-2 absolute top-0 left-0 text-red-500 font-semibold bg-pink-100 px-4  rounded">{discount.toFixed(0)}% OFF</span>}
+                { discount !=0 &&<span className="ml-2 mt-2 absolute top-0 left-0 text-red-500 font-semibold bg-pink-100 px-2 sm:px-4 text-xs rounded">{discount.toFixed(0)}% OFF</span>}
             </Link>
 
             <div className="p-3 flex flex-col h-full justify-between">
@@ -37,19 +37,19 @@ export default function GalleryProductCard({ node }) {
                     to={`/products/${node.handle}`}
                     className="block"
                 >
-                    <div className="font-semibold text-black uppercase hover:underline truncate">
+                    <div className="sm:text-md text-sm font-semibold text-black uppercase hover:underline truncate">
                         {node.vendor || 'Unknown Brand'}
                     </div>
-                    <p className="text-sm font-normal mb-2 text-gray-800 overflow-hidden 
+                    <div className="sm:text-md text-sm  font-normal mb-2 text-gray-800 overflow-hidden 
                     h-auto max-h-12
                     line-clamp-2">
                         {node.abbrTitle?.value
                             ? node.abbrTitle.value
                             : node.title.replace(new RegExp(`^${node.vendor}\\s*`), '')}
-                    </p>
+                    </div>
                 </Link>
 
-                <div className='pt-1'>
+                <div className='sm:pt-1'>
                     <p className={`font-bold ${node.variants.edges[0]?.node.compareAtPrice ? 'text-red-500' : ''}`}>
                         ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
                         {node.variants.edges[0]?.node.compareAtPrice && (
