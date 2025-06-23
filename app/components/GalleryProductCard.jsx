@@ -9,7 +9,7 @@ export default function GalleryProductCard({ node }) {
     
     return (
         <div
-            className="rounded-lg flex flex-col overflow-hidden shadow-lg shadow-gray-300 hover:shadow-md transition-shadow duration-300"
+            className="rounded-lg flex flex-col overflow-hidden sm:shadow-lg shadow-sm shadow-gray-300 hover:shadow-md transition-shadow duration-300"
         >
             {/* Product card content remains the same */}
             <Link
@@ -20,16 +20,16 @@ export default function GalleryProductCard({ node }) {
                     <img
                         src={node.images.edges[0].node.url}
                         alt={node.title}
-                        className="w-full aspect-square object-contain shadow-sm"
+                        className="w-full aspect-square object-contain"
                     />
                 ) : (
                     <img
                         src="/api/placeholder/400/400"
                         alt="Placeholder"
-                        className="w-full aspect-square object-contain shadow-sm"
+                        className="w-full aspect-square object-contain"
                     />
                 )}
-                { discount !=0 &&<span className="ml-2 mt-2 absolute top-0 left-0 text-red-500 font-semibold bg-pink-100 px-2 sm:px-4 text-xs rounded">{discount.toFixed(0)}% OFF</span>}
+                { discount !=0 &&<span className="ml-2 mt-2 absolute top-1 sm:top-0 left-1 sm:left-0 text-red-500 font-semibold bg-pink-100 px-2 sm:px-4 text-xs rounded">{discount.toFixed(0)}% OFF</span>}
             </Link>
 
             <div className="sm:p-3 px-2 flex flex-col h-full justify-between">
