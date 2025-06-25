@@ -67,7 +67,7 @@ async function loadDeferredData({ context }) {
     //   VENDOR_PRODUCTS_QUERY,
     // );
     // Log the resolved data for debugging
-    console.log('Resolved Data in Loader:', salesProducts);
+    // console.log('Resolved Data in Loader:', salesProducts);
     return {
       salesProducts: salesProducts || null,
       // vendorProducts: vendorProducts || null,
@@ -114,7 +114,7 @@ const Sales = (selectedVariant) => {
     return ['all brands', ...vendors];
   }, [salesProducts]);
 
-  console.log("Filtered sales products:", salesProducts);
+  // console.log("Filtered sales products:", salesProducts);
 
 
   const filteredProducts = useMemo(() => selectedBrand && selectedBrand !== "all brands"
@@ -150,8 +150,8 @@ const Sales = (selectedVariant) => {
   const [sortOption, setSortOption] = useState('');
   // Update sortedProducts when filteredProducts changes
   useEffect(() => {
-    console.log("Selected brand:", selectedBrand);
-    console.log("URL brand:", urlBrand);
+    // console.log("Selected brand:", selectedBrand);
+    // console.log("URL brand:", urlBrand);
     if (urlBrand != selectedBrand) {
       setSelectedBrand(urlBrand || "all brands");
     }
@@ -193,12 +193,12 @@ const Sales = (selectedVariant) => {
     <div className="flex flex-col md:gap-2">
       <div className="flex justify-between md:p-4 pt-2 px-2 md:flex-row flex-col gap-2">
         <div className="flex items-center gap-2">
-          <p className="text-sm font-medium text-gray-500">Showing {sortedProducts.length} products</p>
+          <p className="text-xs font-medium text-gray-500">Showing {sortedProducts.length} products</p>
         </div>
 
         <div className="flex items-center gap-2">
-          <p className="text-sm font-medium text-gray-500">Sort by:</p>
-          <select value={sortOption} onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-2 md:px-4 py-1">
+          <p className="text-xs font-medium text-gray-500">Sort by:</p>
+          <select value={sortOption} onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-2 md:px-4 py-1 text-xs">
             <option value="">Default</option>
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
@@ -206,8 +206,8 @@ const Sales = (selectedVariant) => {
           </select>
         </div>
         <div className="flex items-center gap-2">
-          <p className="text-sm font-medium text-gray-500">Select Brand:</p>
-          {brands.length > 0 && <select value={selectedBrand} onChange={(e) => handleBrandChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1">
+          <p className="text-xs font-medium text-gray-500">Select Brand:</p>
+          {brands.length > 0 && <select value={selectedBrand} onChange={(e) => handleBrandChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1 text-xs">
             {brands.map((brand) => (
               <option key={brand} value={brand}>{brand}</option>
             ))}

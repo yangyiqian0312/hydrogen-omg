@@ -140,7 +140,7 @@ const Men = (selectedVariant) => {
   useEffect(() => {
     setSortedProducts(filteredProducts);
     setSortOption('');
-    console.log("filtered men products:", filteredProducts);
+    // console.log("filtered men products:", filteredProducts);
   }, [selectedBrand]);
 
 
@@ -185,11 +185,11 @@ const Men = (selectedVariant) => {
     <div className="flex flex-col md:gap-2">
       <div className="flex justify-between md:p-4 pt-2 px-2 md:flex-row flex-col gap-2">
         <div className="flex items-center gap-2">
-          <p className="text-sm font-medium text-gray-500">Showing {sortedProducts.length} products</p>
+          <p className="text-xs font-medium text-gray-500">Showing {sortedProducts.length} products</p>
         </div>
         <div className="flex items-center gap-2">
-          <p className="text-sm font-medium text-gray-500">Sort by:</p>
-          <select value={sortOption} onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-2 md:px-4 py-1">
+          <p className="text-xs font-medium text-gray-500">Sort by:</p>
+          <select value={sortOption} onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-2 md:px-4 py-1 text-xs">
             <option value="">Default</option>
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
@@ -197,8 +197,8 @@ const Men = (selectedVariant) => {
           </select>
         </div>
         <div className="flex lg:hidden items-center gap-2">
-          <p className="text-sm font-medium text-gray-500">Select Brand:</p>
-          {brands.length > 0 && <select value={selectedBrand} onChange={(e) => handleBrandChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1">
+          <p className="text-xs font-medium text-gray-500">Select Brand:</p>
+          {brands.length > 0 && <select value={selectedBrand} onChange={(e) => handleBrandChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1 text-xs">
             {brands.map((brand) => (
               <option key={brand} value={brand}>{brand}</option>
             ))}

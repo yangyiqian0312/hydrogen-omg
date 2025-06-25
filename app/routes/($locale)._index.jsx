@@ -350,7 +350,6 @@ export default function Homepage() {
   const otherProducts = promotingProducts.filter(
     ({ node }) => !preferredOrder.includes(node.title)
   );
-  console.log("otherProducts", otherProducts);
 
   // 合并所有产品
   const orderedProducts = [...priorityProducts, ...otherProducts];
