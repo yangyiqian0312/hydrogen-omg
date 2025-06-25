@@ -164,7 +164,7 @@ export default function Product() {
   return (
     <div className="w-full flex flex-col">
       <div className="mx-auto px-4 py-4 sm:py-0 flex flex-col lg:flex-row lg:justify-center lg:gap-8 h-full">
-        <div className="flex gap-6 w-auto h-full justify-center lg:pt-12">
+        <div className={`flex gap-6 w-auto h-full justify-center ${selectedMedia >= images.length ? 'lg:pt-0' : 'lg:pt-12'}`}>
           {/* Thumbnails on the left */}
           <div className="relative w-20 lg:w-28 2xl:w-36  h-64 sm:h-[calc(100vh-300px)] lg:h-[calc(100vh-250px)]">
             <div className="flex flex-col lg:gap-4 gap-1 w-full h-full overflow-y-auto">
@@ -205,7 +205,7 @@ export default function Product() {
           </div>
 
           {/* Main Image on the right */}
-          <div className="max-w-[calc(100vh-300px)] w-full">
+          <div className="w-full max-w-[calc(100vh-250px)]">
             <div className={`relative ${selectedMedia >= images.length ? 'aspect-[3/4]' : 'aspect-square'} max-h-[800px] w-full rounded-xl overflow-hidden border border-gray-100 lg:shadow-md hover:shadow-lg transition-shadow duration-300`}>
               {images[selectedMedia] ? (
                 <img
