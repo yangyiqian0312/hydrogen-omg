@@ -503,3 +503,11 @@ button.reset:hover:not(:has(> *)) {
 .account-logout {
   display: inline-block;
 }
+
+/*
+* --------------------------------------------------
+* routes/product/$handle.tsx
+* --------------------------------------------------
+*/
+ul, ol { list-style: disc !important; margin-left: 1.5em !important; }
+li { list-style-type: inherit !important; }

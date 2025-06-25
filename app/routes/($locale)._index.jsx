@@ -578,7 +578,7 @@ export default function Homepage() {
         </button>
         <div
           ref={mainCarouselRef}
-          className="flex h-full overflow-x-auto snap-x md:gap-4 gap-2 hide-scrollbar scrollbar-hide"
+          className="flex h-full overflow-x-auto snap-x gap-2 hide-scrollbar scrollbar-hide"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',

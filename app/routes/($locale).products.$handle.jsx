@@ -163,8 +163,8 @@ export default function Product() {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="mx-auto px-4 py-4 flex flex-col lg:flex-row lg:justify-center lg:gap-8 lg:py-8 h-full">
-        <div className="flex gap-6 w-auto h-full justify-center">
+      <div className="mx-auto px-4 py-4 sm:py-0 flex flex-col lg:flex-row lg:justify-center lg:gap-8 h-full">
+        <div className="flex gap-6 w-auto h-full justify-center lg:pt-12">
           {/* Thumbnails on the left */}
           <div className="relative w-20 lg:w-28 2xl:w-36  h-64 sm:h-[calc(100vh-300px)] lg:h-[calc(100vh-250px)]">
             <div className="flex flex-col lg:gap-4 gap-1 w-full h-full overflow-y-auto">
@@ -231,21 +231,32 @@ export default function Product() {
         </div>
 
         {/* Product Info - right side on desktop */}
-        <div className="mt-4 space-y-1 lg:mt-0 lg:w-2/5 lg:pl-4 h-full flex flex-col flex-none">
+        <div className="mt-4 space-y-1 lg:mt-0 lg:w-2/5 h-full flex flex-col flex-none">
           <div className="h-auto">
-            <h2 className="text-10px text-gray-500 lg:text-sm">{product.vendor}</h2>
-            <h2 className="text-14px font-medium mt-1 lg:text-xl lg:font-semibold">{product.title}</h2>
-            <p className="text-10px text-gray-600 mt-1 lg:text-sm">{product.category}</p>
+            <h2 className="text-xl text-gray-500 lg:text-sm">{product.vendor}</h2>
+            <h2 className="text-xl font-medium mt-1 lg:text-xl lg:font-semibold">{product.title}</h2>
+            {/* <p className="text-10px text-gray-600 mt-1 lg:text-sm">{product.category}</p> */}
           </div>
 
-          <div className="flex flex-col gap-2 w-full flex-none">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-col gap-2 w-full flex-none max-w-sm ">
+            <div className="flex flex-col gap-2 justify-between">
               <ProductPrice
                 price={selectedVariant?.price}
                 compareAtPrice={selectedVariant?.compareAtPrice}
               />
+              <div className="border rounded-lg p-4 bg-white lg:shadow-sm flex-none">
+                <div className="flex items-center gap-3">
+                  <Truck className="w-5 h-5" />
+                  <div>
+                    <div className="text-sm font-medium">Free Standard Delivery</div>
+                    <div className="text-xs text-gray-500">
+                      Arrives within 3-5 business days
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="pt-2 lg:pt-4 w-full">
+            <div className="pt-2 w-full">
               <ProductForm
                 productOptions={productOptions}
                 selectedVariant={selectedVariant}
@@ -253,20 +264,10 @@ export default function Product() {
             </div>
           </div>
 
-          <div className="border rounded-lg p-4 space-y-4 bg-white lg:mt-6 lg:shadow-sm flex-none">
-            <div className="flex items-center gap-3">
-              <Truck className="w-5 h-5" />
-              <div>
-                <p className="text-sm font-medium">Free Standard Delivery</p>
-                <p className="text-xs text-gray-500">
-                  Arrives within 3-5 business days
-                </p>
-              </div>
-            </div>
-          </div>
 
-          <div className="space-y-4 pt-6 lg:pt-8 lg:border-t lg:mt-8 flex-grow 2xl:max-h-[calc(100vh-20rem)] 2xl:overflow-hidden">
-            <h3 className="text-base font-medium lg:text-lg">Product Details</h3>
+
+          <div className="space-y-4 pt-2 lg:pt-4 lg:border-t lg:mt-4 flex-grow 2xl:max-h-[calc(100vh-20rem)] 2xl:overflow-hidden">
+            {/* <h3 className="text-base font-medium lg:text-lg">Product Details</h3> */}
             <div className="space-y-2 text-xs text-gray-600 lg:text-sm">
               <div className="mt-2">
                 {isClient ? (() => {
@@ -276,7 +277,7 @@ export default function Product() {
                     const body = doc.body;
                     const sections = [];
                     let currentSection = null;
-
+                    
                     // Process all child nodes of the body
                     Array.from(body.childNodes).forEach(node => {
                       if (node.nodeType === 1) { // Only process element nodes
@@ -300,7 +301,7 @@ export default function Product() {
                               // Remove the strong element to avoid duplication
                               strongElement.remove();
                               // Add the remaining content
-                              content.push(node.innerHTML);
+                              if (node.innerHTML.trim()) content.push(node.innerHTML);
                             }
                           }
 
@@ -311,7 +312,7 @@ export default function Product() {
                           };
                         } else if (currentSection) {
                           // Add content to current section
-                          currentSection.content.push(node.outerHTML || node.textContent);
+                          currentSection.content.push(node.outerHTML);
                         }
                       }
                     });
@@ -320,6 +321,7 @@ export default function Product() {
                     if (currentSection) {
                       sections.push(currentSection);
                     }
+                    console.log(sections)
 
                     return (
                       <div className="space-y-3">
@@ -327,9 +329,11 @@ export default function Product() {
                           <div key={index} className="border-b border-gray-200">
                             <button
                               onMouseOver={() => setActiveSection(activeSection === index ? null : index)}
-                              className="w-full flex justify-between items-center py-2 text-left focus:outline-none"
+                              className="w-full flex justify-between items-center py-1 text-left focus:outline-none"
                             >
-                              <h3 className="text-base font-medium text-gray-900">
+                              <h3
+                                className="text-base font-medium text-gray-900"
+                                style={{ fontFamily: 'archivo, sans-serif', fontStyle: 'bold', fontWeight: 700 }}>
                                 {section.heading}
                               </h3>
                               <svg
@@ -348,11 +352,12 @@ export default function Product() {
                               </svg>
                             </button>
                             <div
-                              className={`overflow-y-auto transition-all duration-300 ${activeSection === index ? 'h-36' : 'h-0'
+                              className={`overflow-y-auto transition-all duration-300 ${activeSection === index ? 'h-auto max-h-32' : 'h-0'
                                 }`}
                             >
                               <div
-                                className="pb-4 text-gray-800 text-md lg:text-lg"
+                                className="p-2 text-gray-800 text-xs "
+                                style={{ fontFamily: 'archivo, sans-serif', fontStyle: 'normal', fontWeight: 400 }}
                                 dangerouslySetInnerHTML={{ __html: section.content.join('') }}
                               />
                             </div>
@@ -366,6 +371,7 @@ export default function Product() {
                     return (
                       <div
                         className="text-gray-700 space-y-2"
+                        style={{ fontFamily: 'archivo, sans-serif', fontStyle: 'normal', fontWeight: 400 }}
                         dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
                       />
                     );
@@ -374,6 +380,7 @@ export default function Product() {
                   // Server-side fallback
                   <div
                     className="text-gray-700 space-y-2"
+                    style={{ fontFamily: 'archivo, sans-serif', fontStyle: 'normal', fontWeight: 400 }}
                     dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
                   />
                 )}

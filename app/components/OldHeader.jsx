@@ -42,7 +42,7 @@ function HeaderMenuMobileToggle() {
 function SearchToggle() {
   const { open } = useAside();
   return (
-    <Search className="reset" onClick={() => open('search')}>
+    <Search className="reset cursor-pointer" onClick={() => open('search')}>
       Search
     </Search>
   );
