@@ -353,6 +353,7 @@ export default function Homepage() {
 
   // 合并所有产品
   const orderedProducts = [...priorityProducts, ...otherProducts];
+  console.log("orderedProducts", orderedProducts);
 
   const bgColors = [
     'bg-[#A1E9ED]',
