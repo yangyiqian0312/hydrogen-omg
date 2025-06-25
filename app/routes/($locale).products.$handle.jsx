@@ -205,7 +205,7 @@ export default function Product() {
           </div>
 
           {/* Main Image on the right */}
-          <div className="lg:max-w-[calc(100vh-250px)] max-w-[calc(100vh-300px)] w-full">
+          <div className="max-w-[calc(100vh-300px)] w-full">
             <div className={`relative ${selectedMedia >= images.length ? 'aspect-[3/4]' : 'aspect-square'} max-h-[800px] w-full rounded-xl overflow-hidden border border-gray-100 lg:shadow-md hover:shadow-lg transition-shadow duration-300`}>
               {images[selectedMedia] ? (
                 <img
