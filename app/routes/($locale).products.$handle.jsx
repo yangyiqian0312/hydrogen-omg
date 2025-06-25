@@ -122,7 +122,7 @@ export default function Product() {
   const [selectedMedia, setSelectedMedia] = useState(0);
   const [activeSection, setActiveSection] = useState(null);
   const [isClient, setIsClient] = useState(false);
-  useEffect(() => { setIsClient(true); }, []);
+  useEffect(() => { setIsClient(true); setSelectedMedia(0); setActiveSection(0); }, [product]);
   const orderCarouselRef = useRef(null);
 
   const scrollLeft = (carouselRef) => {
@@ -321,8 +321,6 @@ export default function Product() {
                     if (currentSection) {
                       sections.push(currentSection);
                     }
-                    console.log(sections)
-
                     return (
                       <div className="space-y-3">
                         {sections.map((section, index) => (
