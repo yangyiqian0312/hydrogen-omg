@@ -163,10 +163,10 @@ export default function Product() {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="mx-auto px-4 py-4 sm:py-0 flex flex-col lg:flex-row lg:justify-center lg:gap-8 h-full">
-        <div className={`flex gap-6 w-auto h-full justify-center ${selectedMedia >= images.length ? 'lg:pt-0' : 'lg:pt-12'}`}>
+      <div className="mx-auto px-4 py-4 sm:py-0 flex flex-col xl:flex-row xl:justify-center xl:gap-8 h-full">
+        <div className={`flex gap-6 w-auto h-full justify-center ${selectedMedia >= images.length ? 'xl:pt-0' : 'xl:pt-12'}`}>
           {/* Thumbnails on the left */}
-          <div className="relative w-20 lg:w-28 2xl:w-36  h-64 sm:h-[calc(100vh-300px)] lg:h-[calc(100vh-250px)]">
+          <div className="relative w-20 xl:w-28 2xl:w-36  h-64 sm:h-auto xl:h-[calc(100vh-500px)]">
             <div className="flex flex-col lg:gap-4 gap-1 w-full h-full overflow-y-auto">
               {images.map((image, index) => (
                 <button
@@ -206,12 +206,12 @@ export default function Product() {
 
           {/* Main Image on the right */}
           <div className="w-full max-w-[calc(100vh-250px)]">
-            <div className={`relative ${selectedMedia >= images.length ? 'aspect-[3/4]' : 'aspect-square'} max-h-[800px] w-full rounded-xl overflow-hidden border border-gray-100 lg:shadow-md hover:shadow-lg transition-shadow duration-300`}>
+            <div className={`relative ${selectedMedia >= images.length ? 'aspect-[3/4]' : 'aspect-square'} max-h-[800px] w-auto rounded-xl overflow-hidden border border-gray-100 lg:shadow-md hover:shadow-lg transition-shadow duration-300`}>
               {images[selectedMedia] ? (
                 <img
                   src={images[selectedMedia]?.node?.image?.url}
                   alt={images[selectedMedia]?.node?.image?.altText || `Product main view`}
-                  className="w-full h-full max-w-[700px] object-cover transition-transform duration-700 hover:scale-105 xl:p-8 p-2"
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105 xl:p-8 p-2"
                 />
               ) : (
                 <video
@@ -231,10 +231,10 @@ export default function Product() {
         </div>
 
         {/* Product Info - right side on desktop */}
-        <div className="mt-4 space-y-1 lg:mt-0 lg:w-2/5 h-full flex flex-col flex-none">
+        <div className="mt-4 space-y-1 xl:mt-0 xl:w-1/2 h-full flex flex-col flex-none px-8">
           <div className="h-auto">
-            <h2 className="text-xl text-gray-500 lg:text-sm">{product.vendor}</h2>
-            <h2 className="text-xl font-medium mt-1 lg:text-xl lg:font-semibold">{product.title}</h2>
+            <h1 className="text-xl text-gray-500 xl:text-sm">{product.vendor}</h1>
+            <h1 className="text-xl font-medium mt-1 xl:text-xl xl:font-semibold">{product.title}</h1>
             {/* <p className="text-10px text-gray-600 mt-1 lg:text-sm">{product.category}</p> */}
           </div>
 
@@ -244,7 +244,7 @@ export default function Product() {
                 price={selectedVariant?.price}
                 compareAtPrice={selectedVariant?.compareAtPrice}
               />
-              <div className="border rounded-lg p-4 bg-white lg:shadow-sm flex-none">
+              <div className="border rounded-lg p-4 bg-white xl:shadow-sm flex-none">
                 <div className="flex items-center gap-3">
                   <Truck className="w-5 h-5" />
                   <div>
@@ -266,7 +266,7 @@ export default function Product() {
 
 
 
-          <div className="space-y-4 pt-2 lg:pt-4 lg:border-t lg:mt-4 flex-grow 2xl:max-h-[calc(100vh-20rem)] 2xl:overflow-hidden">
+          <div className="space-y-4 pt-2 xl:pt-4 xl:border-t xl:mt-4 flex-grow 2xl:max-h-[calc(100vh-20rem)] 2xl:overflow-hidden">
             {/* <h3 className="text-base font-medium lg:text-lg">Product Details</h3> */}
             <div className="space-y-2 text-xs text-gray-600 lg:text-sm">
               <div className="mt-2">
@@ -329,11 +329,11 @@ export default function Product() {
                               onMouseOver={() => setActiveSection(activeSection === index ? null : index)}
                               className="w-full flex justify-between items-center py-1 text-left focus:outline-none"
                             >
-                              <h3
-                                className="text-base font-medium text-gray-900"
+                              <div
+                                className="text-gray-900 text-lg md:text-xl"
                                 style={{ fontFamily: 'archivo, sans-serif', fontStyle: 'bold', fontWeight: 700 }}>
                                 {section.heading}
-                              </h3>
+                              </div>
                               <svg
                                 className={`w-5 h-5 text-gray-500 transform transition-transform ${activeSection === index ? 'rotate-180' : ''
                                   }`}
@@ -350,11 +350,11 @@ export default function Product() {
                               </svg>
                             </button>
                             <div
-                              className={`overflow-y-auto transition-all duration-300 ${activeSection === index ? 'h-auto max-h-32' : 'h-0'
+                              className={`overflow-y-auto transition-all duration-300 ${activeSection === index ? 'h-auto sm:max-h-32 xl:max-h-52' : 'h-0'
                                 }`}
                             >
                               <div
-                                className="p-2 text-gray-800 text-xs "
+                                className="p-2 text-gray-800 text-sm md:text-lg"
                                 style={{ fontFamily: 'archivo, sans-serif', fontStyle: 'normal', fontWeight: 400 }}
                                 dangerouslySetInnerHTML={{ __html: section.content.join('') }}
                               />
