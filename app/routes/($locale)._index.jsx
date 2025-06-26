@@ -146,7 +146,7 @@ export default function Homepage() {
     let index = 0;
     for (const product of videoProducts) {
       for (const media of product.node.media.edges) {
-        if (media.node.mediaContentType === 'VIDEO' ) {
+        if (media.node.mediaContentType === 'VIDEO') {
           paths[index] = media.node;
           break;
         }
@@ -350,11 +350,23 @@ export default function Homepage() {
   const otherProducts = promotingProducts.filter(
     ({ node }) => !preferredOrder.includes(node.title)
   );
-
+  console.log(promotingProducts);
   // 合并所有产品
   const orderedProducts = [...priorityProducts, ...otherProducts];
-  console.log("orderedProducts", orderedProducts);
 
+  const orderedImages = () => {
+    const paths = [];
+    let index = 0;
+    for (const product of orderedProducts) {
+      for (const media of product.node.media.edges) {
+        if (media.node.mediaContentType === 'IMAGE') {
+          paths[index] = media.node.image.url;
+        }
+      }
+      index++;
+    }
+    return paths;
+  };
   const bgColors = [
     'bg-[#A1E9ED]',
     'bg-[#FFB2FF]',
@@ -586,7 +598,7 @@ export default function Homepage() {
           }}
         >
           {orderedProducts.map(({ node }, index) => (
-            node.selectedOrFirstAvailableVariant.availableForSale && (<div
+            node.availableForSale && (<div
               key={node.id}
               className={`flex flex-col justify-between h-auto flex-none w-1/4 xs:w-2/3 sm:w-60 md:w-80 lg:w-1/5 rounded-lg overflow-hidden snap-start shadow-sm hover:shadow-md transition-shadow duration-300 ${bgColors[index % bgColors.length]}`}
             >
@@ -614,14 +626,14 @@ export default function Homepage() {
                   )}
 
                   <img
-                    src={`/assets/presentation/${index + 1}.jpg`}
+                    src={orderedImages()[index]}
                     alt={node.title}
                     className={`${videoUrl?.index === index && videoUrl?.url ? 'hidden' : ''} w-full h-full object-cover lazy`}
                   />
 
                 </Link>
               </div>
-              <div className="relative p-4 lg:p-6 flex flex-col gap-4 justify-between h-full">
+              <div className="relative p-4 xl:p-6 flex flex-col gap-4 justify-between h-full">
                 <Link
                   to={`/products/${node.handle}`}
                   onClick={(e) => {
@@ -825,8 +837,8 @@ export default function Homepage() {
               <div
                 className="text-center text-xs pb-2 text-balance"
                 style={{ fontFamily: 'forma-djr-micro, sans-serif', fontStyle: 'normal', fontWeight: '500' }}>
-                 Confidence, character, and timeless appeal.
-                 Explore classic and bold fragrances curated for him.
+                Confidence, character, and timeless appeal.
+                Explore classic and bold fragrances curated for him.
               </div>
               <div className="text-center pb-2">
                 <button
@@ -2098,7 +2110,7 @@ const ALL_PRODUCTS_QUERY = `
     collection(id: "gid://shopify/Collection/285176168553") {
       title
       id
-      products(first: 100) {
+      products(first: 200) {
         edges {
           node {
             id
@@ -2114,6 +2126,7 @@ const ALL_PRODUCTS_QUERY = `
                 }  
               } 
             }
+            availableForSale
             selectedOrFirstAvailableVariant {
               ...ProductVariant
             }
@@ -2135,6 +2148,14 @@ const ALL_PRODUCTS_QUERY = `
                     }
                     previewImage {
                       url
+                    }
+                  }
+                  ... on MediaImage {
+                    image {
+                      url
+                      altText
+                      width
+                      height
                     }
                   }
                 }
