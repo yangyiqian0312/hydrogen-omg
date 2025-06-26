@@ -1,7 +1,7 @@
 import {useLoaderData} from '@remix-run/react';
 import {CartForm} from '@shopify/hydrogen';
 import {json} from '@shopify/remix-oxygen';
-import {CartMain} from '~/components/CartMain';
+import {CartMain} from '~/components/cart/CartMain';
 import {
   Form,
   useActionData,

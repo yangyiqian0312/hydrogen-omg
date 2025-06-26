@@ -1,8 +1,8 @@
 import {useOptimisticCart} from '@shopify/hydrogen';
 import {Link} from '@remix-run/react';
-import {useAside} from '~/components/Aside';
-import {CartLineItem} from '~/components/CartLineItem';
-import {CartSummary} from './CartSummary';
+import {useAside} from '~/components/layout/Aside';
+import {CartLineItem} from '~/components/cart/CartLineItem';
+import {CartSummary} from '~/components/cart/CartSummary';
 import { useEffect } from 'react';
 
 /**

@@ -1,6 +1,6 @@
 import {useFetcher, useNavigate} from '@remix-run/react';
 import React, {useRef, useEffect} from 'react';
-import {useAside} from './Aside';
+import {useAside} from '../layout/Aside';
 
 export const SEARCH_ENDPOINT = '/search';
 

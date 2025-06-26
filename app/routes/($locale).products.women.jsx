@@ -6,9 +6,9 @@ import { useRef, useState, useEffect, useMemo } from 'react'; // Add useMemo imp
 
 import { useLoaderData } from '@remix-run/react';
 
-import { useAside } from '~/components/Aside';
+import { useAside } from '~/components/layout/Aside';
 import { useSearchParams } from '@remix-run/react';
-import GalleryProductCard from '~/components/GalleryProductCard';
+import GalleryProductCard from '~/components/products/GalleryProductCard';
 
 /**
  * @param {{
@@ -117,11 +117,9 @@ const Women = (selectedVariant) => {
   const data = useLoaderData();
 
   const products = data.womenProducts?.collection?.products?.edges || [];
-
   // Memoize womenProducts to prevent recalculation on every render
   const womenProducts = useMemo(() => {
     return products
-      .filter(({ node }) => node.tags && node.tags.includes('Women'))
       .sort((a, b) => { 
         if (a.node.vendor === b.node.vendor) 
           return a.node.title.localeCompare(b.node.title); 
@@ -354,7 +352,7 @@ fragment ProductVariant on ProductVariant {
     collection(id: "gid://shopify/Collection/285176168553") {
       title
       id
-      products(first: 100) {
+      products(first: 100, filters:[{tag:"Women"}]) {
         edges {
           node {
             id

@@ -1,8 +1,8 @@
 import {json} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
 import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
-import {SearchForm} from '~/components/SearchForm';
-import {SearchResults} from '~/components/SearchResults';
+import {SearchForm} from '~/components/search/SearchForm';
+import {SearchResults} from '~/components/search/SearchResults';
 import {getEmptyPredictiveSearchResult} from '~/lib/search';
 
 /**

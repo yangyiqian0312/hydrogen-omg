@@ -1,7 +1,7 @@
 import { Link } from '@remix-run/react';
 import React from 'react';
-import { AddToCartButton } from './AddToCartButton';
-import { useAside } from './Aside';
+import { AddToCartButton } from '../cart/AddToCartButton';
+import { useAside } from '../layout/Aside';
 /**
  * @param {{
  *   id: string;

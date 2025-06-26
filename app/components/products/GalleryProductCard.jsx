@@ -1,6 +1,6 @@
-import { useAside } from '~/components/Aside';
+import { useAside } from '~/components/layout/Aside';
 import { Link } from 'react-router-dom';
-import { AddToCartButton } from '~/components/AddToCartButton';
+import { AddToCartButton } from '~/components/cart/AddToCartButton';
 export default function GalleryProductCard({ node }) {
     const { open } = useAside();
     const compareAtPrice = node.variants.edges[0]?.node.compareAtPrice? Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2): null;

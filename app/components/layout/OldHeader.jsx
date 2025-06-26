@@ -1,10 +1,10 @@
 import { useState, useEffect, Suspense, useRef } from 'react';
 import { Await, NavLink, useAsyncValue } from '@remix-run/react';
 import { useAnalytics, useOptimisticCart } from '@shopify/hydrogen';
-import { useAside } from '~/components/Aside';
+import { useAside } from '~/components/layout/Aside';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, User, Search, Menu, X, ChevronDown } from 'lucide-react';
-import Modal from '~/components/Modal';
+import Modal from '~/components/layout/Modal';
 import logo from '~/assets/logo.png';
 /**
  * @param {Pick<HeaderProps, 'isLoggedIn' | 'cart'>}

@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { useLoaderData } from '@remix-run/react';
 import { useSearchParams } from '@remix-run/react';
-import GalleryProductCard from '~/components/GalleryProductCard';
+import GalleryProductCard from '~/components/products/GalleryProductCard';
 
 
 /**
@@ -93,9 +93,7 @@ const Newarrivals = (selectedVariant) => {
 
   // Filter for products with "men" tag with extra logging
   const newProducts = useMemo(() => {
-    return products.filter(({ node }) => {
-      return node.tags && node.tags.includes('New Product');
-    }).sort((a, b) => {
+    return products.sort((a, b) => {
       if (a.node.vendor === b.node.vendor)
         return a.node.title.localeCompare(b.node.title);
       else
@@ -260,7 +258,7 @@ fragment ProductVariant on ProductVariant {
     collection(id: "gid://shopify/Collection/285176168553") {
       title
       id
-      products(first: 70) {
+      products(first: 100, filters:[{tag: "New Product"}]) {
         edges {
           node {
             id

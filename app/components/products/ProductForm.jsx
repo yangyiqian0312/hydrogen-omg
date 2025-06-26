@@ -1,6 +1,6 @@
 import { Link, useNavigate } from '@remix-run/react';
-import { AddToCartButton } from './AddToCartButton';
-import { useAside } from './Aside';
+import { AddToCartButton } from '../cart/AddToCartButton';
+import { useAside } from '../layout/Aside';
 
 /**
  * @param {{

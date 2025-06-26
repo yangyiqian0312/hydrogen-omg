@@ -5,11 +5,11 @@ import { Image, Money } from '@shopify/hydrogen';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import { Heart, ChevronLeft, ChevronRight, Clock, Gift } from 'lucide-react';
-import OldHeader from '~/components/OldHeader';
-import Modal from '~/components/Modal';
-import TrendingProductCard from '~/components/TrendingProductCard';
-import { AddToCartButton } from '~/components/AddToCartButton';
-import { useAside } from '~/components/Aside';
+import OldHeader from '~/components/layout/OldHeader';
+import Modal from '~/components/layout/Modal';
+import TrendingProductCard from '~/components/products/TrendingProductCard';
+import { AddToCartButton } from '~/components/cart/AddToCartButton';
+import { useAside } from '~/components/layout/Aside';
 /**
  * @type {MetaFunction}
  */

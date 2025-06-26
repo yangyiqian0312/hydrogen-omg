@@ -1,16 +1,16 @@
 import { Await, Link } from '@remix-run/react';
 import { Suspense, useId } from 'react';
-import { Aside } from '~/components/Aside';
-import { Footer } from '~/components/Footer';
-import { Header, HeaderMenu } from '~/components/Header';
-import { CartMain } from '~/components/CartMain';
+import { Aside } from '~/components/layout/Aside';
+import { Footer } from '~/components/layout/Footer';
+import { Header, HeaderMenu } from '~/components/layout/Header';
+import { CartMain } from '~/components/cart/CartMain';
 import {
   SEARCH_ENDPOINT,
   SearchFormPredictive,
-} from '~/components/SearchFormPredictive';
-import { SearchResultsPredictive } from '~/components/SearchResultsPredictive';
-import OldHeader from '~/components/OldHeader';
-import SocialFooter from '~/components/SocialFooter';
+} from '~/components/search/SearchFormPredictive';
+import { SearchResultsPredictive } from '~/components/search/SearchResultsPredictive';
+import OldHeader from '~/components/layout/OldHeader';
+import SocialFooter from '~/components/layout/SocialFooter';
 // import { NewFooter } from '~/components/NewFooter';
 /**
  * @param {PageLayoutProps}

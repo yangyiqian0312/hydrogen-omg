@@ -1,6 +1,6 @@
 import { json, redirect } from '@shopify/remix-oxygen';
 import { useNavigate, useActionData, useLoaderData } from '@remix-run/react';
-import SignupForm from '~/components/SignupForm';
+import SignupForm from '~/components/account/SignupForm';
 import { useState } from 'react';
 
 export async function loader({ context, request }) {

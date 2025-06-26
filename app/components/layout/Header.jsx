@@ -1,7 +1,7 @@
 import {Suspense} from 'react';
 import {Await, NavLink, useAsyncValue} from '@remix-run/react';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
-import {useAside} from '~/components/Aside';
+import {useAside} from '~/components/layout/Aside';
 
 /**
  * @param {HeaderProps}

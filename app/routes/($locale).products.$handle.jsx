@@ -9,12 +9,12 @@ import {
   useSelectedOptionInUrlParam,
 } from '@shopify/hydrogen';
 import React, { useState, useEffect, useRef } from 'react';
-import { ProductPrice } from '~/components/ProductPrice';
-import { ProductForm } from '~/components/ProductForm';
-import { ProductImage } from '~/components/ProductImage';
+import { ProductPrice } from '~/components/products/ProductPrice';
+import { ProductForm } from '~/components/products/ProductForm';
+import { ProductImage } from '~/components/products/ProductImage';
 import { Heart, Truck, Store } from 'lucide-react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import TrendingProductCard from '~/components/TrendingProductCard';
+import TrendingProductCard from '~/components/products/TrendingProductCard';
 /**
  * @type {MetaFunction<typeof loader>}
  */

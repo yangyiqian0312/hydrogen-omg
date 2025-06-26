@@ -4,7 +4,7 @@ import { Heart, Filter, ChevronDown } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { useLoaderData } from '@remix-run/react';
-import GalleryProductCard from '~/components/GalleryProductCard';
+import GalleryProductCard from '~/components/products/GalleryProductCard';
 
 import { useSearchParams } from '@remix-run/react';
 
@@ -109,7 +109,6 @@ const Men = (selectedVariant) => {
   // Filter for products with "men" tag with extra logging
   const menProducts = useMemo(() => {
     return products
-      .filter(({ node }) => node.tags && node.tags.includes('men'))
       .sort((a, b) => {
         if (a.node.vendor === b.node.vendor)
           return a.node.title.localeCompare(b.node.title);
@@ -292,7 +291,7 @@ query MenProducts {
     collection(id: "gid://shopify/Collection/285176168553") {
       title
       id
-      products(first: 100) {
+      products(first: 100, filters:[{tag:"men"}]) {
         edges {
           node {
             id

@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from '@remix-run/react';
 import { useLoaderData } from '@remix-run/react';
-import GalleryProductCard from '~/components/GalleryProductCard';
+import GalleryProductCard from '~/components/products/GalleryProductCard';
 
 /**
  * @param {{
@@ -50,36 +50,19 @@ async function loadCriticalData({ context }) {
  * @param {LoaderFunctionArgs}
  */
 async function loadDeferredData({ context }) {
-  // const allProducts = await context.storefront
-  //   .query(ALL_PRODUCTS_QUERY)
-  //   .catch((error) => {
-  //     // Log query errors, but don't throw them so the page can still render
-  //     console.error(error);
-  //     return null;
-  //   });
   try {
     const giftProducts = await context.storefront.query(
       GIFT_PRODUCTS_QUERY,
     );
-
-    // const vendorProducts = await context.storefront.query(
-    //   VENDOR_PRODUCTS_QUERY,
-    // );
     // Log the resolved data for debugging
     return {
       giftProducts: giftProducts || null,
-      // vendorProducts: vendorProducts || null,
     };
   } catch (error) {
     // Log query errors, but don't throw them so the page can still render
     console.error(error);
     return null;
   }
-
-  // return {
-  //   allProducts,
-  //   promotingProducts,
-  // };
 }
 
 
@@ -93,12 +76,8 @@ const Giftsets = (selectedVariant) => {
   const data = useLoaderData();
 
   const products = data.giftProducts?.collection?.products?.edges || [];
-
   // Filter for products with "men" tag with extra logging
   const giftProducts = useMemo(() => products
-    .filter(({ node }) => {
-      return node.tags && node.tags.includes('Gift Sets') || node.tags && node.tags.includes('Minis');
-    })
     .sort((a, b) => {
       if (a.node.vendor === b.node.vendor)
         return a.node.title.localeCompare(b.node.title);
@@ -267,7 +246,7 @@ fragment ProductVariant on ProductVariant {
     collection(id: "gid://shopify/Collection/285176168553") {
       title
       id
-      products(first: 100) {
+      products(first: 100, filters:[{tag:"Gift Sets & Minis"}]) {
         edges {
           node {
             id
