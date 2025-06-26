@@ -6,6 +6,7 @@ import { useRef, useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from '@remix-run/react';
 import { useLoaderData } from '@remix-run/react';
 import GalleryProductCard from '~/components/products/GalleryProductCard';
+import { ProductFragment, PRODUCT_FIELDS_FRAGMENT } from '~/lib/fragments';
 
 /**
  * @param {{
@@ -216,32 +217,8 @@ const Giftsets = (selectedVariant) => {
 export default Giftsets;
 
 const GIFT_PRODUCTS_QUERY = `#graphql
-fragment ProductVariant on ProductVariant {
-    availableForSale
-    compareAtPrice {
-      amount
-      currencyCode
-    }
-    id
-    price {
-      amount
-      currencyCode
-    }
-    product {
-      title
-      handle
-    }
-    selectedOptions {
-      name
-      value
-    }
-    sku
-    title
-    unitPrice {
-      amount
-      currencyCode
-    }
-  }  
+${ProductFragment}
+${PRODUCT_FIELDS_FRAGMENT} 
   query GiftProducts {
     collection(id: "gid://shopify/Collection/285176168553") {
       title
@@ -249,45 +226,7 @@ fragment ProductVariant on ProductVariant {
       products(first: 100, filters:[{tag:"Gift Sets & Minis"}]) {
         edges {
           node {
-            id
-            title
-            handle
-            tags
-            vendor
-            descriptionHtml
-            images(first: 6) {
-              edges {
-                node {
-                  url
-                }  
-              } 
-            }
-            abbrTitle: metafield(namespace: "custom", key: "abbrtitle") {
-              id
-              namespace
-              key
-              value
-            }
-            createdAt
-            selectedOrFirstAvailableVariant {
-              ...ProductVariant
-            }
-            variants(first: 10) {
-              edges {
-                node {
-                  id
-                  title
-                  price {
-                    amount
-                    currencyCode
-                  }
-                  compareAtPrice {
-                    amount
-                    currencyCode
-                  }
-                }
-              }
-            }
+            ...ProductFields
           }
         }
       }

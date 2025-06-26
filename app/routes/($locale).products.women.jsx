@@ -3,9 +3,8 @@ import React from 'react';
 import { Heart, Filter, ChevronDown } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect, useMemo } from 'react'; // Add useMemo import
-
 import { useLoaderData } from '@remix-run/react';
-
+import { ProductFragment, PRODUCT_FIELDS_FRAGMENT } from '~/lib/fragments';
 import { useAside } from '~/components/layout/Aside';
 import { useSearchParams } from '@remix-run/react';
 import GalleryProductCard from '~/components/products/GalleryProductCard';
@@ -322,32 +321,8 @@ export default Women;
 // `;
 
 const WOMEN_PRODUCTS_QUERY = `#graphql
-fragment ProductVariant on ProductVariant {
-    availableForSale
-    compareAtPrice {
-      amount
-      currencyCode
-    }
-    id
-    price {
-      amount
-      currencyCode
-    }
-    product {
-      title
-      handle
-    }
-    selectedOptions {
-      name
-      value
-    }
-    sku
-    title
-    unitPrice {
-      amount
-      currencyCode
-    }
-  }  
+${ProductFragment}
+${PRODUCT_FIELDS_FRAGMENT} 
   query WomenProducts {
     collection(id: "gid://shopify/Collection/285176168553") {
       title
@@ -355,45 +330,7 @@ fragment ProductVariant on ProductVariant {
       products(first: 100, filters:[{tag:"Women"}]) {
         edges {
           node {
-            id
-            title
-            handle
-            tags
-            vendor
-            descriptionHtml
-            images(first: 6) {
-              edges {
-                node {
-                  url
-                }  
-              } 
-            }
-            abbrTitle: metafield(namespace: "custom", key: "abbrtitle") {
-              id
-              namespace
-              key
-              value
-            }
-            createdAt
-            selectedOrFirstAvailableVariant {
-              ...ProductVariant
-            }
-            variants(first: 10) {
-              edges {
-                node {
-                  id
-                  title
-                  price {
-                    amount
-                    currencyCode
-                  }
-                  compareAtPrice {
-                    amount
-                    currencyCode
-                  }
-                }
-              }
-            }
+            ...ProductFields
           }
         }
       }

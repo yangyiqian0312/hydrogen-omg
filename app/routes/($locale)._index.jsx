@@ -10,6 +10,7 @@ import Modal from '~/components/layout/Modal';
 import TrendingProductCard from '~/components/products/TrendingProductCard';
 import { AddToCartButton } from '~/components/cart/AddToCartButton';
 import { useAside } from '~/components/layout/Aside';
+import { ProductFragment, PRODUCT_FIELDS_FRAGMENT } from '~/lib/fragments';
 /**
  * @type {MetaFunction}
  */
@@ -2049,106 +2050,6 @@ function RecommendedProducts({ products }) {
   );
 }
 
-const ProductFragment=`
-fragment ProductVariant on ProductVariant {
-    availableForSale
-    compareAtPrice {
-      amount
-      currencyCode
-    }
-    id
-    
-    price {
-      amount
-      currencyCode
-    }
-    product {
-      title
-      handle
-    }
-    selectedOptions {
-      name
-      value
-    }
-    sku
-    title
-    
-    unitPrice {
-      amount
-      currencyCode
-    }
-  }
-`;
-const PRODUCT_FIELDS_FRAGMENT = `
-  fragment ProductFields on Product {
-    id
-    title
-    handle
-    tags
-    vendor
-    descriptionHtml
-    images(first: 6) {
-      edges {
-        node {
-          url
-        }  
-      } 
-    }
-    availableForSale
-    selectedOrFirstAvailableVariant {
-      ...ProductVariant
-    }
-    abbrTitle: metafield(namespace: "custom", key: "abbrtitle") {
-      id
-      namespace
-      key
-      value
-    }
-    media(first: 10) {
-      edges {
-        node {
-          id
-          mediaContentType
-          ... on Video {
-            sources {
-              url
-              mimeType
-            }
-            previewImage {
-              url
-            }
-          }
-          ... on MediaImage {
-            image {
-              url
-              altText
-              width
-              height
-            }
-          }
-        }
-      }
-    }
-    variants(first: 10) {
-      edges {
-        node {
-          id
-          availableForSale
-          currentlyNotInStock
-          title
-          price {
-            amount
-            currencyCode
-          }
-          compareAtPrice {
-            amount
-            currencyCode
-          }
-        }
-      }
-    }
-  }
-`;
 const PROMOTING_PRODUCTS_QUERY = `
   ${ProductFragment}
   ${PRODUCT_FIELDS_FRAGMENT}

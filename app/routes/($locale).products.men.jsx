@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { useLoaderData } from '@remix-run/react';
 import GalleryProductCard from '~/components/products/GalleryProductCard';
-
+import { ProductFragment, PRODUCT_FIELDS_FRAGMENT } from '~/lib/fragments';
 import { useSearchParams } from '@remix-run/react';
 
 /**
@@ -261,32 +261,8 @@ export default Men;
 // `;
 
 const MEN_PRODUCTS_QUERY = `#graphql
-fragment ProductVariant on ProductVariant {
-    availableForSale
-    compareAtPrice {
-      amount
-      currencyCode
-    }
-    id
-    price {
-      amount
-      currencyCode
-    }
-    product {
-      title
-      handle
-    }
-    selectedOptions {
-      name
-      value
-    }
-    sku
-    title
-    unitPrice {
-      amount
-      currencyCode
-    }
-  }  
+${ProductFragment}
+${PRODUCT_FIELDS_FRAGMENT}
 query MenProducts {
     collection(id: "gid://shopify/Collection/285176168553") {
       title
@@ -294,45 +270,7 @@ query MenProducts {
       products(first: 100, filters:[{tag:"men"}]) {
         edges {
           node {
-            id
-            title
-            handle
-            tags
-            vendor
-            descriptionHtml
-            images(first: 6) {
-              edges {
-                node {
-                  url
-                }  
-              } 
-            }
-            createdAt
-            abbrTitle: metafield(namespace: "custom", key: "abbrtitle") {
-              id
-              namespace
-              key
-              value
-            }
-            selectedOrFirstAvailableVariant {
-            ...ProductVariant
-          }
-            variants(first: 10) {
-              edges {
-                node {
-                  id
-                  title
-                  price {
-                    amount
-                    currencyCode
-                  }
-                  compareAtPrice {
-                    amount
-                    currencyCode
-                  }
-                }
-              }
-            }
+            ...ProductFields
           }
         }
       }
