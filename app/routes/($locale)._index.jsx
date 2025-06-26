@@ -40,18 +40,17 @@ export async function loader(args) {
  * @param {LoaderFunctionArgs}
  */
 async function loadCriticalData({ context }) {
-  // const [{ collections }] = await Promise.all([
-  //   context.storefront.query(FEATURED_COLLECTION_QUERY),
-  //   // Add other queries here, so that they are loaded in parallel
-  //   // context.storefront.query(PROMOTING_PRODUCTS_QUERY),
-  //   // context.storefront.query(TRENDING_PRODUCTS_QUERY),
-  //   // context.storefront.query(ALL_PRODUCTS_QUERY),
-  // ]);
-  const collection = await context.storefront.query(FEATURED_COLLECTION_QUERY);
-  console.table('collections:', collection);
-
+  const [{ collections }] = await Promise.all([
+    context.storefront.query(FEATURED_COLLECTION_QUERY),
+    // Add other queries here, so that they are loaded in parallel
+    context.storefront.query(PROMOTING_PRODUCTS_QUERY),
+    context.storefront.query(TRENDING_PRODUCTS_QUERY),
+    context.storefront.query(VIDEO_PRODUCTS_QUERY),
+    // context.storefront.query(ALL_PRODUCTS_QUERY),
+  ]);
+  // const collection = await Promise.resolve(context.storefront.query(FEATURED_COLLECTION_QUERY))
   return {
-    featuredCollection: collection,
+    featuredCollection: collections.nodes[0],
   };
 }
 
@@ -62,33 +61,30 @@ async function loadCriticalData({ context }) {
  * @param {LoaderFunctionArgs}
  */
 async function loadDeferredData({ context }) {
-  // const allProducts = await context.storefront
-  //   .query(ALL_PRODUCTS_QUERY)
-  //   .catch((error) => {
-  //     // Log query errors, but don't throw them so the page can still render
-  //     console.error(error);
-  //     return null;
-  //   });
   try {
-
-    const allProducts = await context.storefront.query(
-      ALL_PRODUCTS_QUERY,
+    // load products of each tag
+    const promotingProducts = await context.storefront.query(
+      PROMOTING_PRODUCTS_QUERY,
+    );
+    const trendingProducts = await context.storefront.query(
+      TRENDING_PRODUCTS_QUERY,
+    );
+    const videoProducts = await context.storefront.query(
+      VIDEO_PRODUCTS_QUERY,
     );
 
     // Log the resolved data for debugging
     return {
-      allProducts: allProducts || null,
+      // allProducts: allProducts || null,
+      promotingProducts: promotingProducts || null,
+      trendingProducts: trendingProducts || null,
+      videoProducts: videoProducts || null,
     };
   } catch (error) {
     // Log query errors, but don't throw them so the page can still render
     console.error(error);
     return null;
   }
-
-  // return {
-  //   allProducts,title
-  //   promotingProducts,
-  // };
 }
 
 export default function Homepage() {
@@ -105,39 +101,17 @@ export default function Homepage() {
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
 
-  const products = data.allProducts?.collection?.products?.edges || [];
-  //console.log(products)
-  // const trendingProducts = data.allProducts?.collection?.products?.edges || [];
-  // const newProducts = data.allProducts?.collection?.products?.edges || [];
-
-  // const promotingProducts = data.promotingProducts;
-  // const trendingProducts = data.trendingProducts;
-  // const newProducts = data.newProducts;
+  // const products = data.allProducts?.collection?.products?.edges || [];
+  const promotingProducts = data.promotingProducts?.collection?.products?.edges || [];
+  const trendingProducts = data.trendingProducts?.collection?.products?.edges || [];
+  const videoProducts = data.videoProducts?.collection?.products?.edges || [];
 
 
-  const promotingProducts = products.filter(({ node }) => {
-    return node.tags && node.tags.includes('Promoting');
+  const promotingProducts_women = promotingProducts.filter(({ node }) => {
+    return node.tags && node.tags.includes('Women');
   });
-  const promotingProducts_women = products.filter(({ node }) => {
-    return node.tags && node.tags.includes('Women') && node.tags.includes('Promoting');
-  });
-  const promotingProducts_men = products.filter(({ node }) => {
-    return node.tags && node.tags.includes('men') && node.tags.includes('Promoting');
-  });
-
-  const trendingProducts = products.filter(({ node }) => {
-    return node.tags && node.tags.includes('Trending');
-  });
-
-
-  const newProducts = products.filter(({ node }) => {
-    return node.tags && node.tags.includes('New Products');
-  });
-
-  //console.log("Filtered new products:", newProducts);
-
-  const videoProducts = products.filter(({ node }) => {
-    return node.tags && node.tags.includes('Video');
+  const promotingProducts_men = promotingProducts.filter(({ node }) => {
+    return node.tags && node.tags.includes('men');
   });
 
   // Extract video paths from Shopify Video products
@@ -350,7 +324,6 @@ export default function Homepage() {
   const otherProducts = promotingProducts.filter(
     ({ node }) => !preferredOrder.includes(node.title)
   );
-  console.log(promotingProducts);
   // 合并所有产品
   const orderedProducts = [...priorityProducts, ...otherProducts];
 
@@ -649,14 +622,14 @@ export default function Homepage() {
                   </div>
                   <div className="text-pink-600 font-bold md:pb-4 pb-2">
                     ${Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)}
-                    {node.variants.edges[0]?.node.compareAtPrice.amount && (
+                    {node.variants.edges[0]?.node.compareAtPrice?.amount && (
                       <span className="text-gray-500 line-through ml-2">
                         ${Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2)}
                       </span>
                     )}
 
                   </div>
-                  {node.variants.edges[0]?.node.compareAtPrice.amount && (
+                  {node.variants.edges[0]?.node.compareAtPrice?.amount && (
                     <span className="mb-2 w-auto text-red-500 font-semibold bg-pink-100 px-2 sm:px-4 rounded">
                       {((Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2) - Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)) / Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2) * 100).toFixed(0)}% OFF
                     </span>
@@ -2076,9 +2049,8 @@ function RecommendedProducts({ products }) {
   );
 }
 
-
-const ALL_PRODUCTS_QUERY = `
- fragment ProductVariant on ProductVariant {
+const ProductFragment=`
+fragment ProductVariant on ProductVariant {
     availableForSale
     compareAtPrice {
       amount
@@ -2106,86 +2078,130 @@ const ALL_PRODUCTS_QUERY = `
       currencyCode
     }
   }
-  query AllProducts {
-    collection(id: "gid://shopify/Collection/285176168553") {
-      title
+`;
+const PRODUCT_FIELDS_FRAGMENT = `
+  fragment ProductFields on Product {
+    id
+    title
+    handle
+    tags
+    vendor
+    descriptionHtml
+    images(first: 6) {
+      edges {
+        node {
+          url
+        }  
+      } 
+    }
+    availableForSale
+    selectedOrFirstAvailableVariant {
+      ...ProductVariant
+    }
+    abbrTitle: metafield(namespace: "custom", key: "abbrtitle") {
       id
-      products(first: 200) {
-        edges {
-          node {
-            id
-            title
-            handle
-            tags
-            vendor
-            descriptionHtml
-            images(first: 6) {
-              edges {
-                node {
-                  url
-                }  
-              } 
+      namespace
+      key
+      value
+    }
+    media(first: 10) {
+      edges {
+        node {
+          id
+          mediaContentType
+          ... on Video {
+            sources {
+              url
+              mimeType
             }
-            availableForSale
-            selectedOrFirstAvailableVariant {
-              ...ProductVariant
+            previewImage {
+              url
             }
-            abbrTitle: metafield(namespace: "custom", key: "abbrtitle") {
-              id
-              namespace
-              key
-              value
+          }
+          ... on MediaImage {
+            image {
+              url
+              altText
+              width
+              height
             }
-            media(first: 10) {
-              edges {
-                node {
-                  id
-                  mediaContentType
-                  ... on Video {
-                    sources {
-                      url
-                      mimeType
-                    }
-                    previewImage {
-                      url
-                    }
-                  }
-                  ... on MediaImage {
-                    image {
-                      url
-                      altText
-                      width
-                      height
-                    }
-                  }
-                }
-              }
-            }
-            variants(first: 10) {
-              edges {
-                node {
-                  id
-                  availableForSale
-                  currentlyNotInStock
-                  title
-                  price {
-                    amount
-                    currencyCode
-                  }
-                  
-                  compareAtPrice {
-                    amount
-                    currencyCode
-                  }
-                }
-              }
-            }
+          }
+        }
+      }
+    }
+    variants(first: 10) {
+      edges {
+        node {
+          id
+          availableForSale
+          currentlyNotInStock
+          title
+          price {
+            amount
+            currencyCode
+          }
+          compareAtPrice {
+            amount
+            currencyCode
           }
         }
       }
     }
   }
 `;
+const PROMOTING_PRODUCTS_QUERY = `
+  ${ProductFragment}
+  ${PRODUCT_FIELDS_FRAGMENT}
+  query PromotingProducts {
+    collection(id: "gid://shopify/Collection/285176168553") {
+      title
+      id
+      products(first: 30, filters:[{tag:"Promoting"}]){
+        edges {
+          node {
+            ...ProductFields
+          }
+        }
+      }
+    }
+  }
+`;
+const TRENDING_PRODUCTS_QUERY=`
+${ProductFragment}
+${PRODUCT_FIELDS_FRAGMENT}
+  query TrendingProducts {
+    collection(id: "gid://shopify/Collection/285176168553") {
+      title
+      id
+      products(first: 30, filters:[{tag:"Trending"}]){
+        edges {
+          node {
+            ...ProductFields
+          }
+        }
+      }
+    }
+  }
+`;
+
+const VIDEO_PRODUCTS_QUERY=`
+${ProductFragment}
+${PRODUCT_FIELDS_FRAGMENT}
+  query VideoProducts {
+    collection(id: "gid://shopify/Collection/285176168553") {
+      title
+      id
+      products(first: 30, filters:[{tag:"Video"}]){
+        edges {
+          node {
+            ...ProductFields
+          }
+        }
+      }
+    }
+  }
+`;
+
 
 const FEATURED_COLLECTION_QUERY = `#graphql
   fragment FeaturedCollection on Collection {
