@@ -4,11 +4,9 @@ import { Heart, Filter, ChevronDown } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { useLoaderData } from '@remix-run/react';
-import { useSearchParams } from '@remix-run/react';
 import GalleryProductCard from '~/components/products/GalleryProductCard';
 import { ProductFragment, PRODUCT_FIELDS_FRAGMENT } from '~/lib/fragments';
-
-
+import GallerySortSection from '~/components/products/GallerySortSection';
 /**
  * @param {{
 *   productOptions: MappedProductOptions[];
@@ -84,9 +82,9 @@ async function loadDeferredData({ context }) {
 
 const Newarrivals = (selectedVariant) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchParams] = useSearchParams();
-  const urlBrand = searchParams.get('brand');
-  const [selectedBrand, setSelectedBrand] = useState(urlBrand || "all brands");
+  // const [searchParams] = useSearchParams();
+  // const urlBrand = searchParams.get('brand');
+  // const [selectedBrand, setSelectedBrand] = useState(urlBrand || "all brands");
   const navigate = useNavigate();
   const data = useLoaderData();
 
@@ -112,13 +110,13 @@ const Newarrivals = (selectedVariant) => {
   // console.log("Filtered new products:", newProducts);
 
 
-  const filteredProducts = useMemo(() => {
-    return selectedBrand && selectedBrand !== "all brands"
-      ? newProducts.filter(
-        ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
-      )
-      : newProducts;
-  }, [newProducts, selectedBrand]);
+  // const filteredProducts = useMemo(() => {
+  //   return selectedBrand && selectedBrand !== "all brands"
+  //     ? newProducts.filter(
+  //       ({ node }) => node.vendor.toLowerCase() === selectedBrand.toLowerCase()
+  //     )
+  //     : newProducts;
+  // }, [newProducts, selectedBrand]);
 
 
   const carouselRef = useRef(null);
@@ -142,73 +140,28 @@ const Newarrivals = (selectedVariant) => {
     }
   };
 
-  const [sortedProducts, setSortedProducts] = useState(filteredProducts);
-  const [sortOption, setSortOption] = useState('');
+  const [sortedProducts, setSortedProducts] = useState(newProducts);
+  // const [sortOption, setSortOption] = useState('');
 
   // Update sortedProducts when filteredProducts changes
-  useEffect(() => {
-    if (urlBrand != selectedBrand) {
-      setSelectedBrand(urlBrand || "all brands");
-    }
-    setSortedProducts(filteredProducts);
-    setSortOption('');
-  }, [urlBrand, selectedBrand]);
+  // useEffect(() => {
+  //   if (urlBrand != selectedBrand) {
+  //     setSelectedBrand(urlBrand || "all brands");
+  //   }
+  //   setSortedProducts(filteredProducts);
+  //   setSortOption('');
+  // }, [urlBrand, selectedBrand]);
 
-  const handleSortChange = (sortOption) => {
-    setSortOption(sortOption);
-    if (sortOption === 'price-asc') {
-      setSortedProducts([...filteredProducts].sort((a, b) =>
-        a.node.variants.edges[0].node.price.amount - b.node.variants.edges[0].node.price.amount
-      ));
-    } else if (sortOption === 'price-desc') {
-      setSortedProducts([...filteredProducts].sort((a, b) =>
-        b.node.variants.edges[0].node.price.amount - a.node.variants.edges[0].node.price.amount
-      ));
-    } else if (sortOption === 'new') {
-      setSortedProducts([...filteredProducts].sort((a, b) =>
-        b.node.createdAt.localeCompare(a.node.createdAt)
-      ));
-    } else {
-      setSortedProducts(filteredProducts);
-    }
-  };
-  const handleBrandChange = (brand) => {
-    // navigate to /products/women?brand={brand}
-    if (brand === 'all brands') {
-      setSelectedBrand("all brands");
-      navigate("/products/newarrivals");
-    } else {
-      setSelectedBrand(brand);
-      navigate("/products/newarrivals?brand=" + encodeURIComponent(brand));
-    }
-  };
 
   return (
     <div className="flex flex-col md:gap-2">
-      <div className="flex justify-between md:p-4 pt-2 px-2 md:flex-row flex-col gap-2">
-        <div className="flex items-center gap-2">
-          <div className="text-xs font-medium text-gray-500">Showing {sortedProducts.length} products</div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <div className="text-xs font-medium text-gray-500">Sort by:</div>
-          <select value={sortOption} onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-2 md:px-4 py-1 text-xs">
-            <option value="">Default</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="new">Newest</option>
-          </select>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="text-xs font-medium text-gray-500">Select Brand:</div>
-          {brands.length > 0 && <select value={selectedBrand} onChange={(e) => handleBrandChange(e.target.value)} className="border border-gray-200 rounded-md px-2 md:px-4 py-1 text-xs">
-            {brands.map((brand) => (
-              <option key={brand} value={brand}>{brand}</option>
-            ))}
-          </select>}
-        </div>
-
-      </div>
+      <GallerySortSection
+        products={newProducts}
+        brands={brands}
+        setSortedProducts={setSortedProducts}
+        ifbrand={true}
+        location={"newarrivals"}
+      />
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-6 pt-1 sm:p-4">
         {sortedProducts.length > 0 ? (
           sortedProducts.map(({ node }) => (
@@ -216,7 +169,7 @@ const Newarrivals = (selectedVariant) => {
           ))
         ) : (
           <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-8 text-gray-500">
-            No products found for {selectedBrand}
+            No products found
           </div>
         )}
       </div>

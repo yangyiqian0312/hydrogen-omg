@@ -7,6 +7,7 @@ import { useLoaderData } from '@remix-run/react';
 import GalleryProductCard from '~/components/products/GalleryProductCard';
 import { ProductFragment, PRODUCT_FIELDS_FRAGMENT } from '~/lib/fragments';
 import { useSearchParams } from '@remix-run/react';
+import GallerySortSection from '~/components/products/GallerySortSection';
 
 /**
  * @param {{
@@ -86,7 +87,6 @@ const Men = (selectedVariant) => {
   const [searchParams] = useSearchParams();
   const urlBrand = searchParams.get('brand');
 
-
   const [isOpen, setIsOpen] = useState(false);
   const brands = ['all brands', 'Versace', 'Carolina Herrera', 'Jean Paul Gaultier', 'Prada', 'Bvlgari', 'Burberry', 'GUCCI', 'Givenchy', 'Tiffany', 'Lattafa', 'Giorgio Armani', 'Valentino', 'Viktor & Rolf', 'YSL'];
   const [selectedBrand, setSelectedBrand] = useState("all brands");
@@ -135,12 +135,12 @@ const Men = (selectedVariant) => {
   }, [menProducts, selectedBrand]);
 
   const [sortedProducts, setSortedProducts] = useState(filteredProducts);
-  const [sortOption, setSortOption] = useState('');
-  useEffect(() => {
-    setSortedProducts(filteredProducts);
-    setSortOption('');
-    // console.log("filtered men products:", filteredProducts);
-  }, [selectedBrand]);
+  // const [sortOption, setSortOption] = useState('');
+  // useEffect(() => {
+  //   setSortedProducts(filteredProducts);
+  //   setSortOption('');
+  //   // console.log("filtered men products:", filteredProducts);
+  // }, [selectedBrand]);
 
 
   // // Update sortedProducts when filteredProducts changes
@@ -150,60 +150,45 @@ const Men = (selectedVariant) => {
   //   console.log("Sorted products:", sortedProducts);
   // }, [filteredProducts]);
 
-  const handleSortChange = (sortOption) => {
-    setSortOption(sortOption);
-    if (sortOption === 'price-asc') {
-      setSortedProducts([...filteredProducts].sort((a, b) =>
-        a.node.variants.edges[0].node.price.amount - b.node.variants.edges[0].node.price.amount
-      ));
-    } else if (sortOption === 'price-desc') {
-      setSortedProducts([...filteredProducts].sort((a, b) =>
-        b.node.variants.edges[0].node.price.amount - a.node.variants.edges[0].node.price.amount
-      ));
-    } else if (sortOption === 'new') {
-      setSortedProducts([...filteredProducts].sort((a, b) =>
-        b.node.createdAt.localeCompare(a.node.createdAt)
-      ));
-    } else {
-      setSortedProducts(filteredProducts);
-    }
-  };
+  // const handleSortChange = (sortOption) => {
+  //   setSortOption(sortOption);
+  //   if (sortOption === 'price-asc') {
+  //     setSortedProducts([...filteredProducts].sort((a, b) =>
+  //       a.node.variants.edges[0].node.price.amount - b.node.variants.edges[0].node.price.amount
+  //     ));
+  //   } else if (sortOption === 'price-desc') {
+  //     setSortedProducts([...filteredProducts].sort((a, b) =>
+  //       b.node.variants.edges[0].node.price.amount - a.node.variants.edges[0].node.price.amount
+  //     ));
+  //   } else if (sortOption === 'new') {
+  //     setSortedProducts([...filteredProducts].sort((a, b) =>
+  //       b.node.createdAt.localeCompare(a.node.createdAt)
+  //     ));
+  //   } else {
+  //     setSortedProducts(filteredProducts);
+  //   }
+  // };
 
-  const handleBrandChange = (brand) => {
-    // navigate to /products/women?brand={brand}
-    if (brand === 'all brands') {
-      setSelectedBrand("all brands");
-      navigate("/products/men");
-    } else {
-      setSelectedBrand(brand);
-      navigate("/products/men?brand=" + encodeURIComponent(brand));
-    }
-  };
+  // const handleBrandChange = (brand) => {
+  //   // navigate to /products/women?brand={brand}
+  //   if (brand === 'all brands') {
+  //     setSelectedBrand("all brands");
+  //     navigate("/products/men");
+  //   } else {
+  //     setSelectedBrand(brand);
+  //     navigate("/products/men?brand=" + encodeURIComponent(brand));
+  //   }
+  // };
 
   return (
     <div className="flex flex-col md:gap-2">
-      <div className="flex justify-between md:p-4 pt-2 px-2 md:flex-row flex-col gap-2">
-        <div className="flex items-center gap-2">
-          <p className="text-xs font-medium text-gray-500">Showing {sortedProducts.length} products</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <p className="text-xs font-medium text-gray-500">Sort by:</p>
-          <select value={sortOption} onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-2 md:px-4 py-1 text-xs">
-            <option value="">Default</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="new">Newest</option>
-          </select>
-        </div>
-        <div className="flex lg:hidden items-center gap-2">
-          <p className="text-xs font-medium text-gray-500">Select Brand:</p>
-          {brands.length > 0 && <select value={selectedBrand} onChange={(e) => handleBrandChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1 text-xs">
-            {brands.map((brand) => (
-              <option key={brand} value={brand}>{brand}</option>
-            ))}
-          </select>}
-        </div>
-      </div>
+      <GallerySortSection
+        products={filteredProducts}
+        brands={brands}
+        setSortedProducts={setSortedProducts}
+        ifbrand={false}
+        location={'men'}
+      />
 
       {/* Updated grid - 2 columns on mobile, 4 columns on desktop with increased spacing */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 pt-1 md:gap-4 lg:gap-6 sm:p-4">

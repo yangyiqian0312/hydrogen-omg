@@ -163,7 +163,7 @@ export default function Product() {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="mx-auto px-4 py-4 sm:py-0 flex flex-col xl:flex-row xl:justify-center xl:gap-8 h-full">
+      <div className="mx-auto px-4 py-4 sm:py-0 flex flex-col xl:flex-row xl:justify-center xl:gap-8 2xl:gap-12 h-full">
         <div className={`flex gap-6 w-auto h-full justify-center ${selectedMedia >= images.length ? 'xl:pt-0' : 'xl:pt-12'}`}>
           {/* Thumbnails on the left */}
           <div className="relative w-20 xl:w-28 2xl:w-36  h-64 sm:h-auto xl:h-[calc(100vh-500px)]">
@@ -231,10 +231,10 @@ export default function Product() {
         </div>
 
         {/* Product Info - right side on desktop */}
-        <div className="mt-4 space-y-1 xl:mt-0 xl:w-1/2 h-full flex flex-col flex-none px-8">
+        <div className="mt-4 space-y-1 xl:mt-0 xl:w-1/2 h-full flex flex-col flex-none md:px-4">
           <div className="h-auto">
-            <h1 className="text-xl text-gray-500 xl:text-sm">{product.vendor}</h1>
-            <h1 className="text-xl font-medium mt-1 xl:text-xl xl:font-semibold">{product.title}</h1>
+            <div className="text-xl md:text-2xl text-gray-500">{product.vendor}</div>
+            <div className="text-xl md:text-2xl font-bold my-4">{product.title}</div>
             {/* <p className="text-10px text-gray-600 mt-1 lg:text-sm">{product.category}</p> */}
           </div>
 
@@ -389,7 +389,7 @@ export default function Product() {
       </div>
 
       {/* recommended products */}
-      <div className="my-8 w-full h-full px-4 ">
+      <div className="my-8 w-full h-full px-2 md:px-8 2xl:px-16">
         <h1 className="text-2xl font-medium mb-4">You may also like</h1>
         <div className="relative w-full h-full">
           <button

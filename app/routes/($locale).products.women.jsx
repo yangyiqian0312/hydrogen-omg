@@ -8,6 +8,7 @@ import { ProductFragment, PRODUCT_FIELDS_FRAGMENT } from '~/lib/fragments';
 import { useAside } from '~/components/layout/Aside';
 import { useSearchParams } from '@remix-run/react';
 import GalleryProductCard from '~/components/products/GalleryProductCard';
+import GallerySortSection from '~/components/products/GallerySortSection';
 
 /**
  * @param {{
@@ -148,121 +149,10 @@ const Women = (selectedVariant) => {
   }, [womenProducts, selectedBrand, selectedTag]);
 
   const [sortedProducts, setSortedProducts] = useState(filteredProducts);
-  const [sortOption, setSortOption] = useState('');
-
-  // Update sortedProducts when filteredProducts changes
-  useEffect(() => {
-    setSortedProducts(filteredProducts);
-    setSortOption('');
-  }, [selectedBrand, selectedTag]);
-
-
-  const handleSortChange = (sortOption) => {
-    setSortOption(sortOption);
-    if (sortOption === 'price-asc') {
-      setSortedProducts([...filteredProducts].sort((a, b) =>
-        a.node.variants.edges[0].node.price.amount - b.node.variants.edges[0].node.price.amount
-      ));
-    } else if (sortOption === 'price-desc') {
-      setSortedProducts([...filteredProducts].sort((a, b) =>
-        b.node.variants.edges[0].node.price.amount - a.node.variants.edges[0].node.price.amount
-      ));
-    } else if (sortOption === 'new') {
-      setSortedProducts([...filteredProducts].sort((a, b) =>
-        b.node.createdAt.localeCompare(a.node.createdAt)
-      ));
-    } else {
-      setSortedProducts(filteredProducts);
-    }
-  };
-
-  const handleBrandChange = (brand) => {
-    // navigate to /products/women?brand={brand}
-    if (brand === 'all brands') {
-      setSelectedBrand("all brands");
-      navigate("/products/women");
-    } else {
-      setSelectedBrand(brand);
-      navigate("/products/women?brand=" + encodeURIComponent(brand));
-    }
-  };
 
   return (
     <div className="flex flex-col md:gap-2">
-      <div className="flex items-center hidden">
-        <div className="relative">
-          {/* <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-gray-100 to-gray-50 hover:from-gray-200 hover:to-gray-100 rounded-full shadow-sm border border-gray-200 transition-all duration-200"
-            >
-              <span className="font-medium text-gray-700">
-                {selectedBrand || 'Shop by brand'}
-              </span>
-              <ChevronDown
-                size={16}
-                className={`text-gray-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-              />
-            </button> */}
-
-          {/* Brand dropdown menu */}
-          {/* {isOpen && (
-              <div className="absolute top-full left-4 mt-2 w-52 bg-white rounded-lg shadow-lg py-2 z-50 border border-gray-100">
-                <div className="px-4 py-1 mb-1 text-xs font-medium text-gray-500 uppercase tracking-wide border-b border-gray-100">
-                  Brands
-                </div>
-                <button
-                  onClick={() => {
-                    setSelectedBrand(null);
-                    setIsOpen(false);
-                    // Navigate to base URL without brand parameter
-                    window.history.pushState({}, "", "/products/women");
-                  }}
-                  className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between"
-                >
-                  <span className="font-medium">All Brands</span>
-                  {selectedBrand === null && <div className="w-2 h-2 rounded-full bg-green-500"></div>}
-                </button>
-                {brands.map((brand) => (
-                  <button
-                    key={brand}
-                    onClick={() => {
-                      setSelectedBrand(brand);
-                      setIsOpen(false);
-                      // Update URL with selected brand parameter
-                      window.history.pushState({}, "", `/products/women?brand=${encodeURIComponent(brand)}`);
-                    }}
-                    className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between"
-                  >
-                    <span>{brand}</span>
-                    {selectedBrand === brand && <div className="w-2 h-2 rounded-full bg-green-500"></div>}
-                  </button>
-                ))}
-              </div>
-            )} */}
-        </div>
-      </div>
-      <div className="flex justify-between md:p-4 pt-2 px-2 md:flex-row flex-col gap-2">
-        <div className="flex items-center gap-2">
-          <p className="text-xs font-medium text-gray-500">Showing {sortedProducts.length} products</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <p className="text-xs font-medium text-gray-500">Sort by:</p>
-          <select value={sortOption} onChange={(e) => handleSortChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1 text-xs">
-            <option value="">Default</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="new">Newest</option>
-          </select>
-        </div>
-        <div className="flex lg:hidden items-center gap-2">
-          <p className="text-xs font-medium text-gray-500">Select Brand:</p>
-          <select value={selectedBrand} onChange={(e) => handleBrandChange(e.target.value)} className="border border-gray-200 rounded-md px-4 py-1 text-xs">
-            {brands.length > 0 && brands.map((brand) => (
-              <option key={brand} value={brand}>{brand}</option>
-            ))}
-          </select>
-        </div>
-      </div>
+      <GallerySortSection products={filteredProducts} brands={brands} setSortedProducts={setSortedProducts} ifbrand={true} location="women" />
       {/* Products grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-6 pt-1 sm:p-4">
         {sortedProducts.length > 0 &&
