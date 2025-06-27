@@ -270,6 +270,7 @@ export const PRODUCT_FIELDS_FRAGMENT = `
     handle
     tags
     vendor
+    createdAt
     descriptionHtml
     images(first: 6) {
       edges {
