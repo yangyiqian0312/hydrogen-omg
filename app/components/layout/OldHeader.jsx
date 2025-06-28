@@ -132,7 +132,7 @@ function NavDropdown({ title, items, path }) {
     >
       <Link
         to={path}
-        className="flex items-center text-gray-800 hover:text-gray-600 font-medium no-underline transition-colors duration-200 px-3 py-2 rounded-md"
+        className="flex items-center 2xl:text-xl xl:text-lg text-md text-gray-800 hover:text-gray-600 font-medium no-underline transition-colors duration-200 px-3 py-2 rounded-md"
       >
         {title}
         {items.length > 0 &&
@@ -145,7 +145,7 @@ function NavDropdown({ title, items, path }) {
 
       {/* Dropdown menu with animation */}
       {items.length > 0 && <div
-        className={`absolute left-0 mt-1 w-56 bg-white border border-gray-100 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out transform origin-top ${isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+        className={`absolute left-0 mt-1 w-56 2xl:w-60 bg-white border border-gray-100 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out transform origin-top ${isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
           }`}
       >
         {/* Dropdown arrow */}
@@ -156,7 +156,7 @@ function NavDropdown({ title, items, path }) {
             <Link
               key={index}
               to={item.path}
-              className="block px-4 py-2.5 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-all duration-200 no-underline font-medium"
+              className="block px-4 py-2.5 text-sm 2xl:text-xl xl:text-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-all duration-200 no-underline font-medium"
             >
               {item.name}
             </Link>
