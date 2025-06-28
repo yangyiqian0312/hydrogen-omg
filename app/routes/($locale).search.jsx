@@ -39,8 +39,8 @@ export default function SearchPage() {
   if (type === 'predictive') return null;
 
   return (
-    <div className="search">
-      <h1>Search</h1>
+    <div className="search px-2">
+      <div className="text-3xl font-bold py-4">Search</div>
       <SearchForm>
         {({inputRef}) => (
           <>
@@ -62,7 +62,7 @@ export default function SearchPage() {
       ) : (
         <SearchResults result={result} term={term}>
           {({articles, pages, products, term}) => (
-            <div>
+            <div className="px-4 xl:px-16">
               <SearchResults.Products products={products} term={term} />
               <SearchResults.Pages pages={pages} term={term} />
               <SearchResults.Articles articles={articles} term={term} />

@@ -93,8 +93,8 @@ function SearchResultsProducts({term, products}) {
   }
 
   return (
-    <div className="search-result">
-      <h2>Products</h2>
+    <div className="search-result md:pt-4 pt-2">
+      <div className="2xl:text-3xl text-xl font-semibold md:pb-4 pb-2">Products</div>
       <Pagination connection={products}>
         {({nodes, isLoading, NextLink, PreviousLink}) => {
           const ItemsMarkup = nodes.map((product) => {
@@ -111,11 +111,11 @@ function SearchResultsProducts({term, products}) {
               <div className="search-results-item" key={product.id}>
                 <Link prefetch="intent" to={productUrl}>
                   {image && (
-                    <Image data={image} alt={product.title} width={50} />
+                    <img src={image.url} alt={product.title} className="w-16 h-16 md:w-24 md:h-24"/>
                   )}
                   <div>
-                    <p>{product.title}</p>
-                    <small>{price && <Money data={price} />}</small>
+                    <div className="md:text-lg text-sm pb-1">{product.title}</div>
+                    <div className="text-gray-600 text-sm">{price && <Money data={price} />}</div>
                   </div>
                 </Link>
               </div>

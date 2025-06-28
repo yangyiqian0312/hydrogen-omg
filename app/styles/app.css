@@ -513,5 +513,5 @@ button.reset:hover:not(:has(> *)) {
 * routes/product/$handle.tsx
 * --------------------------------------------------
 */
-ul, ol { list-style: disc !important; margin-left: 1.5em; }
+ul, ol { list-style: disc !important;  }
 li { list-style-type: inherit !important; }

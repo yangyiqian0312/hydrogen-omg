@@ -290,7 +290,7 @@ export default function OldHeader({
             {/* Mobile Menu Button */}
             <div className="lg:hidden flex items-center w-1/3">
               <button
-                className=""
+                className=" pl-2"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
                 {isMenuOpen ? (
@@ -363,7 +363,7 @@ export default function OldHeader({
               <CartToggle cart={cart} />
               <a
                 onClick={handleProfileClick}
-                className="text-gray-800 hover:text-gray-600"
+                className="text-gray-800 hover:text-gray-600 pr-2"
               >
                 <User className="h-6 w-6 md:block" />
               </a>
