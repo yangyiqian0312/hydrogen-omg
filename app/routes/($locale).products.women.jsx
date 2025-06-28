@@ -152,7 +152,7 @@ const Women = (selectedVariant) => {
 
   return (
     <div className="flex flex-col md:gap-2">
-      <GallerySortSection products={filteredProducts} brands={brands} setSortedProducts={setSortedProducts} ifbrand={true} location="women" />
+      <GallerySortSection products={filteredProducts} brands={brands} setSortedProducts={setSortedProducts} ifbrand={false} location="women" />
       {/* Products grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-6 pt-1 sm:p-4">
         {sortedProducts.length > 0 &&

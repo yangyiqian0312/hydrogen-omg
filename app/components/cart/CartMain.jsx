@@ -26,7 +26,7 @@ export function CartMain({layout, cart: originalCart, isLoggedIn}) {
       <CartEmpty hidden={linesCount} layout={layout} />
       <div className="cart-details flex flex-col h-full">
         <div aria-labelledby="cart-lines" className="h-3/4 overflow-hidden">
-          <ul className="h-full overflow-y-auto">
+          <ul className="cart-lines h-full overflow-y-auto">
             {(cart?.lines?.nodes ?? []).map((line) => (
               <CartLineItem key={line.id} line={line} layout={layout} />
             ))}

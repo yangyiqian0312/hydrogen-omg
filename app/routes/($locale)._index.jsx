@@ -618,7 +618,7 @@ export default function Homepage() {
                   <div className="text-md lg:text-lg font-medium text-black uppercase tracking-wider mb-2">
                     {node.vendor || 'Unknown Brand'}
                   </div>
-                  <div className="text-sm lg:text-md font-normal mb-2 text-wrap h-12 md:h-10">
+                  <div className="text-sm lg:text-md 2xl:text-lg 2xl:h-14 font-normal mb-2 text-wrap h-12 md:h-10">
                     {node.abbrTitle?.value || node.title.replace(new RegExp(`^${node.vendor}\s*`), '')}
                   </div>
                   <div className="text-pink-600 font-bold md:pb-4 pb-2">
@@ -1300,11 +1300,11 @@ export default function Homepage() {
                         node.selectedOrFirstAvailableVariant.availableForSale && (
                           <div
                             key={node.id}
-                            className="flex-none py-2 my-2 h-auto w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
+                            className="flex-none max-w-[450px] py-2 my-2 h-auto w-60 lg:w-64 2xl:w-1/4 border border-gray-200 rounded-lg overflow-hidden snap-start shadow-lg hover:shadow-xl transition-shadow duration-300"
                           >
                             <TrendingProductCard
                               {...node}
-                              className="flex flex-col max-w-[450px] w-full h-auto overflow-hidden"
+                              className="flex flex-col w-full h-auto overflow-hidden"
                             />
                           </div>
                         )
@@ -1578,7 +1578,7 @@ export default function Homepage() {
                     </button>
                     <div
                       ref={videoCarouselRef}
-                      className="flex w-full overflow-x-auto h-full snap-x gap-4 hide-scrollbar scrollbar-hide"
+                      className="flex w-full pb-2 overflow-x-auto h-full snap-x gap-4 hide-scrollbar scrollbar-hide"
                       style={{
                         msOverflowStyle: 'none',
                         WebkitOverflowScrolling: 'touch',
@@ -1627,7 +1627,7 @@ export default function Homepage() {
                             )}
                           </div>
                           {videoProducts[index] && (
-                            <div className="flex flex-col md:flex-row justify-between flex-none pr-4 z-5 bg-white py-2 w-full">
+                            <div className="flex flex-col md:flex-row justify-between flex-none mr-4 z-5 bg-white py-2 w-full  border border-gray-200">
                               <div className="h-40 aspect-square">
                                 <Link
                                   to={`/products/${videoProducts[index].node.handle}`}
@@ -1636,7 +1636,7 @@ export default function Homepage() {
                                   <img
                                     src={videoProducts[index].node.images.edges[0].node.url}
                                     alt={videoProducts[index].node.title}
-                                    className="w-auto h-full aspect-square object-cover border border-gray-200 rounded-lg"
+                                    className="w-auto h-full aspect-square object-cover"
                                   />
                                 </Link>
                               </div>
@@ -1649,7 +1649,7 @@ export default function Homepage() {
                                     <span className="text-sm font-semibold 2xl:text-xl">
                                       {videoProducts[index].node.vendor}
                                     </span>
-                                    <span className="xl:flex hidden text-md font-semibold 2xl:text-lg/6 text-gray-700">
+                                    <span className="md:flex hidden text-md font-semibold 2xl:text-lg/6 text-gray-700">
                                       {videoProducts[index].node.abbrTitle?.value || videoProducts[index].node.title.replace(new RegExp(`^${videoProducts[index].node.vendor}\s*`), '')}
                                     </span>
                                     <div className="flex flex-col xl:flex-row xl:gap-2 md:pt-2 xl:pt-4 xl:text-lg">
@@ -1664,7 +1664,7 @@ export default function Homepage() {
                                     </div>
                                   </Link>
                                 </div>
-                                <div className="flex-none place-self-end md:absolute bottom-2">
+                                <div className="flex-none place-self-end md:absolute bottom-2 md:right-4">
                                   <AddToCartButton
                                     disabled={!videoProducts[index].node.selectedOrFirstAvailableVariant.availableForSale}
                                     onClick={() => {

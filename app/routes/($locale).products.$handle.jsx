@@ -164,10 +164,10 @@ export default function Product() {
   return (
     <div className="w-full flex flex-col">
       <div className="mx-auto px-4 py-4 sm:py-0 flex flex-col xl:flex-row xl:justify-center xl:gap-8 2xl:gap-12 h-full">
-        <div className={`flex gap-6 w-auto h-full justify-center ${selectedMedia >= images.length ? 'xl:pt-0' : 'xl:pt-12'}`}>
+        <div className={`flex gap-6 w-auto h-full items-center justify-center ${selectedMedia >= images.length ? 'xl:pt-0' : 'xl:pt-12'}`}>
           {/* Thumbnails on the left */}
-          <div className="relative w-20 xl:w-28 2xl:w-36  h-64 sm:h-auto xl:h-[calc(100vh-500px)]">
-            <div className="flex flex-col lg:gap-4 gap-1 w-full h-full overflow-y-auto">
+          <div className="relative w-32 md:w-40 xl:w-60 h-[calc(100vh-35rem)] 2xl:h-[calc(100vh-25rem)]">
+            <div className="flex flex-col lg:gap-4 gap-1 px-2 w-full h-full overflow-y-auto">
               {images.map((image, index) => (
                 <button
                   key={index}
@@ -180,7 +180,7 @@ export default function Product() {
                   <img
                     src={image.node.image?.url}
                     alt={image.node.image?.altText || `Product view ${index + 1}`}
-                    className="w-full h-full aspect-[1/1]  object-cover"
+                    className="w-full h-full aspect-[1/1]  object-cover "
                   />
                 </button>
               ))}
@@ -205,7 +205,7 @@ export default function Product() {
           </div>
 
           {/* Main Image on the right */}
-          <div className="w-full max-w-[calc(100vh-250px)]">
+          <div className="max-w-[calc(100vh-250px)]">
             <div className={`relative ${selectedMedia >= images.length ? 'aspect-[3/4]' : 'aspect-square'} max-h-[800px] w-auto rounded-xl overflow-hidden border border-gray-100 lg:shadow-md hover:shadow-lg transition-shadow duration-300`}>
               {images[selectedMedia] ? (
                 <img
@@ -231,25 +231,26 @@ export default function Product() {
         </div>
 
         {/* Product Info - right side on desktop */}
-        <div className="mt-4 space-y-1 xl:mt-0 xl:w-1/2 h-full flex flex-col flex-none md:px-4">
+        <div className="mt-4 space-y-1 xl:mt-0 xl:w-1/3 h-full flex flex-col flex-none md:px-4">
           <div className="h-auto">
             <div className="text-xl md:text-2xl text-gray-500">{product.vendor}</div>
             <div className="text-xl md:text-2xl font-bold my-4">{product.title}</div>
             {/* <p className="text-10px text-gray-600 mt-1 lg:text-sm">{product.category}</p> */}
           </div>
 
-          <div className="flex flex-col gap-2 w-full flex-none max-w-sm ">
-            <div className="flex flex-col gap-2 justify-between">
+          <div className="flex flex-col gap-2 w-full flex-none xl:max-w-sm ">
+            <div className="flex xl:flex-col sm:flex-row flex-col gap-4 xl:gap-2 xl:justify-between">
               <ProductPrice
                 price={selectedVariant?.price}
                 compareAtPrice={selectedVariant?.compareAtPrice}
               />
-              <div className="border rounded-lg p-4 bg-white xl:shadow-sm flex-none">
+              {/* Delivery Image */}
+              <div className="border rounded-lg p-4 bg-white xl:shadow-sm flex-none sm:-mt-4 xl:-mt-0" >
                 <div className="flex items-center gap-3">
                   <Truck className="w-5 h-5" />
                   <div>
-                    <div className="text-sm font-medium">Free Standard Delivery</div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-sm md:text-md font-medium">Free Standard Delivery</div>
+                    <div className="text-xs md:text-sm text-gray-500">
                       Arrives within 3-5 business days
                     </div>
                   </div>

@@ -16,7 +16,7 @@ import { useAside } from '../layout/Aside';
 export function TrendingProductCard({ id, handle, abbrTitle,title, vendor, selectedOrFirstAvailableVariant, images, className = '' }) {
     const { open } = useAside();
     const price = Number(selectedOrFirstAvailableVariant.price.amount || 0).toFixed(2);
-    const compareAtPrice = Number(selectedOrFirstAvailableVariant.compareAtPrice?.amount).toFixed(2);
+    const compareAtPrice = Number(selectedOrFirstAvailableVariant.compareAtPrice?.amount || 0).toFixed(2);
     const discount = selectedOrFirstAvailableVariant.compareAtPrice && ((compareAtPrice - price) / compareAtPrice) * 100;
     const imageUrl = images.edges[0]?.node.url || '/api/placeholder/400/400';
     const displayTitle = abbrTitle?.value ? abbrTitle.value : title ? title.replace(new RegExp(`^${vendor}\\s*`), '') : 'N/A';
@@ -36,12 +36,12 @@ export function TrendingProductCard({ id, handle, abbrTitle,title, vendor, selec
             <div className="w-full h-full text-left flex-grow flex flex-col gap-0 justify-between px-2 border-t border-gray-200 pt-2">
                 <Link
                     to={`/products/${handle}`}
-                    className="w-full font-semibold text-blue-600 hover:underline flex flex-col py-2 h-full flex-grow"
+                    className="w-full font-semibold text-blue-600 hover:underline flex 2xl:px-2 flex-col py-2 h-full flex-grow"
                 >
                     <div className="font-bold text-xs uppercase mb-1 2xl:text-lg 2xl:font-semibold">
                         {vendor || 'Unknown Brand'}
                     </div>
-                    <div className="flex gap-1 mb-2">
+                    <div className="flex gap-1">
                         {[...Array(5)].map((_, index) => (
                           <svg
                             key={index}
@@ -56,14 +56,14 @@ export function TrendingProductCard({ id, handle, abbrTitle,title, vendor, selec
                         ))}
                         <span >5.0</span>
                       </div>
-                    <div className="text-xs font-normal mb-2 h-12 xl:h-18 2xl:text-lg md:text-base w-full text-ellipsis">
+                    <div className="text-xs font-normal mb-2 h-8 md:h-16 2xl:text-xl 2xl:mt-2 md:text-base w-full text-ellipsis">
                         {displayTitle}
                     </div>
                 </Link>
-                <div className="flex justify-between py-2 gap-4 flex-col md:flex-row w-full">
-                    <div className={`font-bold text-sm 2xl:text-lg flex-none pt-2 ${compareAtPrice ? 'text-red-600' : ''}`}>
+                <div className="flex justify-between pb-2 xl:py-2 gap-4  2xl:px-2 flex-col md:flex-row w-full">
+                    <div className={`font-bold text-sm 2xl:text-lg flex-none pt-2 ${compareAtPrice && compareAtPrice > price ? 'text-red-600' : ''}`}>
                         ${price}
-                        {compareAtPrice && (
+                        {compareAtPrice && compareAtPrice > price && (
                             <span className="text-gray-500 line-through ml-2">
                                 ${Number(compareAtPrice).toFixed(2)}
                             </span>
