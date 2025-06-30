@@ -84,7 +84,7 @@ export default function GallerySortSection({ products, brands, setSortedProducts
                         <option value="new">Newest</option>
                     </select>
                 </div>
-                {ifbrand && <div className="flex items-center gap-2">
+                {(ifbrand || isClient && window.innerWidth < 768) && <div className="flex items-center gap-2">
                     <div className="hidden sm:block md:text-lg font-medium text-gray-500">Select Brand:</div>
                     {brands.length > 0 &&
                         <select

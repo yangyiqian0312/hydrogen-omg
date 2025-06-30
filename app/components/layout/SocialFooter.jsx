@@ -82,11 +82,11 @@ const SocialFooter = ({isLoggedIn}) => {
       {/* Divider */}
       <div className="border-t my-4 mx-2 border-gray-300"></div>
       {/* Navigation */}
-      <nav className="py-2 px-4">
+      <nav className="py-2 px-4 xl:px-8 2xl:px-12">
         <div className="max-w-screen-xl mx-auto">
           {/* Links */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-6">
-            <div className="flex border-b border-gray-300 shadow-sm hover:shadow-lg transition-all duration-200 flex-col justify-start mb-8 lg:mb-0 order-2 lg:order-1">
+            <div className="flex border-b border-gray-300 shadow-md hover:shadow-lg transition-all duration-200 flex-col justify-start mb-8 lg:mb-0 order-2 lg:order-1">
               <div
                 className="text-lg font-semibold mb-4 flex mx-2 items-center justify-between lg:justify-start cursor-pointer lg:cursor-auto"
                 onClick={() => window.innerWidth < 1024 && setIsShopOpen(!isShopOpen)}
@@ -133,7 +133,7 @@ const SocialFooter = ({isLoggedIn}) => {
                 </div>
               </div>
             </div>
-            <div className="flex border-b border-gray-300 shadow-sm hover:shadow-lg transition-all duration-200 flex-col justify-start mb-8 lg:mb-0 order-2 lg:order-1">
+            <div className="flex border-b border-gray-300 shadow-md hover:shadow-lg transition-all duration-200 flex-col justify-start mb-8 lg:mb-0 order-2 lg:order-1">
               <div
                 className="text-lg font-semibold mb-4 flex mx-2 items-center justify-between lg:justify-start cursor-pointer lg:cursor-auto"
                 onClick={() => window.innerWidth < 1024 && setIsAccountOpen(!isAccountOpen)}
@@ -180,7 +180,7 @@ const SocialFooter = ({isLoggedIn}) => {
                 </div>
               </div>
             </div>
-            <div className="flex border-b border-gray-300 shadow-sm hover:shadow-lg transition-all duration-200 flex-col justify-start mb-8 lg:mb-0 order-2 lg:order-1">
+            <div className="flex border-b border-gray-300 shadow-md hover:shadow-lg transition-all duration-200 flex-col justify-start mb-8 lg:mb-0 order-2 lg:order-1">
               <div
                 className="text-lg font-semibold mb-4 flex mx-2 items-center justify-between lg:justify-start cursor-pointer lg:cursor-auto"
                 onClick={() => window.innerWidth < 1024 && setIsLinksOpen(!isLinksOpen)}

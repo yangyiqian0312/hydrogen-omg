@@ -242,7 +242,6 @@ button.reset:hover:not(:has(> *)) {
 
 .cart-line img {
   display: block;
-  margin-right: 0.75rem;
 }
 
 .cart-lines{
