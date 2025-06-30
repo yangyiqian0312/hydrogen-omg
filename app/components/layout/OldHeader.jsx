@@ -285,7 +285,7 @@ export default function OldHeader({
 
       {/* Navigation */}
       <nav className="bg-white">
-        <div className="max-w-full mx-auto px-2 md:px-4 xl:px-8">
+        <div className="max-w-full mx-auto px-2 md:px-4 xl:px-8 2xl:px-16">
           <div className="flex justify-between items-center h-20">
             {/* Mobile Menu Button */}
             <div className="lg:hidden flex items-center w-1/3">
