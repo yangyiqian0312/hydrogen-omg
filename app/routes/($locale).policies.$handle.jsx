@@ -45,7 +45,7 @@ export default function Policy() {
   const {policy} = useLoaderData();
 
   return (
-    <div className="policy p-8">
+    <div className="policy p-8 mx-auto max-w-7xl">
       {/* <br />
       <br />
       <div>
@@ -53,7 +53,7 @@ export default function Policy() {
       </div>
       <br /> */}
       <h1>{policy.title}</h1>
-      <div dangerouslySetInnerHTML={{__html: policy.body}} />
+      <div  dangerouslySetInnerHTML={{__html: policy.body}} />
     </div>
   );
 }
