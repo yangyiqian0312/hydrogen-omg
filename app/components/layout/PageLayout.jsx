@@ -36,7 +36,7 @@ export function PageLayout({
         </Await>
       </Suspense>
       <div className="border-b border-gray-200"></div>
-      <main className="pt-32">{children}</main>
+      <main className="pt-32 2xl:px-8">{children}</main>
       {/* <Footer
         footer={footer}
         header={header}

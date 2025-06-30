@@ -618,7 +618,7 @@ export default function Homepage() {
                   <div className="text-md lg:text-lg font-medium text-black uppercase tracking-wider mb-2">
                     {node.vendor || 'Unknown Brand'}
                   </div>
-                  <div className="text-sm lg:text-md 2xl:text-lg 2xl:h-14 font-normal mb-2 text-wrap h-12 md:h-10">
+                  <div className="text-sm lg:text-md 2xl:text-lg lg:h-14 font-normal mb-2 text-wrap h-12 md:h-10">
                     {node.abbrTitle?.value || node.title.replace(new RegExp(`^${node.vendor}\s*`), '')}
                   </div>
                   <div className="text-pink-600 font-bold md:pb-4 pb-2">
@@ -631,7 +631,7 @@ export default function Homepage() {
 
                   </div>
                   {node.variants.edges[0]?.node.compareAtPrice?.amount && (
-                    <span className="mb-2 w-auto text-red-500 font-semibold bg-pink-100 px-2 sm:px-4 rounded">
+                    <span className=" mb-2 w-auto text-red-500 font-semibold bg-pink-100 px-2 sm:px-4 rounded">
                       {((Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2) - Number(node.variants.edges[0]?.node.price.amount || 0).toFixed(2)) / Number(node.variants.edges[0]?.node.compareAtPrice.amount).toFixed(2) * 100).toFixed(0)}% OFF
                     </span>
                   )}
@@ -1234,9 +1234,9 @@ export default function Homepage() {
         <div className="px-2 pb-8">
           {/* 内容部分 */}
           {/* 内容部分 - 使用 grid 布局确保行高一致 */}
-          <div className="grid 2xl:grid-rows-17 md:h-auto md:grid-rows-22  grid-rows-9 gap-6 w-full">
+          <div className="gridmd:h-auto md:grid-rows-22  grid-rows-9 gap-6 w-full">
             {/* 第一行 - New Arrivals & Trending Now */}
-            <div className="grid grid-cols-9 2xl:row-span-4 md:row-span-5 row-span-2 gap-6 w-full">
+            <div className="grid grid-cols-9 md:row-span-5 row-span-2 gap-6 w-full">
               {/* 左侧列 */}
               <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
@@ -1273,14 +1273,14 @@ export default function Homepage() {
               {/* 右侧列 */}
               <div className="2xl:col-span-7 lg:col-span-6 md:col-span-6 col-span-5">
                 <div className="w-full h-full flex flex-col">
-                  <div className="w-full flex items-center my-2 lg:my-4">
+                  <div className="w-full flex items-center my-2 lg:my-4 2xl:mx-8">
                     <Clock className="w-5 h-5 mr-2" />
                     <span className="text-lg font-semibold">Trending Now</span>
                   </div>
                   <div className="relative w-full h-full">
                     <button
                       onClick={() => scrollLeft(orderCarouselRef)}
-                      className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                      className="hidden sm:flex absolute left-0 2xl:left-8 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
                       aria-label="Scroll left"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1289,7 +1289,7 @@ export default function Homepage() {
                     </button>
                     <div
                       ref={orderCarouselRef}
-                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 2xl:mx-10 hide-scrollbar scrollbar-hide"
                       style={{
                         scrollbarWidth: 'none',
                         msOverflowStyle: 'none',
@@ -1312,7 +1312,7 @@ export default function Homepage() {
                     </div>
                     <button
                       onClick={() => scrollRight(orderCarouselRef)}
-                      className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                      className="hidden sm:flex absolute right-0 2xl:right-8 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
                       aria-label="Scroll right"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1325,7 +1325,7 @@ export default function Homepage() {
             </div>
 
             {/* 第二行 - Category for Her & Trending Women */}
-            <div className="grid grid-cols-9 2xl:row-span-4 md:row-span-5 row-span-2 gap-6 w-full">
+            <div className="grid grid-cols-9 md:row-span-5 row-span-2 gap-6 w-full">
               {/* 左侧列 */}
               <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
@@ -1367,14 +1367,14 @@ export default function Homepage() {
               {/* 右侧列 */}
               <div className="2xl:col-span-7 lg:col-span-6 md:col-span-6 col-span-5">
                 <div className="w-full h-full flex flex-col">
-                  <div className="w-full flex items-center my-2 lg:my-4">
+                  <div className="w-full flex items-center my-2 lg:my-4 2xl:mx-8">
                     <Clock className="w-5 h-5 mr-2" />
                     <span className="text-lg font-semibold">Trending Women</span>
                   </div>
                   <div className="relative w-full h-full">
                     <button
                       onClick={() => scrollLeft(orderCarouselRef_women)}
-                      className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                      className="hidden sm:flex absolute left-0 2xl:left-8 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
                       aria-label="Scroll left"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1383,7 +1383,7 @@ export default function Homepage() {
                     </button>
                     <div
                       ref={orderCarouselRef_women}
-                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 2xl:mx-10 hide-scrollbar scrollbar-hide"
                       style={{
                         scrollbarWidth: 'none',
                         msOverflowStyle: 'none',
@@ -1406,7 +1406,7 @@ export default function Homepage() {
                     </div>
                     <button
                       onClick={() => scrollRight(orderCarouselRef_women)}
-                      className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                      className="hidden sm:flex absolute right-0 2xl:right-8 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
                       aria-label="Scroll right"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1419,7 +1419,7 @@ export default function Homepage() {
             </div>
 
             {/* 第三行 - Category for Him & Trending Men */}
-            <div className="grid grid-cols-9 2xl:row-span-4 md:row-span-5 row-span-2 gap-6 w-full">
+            <div className="grid grid-cols-9 md:row-span-5 row-span-2 gap-6 w-full">
               {/* 左侧列 */}
               <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
@@ -1461,14 +1461,14 @@ export default function Homepage() {
               {/* 右侧列 */}
               <div className="2xl:col-span-7 lg:col-span-6 md:col-span-6 col-span-5">
                 <div className="w-full h-full flex flex-col">
-                  <div className="w-full flex items-center my-2 lg:my-4">
+                  <div className="w-full flex items-center my-2 lg:my-4 2xl:mx-8">
                     <Clock className="w-5 h-5 mr-2" />
                     <span className="text-lg font-semibold">Trending Men</span>
                   </div>
                   <div className="relative w-full h-full">
                     <button
                       onClick={() => scrollLeft(orderCarouselRef_men)}
-                      className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                      className="hidden sm:flex absolute left-0 2xl:left-8 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
                       aria-label="Scroll left"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1477,7 +1477,7 @@ export default function Homepage() {
                     </button>
                     <div
                       ref={orderCarouselRef_men}
-                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 hide-scrollbar scrollbar-hide"
+                      className="flex w-full overflow-x-auto h-full snap-x gap-2 mx-2 2xl:mx-10 hide-scrollbar scrollbar-hide"
                       style={{
                         scrollbarWidth: 'none',
                         msOverflowStyle: 'none',
@@ -1500,7 +1500,7 @@ export default function Homepage() {
                     </div>
                     <button
                       onClick={() => scrollRight(orderCarouselRef_men)}
-                      className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                      className="hidden sm:flex absolute right-0 2xl:right-8 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
                       aria-label="Scroll right"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1513,7 +1513,7 @@ export default function Homepage() {
             </div>
 
             {/* 第四行 - Special Offers & Featured Videos */}
-            <div className="grid grid-cols-9 2xl:row-span-5 md:row-span-7 row-span-3 gap-6 w-full">
+            <div className="grid grid-cols-9 md:row-span-7 row-span-3 gap-6 w-full">
               {/* 左侧列 */}
               <div className="2xl:col-span-2 lg:col-span-3 md:col-span-3 col-span-4">
                 <div className="w-full h-full flex flex-col">
@@ -1560,16 +1560,16 @@ export default function Homepage() {
               {/* 右侧列 */}
               <div className="2xl:col-span-7 lg:col-span-6 md:col-span-6 col-span-4">
                 <div className="w-full h-full flex flex-col">
-                  <div className="w-full my-4 flex items-center space-x-2">
+                  <div className="w-full my-4 2xl:mx-8 flex items-center space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2v6" />
                     </svg>
                     <span className="text-lg font-semibold">Featured Videos</span>
                   </div>
-                  <div className="relative w-full h-auto">
+                  <div className="relative w-full h-auto  2xl:px-8 ">
                     <button
                       onClick={() => scrollLeft(videoCarouselRef)}
-                      className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
+                      className="hidden sm:flex absolute left-0 2xl:left-8 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -ml-5"
                       aria-label="Scroll left"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1690,7 +1690,7 @@ export default function Homepage() {
                     {/* Right Arrow Button (Desktop only) */}
                     <button
                       onClick={() => scrollRight(videoCarouselRef)}
-                      className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
+                      className="hidden sm:flex absolute right-0 2xl:right-8 top-1/2 -translate-y-1/2 z-5 bg-white/80 text-black w-10 h-10 rounded-full items-center justify-center shadow-md hover:bg-white transition-colors duration-200 -mr-5"
                       aria-label="Scroll right"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -2067,7 +2067,7 @@ const PROMOTING_PRODUCTS_QUERY = `
     }
   }
 `;
-const TRENDING_PRODUCTS_QUERY=`
+const TRENDING_PRODUCTS_QUERY = `
 ${ProductFragment}
 ${PRODUCT_FIELDS_FRAGMENT}
   query TrendingProducts {
@@ -2085,7 +2085,7 @@ ${PRODUCT_FIELDS_FRAGMENT}
   }
 `;
 
-const VIDEO_PRODUCTS_QUERY=`
+const VIDEO_PRODUCTS_QUERY = `
 ${ProductFragment}
 ${PRODUCT_FIELDS_FRAGMENT}
   query VideoProducts {
