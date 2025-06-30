@@ -154,7 +154,7 @@ const Women = (selectedVariant) => {
     <div className="flex flex-col md:gap-2">
       <GallerySortSection products={filteredProducts} brands={brands} setSortedProducts={setSortedProducts} ifbrand={false} location="women" />
       {/* Products grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-6 pt-1 sm:p-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-4 pt-1 sm:p-4">
         {sortedProducts.length > 0 &&
           sortedProducts.map(({ node }) => (
             <GalleryProductCard key={node.id} node={node} />
