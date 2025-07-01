@@ -167,7 +167,7 @@ export default function Product() {
         <div className={`flex gap-1 md:gap-6 w-auto h-full justify-center ${selectedMedia >= images.length ? 'xl:pt-0' : 'xl:pt-12'}`}>
           {/* Thumbnails on the left */}
           <div className="relative w-32 md:w-40 xl:w-60 max-h-[calc(100vh-35rem)] xl:max-h-[calc(100vh-25rem)]">
-            <div className="flex flex-col lg:gap-4 gap-1 px-2 w-full h-full overflow-y-auto">
+            <div className="flex flex-col lg:gap-4 gap-1 p-2 w-full h-full overflow-y-auto">
               {images.map((image, index) => (
                 <button
                   key={index}
