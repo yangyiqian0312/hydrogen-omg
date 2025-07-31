@@ -157,7 +157,7 @@ export default function AccountProfile() {
     customer?.defaultAddress?.zoneCode || ''
   );
 
-  console.log("loading customer", customer)
+  // console.log("loading customer", customer)
   
   return (
     <div className="max-w-xl mx-auto">

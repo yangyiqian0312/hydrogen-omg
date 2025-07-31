@@ -2,14 +2,16 @@ import { useActionData, Form } from '@remix-run/react';
 import { useState } from 'react';
 import { Link, useNavigate } from '@remix-run/react';
 
-export default function SignupForm({firstname, email, lastname}) {
+export default function SignupForm({ firstname, email, lastname }) {
     const [form, setForm] = useState({
         firstName: firstname,
         lastName: lastname,
         email: email,
         phone: '',
         password: '',
-        acceptsMarketing: true,
+        acceptsMarketing: false,
+        acceptsUpdates: false,
+        acceptsTerms: false,
     });
     const actionData = useActionData();
     const navigate = useNavigate();
@@ -34,7 +36,7 @@ export default function SignupForm({firstname, email, lastname}) {
     };
 
     return (
-        <div className="signup-page max-w-md mx-auto my-8 space-y-6 p-6 border rounded-xl shadow">
+        <div className="signup-page max-w-xl mx-auto my-8 space-y-6 p-6 border rounded-xl shadow">
             <Form method="post" className="signup-form space-y-4">
                 <div className="form-group">
                     <label htmlFor="firstName">First Name</label>
@@ -108,14 +110,41 @@ export default function SignupForm({firstname, email, lastname}) {
                 <div className="form-group">
                     <input
                         type="checkbox"
+                        id="acceptsTerms"
+                        name="acceptsTerms"
+                        checked={form.acceptsTerms}
+                        onChange={handleChange}
+                        required
+                    />
+                    <label htmlFor="acceptsTerms" className="mx-2 text-sm leading-6">
+                        By checking this box, I accept the <a href="/policies/terms-of-service" className="!underline !text-blue-500">Terms of Service</a> and <a href="/policies/privacy-policy" className="!underline !text-blue-500">Privacy Policy</a>.*
+                    </label>
+                </div>
+
+                <div className="form-group">
+                    <input
+                        type="checkbox"
                         id="acceptsMarketing"
                         name="acceptsMarketing"
                         checked={form.acceptsMarketing}
                         onChange={handleChange}
                     />
-                    <label htmlFor="acceptsMarketing" className="mx-2">Accept marketing emails</label>
+                    <label htmlFor="acceptsMarketing" className="mx-2 text-sm leading-6">By checking this box, I agree to receive marketing text or emails from omgbeautybox.</label>
                 </div>
                 
+                <div className="form-group">
+                    <input
+                        type="checkbox"
+                        id="acceptsUpdates"
+                        name="acceptsUpdates"
+                        checked={form.acceptsUpdates}
+                        onChange={handleChange}
+                    />
+                    <label htmlFor="acceptsUpdates" className="mx-2 text-sm leading-6">
+                        By checking this box, I agree to receive account updates and customer care texts from omgbeautybox.
+                    </label>
+                </div>
+
                 <button type="submit" className="w-full bg-black text-white p-2 rounded hover:bg-gray-800">
                     Create Account
                 </button>

@@ -29,6 +29,7 @@ export function AddToCartButton({
             value={JSON.stringify(analytics)}
           />
           <button
+            data-add-to-cart
             type="submit"
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
@@ -41,6 +42,7 @@ export function AddToCartButton({
           </button>
         </>
       )}
+      
     </CartForm>
   );
 }

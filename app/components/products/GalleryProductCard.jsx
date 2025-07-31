@@ -66,6 +66,7 @@ export default function GalleryProductCard({ node }) {
                         <AddToCartButton
                             disabled={!node.selectedOrFirstAvailableVariant.availableForSale}
                             onClick={() => {
+                                console.log("added product: ",node.selectedOrFirstAvailableVariant);
                                 open('cart');
                             }}
                             lines={[
