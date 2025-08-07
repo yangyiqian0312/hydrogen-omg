@@ -191,14 +191,19 @@ export default function Layout({ children }) {
         <meta name="keywords" content="OMG Beauty Box, luxury fragrances, beauty products, always for sale, USA" />
         <Links />
         {/* Google Analytics Script */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
         <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-QYWRXGCLX7"
+          
+        />
+        <script
+          
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-XXXXXXXXXX');
+              gtag('config', 'G-QYWRXGCLX7');
             `,
           }}
         />

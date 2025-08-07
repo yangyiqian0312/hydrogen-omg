@@ -1,9 +1,7 @@
-
 import {RemixServer} from '@remix-run/react';
 import isbot from 'isbot';
 import {renderToReadableStream} from 'react-dom/server';
 import {createContentSecurityPolicy} from '@shopify/hydrogen';
-
 
 /**
  * @param {Request} request
@@ -19,19 +17,26 @@ export default async function handleRequest(
   remixContext,
   context,
 ) {
-  const {nonce, header, NonceProvider} = createContentSecurityPolicy({
+  // First, create the CSP and extract nonce-related utilities
+  const csp = createContentSecurityPolicy({
     shop: {
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
+    scriptSrc: [
+      'https://www.googletagmanager.com',
+      `'nonce-{{nonce}}'`, // will be replaced later
+    ],
     connectSrc: [
-      // (ie. 'wss://<your-ngrok-domain>.app:*')
       'wss://shad-set-oriole.ngrok-free.app:*',
+      'https://www.google-analytics.com',
     ],
   });
 
+  const {nonce, header, NonceProvider} = csp;
 
-
+  // Replace {{nonce}} in scriptSrc with actual nonce
+  const updatedHeader = header.replace('{{nonce}}', nonce);
 
   const body = await renderToReadableStream(
     <NonceProvider>
@@ -41,7 +46,6 @@ export default async function handleRequest(
       nonce,
       signal: request.signal,
       onError(error) {
-        // eslint-disable-next-line no-console
         console.error(error);
         responseStatusCode = 500;
       },
@@ -53,7 +57,7 @@ export default async function handleRequest(
   }
 
   responseHeaders.set('Content-Type', 'text/html');
-  responseHeaders.set('Content-Security-Policy', header);
+  responseHeaders.set('Content-Security-Policy', updatedHeader);
 
   return new Response(body, {
     headers: responseHeaders,
