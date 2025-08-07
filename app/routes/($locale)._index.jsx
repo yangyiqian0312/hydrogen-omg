@@ -463,8 +463,16 @@ export default function Homepage() {
     },
     {
       image: '/assets/Banners/Banner 3.png',
-      link: '/account/subscribe',
+      link: '/products/newarrivals',
     },
+    {
+      image: '/assets/Banners/Banner 4.png',
+      link: '/products/newarrivals',
+    },
+    {
+      image: '/assets/Banners/Banner 5.png',
+      link: '/products/2-pack-of-baccarat-rouge-540-roll-on-fragrance-oil-eau-de-parfum-for-women-12ml?Title=Default+Title',
+    }
   ];
   const [currentBanner, setCurrentBanner] = useState(0);
   useEffect(() => {

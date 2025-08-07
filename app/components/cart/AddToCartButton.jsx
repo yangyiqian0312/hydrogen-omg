@@ -17,8 +17,6 @@ export function AddToCartButton({
   onClick,
 }) {
 
-
-
   return (
     <CartForm route="/cart" inputs={{ lines }} action={CartForm.ACTIONS.LinesAdd}>
       {(fetcher) => (
@@ -30,6 +28,7 @@ export function AddToCartButton({
           />
           <button
             data-add-to-cart
+            data-product-title={lines[0].selectedVariant?.product?.title}
             type="submit"
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}

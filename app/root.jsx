@@ -1,5 +1,6 @@
 import { useNonce, getShopAnalytics, Analytics } from '@shopify/hydrogen';
 import { defer } from '@shopify/remix-oxygen';
+import { useEffect } from 'react';
 import {
   Links,
   Meta,
@@ -161,6 +162,22 @@ export default function Layout({ children }) {
   const nonce = useNonce();
   /** @type {RootLoader} */
   const data = useRouteLoaderData('root');
+  useEffect(() => {
+    const handler = (e) => {
+      const target = e.target.closest('[data-ga-add-to-cart]');
+      if (target) {
+        const title = target.getAttribute('data-product-title') || 'Unknown Product';
+        window.gtag?.('event', 'add_to_cart', {
+          event_category: 'ecommerce',
+          event_label: title,
+          value: 1,
+        });
+      }
+    };
+
+    document.addEventListener('click', handler);
+    return () => document.removeEventListener('click', handler);
+  }, []);
 
   return (
     <html lang="en">
