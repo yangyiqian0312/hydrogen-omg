@@ -160,6 +160,8 @@ function loadDeferredData({ context }) {
  */
 export default function Layout({ children }) {
   const nonce = useNonce();
+  
+  // const { nonce } = useLoaderData();
   /** @type {RootLoader} */
   const data = useRouteLoaderData('root');
   useEffect(() => {
@@ -194,10 +196,10 @@ export default function Layout({ children }) {
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-QYWRXGCLX7"
-          
+          nonce={nonce}
         />
         <script
-          
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];

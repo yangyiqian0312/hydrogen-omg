@@ -58,6 +58,18 @@ export default async function handleRequest(
 
   responseHeaders.set('Content-Type', 'text/html');
   responseHeaders.set('Content-Security-Policy', updatedHeader);
+  responseHeaders.set(
+    "Content-Security-Policy",
+    `
+      default-src 'self';
+      script-src 'self' https://cdn.shopify.com https://www.googletagmanager.com 'nonce-${nonce}';
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src https://fonts.gstatic.com;
+      img-src * blob: data:;
+      connect-src *;
+      object-src 'none';
+    `.replace(/\n/g, "") // remove newlines
+  );
 
   return new Response(body, {
     headers: responseHeaders,
