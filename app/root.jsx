@@ -160,13 +160,13 @@ function loadDeferredData({ context }) {
  */
 export default function Layout({ children }) {
   const nonce = useNonce();
-  
+
   // const { nonce } = useLoaderData();
   /** @type {RootLoader} */
   const data = useRouteLoaderData('root');
   useEffect(() => {
     const handler = (e) => {
-      const target = e.target.closest('[data-ga-add-to-cart]');
+      const target = e.target.closest('[data-add-to-cart]');
       if (target) {
         const title = target.getAttribute('data-product-title') || 'Unknown Product';
         window.gtag?.('event', 'add_to_cart', {
