@@ -25,6 +25,7 @@ export default async function handleRequest(
     },
     scriptSrc: [
       'https://www.googletagmanager.com',
+      'https://cdn.shopify.com',
       `'nonce-{{nonce}}'`, // will be replaced later
     ],
     connectSrc: [
