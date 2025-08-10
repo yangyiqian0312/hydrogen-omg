@@ -169,10 +169,11 @@ export default function Layout({ children }) {
       const target = e.target.closest('[data-add-to-cart]');
       if (target) {
         const title = target.getAttribute('data-product-title') || 'Unknown Product';
-        window.gtag?.('event', 'add_to_cart', {
+        window.gtag?.('event', 'gtag_add_to_cart', {
           event_category: 'ecommerce',
           event_label: title,
           value: 1,
+          debug_mode: true
         });
       }
     };
